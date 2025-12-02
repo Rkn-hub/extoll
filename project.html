@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Details - Extoll.co</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  .glow-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .glow-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #00aaff;
+    box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff, 0 0 30px #00aaff;
+  }
+  .glassmorphism-card {
+    background: rgba(20, 29, 35, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 170, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  .glow-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #00aaff33, transparent);
+  }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#00aaff",
+          "background-light": "#0A0A0D",
+          "background-dark": "#0A0A0D",
+        },
+        fontFamily: {
+          "display": ["Space Grotesk", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+</head>
+<body class="bg-background-dark font-display text-gray-300">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 sm:px-10 py-4">
+<div class="flex items-center gap-4 text-white">
+<div class="size-5">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tighter">Extoll.co</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="index.html">Home</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="portfolio.html">Work</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="services.html">Services</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="about.html">About</a>
+</div>
+<a href="contact.html">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,170,255,0.5)]">
+<span class="truncate">Hire Me</span>
+</button>
+</a>
+</div>
+</header>
+<main class="flex-1 py-16 sm:py-20 md:py-24">
+<div class="flex flex-col gap-16 sm:gap-20 md:gap-24">
+<section class="text-center px-4">
+<h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tighter">
+<span class="glow-underline">Futuristic Web App UI</span>
+</h1>
+</section>
+<section class="px-4">
+<div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-xl min-h-[400px] md:min-h-[500px] border border-white/10 shadow-[0_10px_40px_rgba(0,170,255,0.1)]" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1fCCSVZR5XQfEG8oI_3eFI-1TTfre92XSMlH7GXE9tjQaou8tkjlACJz_2jAVmvlBXro9Ps5hSfBhdWXkXn0iLnkxBN2ZGRo-aiVwwGqn0N__qr_jlj6XvuUZcT-4ljlRdzv-aVl8TnXm5DSObZkkoExTEULou6GaZJrALpCplYQ4hLsReuJ_pFbcDXHsKrMAbVhyBS8uczYEY-0F9Kup4B9XjJbe5rtdYdhGSDvGkhUuBFYTHHGR7fSxVw8A9aM7pV6-x2N3Ae3H");'></div>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+<div class="glassmorphism-card rounded-xl p-6 text-center">
+<h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Timeline</h3>
+<p class="text-lg font-bold text-white">4 Weeks</p>
+</div>
+<div class="glassmorphism-card rounded-xl p-6 text-center">
+<h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Platform</h3>
+<p class="text-lg font-bold text-white">Web Application</p>
+</div>
+<div class="glassmorphism-card rounded-xl p-6 text-center">
+<h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Industry</h3>
+<p class="text-lg font-bold text-white">SaaS / Technology</p>
+</div>
+</section>
+<div class="glow-divider mx-auto w-4/5"></div>
+<section class="px-4">
+<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Overview</h2>
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
+A concise summary of the project's goal, the problem it solved, and the final outcome. This project involved designing a next-generation dashboard for a data analytics platform. The core challenge was to simplify a complex set of tools into an intuitive, visually compelling interface that empowers users to make data-driven decisions efficiently.
+</p>
+</section>
+<section class="px-4">
+<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Tools Used</h2>
+<div class="flex flex-wrap items-center gap-8">
+<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA716BjgiUMCECELGOvU0vCVtfd8XarEQLmCIPAcMEWHhUMoionurck3-u-oEHMrCw4E54Q4Xi6yF2kiHeW2v5c5C2B9Tjdsz__AnRDj340e0sbrqAcBU_uzRicjel9z5uhwoQs4gySz5z2MDfvFQDjRwKFoONcWUl96ClWj2cL-lxxZ3Khg7qxTsUs2R3vhTqFNmbN6wQH4Y51cCp5yaSFUDQTKPeAOhlDJPiaUEMh2ziQsrr8AUlM1NuLDqA_LhINOc4lgYpcV7uT"/>
+<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARxsxLwW3SoPYXcUGmMs7BCqkFsuMHAAqLIJwWH-Th9R932FeslYiIC-moyr8dEvzFyTqPWdp38vHGa_d0g4YcbINkozebTUHVO3GXlrUDHQfQyfVfAvHY_GgwQPwui8yJwNnTe43qB1YdFm8jHF-6SthrSIVhjgzySv8uLqW-b-s2ofZBjwDuXfBqzYm10HtXlmKKEct-ek9sB-t6gO3curkL5m2zKeGtgSpyHQImxz1hQwvQgw6QdKaNGuj2Y-05ZMvoJx6eFeTe"/>
+<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAmBONbt-OrLmTy6Ef2LsCHa155nn-1nR3eDSISoBESUsCDw95bz4dTfYijcPngLAWmnCAugnzN5GtE1YPyE0gc5evbBiKuu6ED55GC1wkE42wcfjHwM_as6IiwiToc6jqWTomAXDyooTnTjLcMDxNFWSVgwSrCkU4Ypk8jbbf03hbGv1f8SYXXIla-L8QSgS07R7F-u8TLdUYUmrMVCf-LTRyY_gaZJ4pRWwRRJ0HDxV0YjrEUNboq7FRs4flzW_SNxgQEsKf3Vq9"/>
+<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp6bc6MJaMqPWZP6K-H_JFq9qHggG_NCj_Us_0ZbikD3uhNHZ-fK9Ugi_dP-mr4iNCzrTdut5fyAchbhExtZwuhye-dhPHjerrDhyM7AQpHbH3GkyDvRf6LSc717eu1GrZuKZM0bHJg5VSoTCPpALf-kAsVXMa9Pk5kLBgctbcKvzU9gpBgGNhMdoU3qa7UAcSDUBZFNVVQjxypQ828vXagb3tzTKRVlZGkOm7nXnYsSLmApOoaQ4t5LvKmS-_lEpvF8JdddbzYJEm"/>
+<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvR0uw-UXCCNG6BdoiFksD_v5X39jZ7w8PsZFTQ8RNsAl0wNvmitCDJAPSS4-J_eP7d1ctMU7WBpIhs_iWhVyGG4q-HUYi2aqqJ8szCi3noLsoLzpFg0ZeUhCJNSG0loKHRgkRPUCGVHERxAnGJPmPuGUCrQQYlf_r2WGD4oUqqobQjLW5tHYqT4bvQARXMH23Sckl2uO_UlxBJ6w8LpHvflsX5QhEhRXjnj3GpOVtfNkmwlZcMRbxSFng-wCFG039p0qzPAXQSuEI"/>
+</div>
+</section>
+<section class="px-4">
+<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">My Role</h2>
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
+As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.
+</p>
+</section>
+<div class="glow-divider mx-auto w-4/5"></div>
+<section class="px-4 flex flex-col gap-12">
+<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight">Case Study Breakdown</h2>
+<div class="flex flex-col gap-4">
+<h3 class="text-primary text-xl font-bold tracking-tight">1. Discovery & Research</h3>
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
+The project began with an in-depth analysis of user needs and competitor platforms. We identified key pain points in existing solutions, such as cluttered interfaces and steep learning curves. This phase set a clear direction for a user-centric design approach.
+</p>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-primary text-xl font-bold tracking-tight">2. Design & Prototyping</h3>
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
+Wireframes and low-fidelity mockups were created to establish the core layout and information architecture. We then moved to high-fidelity designs, focusing on a dark, cinematic aesthetic with neon blue accents to highlight key data points and interactive elements. An interactive prototype was built in Figma to test user flows and gather feedback.
+</p>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-primary text-xl font-bold tracking-tight">3. Outcome & Impact</h3>
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
+The final design was met with overwhelmingly positive feedback from stakeholders and early-access users. The new interface reduced task completion time by an average of 30% and significantly increased user engagement. The futuristic aesthetic successfully differentiated the product in a crowded market.
+</p>
+</div>
+</section>
+<section class="bg-gradient-to-t from-primary/20 to-transparent p-10 sm:p-12 md:p-16 rounded-xl text-center flex flex-col items-center gap-6 border border-primary/20">
+<h2 class="text-white text-3xl sm:text-4xl font-black leading-tight tracking-tight max-w-lg">Hire Me for Your Project</h2>
+<p class="text-gray-400 max-w-xl">
+Have a similar project in mind? I'm available for freelance work. Let's create something exceptional together.
+</p>
+<a href="contact.html">
+<button class="flex min-w-[180px] mt-4 max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary text-white text-base font-bold leading-normal tracking-wide hover:bg-primary/90 transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,170,255,0.6)]">
+<span class="truncate">Get in Touch</span>
+</button>
+</a>
+</section>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

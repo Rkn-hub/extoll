@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About - Extoll.co</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#00aaff",
+          "background-light": "#f5f7f8",
+          "background-dark": "#0f1c23",
+        },
+        fontFamily: {
+          "display": ["Space Grotesk", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .glassmorphism {
+    background: rgba(26, 26, 29, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(112, 253, 255, 0.1);
+  }
+  .neon-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00A8FF, transparent);
+    box-shadow: 0 0 10px #00A8FF;
+  }
+  .glow-frame {
+    box-shadow: 0 0 20px 5px rgba(0, 168, 255, 0.3), 0 0 40px 10px rgba(112, 253, 255, 0.2);
+  }
+</style>
+</head>
+<body class="font-display bg-[#0A0A0D] text-[#E0E0E0]">
+<div class="relative w-full min-h-screen">
+<!-- Background Glow Effect -->
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+  <div class="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/20 rounded-full blur-[150px] animate-pulse"></div>
+  <div class="absolute bottom-0 right-0 w-1/3 h-1/3 bg-[#70FDFF]/10 rounded-full blur-[200px] animate-pulse delay-500"></div>
+</div>
+<div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap py-6">
+  <div class="flex items-center gap-4 text-white">
+    <div class="size-5 text-primary">
+      <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+      </svg>
+    </div>
+    <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.co</h2>
+  </div>
+  <div class="hidden md:flex items-center gap-9">
+    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="index.html">Home</a>
+    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="portfolio.html">Work</a>
+    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="services.html">Services</a>
+    <a class="text-white text-sm font-medium leading-normal relative" href="about.html">
+      About
+      <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-[#70FDFF] shadow-[0_0_8px_#70FDFF]"></span>
+    </a>
+  </div>
+  <a href="contact.html">
+    <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-black text-sm font-bold leading-normal tracking-[0.015em] hover:shadow-[0_0_20px_theme(colors.primary/0.5)] transition-shadow">
+      <span class="truncate">Let's Collaborate</span>
+    </button>
+  </a>
+</header>
+
+<!-- Main Content -->
+<main class="py-20 md:py-32">
+  <div class="flex flex-col items-center gap-16">
+    <!-- Profile Header Section -->
+    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 w-full text-center md:text-left">
+      <div class="relative">
+        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-40 w-40 md:h-48 md:w-48 glow-frame" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD3Ex5Uqfq7CkpjbXlUf8vKlv7BVKYjwVzwfomwVVJxYx7P-akvRXwWZT9f6QisOggZvT7R609UR_PZca1XWLYyvXtpOqnqQjk-xOkhF5ZpqgvHjFwsWtJv1qTYifzfbyDx7X8SfcBiLNF8WkU_sQLulGRy9VKMBiyAH6rQt1pZi2l-XRG7eUsyqsxS9y1XT_ti5KdOSJHswjNyJadIuB4Lr4EyHH2zJu2O2lqLfBvxy2uBvTL4WFErDWbgVLAw4rAaTzGlXv9_3SyC");'></div>
+      </div>
+      <div class="flex flex-col justify-center">
+        <p class="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.015em] text-white">Digital Designer & Developer</p>
+        <p class="text-[#9ab0bc] text-lg font-normal leading-normal mt-2">Crafting digital experiences that define the future.</p>
+      </div>
+    </div>
+    <div class="w-full max-w-3xl neon-divider"></div>
+    
+    <!-- Who I Am Section -->
+    <div class="w-full flex flex-col items-center gap-8">
+      <div class="w-full max-w-3xl p-8 md:p-10 rounded-xl glassmorphism">
+        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em]">Who I Am</h2>
+        <p class="text-white/90 text-base font-normal leading-relaxed mt-4">
+          As a freelance designer and developer, I live at the intersection of aesthetic elegance and functional performance. My passion is to craft bespoke digital experiences, translating complex ideas into intuitive, beautiful, and impactful solutions that resonate with users and elevate brands.
+        </p>
+      </div>
+      <div class="w-full max-w-3xl p-8 md:p-10 rounded-xl glassmorphism">
+        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em]">The Philosophy of Extoll</h2>
+        <p class="text-white/90 text-base font-normal leading-relaxed mt-4">
+          Extoll is founded on the principle of direct collaboration. There are no middlemen—just a singular creative vision dedicated to your project. This ensures a seamless process from concept to launch, where quality and a personalized partnership are paramount. I only take on projects where I can deliver exceptional value and craft something truly unique.
+        </p>
+      </div>
+    </div>
+    <div class="w-full max-w-3xl neon-divider"></div>
+    
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl text-center">
+      <div class="p-6 rounded-lg glassmorphism">
+        <p class="text-4xl font-bold text-primary">50+</p>
+        <p class="text-white/80 mt-2 text-sm">Projects Completed</p>
+      </div>
+      <div class="p-6 rounded-lg glassmorphism">
+        <p class="text-4xl font-bold text-primary">35</p>
+        <p class="text-white/80 mt-2 text-sm">Happy Clients</p>
+      </div>
+      <div class="p-6 rounded-lg glassmorphism">
+        <p class="text-4xl font-bold text-primary">8</p>
+        <p class="text-white/80 mt-2 text-sm">Years of Experience</p>
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="text-center mt-12">
+      <h3 class="text-white text-3xl font-bold">Have a project in mind?</h3>
+      <p class="text-white/70 mt-2">Let's create something extraordinary together.</p>
+      <a href="contact.html">
+        <button class="mt-8 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary text-black text-base font-bold leading-normal tracking-[0.015em] hover:shadow-[0_0_20px_theme(colors.primary/0.5)] transition-shadow mx-auto">
+          <span class="truncate">Get in Touch</span>
+        </button>
+      </a>
+    </div>
+  </div>
+</main>
+</div>
+</div>
+</body>
+</html>

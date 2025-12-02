@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Extoll.co - Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .glass-card {
+      background: rgba(20, 26, 30, 0.5);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(49, 62, 71, 0.4);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(0, 168, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 168, 255, 0.15), 0 0 40px rgba(0, 168, 255, 0.1);
+      transform: translateY(-4px);
+    }
+    
+    .filter-chip {
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .filter-chip:hover {
+        background-color: #1c2b36;
+        color: #f5f7f8;
+    }
+  </style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#00aaff",
+            "background-light": "#f5f7f8",
+            "background-dark": "#0A0A0D",
+          },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background-dark font-display text-neutral-200">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="flex h-full grow flex-col">
+<div class="flex flex-1 justify-center px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-5">
+<div class="flex w-full max-w-[1280px] flex-1 flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-neutral-800/50 px-4 py-6">
+<div class="flex items-center gap-4 text-white">
+<div class="h-5 w-5 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.co</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-neutral-300 hover:text-white transition-colors text-sm font-medium leading-normal" href="#">Home</a>
+<a class="text-neutral-300 hover:text-white transition-colors text-sm font-medium leading-normal" href="#">About</a>
+<a class="text-neutral-300 hover:text-white transition-colors text-sm font-medium leading-normal" href="#">Contact</a>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">Get in Touch</span>
+</button>
+</div>
+</header>
+<main class="flex-1">
+<div class="flex flex-col gap-12 py-20 md:py-28 lg:py-32">
+<div class="flex flex-wrap justify-between items-center gap-6 px-4">
+<div class="flex flex-col gap-3">
+<p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Selected Works</p>
+<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">A curated collection of my projects in UI Design, App Development, and Branding.</p>
+</div>
+</div>
+<div class="flex flex-col gap-10">
+<div class="flex flex-col gap-4">
+<div class="border-b border-solid border-neutral-800/50"></div>
+<div class="flex gap-2 p-3 flex-wrap">
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
+<p class="text-white text-sm font-medium leading-normal">All</p>
+</div>
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
+<p class="text-neutral-300 text-sm font-medium leading-normal">UI Design</p>
+</div>
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
+<p class="text-neutral-300 text-sm font-medium leading-normal">Apps</p>
+</div>
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
+<p class="text-neutral-300 text-sm font-medium leading-normal">Websites</p>
+</div>
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
+<p class="text-neutral-300 text-sm font-medium leading-normal">Branding</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4">
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="Abstract 3D render of flowing blue and purple shapes on a dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIgYL325AalsrKN37VqY9_nWul5b7NVLCSiWpq-9rzlwd813mqTkX48gIh0fFyAe_WnNsy5DVsuv7hynoDJvjtP6JnowsA7uG8W8isJohW_pWAs1nROMQXkBX7ZNKPDEfiYsLCUuWe1JdnqDbmUneRz-sjyo5_B67EpT_Al0N0IRwXad7E8DlQ_tECIXQkP8v6ZWKRH5e-CdTVfJgquKUowM5OPVHfisbuNJD6AagsPuDye5d5FJWr6qyQQ2oVtLeLca0Uz8D-laLi"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Project Cygnus</p>
+<p class="text-neutral-400 text-sm">UI Design</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="A modern fintech app dashboard shown on a smartphone screen with charts and graphs." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHdPkHaaqUata0OcrAwpaGITSqShWaNoJXVEQlqEsXdzs7DHjGhFpLCQRrACoyjVUtqP_BWdN_KZajaXG8Ok_f5j_zts0ljS6DsVKOP9PZb7nLVqv4UCsrCIDnN-29A8fpf4cwMAq2AKpYC6XZp89ztMoknUz-0K7wDgAXsLDQgQ0E9RfguhcPjMfDy8Qt8yNSP269IpNzjbkxyfg8bA7cbZOHapyckYBOfB8kHNAC-_7lTHu8ZdEhsjfMa5VUCms7EQDv1rQRAh0G"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Aura Finance App</p>
+<p class="text-neutral-400 text-sm">Apps</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="A complex data visualization platform interface with interconnected nodes and futuristic elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaa6sWLFOPzgmHjMDN9GZ27mnldzMv_ZoUJl5Ir3Oxp6V3L9kqTZQxf5YEtGjsRZLtRq3wf7p-QEUb6wAqvAiMAjI9wZsNaxeHKudIfnfHX_KiuDiKq4rUKfyJG0fhwyl4mIOHbmtLDGRWOkaOT7xI91oK13O4zaoCQHdqMwsEQEf3SBBFxGJ4rZ-Zrrc6twBYvEl_-o4cEClNirwninT51rs2v_y9RMUhLOs9FwqQX338oDQuRFC_Xf_0Bm0BAelw5v3q-vFswJjk"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Nexus Platform</p>
+<p class="text-neutral-400 text-sm">Websites</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="Minimalist and sleek branding materials including business cards and letterheads with a modern logo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBqua-0DlA_C7-swHDGlmsS2YBASs-HqqWAXj65_sPc0khOPEYl3FGKPx3uxB-mINO7sI18i9k4nI_PrRM0pOIhovrB0Tu6WbLR8b7GtvLlyFzAl_dHn5EIAH1_OXFDj9vQN_y5f6-QEsytvZiGz7ehNvw8iIu09nYN6cPv6ApnoaIYfZAvMrReuxJVvrp-y8Az5VZAeOSJl5sG7SnGABKhwAJTg8EL72jGXNA89by0DbREBAeHLpZ-Pf8XYzHxnJcHXVOH3vrPkTw"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Stellar Branding</p>
+<p class="text-neutral-400 text-sm">Branding</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="A technology website homepage design featuring bold typography and product imagery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWAPudNE0iWkflIPAI4QWFakpEtSgdC7iW_NVI4oIuJC36j6Q8FC8OxsFQUFCKAVyOwm3NFPlw6msfljge295aELJUfq78Er7aoZZHQeb1a4Z52lwBC7lb81r3pX6_IUGcbOYBDJ1ccSrUCli60Xe5IJ7-Qthv8ra0QY7cgovDdBOH3VkdTyepnMZOqzTe4LFFMOEvuvNK-Vd1OjGGg91-GBaExanoBD9eex3eUujRPyZAU4W0AE0DbwN26GIXXb_ldKILI0Enmjm8"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Quantum Leap</p>
+<p class="text-neutral-400 text-sm">Websites</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="A sleek web app interface for a project management tool." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbfuIuDUvra0mmDMK_R4rsYFHE41QenQ8bz92l81NSg0qTtmM-Z6B1DOKFELmXdKXhNXwuT_jxVfwJ6MJh3rcqxclKN9M3lcmanQRVW7qia2CKkmT9OsiZ0ZYYgV7HiP7bWBaP6O0kJqKtcq08PV7VMcskV_945OuSLeQZHtxYHg3LpUK1AeYJ-MPgV4wX8tBX1dFGDvQ_n3jV0PUleTLW0DL8ovKJC_rkdpPp12yEh5eB-PsSSHYhFhkmL4158i8JNvSzDASgXPqR"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Nova Web Interface</p>
+<p class="text-neutral-400 text-sm">UI Design</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="A creative mobile app UI design displayed on a phone with vibrant colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-cgGOyk5fKf4wzJa6QblEGst_mf3vsYlQVuGHpgk3jmLDajPsOq1QkPUGg6eL26y0IqiuA2H5Bqv8M9wmUs-nZaeTxn5TW3eay1bdY6Kq7jM1WDzJ9CaXY42XKHRZbxJiZaw1gV6Qzh0xm7zMKXHV4ZU1JYzDh2RpYvFRo3Tz2DOcnZbn6y2fwB7JfQm9gA7LepbRGz6968IvkW3xLZ0vShoScWuHSXppmfggFpMaeiAAt_xOxP30MCutAkFVd-Jh4ZKH-JxvffZC"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Helios Mobile</p>
+<p class="text-neutral-400 text-sm">Apps</p>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
+<img class="w-full h-64 object-cover" data-alt="A brand identity concept with a unique logo and color palette applied to various mockups." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_lQSGryrgAwKjh2weknrLJXQxehERFvNM9rlR76mJfILsQpVkrNLERHMDuA0jZvZ-jTQgDwYnlMAN7Rk2isaVBg__QCZGkVrqASXHR-lX6dAf1MjzwdaZ2lLQcDugz2pb0wK-1w-y-Lt5O5I18afHdbYbO5Z2FgcSnRxsxyg4pZKAtpaLFdl5s1FEPttLMZeGYmVgxI2BEmzJRoAPxnXcPFDgNE-MXqvu_eF6bl3-AZaZH_nmm4f8UMn61vMJCm0cMXkOFgCUaDym"/>
+<div class="p-5 flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight">Echo Systems</p>
+<p class="text-neutral-400 text-sm">Branding</p>
+</div>
+</div>
+</div>
+</div>
+<div class="@container">
+<div class="flex flex-col items-center justify-end gap-6 px-4 py-20 @[480px]:gap-8 @[480px]:px-10 @[480px]:py-20">
+<div class="flex flex-col gap-4 text-center">
+<h1 class="text-white tracking-tight text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]">
+                                Have a project in mind?
+                            </h1>
+<p class="text-neutral-300 text-base font-normal leading-normal max-w-[720px]">Let's create something extraordinary together.</p>
+</div>
+<div class="flex flex-1 justify-center">
+<div class="flex justify-center">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow hover:bg-primary/90 transition-colors">
+<span class="truncate">Contact Me</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Services - Extoll.co</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#00aaff",
+          "background-light": "#f5f7f8",
+          "background-dark": "#0A0A0D",
+          "charcoal": "rgba(20, 20, 23, 0.5)",
+          "cyan-glow": "rgba(0, 168, 255, 0.1)",
+        },
+        fontFamily: {
+          "display": ["Space Grotesk", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        boxShadow: {
+          'glow': '0 0 15px 0 rgba(0, 168, 255, 0.3), 0 0 25px 0 rgba(0, 168, 255, 0.2)',
+        },
+        backdropBlur: {
+          'glass': '12px',
+        },
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24
+  }
+  .glassmorphism {
+    background-color: theme('colors.charcoal');
+    backdrop-filter: blur(theme('backdropBlur.glass'));
+    -webkit-backdrop-filter: blur(theme('backdropBlur.glass'));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-white antialiased">
+<div class="relative w-full min-h-screen flex flex-col items-center overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+<div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+<div class="flex items-center gap-4 text-white">
+<div class="size-5 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.co</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html">Home</a>
+<a class="text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="portfolio.html">Work</a>
+<a class="text-white relative text-sm font-medium leading-normal" href="services.html">
+Services
+<span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
+</a>
+<a class="text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="about.html">About</a>
+</div>
+<a href="contact.html">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+<span class="truncate">Contact Me</span>
+</button>
+</a>
+</nav>
+</div>
+</header>
+<main class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
+<!-- HeroSection -->
+<section class="text-center py-20 sm:py-28">
+<div class="flex flex-col gap-4 items-center">
+<h1 class="text-white text-5xl md:text-6xl font-black leading-tight tracking-tighter">
+My Expertise
+</h1>
+<p class="text-white/70 text-base md:text-lg font-normal leading-normal max-w-2xl">
+Crafting premium digital experiences from concept to code. I specialize in building beautiful, functional, and user-centric solutions that drive results.
+</p>
+</div>
+<div class="w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent my-12"></div>
+</section>
+<!-- TextGrid (Services Grid) -->
+<section class="pb-20 sm:pb-28">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Service Card: UI/UX Design -->
+<div class="flex flex-1 flex-col gap-4 p-6 glassmorphism rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1">
+<div class="text-primary">
+<span class="material-symbols-outlined" style="font-size: 28px;">design_services</span>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-lg font-bold leading-tight">UI/UX Design</h2>
+<p class="text-white/60 text-sm font-normal leading-normal">Designing beautiful and intuitive interfaces that users love, focusing on seamless interaction and visual appeal.</p>
+</div>
+</div>
+<!-- Service Card: Web Development -->
+<div class="flex flex-1 flex-col gap-4 p-6 glassmorphism rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1">
+<div class="text-primary">
+<span class="material-symbols-outlined" style="font-size: 28px;">code</span>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-lg font-bold leading-tight">Web Development</h2>
+<p class="text-white/60 text-sm font-normal leading-normal">Building high-performance, responsive websites for the modern web with clean code and cutting-edge tech.</p>
+</div>
+</div>
+<!-- Service Card: Branding -->
+<div class="flex flex-1 flex-col gap-4 p-6 glassmorphism rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1">
+<div class="text-primary">
+<span class="material-symbols-outlined" style="font-size: 28px;">palette</span>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-lg font-bold leading-tight">Branding</h2>
+<p class="text-white/60 text-sm font-normal leading-normal">Creating memorable brand identities that tell a compelling story and resonate with your target audience.</p>
+</div>
+</div>
+<!-- Service Card: App Design -->
+<div class="flex flex-1 flex-col gap-4 p-6 glassmorphism rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1">
+<div class="text-primary">
+<span class="material-symbols-outlined" style="font-size: 28px;">phone_iphone</span>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-lg font-bold leading-tight">App Design</h2>
+<p class="text-white/60 text-sm font-normal leading-normal">Crafting seamless and engaging experiences for mobile applications, from wireframe to final pixel-perfect design.</p>
+</div>
+</div>
+<!-- Service Card: Custom Projects -->
+<div class="flex flex-1 flex-col gap-4 p-6 glassmorphism rounded-xl transition-all duration-300 hover:shadow-glow hover:-translate-y-1 sm:col-start-2 lg:col-start-auto">
+<div class="text-primary">
+<span class="material-symbols-outlined" style="font-size: 28px;">shapes</span>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-lg font-bold leading-tight">Custom Projects</h2>
+<p class="text-white/60 text-sm font-normal leading-normal">Providing bespoke freelance solutions tailored to your unique project requirements and business goals.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTASection -->
+<section class="py-20 sm:py-28">
+<div class="flex flex-col items-center justify-center gap-6 text-center">
+<div class="flex flex-col gap-2">
+<h1 class="text-white tracking-tighter text-4xl font-bold leading-tight sm:text-5xl max-w-3xl">
+Ready to build something great?
+</h1>
+<p class="text-white/70 text-base font-normal leading-normal max-w-2xl mx-auto">
+If you have a project in mind or just want to connect, feel free to reach out. Let's create something amazing together.
+</p>
+</div>
+<a href="contact.html">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:shadow-glow transition-shadow">
+<span class="truncate">Get in Touch</span>
+</button>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-white/10">
+<div class="flex flex-col gap-6 text-center">
+<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html">Home</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="portfolio.html">Work</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="services.html">Services</a>
+</div>
+<p class="text-white/50 text-sm font-normal leading-normal">© 2024 Extoll.co. All Rights Reserved.</p>
+</div>
+</footer>
+</div>
+</body>
+</html>
