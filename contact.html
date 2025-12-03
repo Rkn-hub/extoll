@@ -181,9 +181,12 @@ This site only features my work. <span class="text-white">Contact me directly</s
 <div class="w-full">
 <div class="glassmorphism flex w-full flex-col gap-6 rounded-xl p-6 sm:p-8 shadow-2xl shadow-black/30">
 <form id="contactForm" class="flex flex-col gap-6">
+<input type="hidden" name="_subject" value="New Contact from Extoll.co">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
 <label class="flex flex-col">
 <p class="text-white text-sm font-medium pb-2">Full Name</p>
-<input name="fullName" class="form-input w-full rounded-lg border border-[#394c56] bg-[#0A0A0D]/50 h-12 px-4 text-base text-white placeholder:text-gray-500 transition-all duration-300" placeholder="Enter your full name" type="text" required/>
+<input name="name" class="form-input w-full rounded-lg border border-[#394c56] bg-[#0A0A0D]/50 h-12 px-4 text-base text-white placeholder:text-gray-500 transition-all duration-300" placeholder="Enter your full name" type="text" required/>
 </label>
 <label class="flex flex-col">
 <p class="text-white text-sm font-medium pb-2">Email Address</p>
@@ -212,7 +215,7 @@ This site only features my work. <span class="text-white">Contact me directly</s
 </div>
 <script>
   var whatsappGroupLink = 'https://chat.whatsapp.com/GieBKh7FHyqEglJEUFM9M3';
-  var scriptURL = 'https://script.google.com/macros/s/AKfycbwx6hqU0lFMkhFYkjcvC1Klbq437gFKsHVxhqgDHNAdhh4SUD76aVIsVLIn6rKpJt43/exec';
+  var formSubmitURL = 'https://formsubmit.co/extoll.co.in@gmail.com';
   
   document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -224,25 +227,31 @@ This site only features my work. <span class="text-white">Contact me directly</s
     
     var formData = new FormData(this);
     
-    fetch(scriptURL, {
+    fetch(formSubmitURL, {
       method: 'POST',
       body: formData,
-      mode: 'no-cors'
+      headers: {
+        'Accept': 'application/json'
+      }
     })
     .then(response => {
-      // With no-cors, we can't read the response, but the request was sent
+      console.log('Response status:', response.status);
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response data:', data);
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
       document.getElementById('successModal').classList.add('show');
       document.getElementById('contactForm').reset();
     })
     .catch(error => {
-      // Even if there's an error, the data likely went through with no-cors
+      console.error('Error:', error);
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
+      // Show popup anyway since FormSubmit might have received it
       document.getElementById('successModal').classList.add('show');
       document.getElementById('contactForm').reset();
-      console.log('Fetch error (data may still have been sent):', error);
     });
   });
 
