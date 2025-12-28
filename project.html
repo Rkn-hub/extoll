@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Project Details - Extoll.co</title>
+<title>Project Details - Extoll.Co</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -61,12 +61,8 @@
 <div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
 <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 sm:px-10 py-4">
 <div class="flex items-center gap-4 text-white">
-<div class="size-5">
-<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-<h2 class="text-white text-xl font-bold leading-tight tracking-tighter">Extoll.co</h2>
+<img src="logo.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
+<h2 class="text-white text-xl font-bold leading-tight tracking-tighter">Extoll.Co</h2>
 </div>
 <div class="hidden md:flex flex-1 justify-end gap-8">
 <div class="flex items-center gap-9">
@@ -85,71 +81,40 @@
 <main class="flex-1 py-16 sm:py-20 md:py-24">
 <div class="flex flex-col gap-16 sm:gap-20 md:gap-24">
 <section class="text-center px-4">
-<h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tighter">
-<span class="glow-underline">Futuristic Web App UI</span>
+<h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tighter" id="project-title">
+<span class="glow-underline">Project Title</span>
 </h1>
 </section>
 <section class="px-4">
-<div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-xl min-h-[400px] md:min-h-[500px] border border-white/10 shadow-[0_10px_40px_rgba(0,170,255,0.1)]" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1fCCSVZR5XQfEG8oI_3eFI-1TTfre92XSMlH7GXE9tjQaou8tkjlACJz_2jAVmvlBXro9Ps5hSfBhdWXkXn0iLnkxBN2ZGRo-aiVwwGqn0N__qr_jlj6XvuUZcT-4ljlRdzv-aVl8TnXm5DSObZkkoExTEULou6GaZJrALpCplYQ4hLsReuJ_pFbcDXHsKrMAbVhyBS8uczYEY-0F9Kup4B9XjJbe5rtdYdhGSDvGkhUuBFYTHHGR7fSxVw8A9aM7pV6-x2N3Ae3H");'></div>
+<div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-xl min-h-[250px] md:min-h-[300px] border border-white/10 shadow-[0_10px_40px_rgba(0,170,255,0.1)]" id="project-hero"></div>
 </section>
-<section class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-<div class="glassmorphism-card rounded-xl p-6 text-center">
-<h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Timeline</h3>
-<p class="text-lg font-bold text-white">4 Weeks</p>
-</div>
-<div class="glassmorphism-card rounded-xl p-6 text-center">
-<h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Platform</h3>
-<p class="text-lg font-bold text-white">Web Application</p>
-</div>
-<div class="glassmorphism-card rounded-xl p-6 text-center">
-<h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Industry</h3>
-<p class="text-lg font-bold text-white">SaaS / Technology</p>
+
+<section class="px-4" id="project-gallery">
+<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Gallery</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
+<!-- Gallery images will be populated by JavaScript -->
 </div>
 </section>
+
 <div class="glow-divider mx-auto w-4/5"></div>
+
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4" id="project-details">
+<!-- Project details will be populated by JavaScript -->
+</section>
+
+<div class="glow-divider mx-auto w-4/5"></div>
+
 <section class="px-4">
 <h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Overview</h2>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
-A concise summary of the project's goal, the problem it solved, and the final outcome. This project involved designing a next-generation dashboard for a data analytics platform. The core challenge was to simplify a complex set of tools into an intuitive, visually compelling interface that empowers users to make data-driven decisions efficiently.
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed" id="project-overview">
+<!-- Project overview will be populated by JavaScript -->
 </p>
-</section>
-<section class="px-4">
-<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Tools Used</h2>
-<div class="flex flex-wrap items-center gap-8">
-<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA716BjgiUMCECELGOvU0vCVtfd8XarEQLmCIPAcMEWHhUMoionurck3-u-oEHMrCw4E54Q4Xi6yF2kiHeW2v5c5C2B9Tjdsz__AnRDj340e0sbrqAcBU_uzRicjel9z5uhwoQs4gySz5z2MDfvFQDjRwKFoONcWUl96ClWj2cL-lxxZ3Khg7qxTsUs2R3vhTqFNmbN6wQH4Y51cCp5yaSFUDQTKPeAOhlDJPiaUEMh2ziQsrr8AUlM1NuLDqA_LhINOc4lgYpcV7uT"/>
-<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARxsxLwW3SoPYXcUGmMs7BCqkFsuMHAAqLIJwWH-Th9R932FeslYiIC-moyr8dEvzFyTqPWdp38vHGa_d0g4YcbINkozebTUHVO3GXlrUDHQfQyfVfAvHY_GgwQPwui8yJwNnTe43qB1YdFm8jHF-6SthrSIVhjgzySv8uLqW-b-s2ofZBjwDuXfBqzYm10HtXlmKKEct-ek9sB-t6gO3curkL5m2zKeGtgSpyHQImxz1hQwvQgw6QdKaNGuj2Y-05ZMvoJx6eFeTe"/>
-<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAmBONbt-OrLmTy6Ef2LsCHa155nn-1nR3eDSISoBESUsCDw95bz4dTfYijcPngLAWmnCAugnzN5GtE1YPyE0gc5evbBiKuu6ED55GC1wkE42wcfjHwM_as6IiwiToc6jqWTomAXDyooTnTjLcMDxNFWSVgwSrCkU4Ypk8jbbf03hbGv1f8SYXXIla-L8QSgS07R7F-u8TLdUYUmrMVCf-LTRyY_gaZJ4pRWwRRJ0HDxV0YjrEUNboq7FRs4flzW_SNxgQEsKf3Vq9"/>
-<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp6bc6MJaMqPWZP6K-H_JFq9qHggG_NCj_Us_0ZbikD3uhNHZ-fK9Ugi_dP-mr4iNCzrTdut5fyAchbhExtZwuhye-dhPHjerrDhyM7AQpHbH3GkyDvRf6LSc717eu1GrZuKZM0bHJg5VSoTCPpALf-kAsVXMa9Pk5kLBgctbcKvzU9gpBgGNhMdoU3qa7UAcSDUBZFNVVQjxypQ828vXagb3tzTKRVlZGkOm7nXnYsSLmApOoaQ4t5LvKmS-_lEpvF8JdddbzYJEm"/>
-<img class="h-8 w-8 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvR0uw-UXCCNG6BdoiFksD_v5X39jZ7w8PsZFTQ8RNsAl0wNvmitCDJAPSS4-J_eP7d1ctMU7WBpIhs_iWhVyGG4q-HUYi2aqqJ8szCi3noLsoLzpFg0ZeUhCJNSG0loKHRgkRPUCGVHERxAnGJPmPuGUCrQQYlf_r2WGD4oUqqobQjLW5tHYqT4bvQARXMH23Sckl2uO_UlxBJ6w8LpHvflsX5QhEhRXjnj3GpOVtfNkmwlZcMRbxSFng-wCFG039p0qzPAXQSuEI"/>
-</div>
 </section>
 <section class="px-4">
 <h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">My Role</h2>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
-As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed" id="project-role">
+<!-- Project role will be populated by JavaScript -->
 </p>
-</section>
-<div class="glow-divider mx-auto w-4/5"></div>
-<section class="px-4 flex flex-col gap-12">
-<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight">Case Study Breakdown</h2>
-<div class="flex flex-col gap-4">
-<h3 class="text-primary text-xl font-bold tracking-tight">1. Discovery & Research</h3>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
-The project began with an in-depth analysis of user needs and competitor platforms. We identified key pain points in existing solutions, such as cluttered interfaces and steep learning curves. This phase set a clear direction for a user-centric design approach.
-</p>
-</div>
-<div class="flex flex-col gap-4">
-<h3 class="text-primary text-xl font-bold tracking-tight">2. Design & Prototyping</h3>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
-Wireframes and low-fidelity mockups were created to establish the core layout and information architecture. We then moved to high-fidelity designs, focusing on a dark, cinematic aesthetic with neon blue accents to highlight key data points and interactive elements. An interactive prototype was built in Figma to test user flows and gather feedback.
-</p>
-</div>
-<div class="flex flex-col gap-4">
-<h3 class="text-primary text-xl font-bold tracking-tight">3. Outcome & Impact</h3>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed">
-The final design was met with overwhelmingly positive feedback from stakeholders and early-access users. The new interface reduced task completion time by an average of 30% and significantly increased user engagement. The futuristic aesthetic successfully differentiated the product in a crowded market.
-</p>
-</div>
 </section>
 <section class="bg-gradient-to-t from-primary/20 to-transparent p-10 sm:p-12 md:p-16 rounded-xl text-center flex flex-col items-center gap-6 border border-primary/20">
 <h2 class="text-white text-3xl sm:text-4xl font-black leading-tight tracking-tight max-w-lg">Hire Me for Your Project</h2>
@@ -168,5 +133,178 @@ Have a similar project in mind? I'm available for freelance work. Let's create s
 </div>
 </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get project parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const project = urlParams.get('project') || 'festival';
+    
+    // Project data
+    const projects = {
+        'festival': {
+            title: 'Festival Graphics Collection',
+            heroGradient: 'linear-gradient(135deg, #f97316, #dc2626)',
+            timeline: '2 Weeks',
+            platform: 'Print & Digital',
+            industry: 'Events & Entertainment',
+            overview: 'A comprehensive festival graphics project that involved creating vibrant, eye-catching designs for promotional materials, social media, and event branding. The challenge was to capture the energy and excitement of the festival while maintaining visual consistency across all touchpoints.',
+            role: 'As the lead graphic designer, I was responsible for the entire creative process, from concept development and mood boarding to final artwork production. My work included creating the visual identity, designing promotional materials, social media assets, and ensuring brand consistency across all festival communications.',
+            images: [
+                'fest%20(1).jpg', 'fest%20(2).jpg', 'fest%20(3).jpg', 'fest%20(4).jpg', 'fest%20(5).jpg', 'fest%20(6).jpg',
+                'fest%20(7).jpg', 'fest%20(8).jpg', 'fest%20(9).jpg', 'fest%20(10).jpg', 'fest%20(11).jpg', 'fest%20(12).jpg',
+                'fest%20(13).jpg', 'fest%20(14).jpg', 'fest%20(15).jpg', 'fest%20(1).png'
+            ],
+            folder: 'festival'
+        },
+        'merchandise': {
+            title: 'Merchandise Design Collection',
+            heroGradient: 'linear-gradient(135deg, #a855f7, #ec4899)',
+            timeline: '3 Weeks',
+            platform: 'Print & Apparel',
+            industry: 'Fashion & Retail',
+            overview: 'A creative merchandise design project focused on developing unique apparel graphics and promotional materials. The goal was to create designs that would appeal to diverse audiences while maintaining brand consistency across different product lines.',
+            role: 'As the creative designer, I handled the entire design process from initial concept sketches to final production files. This included researching market trends, developing design concepts, and creating production-ready artwork for various merchandise applications.',
+            images: [
+                '1.jpg', '1%20(5).jpg', '2.jpg', '3.jpg', '3%20(3).jpg', '5.jpg', '6.jpg', '6%20(2).jpg', '7.jpg', 'pranayasucksatdesigning.jpg'
+            ],
+            folder: 'merchandise'
+        },
+        'posters': {
+            title: 'Poster Design Collection',
+            heroGradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+            timeline: '4 Weeks',
+            platform: 'Print & Digital',
+            industry: 'Advertising & Campaigns',
+            overview: 'A diverse poster design project encompassing various campaigns and awareness initiatives. Each design was crafted to communicate specific messages effectively while maintaining visual impact and brand consistency.',
+            role: 'As the visual designer, I was responsible for conceptualizing and executing poster designs that would effectively communicate campaign messages. This involved understanding target audiences, developing visual concepts, and creating compelling designs that drive engagement.',
+            images: [
+                'shine.jpg', 'you!.png', 'Prevent%20sickness%20from%20air%20pollution.jpg', '4.jpg', '1%20(4).jpg', '2%20(4).jpg', '3%20(2).jpg', '5.jpg'
+            ],
+            folder: 'posters'
+        },
+        'smart-pet-collar': {
+            title: 'Smart Pet Collar',
+            heroGradient: 'linear-gradient(135deg, #10b981, #059669)',
+            timeline: '6 Weeks',
+            platform: 'IoT Device',
+            industry: 'Pet Technology',
+            overview: 'An innovative IoT-enabled pet monitoring and tracking device designed to help pet owners keep their furry friends safe and healthy. The project involved creating a user-friendly design that combines functionality with aesthetic appeal.',
+            role: 'As the product designer, I led the entire design process from initial research and concept development to final product specifications. This included user research, prototyping, industrial design, and creating detailed technical documentation.',
+            images: [
+                '2%20(1).jpg', '2%20(1).png', '2%20(2).png', '2%20(3).png', '2%20(4).png', '2%20(5).png'
+            ],
+            folder: 'smart-pet-collar'
+        },
+        'food-processor': {
+            title: 'Food Processor Design',
+            heroGradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+            timeline: '8 Weeks',
+            platform: 'Kitchen Appliance',
+            industry: 'Home & Kitchen',
+            overview: 'A modern kitchen appliance design focused on ergonomics, functionality, and aesthetic appeal. The challenge was to create a food processor that would be both powerful and user-friendly while fitting seamlessly into contemporary kitchen designs.',
+            role: 'As the industrial designer, I was responsible for the complete product development cycle including market research, concept development, 3D modeling, prototyping, and final design specifications. The project required close collaboration with engineering teams to ensure manufacturability.',
+            images: [
+                '1%20(1).jpeg', '1%20(2).jpeg', '1%20(3).jpeg', '1%20(4).jpeg'
+            ],
+            folder: 'food-processor'
+        }
+    };
+    
+    // Get current project data
+    const currentProject = projects[project] || projects['festival'];
+    
+    // Update page content
+    document.getElementById('project-title').innerHTML = `<span class="glow-underline">${currentProject.title}</span>`;
+    
+    // Set hero background with gradient and title
+    const heroElement = document.getElementById('project-hero');
+    heroElement.style.background = currentProject.heroGradient;
+    heroElement.innerHTML = `
+        <div class="flex items-start justify-center h-full w-full pt-16">
+            <h2 class="text-white text-4xl md:text-5xl font-bold text-center px-4" style="font-family: cursive; font-weight: bold;">${currentProject.title}</h2>
+        </div>
+    `;
+    
+    document.getElementById('project-overview').textContent = currentProject.overview;
+    document.getElementById('project-role').textContent = currentProject.role;
+    
+    // Update project details
+    document.getElementById('project-details').innerHTML = `
+        <div class="glassmorphism-card rounded-xl p-6 text-center">
+            <h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Timeline</h3>
+            <p class="text-lg font-bold text-white">${currentProject.timeline}</p>
+        </div>
+        <div class="glassmorphism-card rounded-xl p-6 text-center">
+            <h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Platform</h3>
+            <p class="text-lg font-bold text-white">${currentProject.platform}</p>
+        </div>
+        <div class="glassmorphism-card rounded-xl p-6 text-center">
+            <h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Industry</h3>
+            <p class="text-lg font-bold text-white">${currentProject.industry}</p>
+        </div>
+    `;
+    
+    // Create gallery with lazy loading
+    const galleryGrid = document.getElementById('gallery-grid');
+    galleryGrid.innerHTML = '';
+    
+    // Load only first 6 images initially, then load more on scroll
+    const initialLoad = 6;
+    const imagesToShow = currentProject.images.slice(0, initialLoad);
+    const remainingImages = currentProject.images.slice(initialLoad);
+    
+    // Create initial images
+    imagesToShow.forEach((image, index) => {
+        const imageUrl = `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/${currentProject.folder}/${image}`;
+        const imageElement = document.createElement('div');
+        imageElement.className = 'glass-card rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300';
+        imageElement.innerHTML = `
+            <img src="${imageUrl}" alt="${currentProject.title} ${index + 1}" class="w-full h-64 object-cover cursor-pointer" onclick="openLightbox('${imageUrl}')" loading="lazy">
+        `;
+        galleryGrid.appendChild(imageElement);
+    });
+    
+    // Add "Load More" button if there are remaining images
+    if (remainingImages.length > 0) {
+        const loadMoreBtn = document.createElement('div');
+        loadMoreBtn.className = 'col-span-full flex justify-center mt-6';
+        loadMoreBtn.innerHTML = `
+            <button id="load-more-btn" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">
+                Load More Images (${remainingImages.length} remaining)
+            </button>
+        `;
+        galleryGrid.appendChild(loadMoreBtn);
+        
+        // Load more functionality
+        document.getElementById('load-more-btn').addEventListener('click', function() {
+            remainingImages.forEach((image, index) => {
+                const imageUrl = `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/${currentProject.folder}/${image}`;
+                const imageElement = document.createElement('div');
+                imageElement.className = 'glass-card rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300';
+                imageElement.innerHTML = `
+                    <img src="${imageUrl}" alt="${currentProject.title} ${initialLoad + index + 1}" class="w-full h-64 object-cover cursor-pointer" onclick="openLightbox('${imageUrl}')" loading="lazy">
+                `;
+                galleryGrid.insertBefore(imageElement, loadMoreBtn);
+            });
+            loadMoreBtn.remove();
+        });
+    }
+});
+
+// Simple lightbox function
+function openLightbox(imageUrl) {
+    const lightbox = document.createElement('div');
+    lightbox.className = 'fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 cursor-pointer';
+    lightbox.innerHTML = `
+        <img src="${imageUrl}" alt="Project Image" class="max-w-[90%] max-h-[90%] object-contain">
+        <button class="absolute top-4 right-4 text-white text-2xl hover:text-primary">&times;</button>
+    `;
+    lightbox.onclick = () => document.body.removeChild(lightbox);
+    document.body.appendChild(lightbox);
+}
+</script>
+
 </body>
 </html>
+

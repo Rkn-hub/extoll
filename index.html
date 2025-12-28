@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Extoll.co - Crafting Digital Experiences</title>
+<title>Extoll.Co - Crafting Digital Experiences</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -23,6 +23,29 @@
   }
   .gradient-background {
     background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
+  }
+  
+  /* Performance optimizations */
+  .lazy-load {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .lazy-load[src] {
+    opacity: 1;
+  }
+  
+  /* Smooth animations */
+  .portfolio-item {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .portfolio-item,
+    .lazy-load,
+    .glass-card {
+      transition: none;
+    }
   }
 </style>
 <script id="tailwind-config">
@@ -51,12 +74,8 @@
 <!-- Navigation -->
 <header class="flex items-center justify-between whitespace-nowrap px-4 sm:px-8 md:px-20 lg:px-40 py-6">
   <div class="flex items-center gap-4 text-white">
-    <div class="size-5 text-primary">
-      <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
-      </svg>
-    </div>
-    <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.co</h2>
+    <img src="logo.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
+    <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
   </div>
   <div class="hidden md:flex items-center gap-9">
     <a class="text-white text-sm font-medium leading-normal relative" href="index.html">
@@ -78,12 +97,12 @@
 <div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 pt-20">
 <!-- Hero Section -->
 <div class="flex min-h-[40vh] flex-col items-center justify-center gap-6 bg-transparent text-center">
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4 items-center">
     <h1 class="text-white text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
       Crafting Digital Experiences That Stand Out
     </h1>
-    <h2 class="text-gray-400 text-base font-normal leading-normal sm:text-lg">
-      A private freelance portfolio — only my work, no external posts.
+    <h2 class="text-gray-400 text-base font-normal leading-normal sm:text-lg max-w-4xl mx-auto text-center">
+      Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team's best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects. From creative work to technical solutions, we combine skills across different domains to deliver impactful results. If you like what you see, let's collaborate.
     </h2>
   </div>
   <div class="flex flex-wrap gap-4 justify-center mt-4">
@@ -100,49 +119,11 @@
   </div>
 </div>
 
-<!-- Divider -->
-<div class="w-full flex justify-center py-16">
-  <div class="w-full max-w-lg h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
-</div>
 
-<!-- Carousel Section -->
-<div class="flex flex-col gap-8">
-  <div class="flex overflow-x-auto pb-6 [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-4 sm:-mx-8 md:-mx-20 lg:-mx-40">
-    <div class="flex items-stretch gap-6 px-4 sm:px-8 md:px-20 lg:px-40">
-      <a href="project.html" class="glassmorphism flex h-full flex-1 flex-col gap-4 rounded-xl min-w-[280px] sm:min-w-[320px] overflow-hidden transition-all duration-300 hover:border-primary/80 hover:shadow-2xl hover:shadow-primary/10">
-        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPvQWmWyXM6I18jJcr2g45P--tk8T8QLJW77wcfsQ0k2F7rYYD5Ev2ZwZreKL_Pvk1DLD4YiLlzc-kd4O7JRrOUCEOvjDm8zQIac4-2Ly_32QPeC-qZlqfnXP7kcmGTygZQ-zm6XuBAMHOAhNNVUN-6P474ayKahP1kLbEg8yOVXiYg1yjY6aa1rXWY9qiPTNwxD5z-wiNUunnrunHI8ofQE3VIO1jWdqoczxFgqudBB9vlbap-5hATntaZadyXjn8TCVLD8R9Pu4f");'></div>
-        <div class="p-4 pt-0">
-          <p class="text-white text-lg font-medium leading-normal">Project Alpha</p>
-          <p class="text-gray-400 text-sm font-normal leading-normal">Web application for data visualization.</p>
-        </div>
-      </a>
-      <a href="project.html" class="glassmorphism flex h-full flex-1 flex-col gap-4 rounded-xl min-w-[280px] sm:min-w-[320px] overflow-hidden transition-all duration-300 hover:border-primary/80 hover:shadow-2xl hover:shadow-primary/10">
-        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuByXP4_hHnZ8ot_ffnhgba-0Xnn9UBIhQUMeNoJlWp7G6B1pIRrvIjlcArpzKyCwNURN_tjZEhuqdy81a12BDIz22hi3sd1VO5MJbucmArsiVUSLODJuZsigPF-T8RqWioczdzgbLwat9QIdhZ6KiKfFn7TPiryXWMFprW4l8bOQBGEfgJu7zSq3b5QAb31smwyUHAxMn082QCcmPYP_l-O3xpLctSPv8NmmQ_uRJ5JT3v5kjyXWVGP4KaH5hDG-5iO_il_qiwpdCUM");'></div>
-        <div class="p-4 pt-0">
-          <p class="text-white text-lg font-medium leading-normal">Project Beta</p>
-          <p class="text-gray-400 text-sm font-normal leading-normal">E-commerce platform redesign.</p>
-        </div>
-      </a>
-      <a href="project.html" class="glassmorphism flex h-full flex-1 flex-col gap-4 rounded-xl min-w-[280px] sm:min-w-[320px] overflow-hidden transition-all duration-300 hover:border-primary/80 hover:shadow-2xl hover:shadow-primary/10">
-        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkaLSeXlekjgqAIhg-wiVZ8bm4y_7Ph6IUY0hKdd7QGg6nfjfA2kUDH2FHD4865prazGR4XQBsZunTzsxnV4xO_Zac8G043Ootqbkm1z1FhUKxMb3UKRs9d11JV5WQ1IglmqJMTpv4mkQyofMMBhULuIDT0bASiIVAdeoDOrZ7e7-iR9VPgic-l_1i6B6I6G52fwwb2hMLtqYX9C8oafxaTuG9ZPIlCeUNGwibicQ62GSEcP4V1YO87kV-sGbNI5AvUkrOR2KiWW1j");'></div>
-        <div class="p-4 pt-0">
-          <p class="text-white text-lg font-medium leading-normal">Project Gamma</p>
-          <p class="text-gray-400 text-sm font-normal leading-normal">Mobile application for a fintech startup.</p>
-        </div>
-      </a>
-      <a href="project.html" class="glassmorphism flex h-full flex-1 flex-col gap-4 rounded-xl min-w-[280px] sm:min-w-[320px] overflow-hidden transition-all duration-300 hover:border-primary/80 hover:shadow-2xl hover:shadow-primary/10">
-        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDuPZ52YcMWBClO6M700VUQgYnwxC8A4qRNY_CH2ABiFFKS9GNCLRmzcBB5w1dU8tKbILgNhdzPT_bMojyfZjJiyHNFGBcCxsDFVETMp3HMQWm0UaxENFWo6mXMP5NclJGq077s6kdHVmNY9IOLdXJdLj8B5weNsTLgpRwI16coy1pmPcEbyct18MMM3nASJ8hHYDuet37sFo8s4y_C8fMLIneI4A_dVTdOo4s30JD75etSV2TgOwoiFiRhIJJJ3fWc7jU3_rJjuWo1");'></div>
-        <div class="p-4 pt-0">
-          <p class="text-white text-lg font-medium leading-normal">Project Delta</p>
-          <p class="text-gray-400 text-sm font-normal leading-normal">Branding and identity for a tech company.</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</div>
 </div>
 </div>
 </div>
 </div>
 </body>
 </html>
+

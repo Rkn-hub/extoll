@@ -3,7 +3,13 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Portfolio - Extoll.co</title>
+<title>Portfolio - Extoll.Co</title>
+
+<!-- Resource hints for better performance -->
+<link rel="dns-prefetch" href="//lnxvkbsbwymmzkyuixgd.supabase.co">
+<link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co">
+<link rel="preconnect" href="https://cdn.tailwindcss.com">
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -60,12 +66,8 @@ tailwind.config = {
 <div class="flex w-full max-w-[1280px] flex-1 flex-col">
 <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-neutral-800/50 px-4 py-6">
 <div class="flex items-center gap-4 text-white">
-<div class="h-5 w-5 text-primary">
-<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.co</h2>
+<img src="logo.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
 </div>
 <div class="hidden md:flex flex-1 justify-end gap-8">
 <div class="flex items-center gap-9">
@@ -89,87 +91,83 @@ Work
 <div class="flex flex-wrap justify-between items-center gap-6 px-4">
 <div class="flex flex-col gap-3">
 <p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Selected Works</p>
-<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">A curated collection of my projects in UI Design, App Development, and Branding.</p>
+<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">A curated collection of my design projects including Festival Graphics, Merchandise Design, and Creative Posters.</p>
 </div>
 </div>
 <div class="flex flex-col gap-10">
 <div class="flex flex-col gap-4">
 <div class="border-b border-solid border-neutral-800/50"></div>
 <div class="flex gap-2 p-3 flex-wrap">
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4" data-filter="all">
 <p class="text-white text-sm font-medium leading-normal">All</p>
 </div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
-<p class="text-neutral-300 text-sm font-medium leading-normal">UI Design</p>
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="graphics">
+<p class="text-neutral-300 text-sm font-medium leading-normal">Graphics Design</p>
 </div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
-<p class="text-neutral-300 text-sm font-medium leading-normal">Apps</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
-<p class="text-neutral-300 text-sm font-medium leading-normal">Websites</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700">
-<p class="text-neutral-300 text-sm font-medium leading-normal">Branding</p>
+<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="product">
+<p class="text-neutral-300 text-sm font-medium leading-normal">Product Design</p>
 </div>
 </div>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4">
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIgYL325AalsrKN37VqY9_nWul5b7NVLCSiWpq-9rzlwd813mqTkX48gIh0fFyAe_WnNsy5DVsuv7hynoDJvjtP6JnowsA7uG8W8isJohW_pWAs1nROMQXkBX7ZNKPDEfiYsLCUuWe1JdnqDbmUneRz-sjyo5_B67EpT_Al0N0IRwXad7E8DlQ_tECIXQkP8v6ZWKRH5e-CdTVfJgquKUowM5OPVHfisbuNJD6AagsPuDye5d5FJWr6qyQQ2oVtLeLca0Uz8D-laLi"/>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4" id="portfolio-grid">
+
+<!-- Graphics Design Projects -->
+<a href="project.html?project=festival" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item" data-category="graphics">
+<div class="w-full h-40 bg-gradient-to-br from-orange-500 to-red-600 flex items-start justify-center pt-8">
+<h3 class="text-white text-3xl font-bold text-center" style="font-family: cursive; font-weight: bold;">Festival Graphics</h3>
+</div>
 <div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Project Cygnus</p>
-<p class="text-neutral-400 text-sm">UI Design</p>
+<p class="text-white text-lg font-bold leading-tight">Festival Graphics Collection</p>
+<p class="text-neutral-400 text-sm">Graphics Design • 16 Images</p>
+<p class="text-neutral-500 text-xs mt-2">Vibrant festival promotional materials and event branding</p>
 </div>
 </a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHdPkHaaqUata0OcrAwpaGITSqShWaNoJXVEQlqEsXdzs7DHjGhFpLCQRrACoyjVUtqP_BWdN_KZajaXG8Ok_f5j_zts0ljS6DsVKOP9PZb7nLVqv4UCsrCIDnN-29A8fpf4cwMAq2AKpYC6XZp89ztMoknUz-0K7wDgAXsLDQgQ0E9RfguhcPjMfDy8Qt8yNSP269IpNzjbkxyfg8bA7cbZOHapyckYBOfB8kHNAC-_7lTHu8ZdEhsjfMa5VUCms7EQDv1rQRAh0G"/>
+
+<a href="project.html?project=merchandise" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item" data-category="graphics">
+<div class="w-full h-40 bg-gradient-to-br from-purple-500 to-pink-600 flex items-start justify-center pt-8">
+<h3 class="text-white text-3xl font-bold text-center" style="font-family: cursive; font-weight: bold;">Merchandise Design</h3>
+</div>
 <div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Aura Finance App</p>
-<p class="text-neutral-400 text-sm">Apps</p>
+<p class="text-white text-lg font-bold leading-tight">Merchandise Design Collection</p>
+<p class="text-neutral-400 text-sm">Graphics Design • 10 Images</p>
+<p class="text-neutral-500 text-xs mt-2">Creative merchandise designs and apparel graphics</p>
 </div>
 </a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaa6sWLFOPzgmHjMDN9GZ27mnldzMv_ZoUJl5Ir3Oxp6V3L9kqTZQxf5YEtGjsRZLtRq3wf7p-QEUb6wAqvAiMAjI9wZsNaxeHKudIfnfHX_KiuDiKq4rUKfyJG0fhwyl4mIOHbmtLDGRWOkaOT7xI91oK13O4zaoCQHdqMwsEQEf3SBBFxGJ4rZ-Zrrc6twBYvEl_-o4cEClNirwninT51rs2v_y9RMUhLOs9FwqQX338oDQuRFC_Xf_0Bm0BAelw5v3q-vFswJjk"/>
+
+<a href="project.html?project=posters" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item" data-category="graphics">
+<div class="w-full h-40 bg-gradient-to-br from-blue-500 to-cyan-600 flex items-start justify-center pt-8">
+<h3 class="text-white text-3xl font-bold text-center" style="font-family: cursive; font-weight: bold;">Poster Design</h3>
+</div>
 <div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Nexus Platform</p>
-<p class="text-neutral-400 text-sm">Websites</p>
+<p class="text-white text-lg font-bold leading-tight">Poster Design Collection</p>
+<p class="text-neutral-400 text-sm">Graphics Design • 8 Images</p>
+<p class="text-neutral-500 text-xs mt-2">Creative posters and awareness campaign designs</p>
 </div>
 </a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBqua-0DlA_C7-swHDGlmsS2YBASs-HqqWAXj65_sPc0khOPEYl3FGKPx3uxB-mINO7sI18i9k4nI_PrRM0pOIhovrB0Tu6WbLR8b7GtvLlyFzAl_dHn5EIAH1_OXFDj9vQN_y5f6-QEsytvZiGz7ehNvw8iIu09nYN6cPv6ApnoaIYfZAvMrReuxJVvrp-y8Az5VZAeOSJl5sG7SnGABKhwAJTg8EL72jGXNA89by0DbREBAeHLpZ-Pf8XYzHxnJcHXVOH3vrPkTw"/>
+
+<!-- Product Design Projects -->
+<a href="project.html?project=smart-pet-collar" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item" data-category="product">
+<div class="w-full h-40 bg-gradient-to-br from-green-500 to-emerald-600 flex items-start justify-center pt-8">
+<h3 class="text-white text-3xl font-bold text-center" style="font-family: cursive; font-weight: bold;">Smart Pet Collar</h3>
+</div>
 <div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Stellar Branding</p>
-<p class="text-neutral-400 text-sm">Branding</p>
+<p class="text-white text-lg font-bold leading-tight">Smart Pet Collar</p>
+<p class="text-neutral-400 text-sm">Product Design • 6 Images</p>
+<p class="text-neutral-500 text-xs mt-2">IoT-enabled pet monitoring and tracking device design</p>
 </div>
 </a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWAPudNE0iWkflIPAI4QWFakpEtSgdC7iW_NVI4oIuJC36j6Q8FC8OxsFQUFCKAVyOwm3NFPlw6msfljge295aELJUfq78Er7aoZZHQeb1a4Z52lwBC7lb81r3pX6_IUGcbOYBDJ1ccSrUCli60Xe5IJ7-Qthv8ra0QY7cgovDdBOH3VkdTyepnMZOqzTe4LFFMOEvuvNK-Vd1OjGGg91-GBaExanoBD9eex3eUujRPyZAU4W0AE0DbwN26GIXXb_ldKILI0Enmjm8"/>
+
+<a href="project.html?project=food-processor" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item" data-category="product">
+<div class="w-full h-40 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-start justify-center pt-8">
+<h3 class="text-white text-3xl font-bold text-center" style="font-family: cursive; font-weight: bold;">Food Processor</h3>
+</div>
 <div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Quantum Leap</p>
-<p class="text-neutral-400 text-sm">Websites</p>
+<p class="text-white text-lg font-bold leading-tight">Food Processor Design</p>
+<p class="text-neutral-400 text-sm">Product Design • 4 Images</p>
+<p class="text-neutral-500 text-xs mt-2">Modern kitchen appliance with ergonomic design</p>
 </div>
 </a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbfuIuDUvra0mmDMK_R4rsYFHE41QenQ8bz92l81NSg0qTtmM-Z6B1DOKFELmXdKXhNXwuT_jxVfwJ6MJh3rcqxclKN9M3lcmanQRVW7qia2CKkmT9OsiZ0ZYYgV7HiP7bWBaP6O0kJqKtcq08PV7VMcskV_945OuSLeQZHtxYHg3LpUK1AeYJ-MPgV4wX8tBX1dFGDvQ_n3jV0PUleTLW0DL8ovKJC_rkdpPp12yEh5eB-PsSSHYhFhkmL4158i8JNvSzDASgXPqR"/>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Nova Web Interface</p>
-<p class="text-neutral-400 text-sm">UI Design</p>
-</div>
-</a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-cgGOyk5fKf4wzJa6QblEGst_mf3vsYlQVuGHpgk3jmLDajPsOq1QkPUGg6eL26y0IqiuA2H5Bqv8M9wmUs-nZaeTxn5TW3eay1bdY6Kq7jM1WDzJ9CaXY42XKHRZbxJiZaw1gV6Qzh0xm7zMKXHV4ZU1JYzDh2RpYvFRo3Tz2DOcnZbn6y2fwB7JfQm9gA7LepbRGz6968IvkW3xLZ0vShoScWuHSXppmfggFpMaeiAAt_xOxP30MCutAkFVd-Jh4ZKH-JxvffZC"/>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Helios Mobile</p>
-<p class="text-neutral-400 text-sm">Apps</p>
-</div>
-</a>
-<a href="project.html" class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group">
-<img class="w-full h-64 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_lQSGryrgAwKjh2weknrLJXQxehERFvNM9rlR76mJfILsQpVkrNLERHMDuA0jZvZ-jTQgDwYnlMAN7Rk2isaVBg__QCZGkVrqASXHR-lX6dAf1MjzwdaZ2lLQcDugz2pb0wK-1w-y-Lt5O5I18afHdbYbO5Z2FgcSnRxsxyg4pZKAtpaLFdl5s1FEPttLMZeGYmVgxI2BEmzJRoAPxnXcPFDgNE-MXqvu_eF6bl3-AZaZH_nmm4f8UMn61vMJCm0cMXkOFgCUaDym"/>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Echo Systems</p>
-<p class="text-neutral-400 text-sm">Branding</p>
-</div>
-</a>
+
 </div>
 </div>
 <div class="@container">
@@ -197,5 +195,82 @@ Have a project in mind?
 </div>
 </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Lazy loading implementation
+    const lazyImages = document.querySelectorAll('.lazy-load');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy-load');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+
+    // Optimized filter functionality
+    const filterButtons = document.querySelectorAll('.filter-chip');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button (optimized)
+            filterButtons.forEach(btn => {
+                const isActive = btn === this;
+                btn.classList.toggle('bg-primary', isActive);
+                btn.classList.toggle('bg-[#141a1e]', !isActive);
+                const p = btn.querySelector('p');
+                p.classList.toggle('text-white', isActive);
+                p.classList.toggle('text-neutral-300', !isActive);
+            });
+            
+            // Filter items with better performance
+            portfolioItems.forEach(item => {
+                const shouldShow = filter === 'all' || item.getAttribute('data-category') === filter;
+                
+                if (shouldShow) {
+                    item.style.display = 'block';
+                    // Use requestAnimationFrame for smooth animations
+                    requestAnimationFrame(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    });
+                } else {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        if (item.style.opacity === '0') {
+                            item.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+        });
+    });
+
+    // Preload critical images
+    const criticalImages = [
+        'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/festival/fest%20(1).jpg',
+        'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/merchandise/1.jpg'
+    ];
+    
+    criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+    });
+});
+</script>
+
 </body>
 </html>
+
