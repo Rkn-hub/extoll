@@ -3,7 +3,29 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>About - Extoll.Co</title>
+<meta name="description" content="About Extoll.Co - Execution-first freelance collective powered by Startup Ops methodology. Meet our team of creators and operators specializing in design and development."/>
+<meta name="keywords" content="about extoll, freelance collective, startup ops, design team, creative talent, execution first"/>
+<meta name="author" content="Extoll.Co"/>
+<meta property="og:title" content="About Extoll.Co - Execution-first Freelance Collective"/>
+<meta property="og:description" content="Meet the team behind Extoll.Co - creators and operators who believe execution matters more than promises. Powered by Startup Ops methodology."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://extoll.co/about.html"/>
+<meta property="og:image" content="https://extoll.co/logo.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="About Extoll.Co - Execution-first Freelance Collective"/>
+<meta name="twitter:description" content="Meet our team of creators and operators powered by Startup Ops methodology."/>
+<title>About - Extoll.Co | Execution-first Freelance Collective</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+<!-- Resource hints for better performance -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.tailwindcss.com">
+
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -16,7 +38,7 @@
         colors: {
           "primary": "#00aaff",
           "background-light": "#f5f7f8",
-          "background-dark": "#0f1c23",
+          "background-dark": "#0A0A0D",
         },
         fontFamily: {
           "display": ["Space Grotesk", "sans-serif"]
@@ -41,9 +63,84 @@
   .glow-frame {
     box-shadow: 0 0 20px 5px rgba(0, 168, 255, 0.3), 0 0 40px 10px rgba(112, 253, 255, 0.2);
   }
+  
+  /* Sparkle Animation Background */
+  .sparkle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: radial-gradient(circle, rgba(0, 170, 255, 0.9) 0%, rgba(0, 170, 255, 0.5) 40%, transparent 100%);
+    border-radius: 50%;
+    animation: sparkleFloat 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  
+  .sparkle:nth-child(2n) {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 100%);
+    animation-duration: 15s;
+    animation-delay: -3s;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .sparkle:nth-child(3n) {
+    background: radial-gradient(circle, rgba(0, 170, 255, 0.7) 0%, rgba(112, 253, 255, 0.4) 40%, transparent 100%);
+    animation-duration: 18s;
+    animation-delay: -6s;
+    width: 2px;
+    height: 2px;
+    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  
+  @keyframes sparkleFloat {
+    0% {
+      transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
+      opacity: 0;
+    }
+    5% {
+      opacity: 0.8;
+      transform: translateY(95vh) translateX(5px) rotate(18deg) scale(0.3);
+    }
+    15% {
+      opacity: 1;
+      transform: translateY(85vh) translateX(-8px) rotate(54deg) scale(0.7);
+    }
+    25% {
+      transform: translateY(75vh) translateX(12px) rotate(90deg) scale(1);
+    }
+    55% {
+      transform: translateY(45vh) translateX(-10px) rotate(198deg) scale(0.8);
+      opacity: 1;
+    }
+    85% {
+      transform: translateY(15vh) translateX(6px) rotate(306deg) scale(0.7);
+    }
+    95% {
+      opacity: 0.8;
+      transform: translateY(5vh) translateX(-3px) rotate(342deg) scale(0.4);
+    }
+    100% {
+      transform: translateY(-5vh) translateX(0px) rotate(360deg) scale(0);
+      opacity: 0;
+    }
+  }
 </style>
 </head>
 <body class="font-display bg-[#0A0A0D] text-[#E0E0E0]">
+<!-- Sparkle Background Effect -->
+<div class="sparkle-container" id="sparkleContainer"></div>
+
 <div class="relative w-full min-h-screen">
 <!-- Background Glow Effect -->
 <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
@@ -53,13 +150,13 @@
 <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 <!-- TopNavBar -->
 <header class="flex items-center justify-between whitespace-nowrap py-6">
-  <div class="flex items-center gap-4 text-white">
-    <img src="logo.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
+  <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
+    <img src="logo.png" alt="Extoll.Co Logo - Execution-first freelance collective" class="h-8 w-8 object-contain" loading="eager" decoding="sync">
     <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
-  </div>
+  </a>
   <div class="hidden md:flex items-center gap-9">
     <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="index.html">Home</a>
-    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="portfolio.html">Work</a>
+    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="index.html#work">Work</a>
     <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="services.html">Services</a>
     <a class="text-white text-sm font-medium leading-normal relative" href="about.html">
       About
@@ -76,54 +173,101 @@
 <!-- Main Content -->
 <main class="py-20 md:py-32">
   <div class="flex flex-col items-center gap-16">
-    <!-- Profile Header Section -->
-    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 w-full text-center md:text-left">
-      <div class="relative">
-        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-40 w-40 md:h-48 md:w-48 glow-frame" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD3Ex5Uqfq7CkpjbXlUf8vKlv7BVKYjwVzwfomwVVJxYx7P-akvRXwWZT9f6QisOggZvT7R609UR_PZca1XWLYyvXtpOqnqQjk-xOkhF5ZpqgvHjFwsWtJv1qTYifzfbyDx7X8SfcBiLNF8WkU_sQLulGRy9VKMBiyAH6rQt1pZi2l-XRG7eUsyqsxS9y1XT_ti5KdOSJHswjNyJadIuB4Lr4EyHH2zJu2O2lqLfBvxy2uBvTL4WFErDWbgVLAw4rAaTzGlXv9_3SyC");'></div>
-      </div>
-      <div class="flex flex-col justify-center">
-        <p class="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.015em] text-white">Digital Designer & Developer</p>
-        <p class="text-[#9ab0bc] text-lg font-normal leading-normal mt-2">Crafting digital experiences that define the future.</p>
-      </div>
+    <!-- Header Section -->
+    <div class="text-center w-full">
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight tracking-[-0.015em] text-white mb-4">About Extoll</h1>
+      <p class="text-primary text-lg font-medium">Execution-first freelance collective. Powered by Startup Ops.</p>
     </div>
-    <div class="w-full max-w-3xl neon-divider"></div>
     
-    <!-- Who I Am Section -->
-    <div class="w-full flex flex-col items-center gap-8">
-      <div class="w-full max-w-3xl p-8 md:p-10 rounded-xl glassmorphism">
-        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em]">Who I Am</h2>
-        <p class="text-white/90 text-base font-normal leading-relaxed mt-4">
-          As a freelance designer and developer, I live at the intersection of aesthetic elegance and functional performance. My passion is to craft bespoke digital experiences, translating complex ideas into intuitive, beautiful, and impactful solutions that resonate with users and elevate brands.
+    <div class="w-full max-w-4xl neon-divider"></div>
+    
+    <!-- Main About Content -->
+    <div class="w-full flex flex-col items-center gap-8 max-w-5xl">
+      <!-- Introduction -->
+      <div class="w-full p-8 md:p-10 rounded-xl glassmorphism">
+        <p class="text-white/90 text-base md:text-lg font-normal leading-relaxed">
+          Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.
+        </p>
+        <p class="text-white/90 text-base md:text-lg font-normal leading-relaxed mt-4">
+          We are not an open marketplace. Every project at Extoll is handled by our in-house team, ensuring consistency, accountability, and high-quality delivery. Our strength lies in combining creative talent, technical expertise, and structured operations—what we call <span class="text-primary font-semibold">Startup Ops</span>.
         </p>
       </div>
-      <div class="w-full max-w-3xl p-8 md:p-10 rounded-xl glassmorphism">
-        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em]">The Philosophy of Extoll</h2>
-        <p class="text-white/90 text-base font-normal leading-relaxed mt-4">
-          Extoll is founded on the principle of direct collaboration. There are no middlemen—just a singular creative vision dedicated to your project. This ensures a seamless process from concept to launch, where quality and a personalized partnership are paramount. I only take on projects where I can deliver exceptional value and craft something truly unique.
+
+      <!-- Team & Capabilities -->
+      <div class="w-full p-8 md:p-10 rounded-xl glassmorphism">
+        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em] mb-6">Our Team & Capabilities</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h3 class="text-primary font-semibold text-lg mb-2">Ritesh</h3>
+            <p class="text-white/80 text-sm leading-relaxed">
+              Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.
+            </p>
+          </div>
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h3 class="text-primary font-semibold text-lg mb-2">Nikhil</h3>
+            <p class="text-white/80 text-sm leading-relaxed">
+              Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.
+            </p>
+          </div>
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h3 class="text-primary font-semibold text-lg mb-2">Yuvraj Gupta</h3>
+            <p class="text-white/80 text-sm leading-relaxed">
+              Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.
+            </p>
+          </div>
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h3 class="text-primary font-semibold text-lg mb-2">Arpit</h3>
+            <p class="text-white/80 text-sm leading-relaxed">
+              Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- How We Work -->
+      <div class="w-full p-8 md:p-10 rounded-xl glassmorphism">
+        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em] mb-6">How We Work</h2>
+        <p class="text-white/90 text-base leading-relaxed mb-6">
+          Extoll operates with a startup-style execution model:
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="text-primary text-2xl mb-2">🎯</div>
+            <p class="text-white font-medium text-sm">Clear ownership</p>
+          </div>
+          <div class="text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="text-primary text-2xl mb-2">💬</div>
+            <p class="text-white font-medium text-sm">Direct communication</p>
+          </div>
+          <div class="text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="text-primary text-2xl mb-2">⚙️</div>
+            <p class="text-white font-medium text-sm">System-driven workflows</p>
+          </div>
+          <div class="text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="text-primary text-2xl mb-2">⏰</div>
+            <p class="text-white font-medium text-sm">On-time delivery</p>
+          </div>
+        </div>
+        <p class="text-white/90 text-base leading-relaxed">
+          From design and development to promotion and post-launch support, we manage the complete workflow under one roof.
         </p>
       </div>
-    </div>
-    <div class="w-full max-w-3xl neon-divider"></div>
-    
-    <!-- Stats Section -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl text-center">
-      <div class="p-6 rounded-lg glassmorphism">
-        <p class="text-4xl font-bold text-primary">50+</p>
-        <p class="text-white/80 mt-2 text-sm">Projects Completed</p>
-      </div>
-      <div class="p-6 rounded-lg glassmorphism">
-        <p class="text-4xl font-bold text-primary">35</p>
-        <p class="text-white/80 mt-2 text-sm">Happy Clients</p>
-      </div>
-      <div class="p-6 rounded-lg glassmorphism">
-        <p class="text-4xl font-bold text-primary">8</p>
-        <p class="text-white/80 mt-2 text-sm">Years of Experience</p>
+
+      <!-- Philosophy -->
+      <div class="w-full p-8 md:p-10 rounded-xl glassmorphism">
+        <h2 class="text-white text-2xl md:text-3xl font-bold leading-tight tracking-[-0.015em] mb-6">Our Philosophy</h2>
+        <p class="text-white/90 text-base md:text-lg font-normal leading-relaxed">
+          We believe great work happens when creative talent meets structured operations. That's why Extoll is powered by <span class="text-primary font-semibold">Startup Ops</span>—a mindset focused on systems, scalability, and real results.
+        </p>
+        <div class="mt-6 p-6 bg-primary/10 border border-primary/20 rounded-lg text-center">
+          <p class="text-white font-semibold text-lg">Extoll — Execution-first freelance collective. Powered by Startup Ops.</p>
+        </div>
       </div>
     </div>
     
     <!-- CTA Section -->
     <div class="text-center mt-12">
-      <h3 class="text-white text-3xl font-bold">Have a project in mind?</h3>
+      <h3 class="text-white text-3xl font-bold">Ready to start your project?</h3>
       <p class="text-white/70 mt-2">Let's create something extraordinary together.</p>
       <a href="contact.html">
         <button class="mt-8 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary text-black text-base font-bold leading-normal tracking-[0.015em] hover:shadow-[0_0_20px_theme(colors.primary/0.5)] transition-shadow mx-auto">
@@ -133,8 +277,71 @@
     </div>
   </div>
 </main>
+
+<!-- Footer -->
+<footer class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-white/10">
+<div class="flex flex-col gap-6 text-center">
+<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html">Home</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Work</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="services.html">Services</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="about.html">About</a>
+</div>
+<p class="text-white/50 text-sm font-normal leading-normal">© 2024 Extoll.Co. All Rights Reserved.</p>
+</div>
+</footer>
 </div>
 </div>
 </body>
+
+<script>
+// Initialize sparkle effect when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSparkleEffect();
+});
+
+// Sparkle Background Effect
+function initializeSparkleEffect() {
+    const sparkleContainer = document.getElementById('sparkleContainer');
+    if (!sparkleContainer) return;
+    
+    const numberOfSparkles = 25;
+    
+    function createSparkle() {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = (Math.random() * 18) + 's';
+        
+        const sizeVariations = [2, 2.5, 3, 3.5];
+        const size = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
+        sparkle.style.width = size + 'px';
+        sparkle.style.height = size + 'px';
+        
+        if (Math.random() > 0.7) {
+            sparkle.style.filter = 'blur(0.5px)';
+        }
+        
+        sparkleContainer.appendChild(sparkle);
+        
+        setTimeout(() => {
+            if (sparkle.parentNode) {
+                sparkle.parentNode.removeChild(sparkle);
+            }
+        }, 20000);
+    }
+    
+    for (let i = 0; i < numberOfSparkles; i++) {
+        setTimeout(() => createSparkle(), Math.random() * 8000);
+    }
+    
+    setInterval(() => {
+        if (sparkleContainer.children.length < numberOfSparkles * 1.5) {
+            createSparkle();
+        }
+    }, 700);
+}
+</script>
 </html>
 
