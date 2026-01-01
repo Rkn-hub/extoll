@@ -44,6 +44,16 @@ body {
 .relative { position: relative; }
 .fixed { position: fixed; }
 .absolute { position: absolute; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1 1 0%; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+.max-w-5xl { max-width: 64rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
 
 /* Spacing */
 .p-4 { padding: 1rem; }
@@ -73,13 +83,13 @@ body {
 .text-center { text-align: center; }
 
 /* Buttons */
-.btn {
+.btn, .bg-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0.75rem 1.5rem;
-    background: #00aaff;
-    color: white;
+    background: #00aaff !important;
+    color: white !important;
     border: none;
     border-radius: 0.5rem;
     font-weight: 700;
@@ -87,7 +97,36 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.btn:hover { background: #0088cc; transform: translateY(-1px); }
+.btn:hover, .bg-primary:hover { 
+    background: #0088cc !important; 
+    transform: translateY(-1px); 
+}
+
+/* Primary color utilities */
+.text-primary { color: #00aaff !important; }
+.border-primary { border-color: #00aaff !important; }
+.border-primary\/50 { border-color: rgba(0, 170, 255, 0.5) !important; }
+.hover\\:bg-primary\/20:hover { background-color: rgba(0, 170, 255, 0.2) !important; }
+.hover\\:border-primary:hover { border-color: #00aaff !important; }
+
+/* Button specific styles */
+.min-w-\\[84px\\] { min-width: 84px; }
+.min-w-\\[120px\\] { min-width: 120px; }
+.h-10 { height: 2.5rem; }
+.h-12 { height: 3rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.tracking-wide { letter-spacing: 0.025em; }
+.bg-transparent { background: transparent !important; }
+
+/* Neon glow effects */
+.neon-glow-subtle {
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
+.hover\\:neon-glow-subtle:hover {
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+}
 
 /* Cards */
 .glass-card {
@@ -164,7 +203,19 @@ body {
 /* Utilities */
 .cursor-pointer { cursor: pointer; }
 .z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
 .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.truncate { 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+.rounded-lg { border-radius: 0.5rem; }
+.border { border-width: 1px; }
+.transition-shadow { transition: box-shadow 0.3s ease; }
+.transition-all { transition: all 0.3s ease; }
+.duration-300 { transition-duration: 300ms; }
+.leading-normal { line-height: 1.5; }
 </style>
 
 <!-- Load TailwindCSS after critical styles -->
