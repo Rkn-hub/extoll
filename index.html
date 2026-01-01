@@ -25,144 +25,156 @@
 <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
 
-<!-- Remove all transformation parameters for faster loading -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Initializing image loading with smooth loaders...');
-    
-    // Function to create loader HTML
-    function createLoader() {
-        return `
-        <div class="image-loader-overlay">
-          <div class="loader-main">
-            <div class="up">
-              <div class="loaders">
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-                <div class="loader"></div>
-              </div>
-              <div class="loadersB">
-                <div class="loaderA"><div class="ball0"></div></div>
-                <div class="loaderA"><div class="ball1"></div></div>
-                <div class="loaderA"><div class="ball2"></div></div>
-                <div class="loaderA"><div class="ball3"></div></div>
-                <div class="loaderA"><div class="ball4"></div></div>
-                <div class="loaderA"><div class="ball5"></div></div>
-                <div class="loaderA"><div class="ball6"></div></div>
-                <div class="loaderA"><div class="ball7"></div></div>
-                <div class="loaderA"><div class="ball8"></div></div>
-              </div>
-            </div>
-          </div>
-        </div>`;
-    }
-    
-    // Add loaders to all portfolio items
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
-    portfolioItems.forEach(item => {
-        const imageContainer = item.querySelector('.w-full.h-40');
-        if (imageContainer && !imageContainer.querySelector('.image-loader-overlay')) {
-            imageContainer.insertAdjacentHTML('afterbegin', createLoader());
-        }
-    });
-    
-    // Remove all Supabase transformation parameters from images for faster loading
-    const images = document.querySelectorAll('img[src*="supabase.co"]');
-    let optimizedCount = 0;
-    
-    images.forEach((img, index) => {
-        const originalSrc = img.src;
-        if (originalSrc.includes('?')) {
-            const url = new URL(originalSrc);
-            // Remove all query parameters (transformation parameters)
-            const newSrc = url.origin + url.pathname;
-            img.src = newSrc;
-            optimizedCount++;
-            console.log(`✅ Optimized: ${originalSrc} → ${newSrc}`);
-        }
-        
-        // Find the loader overlay for this image
-        const portfolioCard = img.closest('.portfolio-item');
-        const loaderOverlay = portfolioCard ? portfolioCard.querySelector('.image-loader-overlay') : null;
-        
-        // Show loader initially
-        if (loaderOverlay) {
-            loaderOverlay.classList.remove('hidden');
-        }
-        
-        // Handle image loading
-        img.onload = function() {
-            console.log(`✅ Loaded image ${index + 1}:`, this.src);
-            
-            // Hide loader with smooth transition
-            if (loaderOverlay) {
-                setTimeout(() => {
-                    loaderOverlay.classList.add('hidden');
-                }, 200); // Small delay for smooth transition
-            }
-        };
-        
-        img.onerror = function() {
-            console.warn(`❌ Failed to load image ${index + 1}:`, this.src);
-            
-            // Hide loader even on error
-            if (loaderOverlay) {
-                loaderOverlay.classList.add('hidden');
-            }
-            
-            // Try adding a cache buster
-            if (!this.src.includes('?cb=')) {
-                this.src += '?cb=' + Date.now();
-            }
-        };
-        
-        // Fallback: Hide loader after 3 seconds regardless
-        setTimeout(() => {
-            if (loaderOverlay && !loaderOverlay.classList.contains('hidden')) {
-                console.log(`⏰ Timeout: Hiding loader for image ${index + 1}`);
-                loaderOverlay.classList.add('hidden');
-            }
-        }, 3000);
-    });
-    
-    // Handle hero image loading
-    const heroImage = document.getElementById('hero-image');
-    const heroLoader = document.getElementById('hero-loader');
-    
-    if (heroImage && heroLoader) {
-        heroImage.onload = function() {
-            console.log('✅ Hero image loaded');
-            setTimeout(() => {
-                heroLoader.classList.add('hidden');
-            }, 300);
-        };
-        
-        heroImage.onerror = function() {
-            console.warn('❌ Hero image failed to load');
-            heroLoader.classList.add('hidden');
-        };
-        
-        // Fallback for hero image
-        setTimeout(() => {
-            if (heroLoader && !heroLoader.classList.contains('hidden')) {
-                console.log('⏰ Timeout: Hiding hero loader');
-                heroLoader.classList.add('hidden');
-            }
-        }, 3000);
-    }
-    
-    console.log(`🎯 Added loaders to ${portfolioItems.length} portfolio items and optimized ${optimizedCount} images`);
-});
-</script>
+<!-- Critical CSS inlined for instant rendering -->
+<style>
+/* Reset and base styles */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background: #0A0A0D; 
+    color: #e5e7eb; 
+    font-family: 'Space Grotesk', sans-serif; 
+    line-height: 1.6;
+}
 
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+.flex { display: flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+.relative { position: relative; }
+.fixed { position: fixed; }
+.absolute { position: absolute; }
+
+/* Spacing */
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.mt-8 { margin-top: 2rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+/* Typography */
+.text-white { color: white; }
+.text-primary { color: #00aaff; }
+.text-neutral-400 { color: #9ca3af; }
+.text-neutral-500 { color: #6b7280; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-4xl { font-size: 2.25rem; }
+.text-5xl { font-size: 3rem; }
+.font-bold { font-weight: 700; }
+.font-black { font-weight: 900; }
+.leading-tight { line-height: 1.25; }
+.text-center { text-align: center; }
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background: #00aaff;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn:hover { background: #0088cc; transform: translateY(-1px); }
+
+/* Cards */
+.glass-card {
+    background: rgba(20, 26, 30, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(49, 62, 71, 0.4);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+.glass-card:hover {
+    border-color: rgba(0, 168, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 168, 255, 0.15);
+    transform: translateY(-4px);
+}
+
+/* Grid layouts */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Responsive */
+@media (min-width: 640px) {
+    .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sm\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+}
+@media (min-width: 1024px) {
+    .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .lg\\:px-24 { padding-left: 6rem; padding-right: 6rem; }
+}
+
+/* Images */
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.h-40 { height: 10rem; }
+.object-cover { object-fit: cover; }
+.rounded-xl { border-radius: 0.75rem; }
+.overflow-hidden { overflow: hidden; }
+
+/* Transitions */
+.transition-transform { transition: transform 0.3s ease; }
+.group:hover .group-hover\\:scale-105 { transform: scale(1.05); }
+
+/* Navigation */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 13, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 50;
+}
+
+/* Hero section */
+.hero {
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 20px 60px;
+}
+
+/* Gradients */
+.gradient-background {
+    background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
+}
+
+/* Loading states */
+.loading { opacity: 0.7; }
+.loaded { opacity: 1; transition: opacity 0.3s ease; }
+
+/* Utilities */
+.cursor-pointer { cursor: pointer; }
+.z-10 { z-index: 10; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+</style>
+
+<!-- Load TailwindCSS after critical styles -->
+<script>
+// Load TailwindCSS asynchronously after page renders
+const script = document.createElement('script');
+script.src = 'https://cdn.tailwindcss.com?plugins=forms,container-queries';
+script.async = true;
+document.head.appendChild(script);
+</script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -461,135 +473,6 @@ document.addEventListener('DOMContentLoaded', function() {
     animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   
-  /* Image Loading Animation - From Uiverse.io by Praashoo7 */
-  .image-loader-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(10, 10, 13, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    z-index: 10;
-  }
-  
-  .image-loader-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .loader-main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: scale(0.3); /* Smaller size for portfolio cards */
-  }
-  
-  .loaders, .loadersB {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .loader {
-    position: absolute;
-    width: 1.15em;
-    height: 13em;
-    border-radius: 50px;
-    background: #2a2a2a;
-  }
-  
-  .loader:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1.15em;
-    height: 5em;
-    background: #2a2a2a;
-    border-radius: 50px;
-    border: 1px solid #333;
-    box-shadow: inset 5px 5px 15px #1a1a1aab, inset -5px -5px 15px #3a3a3aab;
-    mask-image: linear-gradient(to bottom, black calc(100% - 48px), transparent 100%);
-  }
-  
-  .loader::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 1.15em;
-    height: 4.5em;
-    background: #2a2a2a;
-    border-radius: 50px;
-    border: 1px solid #333;
-    box-shadow: inset 5px 5px 15px #1a1a1aab, inset -5px -5px 15px #3a3a3aab;
-    mask-image: linear-gradient(to top, black calc(100% - 48px), transparent 100%);
-  }
-  
-  .loaderA {
-    position: absolute;
-    width: 1.15em;
-    height: 13em;
-    border-radius: 50px;
-    background: transparent;
-  }
-  
-  .ball0, .ball1, .ball2, .ball3, .ball4, .ball5, .ball6, .ball7, .ball8 {
-    width: 1.15em;
-    height: 1.15em;
-    box-shadow: rgba(0, 170, 255, 0.17) 0px -10px 10px 0px inset,
-                rgba(0, 170, 255, 0.15) 0px -15px 15px 0px inset,
-                rgba(0, 170, 255, 0.1) 0px -40px 20px 0px inset,
-                rgba(0, 0, 0, 0.06) 0px 2px 1px,
-                rgba(0, 0, 0, 0.09) 0px 4px 2px,
-                rgba(0, 0, 0, 0.09) 0px 8px 4px,
-                rgba(0, 0, 0, 0.09) 0px 16px 8px,
-                rgba(0, 0, 0, 0.09) 0px 32px 16px,
-                0px -1px 15px -8px rgba(0, 170, 255, 0.3);
-    border-radius: 50%;
-    transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
-    background: linear-gradient(135deg, #00aaff, #0088cc);
-    animation: 3.63s ballMove ease-in-out infinite;
-  }
-  
-  .loader:nth-child(2) { transform: rotate(20deg); }
-  .loader:nth-child(3) { transform: rotate(40deg); }
-  .loader:nth-child(4) { transform: rotate(60deg); }
-  .loader:nth-child(5) { transform: rotate(80deg); }
-  .loader:nth-child(6) { transform: rotate(100deg); }
-  .loader:nth-child(7) { transform: rotate(120deg); }
-  .loader:nth-child(8) { transform: rotate(140deg); }
-  .loader:nth-child(9) { transform: rotate(160deg); }
-  
-  .loaderA:nth-child(2) { transform: rotate(20deg); }
-  .loaderA:nth-child(3) { transform: rotate(40deg); }
-  .loaderA:nth-child(4) { transform: rotate(60deg); }
-  .loaderA:nth-child(5) { transform: rotate(80deg); }
-  .loaderA:nth-child(6) { transform: rotate(100deg); }
-  .loaderA:nth-child(7) { transform: rotate(120deg); }
-  .loaderA:nth-child(8) { transform: rotate(140deg); }
-  .loaderA:nth-child(9) { transform: rotate(160deg); }
-  
-  .ball1 { animation-delay: 0.2s; }
-  .ball2 { animation-delay: 0.4s; }
-  .ball3 { animation-delay: 0.6s; }
-  .ball4 { animation-delay: 0.8s; }
-  .ball5 { animation-delay: 1s; }
-  .ball6 { animation-delay: 1.2s; }
-  .ball7 { animation-delay: 1.4s; }
-  .ball8 { animation-delay: 1.6s; }
-  
-  @keyframes ballMove {
-    0% { transform: translateY(0em); }
-    50% { transform: translateY(12em); }
-    100% { transform: translateY(0em); }
-  }
-  
   @keyframes sparkleFloat {
     0% {
       transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
@@ -716,43 +599,12 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
   
   <!-- Hero Thumbnail Image -->
-  <div class="w-full max-w-4xl mx-auto mt-8 mb-6 relative">
-    <!-- Hero Image Loader -->
-    <div class="image-loader-overlay" id="hero-loader">
-      <div class="loader-main" style="transform: scale(0.5);">
-        <div class="up">
-          <div class="loaders">
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-            <div class="loader"></div>
-          </div>
-          <div class="loadersB">
-            <div class="loaderA"><div class="ball0"></div></div>
-            <div class="loaderA"><div class="ball1"></div></div>
-            <div class="loaderA"><div class="ball2"></div></div>
-            <div class="loaderA"><div class="ball3"></div></div>
-            <div class="loaderA"><div class="ball4"></div></div>
-            <div class="loaderA"><div class="ball5"></div></div>
-            <div class="loaderA"><div class="ball6"></div></div>
-            <div class="loaderA"><div class="ball7"></div></div>
-            <div class="loaderA"><div class="ball8"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="w-full max-w-4xl mx-auto mt-8 mb-6">
     <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png" 
          alt="Extoll.Co - Crafting Digital Experiences That Stand Out" 
          class="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:border-primary/40" 
          loading="eager" 
-         decoding="sync"
-         id="hero-image">
+         decoding="sync">
   </div>
   <div class="flex flex-wrap gap-4 justify-center mt-4">
     <a href="#work">
@@ -810,36 +662,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Graphics Design Projects -->
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="festival" style="position: relative; z-index: 1;">
 <div class="w-full h-40 overflow-hidden relative">
-<!-- Image Loader -->
-<div class="image-loader-overlay">
-  <div class="loader-main">
-    <div class="up">
-      <div class="loaders">
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-      </div>
-      <div class="loadersB">
-        <div class="loaderA"><div class="ball0"></div></div>
-        <div class="loaderA"><div class="ball1"></div></div>
-        <div class="loaderA"><div class="ball2"></div></div>
-        <div class="loaderA"><div class="ball3"></div></div>
-        <div class="loaderA"><div class="ball4"></div></div>
-        <div class="loaderA"><div class="ball5"></div></div>
-        <div class="loaderA"><div class="ball6"></div></div>
-        <div class="loaderA"><div class="ball7"></div></div>
-        <div class="loaderA"><div class="ball8"></div></div>
-      </div>
-    </div>
-  </div>
-</div>
 <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png" alt="Festival Graphics - Vibrant promotional materials and event branding designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>

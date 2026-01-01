@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Test - Extoll.Co</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #0A0A0D; 
+            color: white; 
+            text-align: center; 
+            padding: 50px 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .btn { 
+            display: inline-block; 
+            background: #00aaff; 
+            color: white; 
+            padding: 20px 40px; 
+            margin: 20px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 1.2rem;
+        }
+        .btn:hover { background: #0088cc; }
+        .comparison { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 30px; 
+            margin: 50px 0;
+        }
+        .version { 
+            background: rgba(255,255,255,0.1); 
+            padding: 30px; 
+            border-radius: 12px;
+        }
+        .pros { color: #00ff88; }
+        .cons { color: #ff8800; }
+        ul { text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Extoll.Co Speed Test</h1>
+        <p>Choose which version to test:</p>
+        
+        <div class="comparison">
+            <div class="version">
+                <h2>🐌 Current Version</h2>
+                <p><strong>Full-featured with Supabase images</strong></p>
+                <ul class="pros">
+                    <li>✅ All animations and effects</li>
+                    <li>✅ Complete styling</li>
+                    <li>✅ All features</li>
+                </ul>
+                <ul class="cons">
+                    <li>⚠️ Slow image loading</li>
+                    <li>⚠️ Supabase transformation delays</li>
+                    <li>⚠️ Heavy animations</li>
+                </ul>
+                <a href="index.html" class="btn">Test Current Version</a>
+            </div>
+            
+            <div class="version">
+                <h2>⚡ Fast Version</h2>
+                <p><strong>Optimized for instant loading</strong></p>
+                <ul class="pros">
+                    <li>✅ Instant page load</li>
+                    <li>✅ Progressive image loading</li>
+                    <li>✅ No transformation delays</li>
+                    <li>✅ Lightweight</li>
+                </ul>
+                <ul class="cons">
+                    <li>⚠️ Simplified animations</li>
+                    <li>⚠️ Basic styling</li>
+                </ul>
+                <a href="index-fast.html" class="btn">Test Fast Version</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 50px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+            <h3>🧪 Performance Comparison</h3>
+            <p>Test both versions and compare:</p>
+            <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+                <li><strong>Initial Load Time:</strong> How fast does the page appear?</li>
+                <li><strong>Image Loading:</strong> How quickly do portfolio images show?</li>
+                <li><strong>Interactivity:</strong> How responsive are clicks and hovers?</li>
+                <li><strong>Overall Experience:</strong> Which feels faster and smoother?</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <p><strong>Recommendation:</strong> If the fast version loads significantly better, we can enhance it to match the full version's features while keeping the speed.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Track which version performs better
+        const startTime = performance.now();
+        
+        window.addEventListener('load', function() {
+            const loadTime = performance.now() - startTime;
+            console.log(`Speed test page loaded in ${loadTime.toFixed(2)}ms`);
+        });
+    </script>
+</body>
+</html>
