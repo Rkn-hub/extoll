@@ -25,10 +25,45 @@
 <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
 
-<!-- Preload critical images -->
-<link rel="preload" as="image" href="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png?width=800&height=400&resize=cover&quality=60&format=webp">
-<link rel="preload" as="image" href="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png?width=300&height=240&resize=cover&quality=50&format=webp">
-<link rel="preload" as="image" href="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/merchandise.png?width=300&height=240&resize=cover&quality=50&format=webp">
+<!-- Remove all transformation parameters for faster loading -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Removing Supabase transformation parameters for faster loading...');
+    
+    // Remove all Supabase transformation parameters from images for faster loading
+    const images = document.querySelectorAll('img[src*="supabase.co"]');
+    let optimizedCount = 0;
+    
+    images.forEach(img => {
+        const originalSrc = img.src;
+        if (originalSrc.includes('?')) {
+            const url = new URL(originalSrc);
+            // Remove all query parameters (transformation parameters)
+            const newSrc = url.origin + url.pathname;
+            img.src = newSrc;
+            optimizedCount++;
+            console.log(`✅ Optimized: ${originalSrc} → ${newSrc}`);
+        }
+    });
+    
+    console.log(`🎯 Optimized ${optimizedCount} images for direct loading`);
+    
+    // Add error handling for failed images
+    images.forEach((img, index) => {
+        img.onerror = function() {
+            console.warn(`❌ Failed to load image ${index + 1}:`, this.src);
+            // Try adding a cache buster
+            if (!this.src.includes('?cb=')) {
+                this.src += '?cb=' + Date.now();
+            }
+        };
+        
+        img.onload = function() {
+            console.log(`✅ Loaded image ${index + 1}:`, this.src);
+        };
+    });
+});
+</script>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -456,7 +491,7 @@
   
   <!-- Hero Thumbnail Image -->
   <div class="w-full max-w-4xl mx-auto mt-8 mb-6">
-    <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png?width=800&height=400&resize=cover&quality=60&format=webp" 
+    <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png" 
          alt="Extoll.Co - Crafting Digital Experiences That Stand Out" 
          class="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:border-primary/40" 
          loading="eager" 
@@ -518,7 +553,7 @@
 <!-- Graphics Design Projects -->
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="festival" style="position: relative; z-index: 1;">
 <div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Festival Graphics - Vibrant promotional materials and event branding designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
+<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png" alt="Festival Graphics - Vibrant promotional materials and event branding designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>
 <div class="p-5 flex flex-col gap-1">
@@ -530,7 +565,7 @@
 
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="merchandise">
 <div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/merchandise.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Merchandise Design - Creative apparel graphics and promotional materials" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
+<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/merchandise.png" alt="Merchandise Design - Creative apparel graphics and promotional materials" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>
 <div class="p-5 flex flex-col gap-1">
@@ -542,7 +577,7 @@
 
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="posters">
 <div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/poster.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Poster Design - Creative posters and awareness campaign designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
+<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/poster.png" alt="Poster Design - Creative posters and awareness campaign designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>
 <div class="p-5 flex flex-col gap-1">
@@ -555,7 +590,7 @@
 <!-- Product Design Projects -->
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="product" data-project="smart-pet-collar">
 <div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/pet%20collar.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Smart Pet Collar - IoT-enabled pet monitoring and tracking device design" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
+<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/pet%20collar.png" alt="Smart Pet Collar - IoT-enabled pet monitoring and tracking device design" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>
 <div class="p-5 flex flex-col gap-1">
@@ -567,7 +602,7 @@
 
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="product" data-project="food-processor">
 <div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/food.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Food Processor Design - Modern kitchen appliance with ergonomic design" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
+<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/food.png" alt="Food Processor Design - Modern kitchen appliance with ergonomic design" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>
 <div class="p-5 flex flex-col gap-1">
