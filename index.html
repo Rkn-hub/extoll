@@ -25,7 +25,12 @@
 <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
 
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Preload critical images -->
+<link rel="preload" as="image" href="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png?width=600&height=300&resize=cover&quality=40&format=webp">
+<link rel="preload" as="image" href="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png?width=300&height=240&resize=cover&quality=50&format=webp">
+<link rel="preload" as="image" href="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/merchandise.png?width=300&height=240&resize=cover&quality=50&format=webp">
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" defer></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -267,7 +272,7 @@
     pointer-events: none !important;
   }
   
-  /* Sparkle Animation Background */
+  /* Sparkle Animation Background - Reduced for performance */
   .sparkle-container {
     position: fixed;
     top: 0;
@@ -281,47 +286,27 @@
   
   .sparkle {
     position: absolute;
-    width: 3px;
-    height: 3px;
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.9) 0%, rgba(0, 170, 255, 0.5) 40%, transparent 100%);
+    width: 2px;
+    height: 2px;
+    background: radial-gradient(circle, rgba(0, 170, 255, 0.7) 0%, rgba(0, 170, 255, 0.3) 40%, transparent 100%);
     border-radius: 50%;
-    animation: sparkleFloat 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: sparkleFloat 15s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
     opacity: 0;
     will-change: transform, opacity;
   }
   
   .sparkle:nth-child(2n) {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 15s;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 100%);
+    animation-duration: 18s;
     animation-delay: -3s;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
   }
   
   .sparkle:nth-child(3n) {
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.7) 0%, rgba(112, 253, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 18s;
-    animation-delay: -6s;
-    width: 2px;
-    height: 2px;
-    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
-  
-  .sparkle:nth-child(4n) {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 100%);
+    background: radial-gradient(circle, rgba(0, 170, 255, 0.5) 0%, rgba(112, 253, 255, 0.2) 40%, transparent 100%);
     animation-duration: 20s;
-    animation-delay: -9s;
-    width: 4px;
-    height: 4px;
-    animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-  }
-  
-  .sparkle:nth-child(5n) {
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.8) 0%, rgba(0, 170, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 14s;
-    animation-delay: -2s;
-    width: 2.5px;
-    height: 2.5px;
-    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation-delay: -6s;
+    width: 1.5px;
+    height: 1.5px;
   }
   
   @keyframes sparkleFloat {
@@ -451,7 +436,7 @@
   
   <!-- Hero Thumbnail Image -->
   <div class="w-full max-w-4xl mx-auto mt-8 mb-6">
-    <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png?width=800&height=400&resize=cover&quality=60&format=webp" 
+    <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png?width=600&height=300&resize=cover&quality=40&format=webp" 
          alt="Extoll.Co - Crafting Digital Experiences That Stand Out" 
          class="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:border-primary/40" 
          loading="eager" 
@@ -1233,11 +1218,13 @@ function initializeSparkleEffect() {
     const sparkleContainer = document.getElementById('sparkleContainer');
     if (!sparkleContainer) return;
     
-    const numberOfSparkles = 30; // Increased for smoother effect
+    // Reduce sparkle count for better performance
+    const isMobile = window.innerWidth < 768;
+    const numberOfSparkles = isMobile ? 10 : 15; // Reduced from 30
     
     function createSparkle() {
         const sparkle = document.createElement('div');
-        sparkle.className = Math.random() > 0.8 ? 'sparkle sparkle-pulse' : 'sparkle';
+        sparkle.className = 'sparkle'; // Remove pulse for performance
         
         // Random horizontal position
         sparkle.style.left = Math.random() * 100 + '%';
@@ -1245,20 +1232,13 @@ function initializeSparkleEffect() {
         // Smoother random animation delay
         sparkle.style.animationDelay = (Math.random() * 20) + 's';
         
-        // More varied size with smoother transitions
-        const sizeVariations = [2, 2.5, 3, 3.5, 4];
-        const size = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
-        sparkle.style.width = size + 'px';
-        sparkle.style.height = size + 'px';
-        
-        // Add slight blur for smoother appearance
-        if (Math.random() > 0.7) {
-            sparkle.style.filter = 'blur(0.5px)';
-        }
+        // Fixed size for better performance
+        sparkle.style.width = '2px';
+        sparkle.style.height = '2px';
         
         sparkleContainer.appendChild(sparkle);
         
-        // Remove sparkle after animation completes (longer duration for smoother effect)
+        // Remove sparkle after animation completes
         setTimeout(() => {
             if (sparkle.parentNode) {
                 sparkle.parentNode.removeChild(sparkle);
