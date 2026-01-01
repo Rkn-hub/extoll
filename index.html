@@ -27,28 +27,57 @@
 
 <!-- Remove all transformation parameters for faster loading -->
 <script>
-// Page Loader Management
-function hideLoader() {
-    const loader = document.getElementById('pageLoader');
-    if (loader) {
-        loader.classList.add('hidden');
-        // Remove from DOM after animation completes
-        setTimeout(() => {
-            loader.remove();
-        }, 500);
-    }
-}
-
-// Show loader initially, hide when page is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Removing Supabase transformation parameters for faster loading...');
+    console.log('🚀 Initializing image loading with smooth loaders...');
+    
+    // Function to create loader HTML
+    function createLoader() {
+        return `
+        <div class="image-loader-overlay">
+          <div class="loader-main">
+            <div class="up">
+              <div class="loaders">
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+                <div class="loader"></div>
+              </div>
+              <div class="loadersB">
+                <div class="loaderA"><div class="ball0"></div></div>
+                <div class="loaderA"><div class="ball1"></div></div>
+                <div class="loaderA"><div class="ball2"></div></div>
+                <div class="loaderA"><div class="ball3"></div></div>
+                <div class="loaderA"><div class="ball4"></div></div>
+                <div class="loaderA"><div class="ball5"></div></div>
+                <div class="loaderA"><div class="ball6"></div></div>
+                <div class="loaderA"><div class="ball7"></div></div>
+                <div class="loaderA"><div class="ball8"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    
+    // Add loaders to all portfolio items
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    portfolioItems.forEach(item => {
+        const imageContainer = item.querySelector('.w-full.h-40');
+        if (imageContainer && !imageContainer.querySelector('.image-loader-overlay')) {
+            imageContainer.insertAdjacentHTML('afterbegin', createLoader());
+        }
+    });
     
     // Remove all Supabase transformation parameters from images for faster loading
     const images = document.querySelectorAll('img[src*="supabase.co"]');
     let optimizedCount = 0;
-    let loadedImages = 0;
     
-    images.forEach(img => {
+    images.forEach((img, index) => {
         const originalSrc = img.src;
         if (originalSrc.includes('?')) {
             const url = new URL(originalSrc);
@@ -58,57 +87,78 @@ document.addEventListener('DOMContentLoaded', function() {
             optimizedCount++;
             console.log(`✅ Optimized: ${originalSrc} → ${newSrc}`);
         }
-    });
-    
-    console.log(`🎯 Optimized ${optimizedCount} images for direct loading`);
-    
-    // Track image loading progress
-    const totalImages = images.length;
-    
-    // Add error handling for failed images
-    images.forEach((img, index) => {
+        
+        // Find the loader overlay for this image
+        const portfolioCard = img.closest('.portfolio-item');
+        const loaderOverlay = portfolioCard ? portfolioCard.querySelector('.image-loader-overlay') : null;
+        
+        // Show loader initially
+        if (loaderOverlay) {
+            loaderOverlay.classList.remove('hidden');
+        }
+        
+        // Handle image loading
+        img.onload = function() {
+            console.log(`✅ Loaded image ${index + 1}:`, this.src);
+            
+            // Hide loader with smooth transition
+            if (loaderOverlay) {
+                setTimeout(() => {
+                    loaderOverlay.classList.add('hidden');
+                }, 200); // Small delay for smooth transition
+            }
+        };
+        
         img.onerror = function() {
             console.warn(`❌ Failed to load image ${index + 1}:`, this.src);
-            loadedImages++;
-            checkAllImagesLoaded();
+            
+            // Hide loader even on error
+            if (loaderOverlay) {
+                loaderOverlay.classList.add('hidden');
+            }
+            
             // Try adding a cache buster
             if (!this.src.includes('?cb=')) {
                 this.src += '?cb=' + Date.now();
             }
         };
         
-        img.onload = function() {
-            console.log(`✅ Loaded image ${index + 1}:`, this.src);
-            loadedImages++;
-            checkAllImagesLoaded();
-        };
-        
-        // If image is already cached and loaded
-        if (img.complete) {
-            loadedImages++;
-        }
+        // Fallback: Hide loader after 3 seconds regardless
+        setTimeout(() => {
+            if (loaderOverlay && !loaderOverlay.classList.contains('hidden')) {
+                console.log(`⏰ Timeout: Hiding loader for image ${index + 1}`);
+                loaderOverlay.classList.add('hidden');
+            }
+        }, 3000);
     });
     
-    function checkAllImagesLoaded() {
-        if (loadedImages >= totalImages) {
-            console.log('🎉 All images loaded, hiding loader...');
-            setTimeout(hideLoader, 500); // Small delay for smooth transition
-        }
+    // Handle hero image loading
+    const heroImage = document.getElementById('hero-image');
+    const heroLoader = document.getElementById('hero-loader');
+    
+    if (heroImage && heroLoader) {
+        heroImage.onload = function() {
+            console.log('✅ Hero image loaded');
+            setTimeout(() => {
+                heroLoader.classList.add('hidden');
+            }, 300);
+        };
+        
+        heroImage.onerror = function() {
+            console.warn('❌ Hero image failed to load');
+            heroLoader.classList.add('hidden');
+        };
+        
+        // Fallback for hero image
+        setTimeout(() => {
+            if (heroLoader && !heroLoader.classList.contains('hidden')) {
+                console.log('⏰ Timeout: Hiding hero loader');
+                heroLoader.classList.add('hidden');
+            }
+        }, 3000);
     }
     
-    // Fallback: Hide loader after maximum 3 seconds regardless
-    setTimeout(() => {
-        console.log('⏰ Loader timeout reached, hiding loader...');
-        hideLoader();
-    }, 3000);
-    
-    // Initial check in case images are already loaded
-    checkAllImagesLoaded();
-});
-
-// Hide loader when window is fully loaded (fallback)
-window.addEventListener('load', function() {
-    setTimeout(hideLoader, 1000);
+    console.log(`🎯 Added loaders to ${portfolioItems.length} portfolio items and optimized ${optimizedCount} images`);
 });
 </script>
 
@@ -354,152 +404,7 @@ window.addEventListener('load', function() {
     pointer-events: none !important;
   }
   
-  /* Loading Animation - Custom Dark Theme */
-  .page-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0A0A0D;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-  }
-  
-  .page-loader.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-  
-  .loader-main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .loader-text {
-    color: #00aaff;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-  }
-  
-  .loaders, .loadersB {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .loader {
-    position: absolute;
-    width: 1.15em;
-    height: 13em;
-    border-radius: 50px;
-    background: #1a1a1a;
-  }
-  
-  .loader:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1.15em;
-    height: 5em;
-    background: #1a1a1a;
-    border-radius: 50px;
-    border: 1px solid #333;
-    box-shadow:
-      inset 5px 5px 15px #111,
-      inset -5px -5px 15px #333;
-    mask-image: linear-gradient(to bottom, black calc(100% - 48px), transparent 100%);
-  }
-  
-  .loader::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 1.15em;
-    height: 4.5em;
-    background: #1a1a1a;
-    border-radius: 50px;
-    border: 1px solid #333;
-    box-shadow:
-      inset 5px 5px 15px #111,
-      inset -5px -5px 15px #333;
-    mask-image: linear-gradient(to top, black calc(100% - 48px), transparent 100%);
-  }
-  
-  .loaderA {
-    position: absolute;
-    width: 1.15em;
-    height: 13em;
-    border-radius: 50px;
-    background: transparent;
-  }
-  
-  .ball0, .ball1, .ball2, .ball3, .ball4, .ball5, .ball6, .ball7, .ball8 {
-    width: 1.15em;
-    height: 1.15em;
-    box-shadow:
-      rgba(0, 170, 255, 0.3) 0px -10px 10px 0px inset,
-      rgba(0, 170, 255, 0.2) 0px -15px 15px 0px inset,
-      rgba(0, 170, 255, 0.1) 0px -40px 20px 0px inset,
-      rgba(0, 0, 0, 0.3) 0px 2px 1px,
-      rgba(0, 0, 0, 0.2) 0px 4px 2px,
-      rgba(0, 0, 0, 0.2) 0px 8px 4px,
-      rgba(0, 0, 0, 0.2) 0px 16px 8px,
-      rgba(0, 0, 0, 0.2) 0px 32px 16px,
-      0px -1px 15px -8px rgba(0, 170, 255, 0.4);
-    border-radius: 50%;
-    transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
-    background: linear-gradient(135deg, #00aaff, #0088cc);
-    animation: 3.63s move ease-in-out infinite;
-  }
-  
-  .loader:nth-child(2) { transform: rotate(20deg); }
-  .loader:nth-child(3) { transform: rotate(40deg); }
-  .loader:nth-child(4) { transform: rotate(60deg); }
-  .loader:nth-child(5) { transform: rotate(80deg); }
-  .loader:nth-child(6) { transform: rotate(100deg); }
-  .loader:nth-child(7) { transform: rotate(120deg); }
-  .loader:nth-child(8) { transform: rotate(140deg); }
-  .loader:nth-child(9) { transform: rotate(160deg); }
-  
-  .loaderA:nth-child(2) { transform: rotate(20deg); }
-  .loaderA:nth-child(3) { transform: rotate(40deg); }
-  .loaderA:nth-child(4) { transform: rotate(60deg); }
-  .loaderA:nth-child(5) { transform: rotate(80deg); }
-  .loaderA:nth-child(6) { transform: rotate(100deg); }
-  .loaderA:nth-child(7) { transform: rotate(120deg); }
-  .loaderA:nth-child(8) { transform: rotate(140deg); }
-  .loaderA:nth-child(9) { transform: rotate(160deg); }
-  
-  .ball1 { animation-delay: 0.2s; }
-  .ball2 { animation-delay: 0.4s; }
-  .ball3 { animation-delay: 0.6s; }
-  .ball4 { animation-delay: 0.8s; }
-  .ball5 { animation-delay: 1s; }
-  .ball6 { animation-delay: 1.2s; }
-  .ball7 { animation-delay: 1.4s; }
-  .ball8 { animation-delay: 1.6s; }
-  
-  @keyframes move {
-    0% { transform: translateY(0em); }
-    50% { transform: translateY(12em); }
-    100% { transform: translateY(0em); }
-  }
+  /* Sparkle Animation Background */
   .sparkle-container {
     position: fixed;
     top: 0;
@@ -554,6 +459,135 @@ window.addEventListener('load', function() {
     width: 2.5px;
     height: 2.5px;
     animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  /* Image Loading Animation - From Uiverse.io by Praashoo7 */
+  .image-loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 13, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+  }
+  
+  .image-loader-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .loader-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.3); /* Smaller size for portfolio cards */
+  }
+  
+  .loaders, .loadersB {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loader {
+    position: absolute;
+    width: 1.15em;
+    height: 13em;
+    border-radius: 50px;
+    background: #2a2a2a;
+  }
+  
+  .loader:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.15em;
+    height: 5em;
+    background: #2a2a2a;
+    border-radius: 50px;
+    border: 1px solid #333;
+    box-shadow: inset 5px 5px 15px #1a1a1aab, inset -5px -5px 15px #3a3a3aab;
+    mask-image: linear-gradient(to bottom, black calc(100% - 48px), transparent 100%);
+  }
+  
+  .loader::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1.15em;
+    height: 4.5em;
+    background: #2a2a2a;
+    border-radius: 50px;
+    border: 1px solid #333;
+    box-shadow: inset 5px 5px 15px #1a1a1aab, inset -5px -5px 15px #3a3a3aab;
+    mask-image: linear-gradient(to top, black calc(100% - 48px), transparent 100%);
+  }
+  
+  .loaderA {
+    position: absolute;
+    width: 1.15em;
+    height: 13em;
+    border-radius: 50px;
+    background: transparent;
+  }
+  
+  .ball0, .ball1, .ball2, .ball3, .ball4, .ball5, .ball6, .ball7, .ball8 {
+    width: 1.15em;
+    height: 1.15em;
+    box-shadow: rgba(0, 170, 255, 0.17) 0px -10px 10px 0px inset,
+                rgba(0, 170, 255, 0.15) 0px -15px 15px 0px inset,
+                rgba(0, 170, 255, 0.1) 0px -40px 20px 0px inset,
+                rgba(0, 0, 0, 0.06) 0px 2px 1px,
+                rgba(0, 0, 0, 0.09) 0px 4px 2px,
+                rgba(0, 0, 0, 0.09) 0px 8px 4px,
+                rgba(0, 0, 0, 0.09) 0px 16px 8px,
+                rgba(0, 0, 0, 0.09) 0px 32px 16px,
+                0px -1px 15px -8px rgba(0, 170, 255, 0.3);
+    border-radius: 50%;
+    transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
+    background: linear-gradient(135deg, #00aaff, #0088cc);
+    animation: 3.63s ballMove ease-in-out infinite;
+  }
+  
+  .loader:nth-child(2) { transform: rotate(20deg); }
+  .loader:nth-child(3) { transform: rotate(40deg); }
+  .loader:nth-child(4) { transform: rotate(60deg); }
+  .loader:nth-child(5) { transform: rotate(80deg); }
+  .loader:nth-child(6) { transform: rotate(100deg); }
+  .loader:nth-child(7) { transform: rotate(120deg); }
+  .loader:nth-child(8) { transform: rotate(140deg); }
+  .loader:nth-child(9) { transform: rotate(160deg); }
+  
+  .loaderA:nth-child(2) { transform: rotate(20deg); }
+  .loaderA:nth-child(3) { transform: rotate(40deg); }
+  .loaderA:nth-child(4) { transform: rotate(60deg); }
+  .loaderA:nth-child(5) { transform: rotate(80deg); }
+  .loaderA:nth-child(6) { transform: rotate(100deg); }
+  .loaderA:nth-child(7) { transform: rotate(120deg); }
+  .loaderA:nth-child(8) { transform: rotate(140deg); }
+  .loaderA:nth-child(9) { transform: rotate(160deg); }
+  
+  .ball1 { animation-delay: 0.2s; }
+  .ball2 { animation-delay: 0.4s; }
+  .ball3 { animation-delay: 0.6s; }
+  .ball4 { animation-delay: 0.8s; }
+  .ball5 { animation-delay: 1s; }
+  .ball6 { animation-delay: 1.2s; }
+  .ball7 { animation-delay: 1.4s; }
+  .ball8 { animation-delay: 1.6s; }
+  
+  @keyframes ballMove {
+    0% { transform: translateY(0em); }
+    50% { transform: translateY(12em); }
+    100% { transform: translateY(0em); }
   }
   
   @keyframes sparkleFloat {
@@ -637,38 +671,6 @@ window.addEventListener('load', function() {
 </script>
 </head>
 <body class="bg-background-dark font-display text-gray-200">
-<!-- Page Loader -->
-<div class="page-loader" id="pageLoader">
-  <div class="loader-main">
-    <div class="up">
-      <div class="loaders">
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-        <div class="loader"></div>
-      </div>
-      <div class="loadersB">
-        <div class="loaderA"><div class="ball0"></div></div>
-        <div class="loaderA"><div class="ball1"></div></div>
-        <div class="loaderA"><div class="ball2"></div></div>
-        <div class="loaderA"><div class="ball3"></div></div>
-        <div class="loaderA"><div class="ball4"></div></div>
-        <div class="loaderA"><div class="ball5"></div></div>
-        <div class="loaderA"><div class="ball6"></div></div>
-        <div class="loaderA"><div class="ball7"></div></div>
-        <div class="loaderA"><div class="ball8"></div></div>
-      </div>
-    </div>
-    <div class="loader-text">EXTOLL.CO</div>
-  </div>
-</div>
-
 <!-- Sparkle Background Effect -->
 <div class="sparkle-container" id="sparkleContainer"></div>
 
@@ -714,12 +716,43 @@ window.addEventListener('load', function() {
   </div>
   
   <!-- Hero Thumbnail Image -->
-  <div class="w-full max-w-4xl mx-auto mt-8 mb-6">
+  <div class="w-full max-w-4xl mx-auto mt-8 mb-6 relative">
+    <!-- Hero Image Loader -->
+    <div class="image-loader-overlay" id="hero-loader">
+      <div class="loader-main" style="transform: scale(0.5);">
+        <div class="up">
+          <div class="loaders">
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+            <div class="loader"></div>
+          </div>
+          <div class="loadersB">
+            <div class="loaderA"><div class="ball0"></div></div>
+            <div class="loaderA"><div class="ball1"></div></div>
+            <div class="loaderA"><div class="ball2"></div></div>
+            <div class="loaderA"><div class="ball3"></div></div>
+            <div class="loaderA"><div class="ball4"></div></div>
+            <div class="loaderA"><div class="ball5"></div></div>
+            <div class="loaderA"><div class="ball6"></div></div>
+            <div class="loaderA"><div class="ball7"></div></div>
+            <div class="loaderA"><div class="ball8"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png" 
          alt="Extoll.Co - Crafting Digital Experiences That Stand Out" 
          class="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:border-primary/40" 
          loading="eager" 
-         decoding="sync">
+         decoding="sync"
+         id="hero-image">
   </div>
   <div class="flex flex-wrap gap-4 justify-center mt-4">
     <a href="#work">
@@ -777,6 +810,36 @@ window.addEventListener('load', function() {
 <!-- Graphics Design Projects -->
 <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="festival" style="position: relative; z-index: 1;">
 <div class="w-full h-40 overflow-hidden relative">
+<!-- Image Loader -->
+<div class="image-loader-overlay">
+  <div class="loader-main">
+    <div class="up">
+      <div class="loaders">
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+        <div class="loader"></div>
+      </div>
+      <div class="loadersB">
+        <div class="loaderA"><div class="ball0"></div></div>
+        <div class="loaderA"><div class="ball1"></div></div>
+        <div class="loaderA"><div class="ball2"></div></div>
+        <div class="loaderA"><div class="ball3"></div></div>
+        <div class="loaderA"><div class="ball4"></div></div>
+        <div class="loaderA"><div class="ball5"></div></div>
+        <div class="loaderA"><div class="ball6"></div></div>
+        <div class="loaderA"><div class="ball7"></div></div>
+        <div class="loaderA"><div class="ball8"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
 <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png" alt="Festival Graphics - Vibrant promotional materials and event branding designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 </div>
