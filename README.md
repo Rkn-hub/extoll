@@ -25,12 +25,13 @@ Extoll.Co is a professional portfolio website showcasing design and development 
 ### Technical Stack
 - **Frontend**: HTML5, Tailwind CSS, Vanilla JavaScript
 - **Backend**: Supabase (PostgreSQL database)
-- **Deployment**: Vercel
+- **Deployment**: GitHub Pages
+- **Domain**: extoll.co.in
 - **Assets**: Supabase Storage for images and media
 
 ### Configuration Files
 - **package.json** - Project dependencies and scripts
-- **vercel.json** - Deployment configuration
+- **CNAME** - Custom domain configuration for GitHub Pages
 - **supabase-setup.sql** - Database schema and setup
 - **supabase-form-handler.js** - Contact form functionality
 - **SUPABASE_SETUP_GUIDE.md** - Database setup instructions
@@ -54,7 +55,7 @@ Extoll.Co is a professional portfolio website showcasing design and development 
 - Multiple contact methods: Phone, Email, WhatsApp, Instagram
 
 ## Deployment
-The website is configured for deployment on Vercel with automatic builds from the main branch.
+The website is deployed on GitHub Pages with automatic builds from the main branch. The custom domain extoll.co.in is configured via DNS records pointing to GitHub's servers.
 
 ---
 

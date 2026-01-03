@@ -1,2 +1,0 @@
-Deployment trigger: 2026-01-02 - Logo flash fix deployment
-This file triggers Vercel deployment for logo transition fixes.
