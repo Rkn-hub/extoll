@@ -3,18 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-
-<!-- CRITICAL: Prevent logo flash - Load immediately -->
-<style>
-body { opacity: 0 !important; visibility: hidden !important; }
-body.loaded { opacity: 1 !important; visibility: visible !important; transition: opacity 0.3s ease; }
-.nav-logo { opacity: 1 !important; }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.classList.add('loaded');
-});
-</script>
 <meta name="description" content="Extoll.Co - Execution-first freelance collective specializing in Graphics Design, UI/UX Design, Product Design, 2D Animation, and Web Development. Powered by Startup Ops methodology."/>
 <meta name="keywords" content="freelance design, graphics design, UI UX design, product design, 2D animation, web development, startup ops, extoll"/>
 <meta name="author" content="Extoll.Co"/>
@@ -208,10 +196,6 @@ body {
     background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
 }
 
-/* Loading states and page transitions */
-.loading { opacity: 0.7; }
-.loaded { opacity: 1; transition: opacity 0.3s ease; }
-
 /* Page transition overlay */
 .page-transition {
   position: fixed;
@@ -223,7 +207,6 @@ body {
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
   pointer-events: none;
 }
 
@@ -233,28 +216,12 @@ body {
   pointer-events: all;
 }
 
-/* Prevent flash of content */
-body {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-body.loaded {
-  opacity: 1;
-}
-
-/* Navigation logo preload */
+/* Navigation logo */
 .nav-logo {
   opacity: 1;
-  transition: opacity 0.2s ease;
 }
 
-/* Smooth navigation transitions */
-.nav-link {
-  transition: all 0.2s ease;
-}
-
-/* Prevent layout shift during load */
+/* Layout container */
 .layout-container {
   min-height: 100vh;
 }
@@ -664,9 +631,6 @@ document.head.appendChild(script);
 </script>
 </head>
 <body class="bg-background-dark font-display text-gray-200">
-<!-- Page Transition Overlay -->
-<div class="page-transition" id="pageTransition"></div>
-
 <!-- Sparkle Background Effect -->
 <div class="sparkle-container" id="sparkleContainer"></div>
 
@@ -1732,51 +1696,14 @@ async function extractImageColors(img) {
 // Smooth page transitions
 function smoothNavigate(event, url) {
   event.preventDefault();
-  
-  const transition = document.getElementById('pageTransition');
-  transition.classList.add('active');
-  
-  setTimeout(() => {
-    window.location.href = url;
-  }, 300);
+  window.location.href = url;
 }
 
 // Page load handling
 document.addEventListener('DOMContentLoaded', function() {
-  // Add loaded class to body to prevent flash
-  document.body.classList.add('loaded');
-  
   // Preload logo image
   const logoImg = new Image();
   logoImg.src = 'logo.png';
-  
-  // Remove transition overlay if present
-  const transition = document.getElementById('pageTransition');
-  if (transition) {
-    setTimeout(() => {
-      transition.classList.remove('active');
-    }, 100);
-  }
-});
-
-// Handle page visibility changes
-document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible') {
-    document.body.classList.add('loaded');
-  }
-});
-
-// Preload critical images
-window.addEventListener('load', function() {
-  const criticalImages = [
-    'logo.png',
-    'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png'
-  ];
-  
-  criticalImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
 });
 </script>
 

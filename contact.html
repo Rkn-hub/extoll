@@ -3,18 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-
-<!-- CRITICAL: Prevent logo flash - Load immediately -->
-<style>
-body { opacity: 0 !important; visibility: hidden !important; }
-body.loaded { opacity: 1 !important; visibility: visible !important; transition: opacity 0.3s ease; }
-.nav-logo { opacity: 1 !important; }
-</style>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.classList.add('loaded');
-});
-</script>
 <meta name="description" content="Contact Extoll.Co - Get in touch for freelance design projects. Professional Graphics Design, UI/UX Design, Product Design, and Animation services."/>
 <meta name="keywords" content="contact extoll, freelance design, hire designer, design consultation, project inquiry"/>
 <meta name="author" content="Extoll.Co"/>
@@ -62,46 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 </script>
 <style>
-  /* Page transition styles */
-  .page-transition {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0A0A0D;
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    pointer-events: none;
-  }
-
-  .page-transition.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: all;
-  }
-
-  /* Prevent flash of content */
-  body {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  body.loaded {
-    opacity: 1;
-  }
-
-  /* Navigation logo preload */
+  /* Navigation logo */
   .nav-logo {
     opacity: 1;
-    transition: opacity 0.2s ease;
-  }
-
-  /* Smooth navigation transitions */
-  .nav-link {
-    transition: all 0.2s ease;
   }
 
   .glow-bg {
@@ -236,8 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-gray-300 antialiased">
-<!-- Page Transition Overlay -->
-<div class="page-transition" id="pageTransition"></div>
 
 <!-- Sparkle Background Effect -->
 <div class="sparkle-container" id="sparkleContainer"></div>
@@ -615,38 +564,14 @@ function initializeSparkleEffect() {
 // Smooth page transitions
 function smoothNavigate(event, url) {
   event.preventDefault();
-  
-  const transition = document.getElementById('pageTransition');
-  transition.classList.add('active');
-  
-  setTimeout(() => {
-    window.location.href = url;
-  }, 300);
+  window.location.href = url;
 }
 
 // Page load handling
 document.addEventListener('DOMContentLoaded', function() {
-  // Add loaded class to body to prevent flash
-  document.body.classList.add('loaded');
-  
   // Preload logo image
   const logoImg = new Image();
   logoImg.src = 'logo.png';
-  
-  // Remove transition overlay if present
-  const transition = document.getElementById('pageTransition');
-  if (transition) {
-    setTimeout(() => {
-      transition.classList.remove('active');
-    }, 100);
-  }
-});
-
-// Handle page visibility changes
-document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible') {
-    document.body.classList.add('loaded');
-  }
 });
 </script>
 </body>
