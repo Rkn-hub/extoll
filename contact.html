@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+<!-- CRITICAL: Prevent logo flash - Load immediately -->
+<style>
+body { opacity: 0 !important; visibility: hidden !important; }
+body.loaded { opacity: 1 !important; visibility: visible !important; transition: opacity 0.3s ease; }
+.nav-logo { opacity: 1 !important; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
+</script>
 <meta name="description" content="Contact Extoll.Co - Get in touch for freelance design projects. Professional Graphics Design, UI/UX Design, Product Design, and Animation services."/>
 <meta name="keywords" content="contact extoll, freelance design, hire designer, design consultation, project inquiry"/>
 <meta name="author" content="Extoll.Co"/>
