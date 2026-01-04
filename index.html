@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+<!-- CRITICAL: Prevent logo flash - Load immediately -->
+<style>
+body { opacity: 0 !important; visibility: hidden !important; }
+body.loaded { opacity: 1 !important; visibility: visible !important; transition: opacity 0.3s ease; }
+.nav-logo { opacity: 1 !important; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
+</script>
 <meta name="description" content="Extoll.Co - Execution-first freelance collective specializing in Graphics Design, UI/UX Design, Product Design, 2D Animation, and Web Development. Powered by Startup Ops methodology."/>
 <meta name="keywords" content="freelance design, graphics design, UI UX design, product design, 2D animation, web development, startup ops, extoll"/>
 <meta name="author" content="Extoll.Co"/>
