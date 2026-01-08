@@ -401,21 +401,107 @@ body {
             <!-- Website Content Settings -->
             <div class="border-t border-gray-700 pt-8">
                 <h3 class="text-2xl font-bold text-white mb-6">Website Content</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-lg font-medium text-gray-300 mb-3">Portfolio Title</label>
-                        <input type="text" id="portfolioTitle" class="form-input" placeholder="Your Portfolio Name">
-                    </div>
-                    <div>
-                        <label class="block text-lg font-medium text-gray-300 mb-3">Tagline</label>
-                        <input type="text" id="portfolioTagline" class="form-input" placeholder="Your Professional Tagline">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-lg font-medium text-gray-300 mb-3">About Text</label>
-                        <textarea id="aboutText" class="form-textarea" rows="4" placeholder="Tell visitors about yourself and your work..."></textarea>
+                
+                <!-- Main Hero Section -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-white mb-4">Hero Section</h4>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Main Title</label>
+                            <input type="text" id="heroTitle" class="form-input" placeholder="Crafting Digital Experiences That Stand Out">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Subtitle</label>
+                            <input type="text" id="heroSubtitle" class="form-input" placeholder="Where ideas meet execution.">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                            <textarea id="heroDescription" class="form-textarea" rows="3" placeholder="Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create..."></textarea>
+                        </div>
                     </div>
                 </div>
-                <button class="btn-primary mt-6" onclick="saveWebsiteContent()">Save Content</button>
+
+                <!-- About Section -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-white mb-4">About Section</h4>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">About Title</label>
+                            <input type="text" id="aboutTitle" class="form-input" placeholder="About Extoll">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">About Tagline</label>
+                            <input type="text" id="aboutTagline" class="form-input" placeholder="Execution-first freelance collective. Powered by Startup Ops.">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">About Description</label>
+                            <textarea id="aboutDescription" class="form-textarea" rows="4" placeholder="Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Section -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-white mb-4">Services Section</h4>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Services Title</label>
+                            <input type="text" id="servicesTitle" class="form-input" placeholder="Services">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Services Description</label>
+                            <input type="text" id="servicesDescription" class="form-input" placeholder="Professional design and creative services tailored to bring your vision to life">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-white mb-4">Contact Information</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Contact Title</label>
+                            <input type="text" id="contactTitle" class="form-input" placeholder="Or reach me directly">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+                            <input type="tel" id="contactPhone" class="form-input" placeholder="+91 9316158312">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">WhatsApp Number</label>
+                            <input type="tel" id="whatsappNumber" class="form-input" placeholder="+91 9316158312">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                            <input type="email" id="contactEmail" class="form-input" placeholder="extoll.co.in@gmail.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Instagram Handle</label>
+                            <input type="text" id="instagramHandle" class="form-input" placeholder="@ExtollCo">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Instagram URL</label>
+                            <input type="url" id="instagramUrl" class="form-input" placeholder="https://instagram.com/extollco">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Section -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-white mb-4">Portfolio Section</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Portfolio Title</label>
+                            <input type="text" id="portfolioTitle" class="form-input" placeholder="Portfolio">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Portfolio Description</label>
+                            <input type="text" id="portfolioDescription" class="form-input" placeholder="Showcase of our creative work and professional projects across various design disciplines.">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-primary mt-6" onclick="saveWebsiteContent()">Save All Content</button>
             </div>
             
             <!-- Other Assets -->
@@ -2066,21 +2152,83 @@ function loadWebsiteContent() {
     if (savedContent) {
         const content = JSON.parse(savedContent);
         
-        document.getElementById('portfolioTitle').value = content.title || '';
-        document.getElementById('portfolioTagline').value = content.tagline || '';
-        document.getElementById('aboutText').value = content.about || '';
+        // Hero Section
+        document.getElementById('heroTitle').value = content.heroTitle || 'Crafting Digital Experiences That Stand Out';
+        document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Where ideas meet execution.';
+        document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+        
+        // About Section
+        document.getElementById('aboutTitle').value = content.aboutTitle || 'About Extoll';
+        document.getElementById('aboutTagline').value = content.aboutTagline || 'Execution-first freelance collective. Powered by Startup Ops.';
+        document.getElementById('aboutDescription').value = content.aboutDescription || 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
+        
+        // Services Section
+        document.getElementById('servicesTitle').value = content.servicesTitle || 'Services';
+        document.getElementById('servicesDescription').value = content.servicesDescription || 'Professional design and creative services tailored to bring your vision to life';
+        
+        // Contact Information
+        document.getElementById('contactTitle').value = content.contactTitle || 'Or reach me directly';
+        document.getElementById('contactPhone').value = content.contactPhone || '+91 9316158312';
+        document.getElementById('whatsappNumber').value = content.whatsappNumber || '+91 9316158312';
+        document.getElementById('contactEmail').value = content.contactEmail || 'extoll.co.in@gmail.com';
+        document.getElementById('instagramHandle').value = content.instagramHandle || '@ExtollCo';
+        document.getElementById('instagramUrl').value = content.instagramUrl || 'https://instagram.com/extollco';
+        
+        // Portfolio Section
+        document.getElementById('portfolioTitle').value = content.portfolioTitle || 'Portfolio';
+        document.getElementById('portfolioDescription').value = content.portfolioDescription || 'Showcase of our creative work and professional projects across various design disciplines.';
+    } else {
+        // Set default values if no saved content
+        document.getElementById('heroTitle').value = 'Crafting Digital Experiences That Stand Out';
+        document.getElementById('heroSubtitle').value = 'Where ideas meet execution.';
+        document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+        document.getElementById('aboutTitle').value = 'About Extoll';
+        document.getElementById('aboutTagline').value = 'Execution-first freelance collective. Powered by Startup Ops.';
+        document.getElementById('aboutDescription').value = 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
+        document.getElementById('servicesTitle').value = 'Services';
+        document.getElementById('servicesDescription').value = 'Professional design and creative services tailored to bring your vision to life';
+        document.getElementById('contactTitle').value = 'Or reach me directly';
+        document.getElementById('contactPhone').value = '+91 9316158312';
+        document.getElementById('whatsappNumber').value = '+91 9316158312';
+        document.getElementById('contactEmail').value = 'extoll.co.in@gmail.com';
+        document.getElementById('instagramHandle').value = '@ExtollCo';
+        document.getElementById('instagramUrl').value = 'https://instagram.com/extollco';
+        document.getElementById('portfolioTitle').value = 'Portfolio';
+        document.getElementById('portfolioDescription').value = 'Showcase of our creative work and professional projects across various design disciplines.';
     }
 }
 
 function saveWebsiteContent() {
     const content = {
-        title: document.getElementById('portfolioTitle').value,
-        tagline: document.getElementById('portfolioTagline').value,
-        about: document.getElementById('aboutText').value
+        // Hero Section
+        heroTitle: document.getElementById('heroTitle').value,
+        heroSubtitle: document.getElementById('heroSubtitle').value,
+        heroDescription: document.getElementById('heroDescription').value,
+        
+        // About Section
+        aboutTitle: document.getElementById('aboutTitle').value,
+        aboutTagline: document.getElementById('aboutTagline').value,
+        aboutDescription: document.getElementById('aboutDescription').value,
+        
+        // Services Section
+        servicesTitle: document.getElementById('servicesTitle').value,
+        servicesDescription: document.getElementById('servicesDescription').value,
+        
+        // Contact Information
+        contactTitle: document.getElementById('contactTitle').value,
+        contactPhone: document.getElementById('contactPhone').value,
+        whatsappNumber: document.getElementById('whatsappNumber').value,
+        contactEmail: document.getElementById('contactEmail').value,
+        instagramHandle: document.getElementById('instagramHandle').value,
+        instagramUrl: document.getElementById('instagramUrl').value,
+        
+        // Portfolio Section
+        portfolioTitle: document.getElementById('portfolioTitle').value,
+        portfolioDescription: document.getElementById('portfolioDescription').value
     };
     
     localStorage.setItem('websiteContent', JSON.stringify(content));
-    showNotification('Website content saved successfully!', 'success');
+    showNotification('All website content saved successfully!', 'success');
 }
 
 function deleteAsset(assetPath) {
