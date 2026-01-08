@@ -363,21 +363,77 @@ body {
         <h2 class="text-4xl font-bold text-white mb-12">Website Assets</h2>
         
         <div class="glass-card p-10 rounded-xl space-y-8">
-            <!-- Simple Asset Upload -->
-            <div class="bg-gray-800/50 p-6 rounded-lg">
-                <h3 class="text-xl font-bold text-white mb-4">Upload Assets</h3>
-                <div class="upload-area" id="assetsUpload">
-                    <div class="text-center">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <p class="mt-2 text-sm text-gray-400">Upload Files</p>
-                        <p class="text-xs text-gray-500">Images, Videos, Documents</p>
+            <!-- Logo and Banner Upload -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Logo Upload -->
+                <div class="bg-gray-800/50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-white mb-4">Logo Upload</h3>
+                    <div class="upload-area" id="logoUpload">
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-400">Upload Logo</p>
+                            <p class="text-xs text-gray-500">PNG, SVG, JPG</p>
+                        </div>
+                        <input type="file" id="logoInput" class="hidden" accept="image/*">
                     </div>
-                    <input type="file" id="assetsInput" class="hidden" multiple>
+                    <div id="logoPreview" class="mt-4"></div>
                 </div>
-                <div id="assetsPreview" class="mt-4"></div>
-                <div id="assetsList" class="mt-4 space-y-2"></div>
+                
+                <!-- Banner Upload -->
+                <div class="bg-gray-800/50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-white mb-4">Banner Upload</h3>
+                    <div class="upload-area" id="bannerUpload">
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-400">Upload Banner</p>
+                            <p class="text-xs text-gray-500">JPG, PNG (1920x1080)</p>
+                        </div>
+                        <input type="file" id="bannerInput" class="hidden" accept="image/*">
+                    </div>
+                    <div id="bannerPreview" class="mt-4"></div>
+                </div>
+            </div>
+            
+            <!-- Website Content Settings -->
+            <div class="border-t border-gray-700 pt-8">
+                <h3 class="text-2xl font-bold text-white mb-6">Website Content</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Portfolio Title</label>
+                        <input type="text" id="portfolioTitle" class="form-input" placeholder="Your Portfolio Name">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Tagline</label>
+                        <input type="text" id="portfolioTagline" class="form-input" placeholder="Your Professional Tagline">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-lg font-medium text-gray-300 mb-3">About Text</label>
+                        <textarea id="aboutText" class="form-textarea" rows="4" placeholder="Tell visitors about yourself and your work..."></textarea>
+                    </div>
+                </div>
+                <button class="btn-primary mt-6" onclick="saveWebsiteContent()">Save Content</button>
+            </div>
+            
+            <!-- Other Assets -->
+            <div class="border-t border-gray-700 pt-8">
+                <h3 class="text-2xl font-bold text-white mb-6">Other Assets</h3>
+                <div class="bg-gray-800/50 p-6 rounded-lg">
+                    <div class="upload-area" id="assetsUpload">
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-400">Upload Files</p>
+                            <p class="text-xs text-gray-500">Images, Videos, Documents</p>
+                        </div>
+                        <input type="file" id="assetsInput" class="hidden" multiple>
+                    </div>
+                    <div id="assetsList" class="mt-4 space-y-2"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1942,6 +1998,11 @@ function loadWebsiteAssets() {
     // Load existing assets from storage
     if (!adminSupabase) return;
     
+    // Load logo and banner
+    loadSpecificAsset('logo');
+    loadSpecificAsset('banner');
+    
+    // Load other assets
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .list('website-assets', {
@@ -1953,13 +2014,9 @@ function loadWebsiteAssets() {
             const listElement = document.getElementById('assetsList');
             if (!listElement) return;
             
-            const assets = result.data || [];
+            const assets = result.data.filter(file => !file.name.includes('logo') && !file.name.includes('banner')) || [];
             
             listElement.innerHTML = assets.map(function(asset) {
-                const publicUrlResult = adminSupabase.storage
-                    .from(SUPABASE_CONFIG.bucket)
-                    .getPublicUrl('website-assets/' + asset.name);
-                
                 return `
                     <div class="flex justify-between items-center p-2 bg-gray-700 rounded text-sm">
                         <span class="text-white truncate">${asset.name}</span>
@@ -1968,6 +2025,62 @@ function loadWebsiteAssets() {
                 `;
             }).join('');
         });
+    
+    // Load website content
+    loadWebsiteContent();
+}
+
+function loadSpecificAsset(assetType) {
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .list('website-assets', {
+            limit: 10,
+            search: assetType
+        })
+        .then(function(result) {
+            if (result.error) return;
+            
+            const previewElement = document.getElementById(assetType + 'Preview');
+            if (!previewElement) return;
+            
+            const assets = result.data.filter(file => file.name.includes(assetType));
+            
+            if (assets.length > 0) {
+                const latestAsset = assets[0];
+                const publicUrlResult = adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .getPublicUrl('website-assets/' + latestAsset.name);
+                
+                previewElement.innerHTML = `
+                    <div class="relative">
+                        <img src="${publicUrlResult.data.publicUrl}" alt="${assetType}" class="w-full h-32 object-cover rounded">
+                        <button class="absolute top-2 right-2 bg-red-600 text-white p-1 rounded text-xs" onclick="deleteAsset('website-assets/${latestAsset.name}')">Delete</button>
+                    </div>
+                `;
+            }
+        });
+}
+
+function loadWebsiteContent() {
+    const savedContent = localStorage.getItem('websiteContent');
+    if (savedContent) {
+        const content = JSON.parse(savedContent);
+        
+        document.getElementById('portfolioTitle').value = content.title || '';
+        document.getElementById('portfolioTagline').value = content.tagline || '';
+        document.getElementById('aboutText').value = content.about || '';
+    }
+}
+
+function saveWebsiteContent() {
+    const content = {
+        title: document.getElementById('portfolioTitle').value,
+        tagline: document.getElementById('portfolioTagline').value,
+        about: document.getElementById('aboutText').value
+    };
+    
+    localStorage.setItem('websiteContent', JSON.stringify(content));
+    showNotification('Website content saved successfully!', 'success');
 }
 
 function deleteAsset(assetPath) {
@@ -1990,11 +2103,60 @@ function deleteAsset(assetPath) {
         });
 }
 
-function handleAssetsUpload(files) {
+function handleLogoUpload(file) {
     if (!adminSupabase) return;
     
-    const previewElement = document.getElementById('assetsPreview');
-    previewElement.innerHTML = '<p class="text-gray-400">Uploading files...</p>';
+    const fileName = 'logo.' + file.name.split('.').pop();
+    const filePath = 'website-assets/' + fileName;
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: true
+        })
+        .then(function(result) {
+            if (result.error) {
+                showNotification('Error uploading logo: ' + result.error.message, 'error');
+                return;
+            }
+            
+            showNotification('Logo uploaded successfully!', 'success');
+            loadSpecificAsset('logo');
+        })
+        .catch(function(error) {
+            showNotification('Error uploading logo: ' + error.message, 'error');
+        });
+}
+
+function handleBannerUpload(file) {
+    if (!adminSupabase) return;
+    
+    const fileName = 'banner.' + file.name.split('.').pop();
+    const filePath = 'website-assets/' + fileName;
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: true
+        })
+        .then(function(result) {
+            if (result.error) {
+                showNotification('Error uploading banner: ' + result.error.message, 'error');
+                return;
+            }
+            
+            showNotification('Banner uploaded successfully!', 'success');
+            loadSpecificAsset('banner');
+        })
+        .catch(function(error) {
+            showNotification('Error uploading banner: ' + error.message, 'error');
+        });
+}
+
+function handleAssetsUpload(files) {
+    if (!adminSupabase) return;
     
     Array.from(files).forEach(function(file, index) {
         const fileName = 'asset-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
@@ -2257,9 +2419,13 @@ function setupEventListeners() {
         filterCategory.addEventListener('change', displayProjects);
     }
     
-    // Assets upload area
+    // Assets upload areas
     const assetsArea = document.getElementById('assetsUpload');
     const assetsInput = document.getElementById('assetsInput');
+    const logoArea = document.getElementById('logoUpload');
+    const logoInput = document.getElementById('logoInput');
+    const bannerArea = document.getElementById('bannerUpload');
+    const bannerInput = document.getElementById('bannerInput');
     
     if (assetsArea && assetsInput) {
         assetsArea.addEventListener('click', function() {
@@ -2269,6 +2435,30 @@ function setupEventListeners() {
         assetsInput.addEventListener('change', function(e) {
             if (e.target.files.length > 0) {
                 handleAssetsUpload(e.target.files);
+            }
+        });
+    }
+    
+    if (logoArea && logoInput) {
+        logoArea.addEventListener('click', function() {
+            logoInput.click();
+        });
+        
+        logoInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleLogoUpload(e.target.files[0]);
+            }
+        });
+    }
+    
+    if (bannerArea && bannerInput) {
+        bannerArea.addEventListener('click', function() {
+            bannerInput.click();
+        });
+        
+        bannerInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleBannerUpload(e.target.files[0]);
             }
         });
     }
