@@ -2262,80 +2262,125 @@ function loadTeamInfo() {
 }
 
 function saveTeamInfo() {
-    const team = {
-        sectionTitle: document.getElementById('teamSectionTitle').value,
-        team1Name: document.getElementById('team1Name').value,
-        team1Role: document.getElementById('team1Role').value,
-        team2Name: document.getElementById('team2Name').value,
-        team2Role: document.getElementById('team2Role').value,
-        team3Name: document.getElementById('team3Name').value,
-        team3Role: document.getElementById('team3Role').value,
-        team4Name: document.getElementById('team4Name').value,
-        team4Role: document.getElementById('team4Role').value
-    };
+    console.log('👥 Saving team information...');
     
-    localStorage.setItem('teamInfo', JSON.stringify(team));
-    showNotification('Team information saved successfully!', 'success');
+    try {
+        const team = {
+            sectionTitle: document.getElementById('teamSectionTitle').value,
+            team1Name: document.getElementById('team1Name').value,
+            team1Role: document.getElementById('team1Role').value,
+            team2Name: document.getElementById('team2Name').value,
+            team2Role: document.getElementById('team2Role').value,
+            team3Name: document.getElementById('team3Name').value,
+            team3Role: document.getElementById('team3Role').value,
+            team4Name: document.getElementById('team4Name').value,
+            team4Role: document.getElementById('team4Role').value
+        };
+        
+        console.log('👥 Team data to save:', team);
+        localStorage.setItem('teamInfo', JSON.stringify(team));
+        console.log('✅ Team information saved successfully');
+        showNotification('Team information saved successfully!', 'success');
+    } catch (error) {
+        console.error('❌ Error saving team information:', error);
+        showNotification('Error saving team information: ' + error.message, 'error');
+    }
 }
 
 function saveWebsiteContent() {
-    const content = {
-        // Hero Section
-        heroTitle: document.getElementById('heroTitle').value,
-        heroSubtitle: document.getElementById('heroSubtitle').value,
-        heroDescription: document.getElementById('heroDescription').value,
-        
-        // About Section
-        aboutTitle: document.getElementById('aboutTitle').value,
-        aboutTagline: document.getElementById('aboutTagline').value,
-        aboutDescription: document.getElementById('aboutDescription').value,
-        
-        // Services Section
-        servicesTitle: document.getElementById('servicesTitle').value,
-        servicesDescription: document.getElementById('servicesDescription').value,
-        
-        // Contact Information
-        contactTitle: document.getElementById('contactTitle').value,
-        contactPhone: document.getElementById('contactPhone').value,
-        whatsappNumber: document.getElementById('whatsappNumber').value,
-        contactEmail: document.getElementById('contactEmail').value,
-        instagramHandle: document.getElementById('instagramHandle').value,
-        instagramUrl: document.getElementById('instagramUrl').value,
-        
-        // Portfolio Section
-        portfolioTitle: document.getElementById('portfolioTitle').value,
-        portfolioDescription: document.getElementById('portfolioDescription').value
-    };
+    console.log('💾 Saving website content...');
     
-    localStorage.setItem('websiteContent', JSON.stringify(content));
-    showNotification('All website content saved successfully!', 'success');
+    try {
+        const content = {
+            // Hero Section
+            heroTitle: document.getElementById('heroTitle').value,
+            heroSubtitle: document.getElementById('heroSubtitle').value,
+            heroDescription: document.getElementById('heroDescription').value,
+            
+            // About Section
+            aboutTitle: document.getElementById('aboutTitle').value,
+            aboutTagline: document.getElementById('aboutTagline').value,
+            aboutDescription: document.getElementById('aboutDescription').value,
+            
+            // Services Section
+            servicesTitle: document.getElementById('servicesTitle').value,
+            servicesDescription: document.getElementById('servicesDescription').value,
+            
+            // Contact Information
+            contactTitle: document.getElementById('contactTitle').value,
+            contactPhone: document.getElementById('contactPhone').value,
+            whatsappNumber: document.getElementById('whatsappNumber').value,
+            contactEmail: document.getElementById('contactEmail').value,
+            instagramHandle: document.getElementById('instagramHandle').value,
+            instagramUrl: document.getElementById('instagramUrl').value,
+            
+            // Portfolio Section
+            portfolioTitle: document.getElementById('portfolioTitle').value,
+            portfolioDescription: document.getElementById('portfolioDescription').value
+        };
+        
+        console.log('💾 Content to save:', content);
+        localStorage.setItem('websiteContent', JSON.stringify(content));
+        console.log('✅ Website content saved successfully');
+        showNotification('All website content saved successfully!', 'success');
+    } catch (error) {
+        console.error('❌ Error saving website content:', error);
+        showNotification('Error saving website content: ' + error.message, 'error');
+    }
 }
 
 function deleteAsset(assetPath) {
-    if (!confirm('Are you sure you want to delete this asset?')) return;
+    console.log('🗑️ Attempting to delete asset:', assetPath);
+    
+    if (!confirm('Are you sure you want to delete this asset?')) {
+        console.log('❌ Delete cancelled by user');
+        return;
+    }
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
+    
+    console.log('🗑️ Deleting asset from Supabase...');
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .remove([assetPath])
         .then(function(result) {
+            console.log('🗑️ Delete result:', result);
+            
             if (result.error) {
+                console.error('❌ Delete error:', result.error);
                 showNotification('Error deleting asset: ' + result.error.message, 'error');
                 return;
             }
             
+            console.log('✅ Asset deleted successfully');
             showNotification('Asset deleted successfully', 'success');
             loadWebsiteAssets();
         })
         .catch(function(error) {
+            console.error('❌ Delete catch error:', error);
             showNotification('Error deleting asset: ' + error.message, 'error');
         });
 }
 
 function handleLogoUpload(file) {
-    if (!adminSupabase) return;
+    console.log('🚀 Starting logo upload:', file.name);
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
     
     const fileName = 'logo.' + file.name.split('.').pop();
     const filePath = 'website-assets/' + fileName;
+    
+    console.log('📤 Uploading to:', filePath);
+    showNotification('Uploading logo...', 'info');
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
@@ -2344,24 +2389,38 @@ function handleLogoUpload(file) {
             upsert: true
         })
         .then(function(result) {
+            console.log('📤 Upload result:', result);
+            
             if (result.error) {
+                console.error('❌ Upload error:', result.error);
                 showNotification('Error uploading logo: ' + result.error.message, 'error');
                 return;
             }
             
+            console.log('✅ Logo uploaded successfully');
             showNotification('Logo uploaded successfully!', 'success');
             loadSpecificAsset('logo');
         })
         .catch(function(error) {
+            console.error('❌ Upload catch error:', error);
             showNotification('Error uploading logo: ' + error.message, 'error');
         });
 }
 
 function handleBannerUpload(file) {
-    if (!adminSupabase) return;
+    console.log('🚀 Starting banner upload:', file.name);
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
     
     const fileName = 'banner.' + file.name.split('.').pop();
     const filePath = 'website-assets/' + fileName;
+    
+    console.log('📤 Uploading to:', filePath);
+    showNotification('Uploading banner...', 'info');
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
@@ -2370,15 +2429,20 @@ function handleBannerUpload(file) {
             upsert: true
         })
         .then(function(result) {
+            console.log('📤 Upload result:', result);
+            
             if (result.error) {
+                console.error('❌ Upload error:', result.error);
                 showNotification('Error uploading banner: ' + result.error.message, 'error');
                 return;
             }
             
+            console.log('✅ Banner uploaded successfully');
             showNotification('Banner uploaded successfully!', 'success');
             loadSpecificAsset('banner');
         })
         .catch(function(error) {
+            console.error('❌ Upload catch error:', error);
             showNotification('Error uploading banner: ' + error.message, 'error');
         });
 }
@@ -2627,28 +2691,45 @@ function setupEventListeners() {
     const bannerArea = document.getElementById('bannerUpload');
     const bannerInput = document.getElementById('bannerInput');
     
+    console.log('🔍 Checking upload elements:', {
+        logoArea: !!logoArea,
+        logoInput: !!logoInput,
+        bannerArea: !!bannerArea,
+        bannerInput: !!bannerInput
+    });
+    
     if (logoArea && logoInput) {
+        console.log('✅ Setting up logo upload listeners');
         logoArea.addEventListener('click', function() {
+            console.log('📷 Logo upload area clicked');
             logoInput.click();
         });
         
         logoInput.addEventListener('change', function(e) {
+            console.log('📷 Logo file selected:', e.target.files.length);
             if (e.target.files.length > 0) {
                 handleLogoUpload(e.target.files[0]);
             }
         });
+    } else {
+        console.error('❌ Logo upload elements not found');
     }
     
     if (bannerArea && bannerInput) {
+        console.log('✅ Setting up banner upload listeners');
         bannerArea.addEventListener('click', function() {
+            console.log('🖼️ Banner upload area clicked');
             bannerInput.click();
         });
         
         bannerInput.addEventListener('change', function(e) {
+            console.log('🖼️ Banner file selected:', e.target.files.length);
             if (e.target.files.length > 0) {
                 handleBannerUpload(e.target.files[0]);
             }
         });
+    } else {
+        console.error('❌ Banner upload elements not found');
     }
 }
 
