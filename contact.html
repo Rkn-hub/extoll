@@ -664,46 +664,69 @@ document.addEventListener('visibilitychange', function() {
 </script>
 
 <!-- Dynamic Content Loading Script -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
-// Load dynamic content from admin panel for Contact page
+// Load dynamic content from Supabase for Contact page
 function loadDynamicContactContent() {
-    console.log('🔄 Loading dynamic contact content from admin panel...');
+    console.log('🔄 Loading dynamic contact content from Supabase...');
     
-    // Load website content
-    const savedContent = localStorage.getItem('websiteContent');
-    if (savedContent) {
-        const content = JSON.parse(savedContent);
-        console.log('📄 Found saved website content for contact page:', content);
-        
-        // Update contact email
-        const emailLink = document.querySelector('[href*="mailto:"]');
-        const emailText = document.querySelector('p:contains("extoll.co.in@gmail.com")');
-        
-        if (emailLink && content.contactEmail) {
-            emailLink.href = 'mailto:' + content.contactEmail;
-            console.log('✅ Updated email link');
-        }
-        
-        if (emailText && content.contactEmail) {
-            emailText.textContent = content.contactEmail;
-            console.log('✅ Updated email text');
-        }
-        
-        // Update form action
-        const formScript = document.querySelector('script:contains("formsubmit.co")');
-        if (formScript && content.contactEmail) {
-            // Update the form submission URL in the script
-            const scriptContent = formScript.textContent;
-            const updatedScript = scriptContent.replace(
-                /https:\/\/formsubmit\.co\/[^'"]*/g,
-                'https://formsubmit.co/' + content.contactEmail
-            );
-            formScript.textContent = updatedScript;
-            console.log('✅ Updated form submission email');
-        }
-    } else {
-        console.log('ℹ️ No saved website content found, using defaults');
+    // Initialize Supabase
+    const initResult = initializeSupabase();
+    if (!initResult) {
+        console.error('❌ Failed to initialize Supabase');
+        return;
     }
+    
+    const supabase = configSupabase;
+    
+    // Load website content from Supabase
+    supabase.storage
+        .from(SUPABASE_CONFIG.metadataBucket)
+        .download('website-content.json')
+        .then(function(result) {
+            if (result.error) {
+                console.log('ℹ️ No saved website content found in Supabase, using defaults');
+                return;
+            }
+            
+            result.data.text().then(function(jsonText) {
+                const content = JSON.parse(jsonText);
+                console.log('📄 Found saved website content for contact page from Supabase:', content);
+                
+                // Update contact email
+                const emailLink = document.querySelector('[href*="mailto:"]');
+                const emailText = document.querySelector('p:contains("extoll.co.in@gmail.com")');
+                
+                if (emailLink && content.contactEmail) {
+                    emailLink.href = 'mailto:' + content.contactEmail;
+                    console.log('✅ Updated email link');
+                }
+                
+                if (emailText && content.contactEmail) {
+                    emailText.textContent = content.contactEmail;
+                    console.log('✅ Updated email text');
+                }
+                
+                // Update form action
+                const formScript = document.querySelector('script:contains("formsubmit.co")');
+                if (formScript && content.contactEmail) {
+                    // Update the form submission URL in the script
+                    const scriptContent = formScript.textContent;
+                    const updatedScript = scriptContent.replace(
+                        /https:\/\/formsubmit\.co\/[^'"]*/g,
+                        'https://formsubmit.co/' + content.contactEmail
+                    );
+                    formScript.textContent = updatedScript;
+                    console.log('✅ Updated form submission email');
+                }
+                
+                console.log('✅ Contact content updated from Supabase');
+            });
+        })
+        .catch(function(error) {
+            console.error('❌ Error loading website content from Supabase:', error);
+        });
     
     console.log('✅ Dynamic contact content loading complete');
 }

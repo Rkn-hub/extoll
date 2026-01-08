@@ -2183,86 +2183,148 @@ function loadSpecificAsset(assetType) {
 }
 
 function loadWebsiteContent() {
-    const savedContent = localStorage.getItem('websiteContent');
-    if (savedContent) {
-        const content = JSON.parse(savedContent);
-        
-        // Hero Section
-        document.getElementById('heroTitle').value = content.heroTitle || 'Crafting Digital Experiences That Stand Out';
-        document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Where ideas meet execution.';
-        document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
-        
-        // About Section
-        document.getElementById('aboutTitle').value = content.aboutTitle || 'About Extoll';
-        document.getElementById('aboutTagline').value = content.aboutTagline || 'Execution-first freelance collective. Powered by Startup Ops.';
-        document.getElementById('aboutDescription').value = content.aboutDescription || 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
-        
-        // Services Section
-        document.getElementById('servicesTitle').value = content.servicesTitle || 'Services';
-        document.getElementById('servicesDescription').value = content.servicesDescription || 'Professional design and creative services tailored to bring your vision to life';
-        
-        // Contact Information
-        document.getElementById('contactTitle').value = content.contactTitle || 'Or reach me directly';
-        document.getElementById('contactPhone').value = content.contactPhone || '+91 9316158312';
-        document.getElementById('whatsappNumber').value = content.whatsappNumber || '+91 9316158312';
-        document.getElementById('contactEmail').value = content.contactEmail || 'extoll.co.in@gmail.com';
-        document.getElementById('instagramHandle').value = content.instagramHandle || '@ExtollCo';
-        document.getElementById('instagramUrl').value = content.instagramUrl || 'https://instagram.com/extollco';
-        
-        // Portfolio Section
-        document.getElementById('portfolioTitle').value = content.portfolioTitle || 'Portfolio';
-        document.getElementById('portfolioDescription').value = content.portfolioDescription || 'Showcase of our creative work and professional projects across various design disciplines.';
-    } else {
-        // Set default values if no saved content
-        document.getElementById('heroTitle').value = 'Crafting Digital Experiences That Stand Out';
-        document.getElementById('heroSubtitle').value = 'Where ideas meet execution.';
-        document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
-        document.getElementById('aboutTitle').value = 'About Extoll';
-        document.getElementById('aboutTagline').value = 'Execution-first freelance collective. Powered by Startup Ops.';
-        document.getElementById('aboutDescription').value = 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
-        document.getElementById('servicesTitle').value = 'Services';
-        document.getElementById('servicesDescription').value = 'Professional design and creative services tailored to bring your vision to life';
-        document.getElementById('contactTitle').value = 'Or reach me directly';
-        document.getElementById('contactPhone').value = '+91 9316158312';
-        document.getElementById('whatsappNumber').value = '+91 9316158312';
-        document.getElementById('contactEmail').value = 'extoll.co.in@gmail.com';
-        document.getElementById('instagramHandle').value = '@ExtollCo';
-        document.getElementById('instagramUrl').value = 'https://instagram.com/extollco';
-        document.getElementById('portfolioTitle').value = 'Portfolio';
-        document.getElementById('portfolioDescription').value = 'Showcase of our creative work and professional projects across various design disciplines.';
+    console.log('📥 Loading website content from Supabase...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
     }
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.metadataBucket)
+        .download('website-content.json')
+        .then(function(result) {
+            if (result.error) {
+                console.log('ℹ️ No saved website content found, using defaults');
+                loadDefaultWebsiteContent();
+                return;
+            }
+            
+            result.data.text().then(function(jsonText) {
+                const content = JSON.parse(jsonText);
+                console.log('📥 Loaded website content from Supabase:', content);
+                
+                // Hero Section
+                document.getElementById('heroTitle').value = content.heroTitle || 'Crafting Digital Experiences That Stand Out';
+                document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Where ideas meet execution.';
+                document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+                
+                // About Section
+                document.getElementById('aboutTitle').value = content.aboutTitle || 'About Extoll';
+                document.getElementById('aboutTagline').value = content.aboutTagline || 'Execution-first freelance collective. Powered by Startup Ops.';
+                document.getElementById('aboutDescription').value = content.aboutDescription || 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
+                
+                // Services Section
+                document.getElementById('servicesTitle').value = content.servicesTitle || 'Services';
+                document.getElementById('servicesDescription').value = content.servicesDescription || 'Professional design and creative services tailored to bring your vision to life';
+                
+                // Contact Information
+                document.getElementById('contactTitle').value = content.contactTitle || 'Or reach me directly';
+                document.getElementById('contactPhone').value = content.contactPhone || '+91 9316158312';
+                document.getElementById('whatsappNumber').value = content.whatsappNumber || '+91 9316158312';
+                document.getElementById('contactEmail').value = content.contactEmail || 'extoll.co.in@gmail.com';
+                document.getElementById('instagramHandle').value = content.instagramHandle || '@ExtollCo';
+                document.getElementById('instagramUrl').value = content.instagramUrl || 'https://instagram.com/extollco';
+                
+                // Portfolio Section
+                document.getElementById('portfolioTitle').value = content.portfolioTitle || 'Portfolio';
+                document.getElementById('portfolioDescription').value = content.portfolioDescription || 'Showcase of our creative work and professional projects across various design disciplines.';
+                
+                console.log('✅ Website content loaded successfully');
+            });
+        })
+        .catch(function(error) {
+            console.error('❌ Error loading website content:', error);
+            loadDefaultWebsiteContent();
+        });
+}
+
+function loadDefaultWebsiteContent() {
+    console.log('📝 Loading default website content...');
+    
+    // Set default values
+    document.getElementById('heroTitle').value = 'Crafting Digital Experiences That Stand Out';
+    document.getElementById('heroSubtitle').value = 'Where ideas meet execution.';
+    document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+    document.getElementById('aboutTitle').value = 'About Extoll';
+    document.getElementById('aboutTagline').value = 'Execution-first freelance collective. Powered by Startup Ops.';
+    document.getElementById('aboutDescription').value = 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
+    document.getElementById('servicesTitle').value = 'Services';
+    document.getElementById('servicesDescription').value = 'Professional design and creative services tailored to bring your vision to life';
+    document.getElementById('contactTitle').value = 'Or reach me directly';
+    document.getElementById('contactPhone').value = '+91 9316158312';
+    document.getElementById('whatsappNumber').value = '+91 9316158312';
+    document.getElementById('contactEmail').value = 'extoll.co.in@gmail.com';
+    document.getElementById('instagramHandle').value = '@ExtollCo';
+    document.getElementById('instagramUrl').value = 'https://instagram.com/extollco';
+    document.getElementById('portfolioTitle').value = 'Portfolio';
+    document.getElementById('portfolioDescription').value = 'Showcase of our creative work and professional projects across various design disciplines.';
 }
 
 function loadTeamInfo() {
-    const savedTeam = localStorage.getItem('teamInfo');
-    if (savedTeam) {
-        const team = JSON.parse(savedTeam);
-        
-        document.getElementById('teamSectionTitle').value = team.sectionTitle || 'Our Team & Capabilities';
-        document.getElementById('team1Name').value = team.team1Name || 'Ritesh';
-        document.getElementById('team1Role').value = team.team1Role || 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.';
-        document.getElementById('team2Name').value = team.team2Name || 'Nikhil';
-        document.getElementById('team2Role').value = team.team2Role || 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.';
-        document.getElementById('team3Name').value = team.team3Name || 'Yuvraj Gupta';
-        document.getElementById('team3Role').value = team.team3Role || 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.';
-        document.getElementById('team4Name').value = team.team4Name || 'Arpit';
-        document.getElementById('team4Role').value = team.team4Role || 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.';
-    } else {
-        // Set default values
-        document.getElementById('teamSectionTitle').value = 'Our Team & Capabilities';
-        document.getElementById('team1Name').value = 'Ritesh';
-        document.getElementById('team1Role').value = 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.';
-        document.getElementById('team2Name').value = 'Nikhil';
-        document.getElementById('team2Role').value = 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.';
-        document.getElementById('team3Name').value = 'Yuvraj Gupta';
-        document.getElementById('team3Role').value = 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.';
-        document.getElementById('team4Name').value = 'Arpit';
-        document.getElementById('team4Role').value = 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.';
+    console.log('👥 Loading team information from Supabase...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
     }
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.metadataBucket)
+        .download('team-info.json')
+        .then(function(result) {
+            if (result.error) {
+                console.log('ℹ️ No saved team info found, using defaults');
+                loadDefaultTeamInfo();
+                return;
+            }
+            
+            result.data.text().then(function(jsonText) {
+                const team = JSON.parse(jsonText);
+                console.log('👥 Loaded team info from Supabase:', team);
+                
+                document.getElementById('teamSectionTitle').value = team.sectionTitle || 'Our Team & Capabilities';
+                document.getElementById('team1Name').value = team.team1Name || 'Ritesh';
+                document.getElementById('team1Role').value = team.team1Role || 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.';
+                document.getElementById('team2Name').value = team.team2Name || 'Nikhil';
+                document.getElementById('team2Role').value = team.team2Role || 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.';
+                document.getElementById('team3Name').value = team.team3Name || 'Yuvraj Gupta';
+                document.getElementById('team3Role').value = team.team3Role || 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.';
+                document.getElementById('team4Name').value = team.team4Name || 'Arpit';
+                document.getElementById('team4Role').value = team.team4Role || 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.';
+                
+                console.log('✅ Team information loaded successfully');
+            });
+        })
+        .catch(function(error) {
+            console.error('❌ Error loading team information:', error);
+            loadDefaultTeamInfo();
+        });
+}
+
+function loadDefaultTeamInfo() {
+    console.log('👥 Loading default team information...');
+    
+    // Set default values
+    document.getElementById('teamSectionTitle').value = 'Our Team & Capabilities';
+    document.getElementById('team1Name').value = 'Ritesh';
+    document.getElementById('team1Role').value = 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.';
+    document.getElementById('team2Name').value = 'Nikhil';
+    document.getElementById('team2Role').value = 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.';
+    document.getElementById('team3Name').value = 'Yuvraj Gupta';
+    document.getElementById('team3Role').value = 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.';
+    document.getElementById('team4Name').value = 'Arpit';
+    document.getElementById('team4Role').value = 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.';
 }
 
 function saveTeamInfo() {
-    console.log('👥 Saving team information...');
+    console.log('👥 Saving team information to Supabase...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
     
     try {
         const team = {
@@ -2274,21 +2336,52 @@ function saveTeamInfo() {
             team3Name: document.getElementById('team3Name').value,
             team3Role: document.getElementById('team3Role').value,
             team4Name: document.getElementById('team4Name').value,
-            team4Role: document.getElementById('team4Role').value
+            team4Role: document.getElementById('team4Role').value,
+            updatedAt: new Date().toISOString()
         };
         
-        console.log('👥 Team data to save:', team);
-        localStorage.setItem('teamInfo', JSON.stringify(team));
-        console.log('✅ Team information saved successfully');
-        showNotification('Team information saved successfully!', 'success');
+        console.log('👥 Team data to save to Supabase:', team);
+        
+        // Save as JSON file to Supabase storage
+        const teamBlob = new Blob([JSON.stringify(team, null, 2)], { type: 'application/json' });
+        
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.metadataBucket)
+            .upload('team-info.json', teamBlob, {
+                cacheControl: '3600',
+                upsert: true
+            })
+            .then(function(result) {
+                console.log('👥 Supabase save result:', result);
+                
+                if (result.error) {
+                    console.error('❌ Save error:', result.error);
+                    showNotification('Error saving team information: ' + result.error.message, 'error');
+                    return;
+                }
+                
+                console.log('✅ Team information saved to Supabase successfully');
+                showNotification('Team information saved successfully!', 'success');
+            })
+            .catch(function(error) {
+                console.error('❌ Save catch error:', error);
+                showNotification('Error saving team information: ' + error.message, 'error');
+            });
+            
     } catch (error) {
-        console.error('❌ Error saving team information:', error);
+        console.error('❌ Error preparing team information:', error);
         showNotification('Error saving team information: ' + error.message, 'error');
     }
 }
 
 function saveWebsiteContent() {
-    console.log('💾 Saving website content...');
+    console.log('💾 Saving website content to Supabase...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
     
     try {
         const content = {
@@ -2316,15 +2409,42 @@ function saveWebsiteContent() {
             
             // Portfolio Section
             portfolioTitle: document.getElementById('portfolioTitle').value,
-            portfolioDescription: document.getElementById('portfolioDescription').value
+            portfolioDescription: document.getElementById('portfolioDescription').value,
+            
+            // Metadata
+            updatedAt: new Date().toISOString()
         };
         
-        console.log('💾 Content to save:', content);
-        localStorage.setItem('websiteContent', JSON.stringify(content));
-        console.log('✅ Website content saved successfully');
-        showNotification('All website content saved successfully!', 'success');
+        console.log('💾 Content to save to Supabase:', content);
+        
+        // Save as JSON file to Supabase storage
+        const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+        
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.metadataBucket)
+            .upload('website-content.json', contentBlob, {
+                cacheControl: '3600',
+                upsert: true
+            })
+            .then(function(result) {
+                console.log('💾 Supabase save result:', result);
+                
+                if (result.error) {
+                    console.error('❌ Save error:', result.error);
+                    showNotification('Error saving website content: ' + result.error.message, 'error');
+                    return;
+                }
+                
+                console.log('✅ Website content saved to Supabase successfully');
+                showNotification('All website content saved successfully!', 'success');
+            })
+            .catch(function(error) {
+                console.error('❌ Save catch error:', error);
+                showNotification('Error saving website content: ' + error.message, 'error');
+            });
+            
     } catch (error) {
-        console.error('❌ Error saving website content:', error);
+        console.error('❌ Error preparing website content:', error);
         showNotification('Error saving website content: ' + error.message, 'error');
     }
 }
