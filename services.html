@@ -20,51 +20,6 @@
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 
-<!-- CRITICAL: Prevent logo flash with immediate CSS -->
-<style>
-/* Immediate logo preload and visibility control */
-.nav-logo {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Prevent flash of unstyled content */
-body {
-  visibility: hidden;
-}
-
-body.no-flash {
-  visibility: visible;
-}
-
-/* Ensure logo loads immediately */
-img[src="logo.png"] {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-</style>
-
-<!-- Immediate script to prevent flash -->
-<script>
-(function() {
-  // Preload logo immediately
-  const logoImg = new Image();
-  logoImg.src = 'logo.png';
-  
-  // Show body as soon as possible
-  document.addEventListener('DOMContentLoaded', function() {
-    document.body.classList.add('no-flash');
-  });
-  
-  // Fallback - show body after short delay even if DOM not ready
-  setTimeout(function() {
-    if (document.body) {
-      document.body.classList.add('no-flash');
-    }
-  }, 50);
-})();
-</script>
-
 <!-- Resource hints for better performance -->
 <link rel="dns-prefetch" href="//fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -103,9 +58,46 @@ img[src="logo.png"] {
   }
 </script>
 <style>
-  /* Navigation logo */
+  /* Page transition styles */
+  .page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0A0A0D;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .page-transition.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+
+  /* Prevent flash of content */
+  body {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  body.loaded {
+    opacity: 1;
+  }
+
+  /* Navigation logo preload */
   .nav-logo {
     opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Smooth navigation transitions */
+  .nav-link {
+    transition: all 0.2s ease;
   }
 
   .material-symbols-outlined {
@@ -196,6 +188,8 @@ img[src="logo.png"] {
 </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-white antialiased">
+<!-- Page Transition Overlay -->
+<div class="page-transition" id="pageTransition"></div>
 
 <!-- Sparkle Background Effect -->
 <div class="sparkle-container" id="sparkleContainer"></div>
@@ -205,13 +199,13 @@ img[src="logo.png"] {
 <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
 <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
 <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer" onclick="smoothNavigate(event, 'index.html')">
-<img src="logo.png" alt="Extoll.Co Logo - Professional design services" class="nav-logo h-8 w-8 object-contain" style="opacity: 1 !important; visibility: visible !important;" loading="eager" decoding="sync">
+<img src="logo.png" alt="Extoll.Co Logo - Professional design services" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync">
 <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
 </a>
 <nav class="hidden md:flex flex-1 justify-end gap-8">
 <div class="flex items-center gap-9">
 <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html" onclick="smoothNavigate(event, 'index.html')">Home</a>
-<a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html#work" onclick="smoothNavigate(event, 'index.html#work')">Work</a>
+<a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html#work" onclick="smoothNavigate(event, 'index.html#work')">Portfolio</a>
 <a class="text-white relative text-sm font-medium leading-normal" href="services.html">
 Services
 <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
@@ -249,7 +243,7 @@ Crafting premium digital experiences from concept to code. We specialize in buil
 </div>
 <div class="flex flex-col gap-2">
 <h2 class="text-white text-lg font-bold leading-tight">Graphics Design</h2>
-<p class="text-white/60 text-sm font-normal leading-normal">Festival graphics, merchandise design, and creative poster campaigns that capture attention and communicate your message.</p>
+<p class="text-white/60 text-sm font-normal leading-normal">Creative visual design solutions for brands, marketing materials, and digital campaigns that capture attention and communicate your message.</p>
 </div>
 </div>
 <!-- Service Card: UI/UX Design -->
@@ -269,7 +263,7 @@ Crafting premium digital experiences from concept to code. We specialize in buil
 </div>
 <div class="flex flex-col gap-2">
 <h2 class="text-white text-lg font-bold leading-tight">Product Design</h2>
-<p class="text-white/60 text-sm font-normal leading-normal">IoT devices, kitchen appliances, and innovative product solutions from concept to manufacturing.</p>
+<p class="text-white/60 text-sm font-normal leading-normal">Innovative product design and development solutions from concept to manufacturing for physical and digital products.</p>
 </div>
 </div>
 <!-- Service Card: Video Editing -->
@@ -279,7 +273,7 @@ Crafting premium digital experiences from concept to code. We specialize in buil
 </div>
 <div class="flex flex-col gap-2">
 <h2 class="text-white text-lg font-bold leading-tight">Video Editing</h2>
-<p class="text-white/60 text-sm font-normal leading-normal">Professional video editing, motion graphics, and post-production services for engaging visual content.</p>
+<p class="text-white/60 text-sm font-normal leading-normal">Professional video editing and production services for engaging visual content across all platforms.</p>
 </div>
 </div>
 <!-- Service Card: 3D Modeling -->
@@ -299,7 +293,7 @@ Crafting premium digital experiences from concept to code. We specialize in buil
 </div>
 <div class="flex flex-col gap-2">
 <h2 class="text-white text-lg font-bold leading-tight">2D Animation</h2>
-<p class="text-white/60 text-sm font-normal leading-normal">Character animation, explainer videos, and motion design that brings your ideas to life.</p>
+<p class="text-white/60 text-sm font-normal leading-normal">Two-dimensional animation and motion design services that bring your ideas to life with engaging visual storytelling.</p>
 </div>
 </div>
 <!-- Service Card: Video Editing -->
@@ -309,7 +303,7 @@ Crafting premium digital experiences from concept to code. We specialize in buil
 </div>
 <div class="flex flex-col gap-2">
 <h2 class="text-white text-lg font-bold leading-tight">Video Editing</h2>
-<p class="text-white/60 text-sm font-normal leading-normal">Professional video editing, color grading, and post-production for engaging visual content.</p>
+<p class="text-white/60 text-sm font-normal leading-normal">Professional video editing and production services for engaging visual content across all platforms.</p>
 </div>
 </div>
 </div>
@@ -338,7 +332,7 @@ If you have a project in mind or just want to connect, feel free to reach out. L
 <div class="flex flex-col gap-6 text-center">
 <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html">Home</a>
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Work</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Portfolio</a>
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="services.html">Services</a>
 </div>
 <p class="text-white/50 text-sm font-normal leading-normal">© 2024 Extoll.Co. All Rights Reserved.</p>
@@ -424,14 +418,53 @@ function initializeSparkleEffect() {
 // Smooth page transitions
 function smoothNavigate(event, url) {
   event.preventDefault();
-  window.location.href = url;
+  
+  const transition = document.getElementById('pageTransition');
+  transition.classList.add('active');
+  
+  setTimeout(() => {
+    window.location.href = url;
+  }, 300);
 }
 
 // Page load handling
 document.addEventListener('DOMContentLoaded', function() {
+  // Add loaded class to body to prevent flash
+  document.body.classList.add('loaded');
+  
   // Preload logo image
   const logoImg = new Image();
   logoImg.src = 'logo.png';
+  
+  // Remove transition overlay if present
+  const transition = document.getElementById('pageTransition');
+  if (transition) {
+    setTimeout(() => {
+      transition.classList.remove('active');
+    }, 100);
+  }
+});
+
+// Handle page visibility changes
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    document.body.classList.add('loaded');
+  }
+});
+</script>
+
+<!-- Supabase Integration for Future Dynamic Content -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+// Initialize Supabase for potential future dynamic service content
+document.addEventListener('DOMContentLoaded', function() {
+    if (initializeSupabase()) {
+        console.log('✅ Supabase initialized on services page');
+        // Future: Load dynamic service content, pricing, etc.
+    } else {
+        console.log('⚠️ Supabase initialization failed on services page');
+    }
 });
 </script>
 

@@ -2,7 +2,7 @@
 <html class="dark" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <meta name="description" content="Extoll.Co - Execution-first freelance collective specializing in Graphics Design, UI/UX Design, Product Design, 2D Animation, and Web Development. Powered by Startup Ops methodology."/>
 <meta name="keywords" content="freelance design, graphics design, UI UX design, product design, 2D animation, web development, startup ops, extoll"/>
 <meta name="author" content="Extoll.Co"/>
@@ -20,283 +20,12 @@
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 
-<!-- CRITICAL: Prevent logo flash with immediate CSS -->
-<style>
-/* Immediate logo preload and visibility control */
-.nav-logo {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Prevent flash of unstyled content */
-body {
-  visibility: hidden;
-}
-
-body.no-flash {
-  visibility: visible;
-}
-
-/* Ensure logo loads immediately */
-img[src="logo.png"] {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-</style>
-
-<!-- Immediate script to prevent flash -->
-<script>
-(function() {
-  // Preload logo immediately
-  const logoImg = new Image();
-  logoImg.src = 'logo.png';
-  
-  // Show body as soon as possible
-  document.addEventListener('DOMContentLoaded', function() {
-    document.body.classList.add('no-flash');
-  });
-  
-  // Fallback - show body after short delay even if DOM not ready
-  setTimeout(function() {
-    if (document.body) {
-      document.body.classList.add('no-flash');
-    }
-  }, 50);
-})();
-</script>
-
 <!-- Resource hints for better performance -->
 <link rel="dns-prefetch" href="//lnxvkbsbwymmzkyuixgd.supabase.co">
 <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
 
-<!-- Critical CSS inlined for instant rendering -->
-<style>
-/* Reset and base styles */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-    background: #0A0A0D; 
-    color: #e5e7eb; 
-    font-family: 'Space Grotesk', sans-serif; 
-    line-height: 1.6;
-}
-
-/* Layout */
-.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-.flex { display: flex; }
-.grid { display: grid; }
-.hidden { display: none; }
-.relative { position: relative; }
-.fixed { position: fixed; }
-.absolute { position: absolute; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.flex-col { flex-direction: column; }
-.flex-1 { flex: 1 1 0%; }
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-.min-h-screen { min-height: 100vh; }
-.max-w-5xl { max-width: 64rem; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-
-/* Spacing */
-.p-4 { padding: 1rem; }
-.p-5 { padding: 1.25rem; }
-.py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
-.px-4 { padding-left: 1rem; padding-right: 1rem; }
-.mt-8 { margin-top: 2rem; }
-.mb-6 { margin-bottom: 1.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
-.gap-8 { gap: 2rem; }
-
-/* Typography */
-.text-white { color: white; }
-.text-primary { color: #00aaff; }
-.text-neutral-400 { color: #9ca3af; }
-.text-neutral-500 { color: #6b7280; }
-.text-lg { font-size: 1.125rem; }
-.text-xl { font-size: 1.25rem; }
-.text-2xl { font-size: 1.5rem; }
-.text-4xl { font-size: 2.25rem; }
-.text-5xl { font-size: 3rem; }
-.font-bold { font-weight: 700; }
-.font-black { font-weight: 900; }
-.leading-tight { line-height: 1.25; }
-.text-center { text-align: center; }
-
-/* Buttons */
-.btn, .bg-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    background: #00aaff !important;
-    color: white !important;
-    border: none;
-    border-radius: 0.5rem;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.btn:hover, .bg-primary:hover { 
-    background: #0088cc !important; 
-    transform: translateY(-1px); 
-}
-
-/* Primary color utilities */
-.text-primary { color: #00aaff !important; }
-.border-primary { border-color: #00aaff !important; }
-.border-primary\/50 { border-color: rgba(0, 170, 255, 0.5) !important; }
-.hover\\:bg-primary\/20:hover { background-color: rgba(0, 170, 255, 0.2) !important; }
-.hover\\:border-primary:hover { border-color: #00aaff !important; }
-
-/* Button specific styles */
-.min-w-\\[84px\\] { min-width: 84px; }
-.min-w-\\[120px\\] { min-width: 120px; }
-.h-10 { height: 2.5rem; }
-.h-12 { height: 3rem; }
-.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-.text-sm { font-size: 0.875rem; }
-.text-base { font-size: 1rem; }
-.tracking-wide { letter-spacing: 0.025em; }
-.bg-transparent { background: transparent !important; }
-
-/* Neon glow effects */
-.neon-glow-subtle {
-    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
-}
-.hover\\:neon-glow-subtle:hover {
-    box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
-}
-
-/* Cards */
-.glass-card {
-    background: rgba(20, 26, 30, 0.5);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(49, 62, 71, 0.4);
-    border-radius: 0.75rem;
-    transition: all 0.3s ease;
-}
-.glass-card:hover {
-    border-color: rgba(0, 168, 255, 0.5);
-    box-shadow: 0 0 20px rgba(0, 168, 255, 0.15);
-    transform: translateY(-4px);
-}
-
-/* Grid layouts */
-.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
-/* Responsive */
-@media (min-width: 640px) {
-    .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .sm\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
-}
-@media (min-width: 1024px) {
-    .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .lg\\:px-24 { padding-left: 6rem; padding-right: 6rem; }
-}
-
-/* Images */
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-.h-40 { height: 10rem; }
-.object-cover { object-fit: cover; }
-.rounded-xl { border-radius: 0.75rem; }
-.overflow-hidden { overflow: hidden; }
-
-/* Transitions */
-.transition-transform { transition: transform 0.3s ease; }
-.group:hover .group-hover\\:scale-105 { transform: scale(1.05); }
-
-/* Navigation */
-.nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 13, 0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 50;
-}
-
-/* Hero section */
-.hero {
-    min-height: 40vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 120px 20px 60px;
-}
-
-/* Gradients */
-.gradient-background {
-    background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
-}
-
-/* Page transition overlay */
-.page-transition {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #0A0A0D;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.page-transition.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-}
-
-/* Navigation logo */
-.nav-logo {
-  opacity: 1;
-}
-
-/* Layout container */
-.layout-container {
-  min-height: 100vh;
-}
-
-/* Utilities */
-.cursor-pointer { cursor: pointer; }
-.z-10 { z-index: 10; }
-.z-50 { z-index: 50; }
-.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-.truncate { 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    white-space: nowrap; 
-}
-.rounded-lg { border-radius: 0.5rem; }
-.border { border-width: 1px; }
-.transition-shadow { transition: box-shadow 0.3s ease; }
-.transition-all { transition: all 0.3s ease; }
-.duration-300 { transition-duration: 300ms; }
-.leading-normal { line-height: 1.5; }
-</style>
-
-<!-- Load TailwindCSS after critical styles -->
-<script>
-// Load TailwindCSS asynchronously after page renders
-const script = document.createElement('script');
-script.src = 'https://cdn.tailwindcss.com?plugins=forms,container-queries';
-script.async = true;
-document.head.appendChild(script);
-</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -349,36 +78,152 @@ document.head.appendChild(script);
   .nav-active::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -8px;
     left: 0;
     width: 100%;
     height: 2px;
     background: #00aaff;
     border-radius: 1px;
-    box-shadow: 0 0 8px rgba(0, 170, 255, 0.6);
   }
   
   /* Smooth transition for navigation links */
   .nav-link {
     position: relative;
-    transition: color 0.3s ease;
+    transition: all 0.2s ease;
   }
   
   .nav-link::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -8px;
     left: 0;
     width: 0;
     height: 2px;
     background: #00aaff;
     border-radius: 1px;
-    transition: width 0.3s ease, box-shadow 0.3s ease;
+    transition: width 0.3s ease;
   }
   
   .nav-link:hover::after {
     width: 100%;
-    box-shadow: 0 0 8px rgba(0, 170, 255, 0.4);
+  }
+
+  /* Navigation logo preload */
+  .nav-logo {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Mobile Navigation Styles */
+  .mobile-nav-link {
+    position: relative;
+  }
+  
+  .mobile-nav-link.active {
+    color: white !important;
+    background: rgba(0, 170, 255, 0.1);
+  }
+  
+  .mobile-nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: #00aaff;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0, 170, 255, 0.6);
+  }
+
+  /* Mobile Menu Animation */
+  #mobileMenu {
+    transition: all 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+  }
+  
+  #mobileMenu.show {
+    max-height: 400px;
+  }
+  
+  /* Responsive Typography */
+  @media (max-width: 640px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  @media (min-width: 641px) and (max-width: 1024px) {
+    html {
+      font-size: 17px;
+    }
+  }
+  
+  @media (min-width: 1025px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
+  /* Enhanced Mobile Touch Targets */
+  @media (max-width: 1024px) {
+    .mobile-nav-link {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+    
+    button {
+      min-height: 44px;
+    }
+    
+    /* Better mobile spacing */
+    .section {
+      padding: 40px 0;
+    }
+    
+    /* Improved mobile cards */
+    .glass-card {
+      margin: 0 8px;
+    }
+    
+    /* Better mobile project grid */
+    .project-grid {
+      gap: 16px;
+    }
+  }
+  
+  /* Tablet optimizations */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .section {
+      padding: 50px 0;
+    }
+  }
+  
+  /* Desktop optimizations */
+  @media (min-width: 1025px) {
+    .section {
+      padding: 60px 0;
+    }
+    
+    /* Enhanced hover effects for desktop */
+    .nav-link:hover {
+      transform: translateY(-1px);
+    }
+    
+    .glass-card:hover {
+      transform: translateY(-6px);
+    }
+  }
+  
+  /* High DPI displays */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .nav-link::after,
+    .nav-active::after {
+      height: 2px;
+    }
   }
 
   /* Cyber Card Styles - With Interactive 3D */
@@ -684,29 +529,62 @@ document.head.appendChild(script);
 <div class="relative z-10 layout-container flex h-full grow flex-col">
 
 <!-- Fixed Navigation -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-background-dark/80 backdrop-blur-md border-b border-neutral-800/50">
-  <div class="flex items-center justify-between whitespace-nowrap px-4 sm:px-8 md:px-20 lg:px-40 py-6">
-    <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer" onclick="smoothNavigate(event, 'index.html')">
-      <img src="logo.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" style="opacity: 1 !important; visibility: visible !important;" loading="eager" decoding="sync">
-      <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
-    </a>
-    <div class="hidden md:flex items-center gap-9">
-      <a class="nav-link text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors cursor-pointer" data-section="home">Home</a>
-      <a class="nav-link text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors cursor-pointer" data-section="work">Work</a>
-      <a class="nav-link text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors cursor-pointer" href="services.html" onclick="smoothNavigate(event, 'services.html')">Services</a>
-      <a class="nav-link text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors cursor-pointer" data-section="about">About</a>
-    </div>
-    <a href="contact.html" onclick="smoothNavigate(event, 'contact.html')">
-      <button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-wide transition-shadow duration-300 hover:neon-glow-subtle">
-        <span class="truncate">Contact Me</span>
+<header class="fixed top-0 left-0 right-0 z-50 bg-background-dark/80 backdrop-blur-md">
+  <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+      <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwZWE1ZTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkV4dG9sbDwvdGV4dD4KPHN2Zz4=" alt="Extoll.Co Logo" class="website-logo nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync">
+        <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex flex-1 justify-end gap-8">
+        <div class="flex items-center gap-9">
+          <a class="nav-link text-white relative text-sm font-medium leading-normal" data-section="home">
+            Home
+            <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
+          </a>
+          <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" data-section="work">Portfolio</a>
+          <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="services.html">Services</a>
+          <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" data-section="about">About</a>
+        </div>
+        <a href="contact.html">
+          <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+            <span class="truncate">Contact Me</span>
+          </button>
+        </a>
+      </nav>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobileMenuBtn" class="md:hidden flex items-center justify-center w-10 h-10 text-white hover:text-primary transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
       </button>
-    </a>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation Menu -->
+  <div id="mobileMenu" class="md:hidden hidden bg-background-dark/95 backdrop-blur-md border-t border-white/10">
+    <div class="px-4 py-6 space-y-4">
+      <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" data-section="home">Home</a>
+      <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" data-section="work">Portfolio</a>
+      <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" href="services.html">Services</a>
+      <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" data-section="about">About</a>
+      <div class="pt-4 border-t border-white/10">
+        <a href="contact.html" class="block">
+          <button class="w-full flex items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-wide transition-opacity hover:opacity-90">
+            Contact Me
+          </button>
+        </a>
+      </div>
+    </div>
   </div>
 </header>
 
 <!-- Home Section -->
 <section id="home" class="flex flex-1 justify-center px-4 py-5 sm:px-8 md:px-20 lg:px-40">
-<div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 pt-20 pb-10">
+<div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 pt-20 sm:pt-24 lg:pt-32 pb-10">
 <div class="flex min-h-[40vh] flex-col items-center justify-center gap-6 bg-transparent text-center">
   <div class="flex flex-col gap-4 items-center text-center">
     <h1 class="text-white text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
@@ -722,16 +600,16 @@ document.head.appendChild(script);
   
   <!-- Hero Thumbnail Image -->
   <div class="w-full max-w-4xl mx-auto mt-8 mb-6">
-    <img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/extoll.Co%20(3240%20x%201440%20px).png" 
+    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZGVmcz4KPGXYZ2lhbCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMEEwQTBEO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzFhMWEyZTtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTYyMTNlO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+Cjx0ZXh0IHg9Ijk2MCIgeT0iNTQwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZTVlN2ViIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Zb3VyIEJhbm5lciBIZXJlPC90ZXh0Pgo8L3N2Zz4=" 
          alt="Extoll.Co - Crafting Digital Experiences That Stand Out" 
-         class="w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:border-primary/40" 
+         class="hero-banner w-full h-auto rounded-xl shadow-2xl shadow-primary/20 border border-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:border-primary/40" 
          loading="eager" 
          decoding="sync">
   </div>
   <div class="flex flex-wrap gap-4 justify-center mt-4">
     <a href="#work">
       <button class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-wide transition-shadow duration-300 hover:neon-glow-subtle">
-        <span class="truncate">View Work</span>
+        <span class="truncate">View Portfolio</span>
       </button>
     </a>
     <a href="contact.html">
@@ -751,9 +629,15 @@ document.head.appendChild(script);
 <div class="flex flex-col gap-12 py-10 md:py-16 lg:py-20">
 <div class="flex flex-wrap justify-between items-center gap-6 px-4">
 <div class="flex flex-col gap-3">
-<p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Selected Works</p>
-<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">A curated collection of my design projects including Festival Graphics, Merchandise Design, Creative Posters, Product Design, and comprehensive UI/UX Design systems.</p>
+<p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Portfolio</p>
+<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">Showcase of our creative work and professional projects across various design disciplines.</p>
 </div>
+<button onclick="loadDynamicProjects()" class="flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary border border-primary/50 rounded-lg hover:bg-primary/30 transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+</svg>
+Refresh
+</button>
 </div>
 <div class="flex flex-col gap-10">
 <div class="flex flex-col gap-4">
@@ -780,225 +664,7 @@ document.head.appendChild(script);
 </div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4" id="portfolio-grid">
-
-<!-- Graphics Design Projects -->
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="festival" style="position: relative; z-index: 1;">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png" alt="Festival Graphics - Vibrant promotional materials and event branding designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Festival Graphics Collection</p>
-<p class="text-neutral-400 text-sm">Graphics Design • 16 Images</p>
-<p class="text-neutral-500 text-xs mt-2">Vibrant festival promotional materials and event branding</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="merchandise">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/merchandise.png" alt="Merchandise Design - Creative apparel graphics and promotional materials" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Merchandise Design Collection</p>
-<p class="text-neutral-400 text-sm">Graphics Design • 10 Images</p>
-<p class="text-neutral-500 text-xs mt-2">Creative merchandise designs and apparel graphics</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="graphics" data-project="posters">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/poster.png" alt="Poster Design - Creative posters and awareness campaign designs" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Poster Design Collection</p>
-<p class="text-neutral-400 text-sm">Graphics Design • 8 Images</p>
-<p class="text-neutral-500 text-xs mt-2">Creative posters and awareness campaign designs</p>
-</div>
-</div>
-
-<!-- Product Design Projects -->
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="product" data-project="smart-pet-collar">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/pet%20collar.png" alt="Smart Pet Collar - IoT-enabled pet monitoring and tracking device design" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Smart Pet Collar</p>
-<p class="text-neutral-400 text-sm">Product Design • 6 Images</p>
-<p class="text-neutral-500 text-xs mt-2">IoT-enabled pet monitoring and tracking device design</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="product" data-project="food-processor">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/food.png" alt="Food Processor Design - Modern kitchen appliance with ergonomic design" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Food Processor Design</p>
-<p class="text-neutral-400 text-sm">Product Design • 4 Images</p>
-<p class="text-neutral-500 text-xs mt-2">Modern kitchen appliance with ergonomic design</p>
-</div>
-</div>
-
-<!-- UI/UX Design Projects -->
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="corporate-screen">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/corporate.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Corporate Dashboard Design - Data analytics platform with intuitive interface" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Corporate Dashboard Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 42 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Data analytics platform with intuitive interface design</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="luxurious-screen">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/luxurious.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Luxurious UI Design - Elegant UI collection with sophisticated design system" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Luxurious UI Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 47 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Elegant UI collection with sophisticated design system</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="screen-apple">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/apple.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Apple Theme UI Design - Native iOS app following Apple's design guidelines" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Apple Theme UI Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 10 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Native iOS app following Apple's design guidelines</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="screen-dark">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/dark.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Dark Mode Interface - Professional dark theme for creative tools" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Dark Mode Interface</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 14 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Professional dark theme for creative tools</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="screen-editorial">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/editorial.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Editorial UI Design - Content publishing platform with magazine-style layouts" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Editorial UI Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 11 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Content publishing platform with magazine-style layouts</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="screen-gradient">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/gradient.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Gradient UI Design - Vibrant social platform targeting Gen Z users" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Gradient UI Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 12 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Vibrant social platform targeting Gen Z users</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="screen-minimal">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/minimal.png?width=300&height=240&resize=cover&quality=50&format=webp" alt="Minimal UI Design - Clean, distraction-free productivity interface" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Minimal UI Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 14 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Clean, distraction-free productivity interface</p>
-</div>
-</div>
-
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="ui" data-project="screen-premium">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/premium.png?width=300&height=240&resize=cover&quality=50&format=webp&v=2025" alt="Premium UI Design - Premium financial platform for high-net-worth clients" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Premium UI Design</p>
-<p class="text-neutral-400 text-sm">UI/UX Design • 11 Screens</p>
-<p class="text-neutral-500 text-xs mt-2">Premium financial platform for high-net-worth clients</p>
-</div>
-</div>
-
-<!-- 2D Animation Project -->
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="animation" data-project="2d-animation">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/Creative%202D%20animation%20scene%20design.png?width=300&height=240&resize=cover&quality=50&format=webp" 
-     alt="2D Animation Collection - Character animation, motion graphics, and animated storytelling" 
-     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">
-     loading="lazy" decoding="async"
-     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-<!-- Gradient fallback with animation icon -->
-<div class="w-full h-full bg-gradient-to-br from-orange-500 via-amber-500 to-yellow-500 flex items-center justify-center relative overflow-hidden" 
-     style="display: none;">
-<div class="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-transparent"></div>
-<div class="relative z-10 text-center">
-<div class="text-white text-3xl mb-2">🎬</div>
-<span class="text-white text-sm font-bold">2D Animation</span>
-</div>
-<!-- Animated background elements -->
-<div class="absolute top-2 left-2 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
-<div class="absolute bottom-4 right-4 w-3 h-3 bg-white/20 rounded-full animate-bounce" style="animation-delay: 0.5s;"></div>
-<div class="absolute top-1/2 left-4 w-1 h-1 bg-white/40 rounded-full animate-ping" style="animation-delay: 1s;"></div>
-</div>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">2D Animation Collection</p>
-<p class="text-neutral-400 text-sm">2D Animation • 20 Files</p>
-<p class="text-neutral-500 text-xs mt-2">Character animation, motion graphics, and animated storytelling</p>
-</div>
-</div>
-
-<!-- Video Edits Project -->
-<div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" data-category="video" data-project="video-edits">
-<div class="w-full h-40 overflow-hidden relative">
-<img src="https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/Creative%20video%20editing%20tools%20and%20characters.png?width=300&height=240&resize=cover&quality=50&format=webp" 
-     alt="Video Editing Collection - Professional video editing, color grading, and post-production" 
-     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async"
-     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-<!-- Gradient fallback with video icon -->
-<div class="w-full h-full bg-gradient-to-br from-red-500 via-red-600 to-red-700 flex items-center justify-center relative overflow-hidden" 
-     style="display: none;">
-<div class="absolute inset-0 bg-gradient-to-br from-red-800/20 to-transparent"></div>
-<div class="relative z-10 text-center">
-<div class="text-white text-3xl mb-2">🎥</div>
-<span class="text-white text-sm font-bold">Video Edits</span>
-</div>
-<!-- Animated background elements -->
-<div class="absolute top-2 left-2 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
-<div class="absolute bottom-4 right-4 w-3 h-3 bg-white/20 rounded-full animate-bounce" style="animation-delay: 0.5s;"></div>
-<div class="absolute top-1/2 left-4 w-1 h-1 bg-white/40 rounded-full animate-ping" style="animation-delay: 1s;"></div>
-</div>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-</div>
-<div class="p-5 flex flex-col gap-1">
-<p class="text-white text-lg font-bold leading-tight">Video Editing Collection</p>
-<p class="text-neutral-400 text-sm">Video Production • 19 Files</p>
-<p class="text-neutral-500 text-xs mt-2">Professional video editing, color grading, and post-production</p>
-</div>
-</div>
-
+<!-- Projects will be dynamically loaded from admin panel -->
 </div>
 </div>
 </div>
@@ -1019,42 +685,42 @@ document.head.appendChild(script);
 <span class="text-primary text-2xl">🎨</span>
 </div>
 <h3 class="text-white text-xl font-bold mb-3">Graphics Design</h3>
-<p class="text-neutral-400 text-sm">Festival graphics, merchandise design, and creative poster campaigns</p>
+<p class="text-neutral-400 text-sm">Creative visual design solutions for brands and businesses</p>
 </div>
 <div class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" data-service="ui">
 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
 <span class="text-primary text-2xl">📱</span>
 </div>
 <h3 class="text-white text-xl font-bold mb-3">UI/UX Design</h3>
-<p class="text-neutral-400 text-sm">Web applications, mobile apps, and comprehensive design systems</p>
+<p class="text-neutral-400 text-sm">User interface and user experience design solutions</p>
 </div>
 <div class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" data-service="product">
 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
 <span class="text-primary text-2xl">💼</span>
 </div>
 <h3 class="text-white text-xl font-bold mb-3">Product Design</h3>
-<p class="text-neutral-400 text-sm">IoT devices, kitchen appliances, and innovative product solutions</p>
+<p class="text-neutral-400 text-sm">Innovative product design and development solutions</p>
 </div>
 <div class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" data-service="video">
 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
 <span class="text-primary text-2xl">🎬</span>
 </div>
 <h3 class="text-white text-xl font-bold mb-3">Video Editing</h3>
-<p class="text-neutral-400 text-sm">Professional video editing, motion graphics, and post-production services</p>
+<p class="text-neutral-400 text-sm">Professional video editing and production services</p>
 </div>
 <div class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" data-service="3d">
 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
 <span class="text-primary text-2xl">🎯</span>
 </div>
 <h3 class="text-white text-xl font-bold mb-3">3D Modeling</h3>
-<p class="text-neutral-400 text-sm">3D product visualization, architectural renders, and character modeling</p>
+<p class="text-neutral-400 text-sm">Three-dimensional modeling and visualization services</p>
 </div>
 <div class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" data-service="animation">
 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
 <span class="text-primary text-2xl">✨</span>
 </div>
 <h3 class="text-white text-xl font-bold mb-3">2D Animation</h3>
-<p class="text-neutral-400 text-sm">Character animation, explainer videos, and motion design</p>
+<p class="text-neutral-400 text-sm">Two-dimensional animation and motion design services</p>
 </div>
 </div>
 </div>
@@ -1245,8 +911,258 @@ Send Us a Message
 </div>
 </div>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="website-assets.js"></script>
 <script>
+// Dynamic Project Loading Function
+async function loadDynamicProjects() {
+    const portfolioGrid = document.getElementById('portfolio-grid');
+    
+    console.log('🔄 Loading projects for portfolio...');
+    
+    // Initialize Supabase
+    if (!initializeSupabase()) {
+        console.error('Failed to initialize Supabase, falling back to localStorage');
+        loadFromLocalStorage();
+        return;
+    }
+    
+    // Always try to get fresh data from Supabase first
+    console.log('☁️ Attempting to load from Supabase metadata bucket...');
+    const result = await getProjects();
+    
+    if (result.success && result.data.length > 0) {
+        const projects = result.data;
+        console.log('✅ Loaded projects from Supabase:', projects.length, 'projects');
+        
+        // Update localStorage with fresh data from Supabase
+        localStorage.setItem('projects', JSON.stringify(projects));
+        console.log('💾 Updated localStorage with fresh Supabase data');
+        
+        // Generate project cards dynamically
+        portfolioGrid.innerHTML = projects.map(project => {
+            return createProjectCard(project);
+        }).join('');
+        
+        // Re-initialize portfolio functionality after loading
+        initializePortfolioInteractions();
+    } else {
+        console.log('📦 No projects in Supabase or error occurred, falling back to localStorage');
+        console.log('Supabase result:', result);
+        // Fallback to localStorage
+        loadFromLocalStorage();
+    }
+}
+
+// Fallback to localStorage if Supabase fails
+function loadFromLocalStorage() {
+    const portfolioGrid = document.getElementById('portfolio-grid');
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    
+    console.log('📦 Loading from localStorage:', projects.length, 'projects found');
+    
+    if (projects.length === 0) {
+        showEmptyState();
+        return;
+    }
+    
+    portfolioGrid.innerHTML = projects.map(project => {
+        // Use the project data directly since admin panel already stores in correct format
+        return createProjectCard(project);
+    }).join('');
+    
+    console.log('✅ Portfolio loaded from localStorage');
+    initializePortfolioInteractions();
+}
+
+function showEmptyState() {
+    const portfolioGrid = document.getElementById('portfolio-grid');
+    portfolioGrid.innerHTML = `
+        <div class="col-span-full text-center py-20">
+            <div class="glass-card p-12 rounded-xl max-w-md mx-auto">
+                <div class="text-6xl mb-6">🎨</div>
+                <h3 class="text-2xl font-bold text-white mb-4">No Projects Yet</h3>
+                <p class="text-gray-400 mb-6">Projects added through the admin panel will appear here.</p>
+                <a href="admin.html" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors">
+                    Go to Admin Panel
+                </a>
+            </div>
+        </div>
+    `;
+}
+
+function createProjectCard(project) {
+    // Create thumbnail HTML
+    let thumbnailHtml;
+    
+    if (project.thumbnail_url) {
+        // Use the actual uploaded thumbnail
+        thumbnailHtml = `<img src="${project.thumbnail_url}" 
+                             alt="${project.title} - ${project.description}" 
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                             loading="lazy" 
+                             decoding="async">`;
+    } else {
+        // Create a styled placeholder with category icon
+        const categoryIcons = {
+            'graphics': '🎨',
+            'ui': '📱',
+            'product': '💼',
+            'animation': '🎬',
+            'video': '🎥'
+        };
+        
+        const icon = categoryIcons[project.category] || '📁';
+        
+        thumbnailHtml = `
+            <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
+                <div class="relative z-10 text-center">
+                    <div class="text-4xl mb-2">${icon}</div>
+                    <span class="text-white text-sm font-bold">${project.title}</span>
+                </div>
+                <div class="absolute top-2 left-2 w-2 h-2 bg-white/30 rounded-full animate-pulse"></div>
+                <div class="absolute bottom-4 right-4 w-3 h-3 bg-white/20 rounded-full animate-bounce" style="animation-delay: 0.5s;"></div>
+            </div>
+        `;
+    }
+    
+    return `
+        <div class="glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer" 
+             data-category="${project.category}" 
+             data-project="${project.key}" 
+             style="position: relative; z-index: 1;">
+            <div class="w-full h-40 overflow-hidden relative">
+                ${thumbnailHtml}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            </div>
+            <div class="p-5 flex flex-col gap-1">
+                <p class="text-white text-lg font-bold leading-tight">${project.title}</p>
+                <p class="text-neutral-400 text-sm">${getCategoryDisplayName(project.category)} • ${project.count || 0} ${project.category === 'animation' || project.category === 'video' ? 'Files' : 'Images'}</p>
+                <p class="text-neutral-500 text-xs mt-2">${project.description}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Helper function to get display names for categories
+function getCategoryDisplayName(category) {
+    const categoryMap = {
+        'graphics': 'Graphics Design',
+        'ui': 'UI/UX Design',
+        'product': 'Product Design',
+        'animation': '2D Animation',
+        'video': 'Video Editing'
+    };
+    return categoryMap[category] || category;
+}
+
+// Initialize portfolio interactions (filtering, clicking)
+function initializePortfolioInteractions() {
+    const filterButtons = document.querySelectorAll('.filter-chip');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    // Portfolio filtering
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => {
+                const isActive = btn === this;
+                btn.classList.toggle('bg-primary', isActive);
+                btn.classList.toggle('bg-[#141a1e]', !isActive);
+                const p = btn.querySelector('p');
+                p.classList.toggle('text-white', isActive);
+                p.classList.toggle('text-neutral-300', !isActive);
+            });
+            
+            // Filter items
+            portfolioItems.forEach(item => {
+                const shouldShow = filter === 'all' || item.getAttribute('data-category') === filter;
+                
+                if (shouldShow) {
+                    item.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    });
+                } else {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        if (item.style.opacity === '0') {
+                            item.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+        });
+    });
+    
+    // Project click handlers
+    portfolioItems.forEach((item, index) => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const projectKey = this.getAttribute('data-project');
+            
+            // Navigate to project page with project parameter
+            if (projectKey) {
+                window.location.href = `project.html?project=${projectKey}`;
+            }
+        });
+        
+        // Ensure cursor is pointer
+        item.style.cursor = 'pointer';
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Load projects from admin panel
+    loadDynamicProjects();
+    
+    // Add refresh functionality - reload projects every 30 seconds if page is visible
+    let refreshInterval;
+    
+    function startAutoRefresh() {
+        refreshInterval = setInterval(() => {
+            if (!document.hidden) {
+                console.log('🔄 Auto-refreshing portfolio...');
+                loadDynamicProjects();
+            }
+        }, 30000); // 30 seconds
+    }
+    
+    function stopAutoRefresh() {
+        if (refreshInterval) {
+            clearInterval(refreshInterval);
+            refreshInterval = null;
+        }
+    }
+    
+    // Start auto-refresh
+    startAutoRefresh();
+    
+    // Pause/resume auto-refresh based on page visibility
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopAutoRefresh();
+        } else {
+            startAutoRefresh();
+            // Refresh immediately when page becomes visible
+            loadDynamicProjects();
+        }
+    });
+    
+    // Refresh when window gains focus (user switches back to tab)
+    window.addEventListener('focus', () => {
+        console.log('🔄 Page focused, refreshing portfolio...');
+        loadDynamicProjects();
+    });
+    
     // Test click functionality
     console.log('Page loaded, testing click functionality...');
     
@@ -1398,64 +1314,103 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Initial navigation update completed');
     }, 500);
     
-    // Portfolio filtering
-    const filterButtons = document.querySelectorAll('.filter-chip');
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    // Mobile Menu Functionality
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
+    // Toggle mobile menu
+    mobileMenuBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('show');
+        
+        // Update hamburger icon
+        const icon = this.querySelector('svg');
+        if (mobileMenu.classList.contains('show')) {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+        } else {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+        }
+    });
+    
+    // Handle mobile navigation clicks
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const targetSection = this.getAttribute('data-section');
+            const href = this.getAttribute('href');
             
-            // Update active button
-            filterButtons.forEach(btn => {
-                const isActive = btn === this;
-                btn.classList.toggle('bg-primary', isActive);
-                btn.classList.toggle('bg-[#141a1e]', !isActive);
-                const p = btn.querySelector('p');
-                p.classList.toggle('text-white', isActive);
-                p.classList.toggle('text-neutral-300', !isActive);
-            });
-            
-            // Filter items
-            portfolioItems.forEach(item => {
-                const shouldShow = filter === 'all' || item.getAttribute('data-category') === filter;
-                
-                if (shouldShow) {
-                    item.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
+            // If it has data-section, handle internal scroll navigation
+            if (targetSection) {
+                e.preventDefault();
+                const targetElement = document.getElementById(targetSection);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
                     });
-                } else {
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateY(10px)';
-                    setTimeout(() => {
-                        if (item.style.opacity === '0') {
-                            item.style.display = 'none';
-                        }
-                    }, 300);
                 }
-            });
+                
+                // Close mobile menu after navigation
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('show');
+                
+                // Reset hamburger icon
+                const icon = mobileMenuBtn.querySelector('svg');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+            }
+            // If it has href (external link), let it navigate normally
         });
     });
     
-    // Open project page instead of modal
-    portfolioItems.forEach((item, index) => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('show');
             
-            const projectKey = this.getAttribute('data-project');
+            // Reset hamburger icon
+            const icon = mobileMenuBtn.querySelector('svg');
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+        }
+    });
+    
+    // Update mobile navigation active states
+    function updateMobileNavigation() {
+        const scrollPosition = window.scrollY + 200;
+        let current = 'home';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionId = section.getAttribute('id');
             
-            // Navigate to project page with project parameter
-            if (projectKey) {
-                window.location.href = `project.html?project=${projectKey}`;
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                current = sectionId;
             }
         });
         
-        // Ensure cursor is pointer
-        item.style.cursor = 'pointer';
-    });
+        // Update mobile navigation active states
+        mobileNavLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('data-section') === current) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    // Add mobile navigation to scroll handler
+    function handleScrollWithMobile() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(() => {
+            updateActiveNavigation();
+            updateMobileNavigation();
+        }, 10);
+    }
+    
+    // Update scroll handler
+    window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScrollWithMobile);
     
     // Service tiles click functionality
     const serviceTiles = document.querySelectorAll('[data-service]');
@@ -1737,19 +1692,6 @@ async function extractImageColors(img) {
         }
     });
 }
-
-// Smooth page transitions
-function smoothNavigate(event, url) {
-  event.preventDefault();
-  window.location.href = url;
-}
-
-// Page load handling
-document.addEventListener('DOMContentLoaded', function() {
-  // Preload logo image
-  const logoImg = new Image();
-  logoImg.src = 'logo.png';
-});
 </script>
 
 </body>

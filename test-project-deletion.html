@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Project Deletion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0284c7; }
+        .danger { background: #dc2626; }
+        .danger:hover { background: #b91c1c; }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+        .warning { color: #ff0; }
+        select, input {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🗑️ Test Project Deletion</h1>
+    
+    <div class="section">
+        <h2>Step 1: Load Projects</h2>
+        <button onclick="loadProjects()">📋 Load All Projects</button>
+        <div id="projectsList"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Step 2: Select Project to Delete</h2>
+        <select id="projectSelect">
+            <option value="">Select a project...</option>
+        </select>
+        <button class="danger" onclick="testDeleteProject()">🗑️ Test Delete Selected Project</button>
+    </div>
+    
+    <div class="section">
+        <h2>Step 3: Check Deletion Results</h2>
+        <button onclick="checkDeletionResults()">🔍 Check What Was Deleted</button>
+    </div>
+    
+    <div class="section">
+        <h2>Test Log</h2>
+        <div id="log" class="log">Ready to test project deletion...\n</div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    
+    <script>
+        let testSupabase = null;
+        let allProjects = [];
+        
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${timestamp}] ${message}\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'Log cleared...\n';
+        }
+        
+        async function loadProjects() {
+            try {
+                log('📋 Loading projects from all sources...');
+                
+                // Initialize Supabase
+                if (!testSupabase) {
+                    if (initializeSupabase()) {
+                        testSupabase = configSupabase;
+                        log('✅ Supabase initialized');
+                    } else {
+                        throw new Error('Failed to initialize Supabase');
+                    }
+                }
+                
+                // Load from metadata bucket
+                const metadataResult = await getProjects();
+                let metadataProjects = [];
+                
+                if (metadataResult.success) {
+                    metadataProjects = metadataResult.data;
+                    log(`📦 Found ${metadataProjects.length} projects in metadata bucket`, 'success');
+                } else {
+                    log(`❌ Failed to load from metadata bucket: ${metadataResult.error}`, 'error');
+                }
+                
+                // Load from localStorage
+                const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+                log(`💾 Found ${localProjects.length} projects in localStorage`);
+                
+                // Combine and deduplicate
+                allProjects = [...metadataProjects];
+                
+                // Add local projects that aren't in metadata
+                localProjects.forEach(localProject => {
+                    if (!allProjects.find(p => p.key === localProject.key)) {
+                        allProjects.push(localProject);
+                    }
+                });
+                
+                log(`📊 Total unique projects: ${allProjects.length}`, 'success');
+                
+                // Display projects
+                displayProjects();
+                populateProjectSelect();
+                
+            } catch (error) {
+                log(`❌ Error loading projects: ${error.message}`, 'error');
+            }
+        }
+        
+        function displayProjects() {
+            const projectsList = document.getElementById('projectsList');
+            
+            if (allProjects.length === 0) {
+                projectsList.innerHTML = '<p>No projects found</p>';
+                return;
+            }
+            
+            projectsList.innerHTML = `
+                <h3>Found Projects:</h3>
+                ${allProjects.map(project => `
+                    <div style="background: #333; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                        <strong>${project.title}</strong> (${project.key})<br>
+                        <small>ID: ${project.id} | Created: ${new Date(project.created_at).toLocaleString()}</small>
+                    </div>
+                `).join('')}
+            `;
+        }
+        
+        function populateProjectSelect() {
+            const select = document.getElementById('projectSelect');
+            select.innerHTML = '<option value="">Select a project...</option>';
+            
+            allProjects.forEach(project => {
+                const option = document.createElement('option');
+                option.value = project.id;
+                option.textContent = `${project.title} (${project.key})`;
+                select.appendChild(option);
+            });
+        }
+        
+        async function testDeleteProject() {
+            const selectedId = document.getElementById('projectSelect').value;
+            
+            if (!selectedId) {
+                log('❌ Please select a project to delete', 'error');
+                return;
+            }
+            
+            const project = allProjects.find(p => p.id === selectedId);
+            if (!project) {
+                log('❌ Project not found', 'error');
+                return;
+            }
+            
+            if (!confirm(`Are you sure you want to delete "${project.title}"? This is a real deletion!`)) {
+                log('🚫 Deletion cancelled by user');
+                return;
+            }
+            
+            try {
+                log(`🗑️ Starting deletion of project: ${project.title} (${project.key})`);
+                
+                // Step 1: Delete from metadata bucket
+                log('🗑️ Deleting from metadata bucket...');
+                const metadataResult = await deleteProjectMetadata(project.key);
+                
+                if (metadataResult.success) {
+                    log('✅ Metadata deleted successfully', 'success');
+                } else {
+                    log(`❌ Metadata deletion failed: ${metadataResult.error}`, 'error');
+                }
+                
+                // Step 2: Delete files from public bucket
+                log('🗑️ Deleting files from public bucket...');
+                
+                const listResult = await testSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .list(project.key);
+                
+                if (listResult.data && listResult.data.length > 0) {
+                    const filesToDelete = listResult.data.map(file => project.key + '/' + file.name);
+                    log(`🗑️ Deleting ${filesToDelete.length} files: ${filesToDelete.join(', ')}`);
+                    
+                    const deleteResult = await testSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .remove(filesToDelete);
+                    
+                    if (deleteResult.error) {
+                        log(`❌ File deletion failed: ${deleteResult.error.message}`, 'error');
+                    } else {
+                        log('✅ Files deleted successfully', 'success');
+                    }
+                } else {
+                    log('📁 No files found to delete');
+                }
+                
+                // Step 3: Remove from localStorage
+                log('🗑️ Removing from localStorage...');
+                const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+                const updatedProjects = localProjects.filter(p => p.id !== project.id);
+                localStorage.setItem('projects', JSON.stringify(updatedProjects));
+                log(`✅ Removed from localStorage (${localProjects.length} → ${updatedProjects.length})`, 'success');
+                
+                log('🎉 Project deletion completed!', 'success');
+                
+                // Reload projects to verify deletion
+                setTimeout(() => {
+                    log('🔄 Reloading projects to verify deletion...');
+                    loadProjects();
+                }, 1000);
+                
+            } catch (error) {
+                log(`❌ Deletion failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function checkDeletionResults() {
+            try {
+                log('🔍 Checking deletion results...');
+                
+                // Check metadata bucket
+                const metadataResult = await getProjects();
+                if (metadataResult.success) {
+                    log(`📦 Metadata bucket now has ${metadataResult.data.length} projects`, 'success');
+                } else {
+                    log(`❌ Cannot check metadata bucket: ${metadataResult.error}`, 'error');
+                }
+                
+                // Check localStorage
+                const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+                log(`💾 localStorage now has ${localProjects.length} projects`);
+                
+                // Check public bucket (list some folders)
+                const bucketList = await testSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .list('', { limit: 10 });
+                
+                if (bucketList.data) {
+                    const folders = bucketList.data.filter(item => !item.name.includes('.'));
+                    log(`📁 Public bucket has ${folders.length} project folders: ${folders.map(f => f.name).join(', ')}`);
+                } else {
+                    log('❌ Cannot check public bucket');
+                }
+                
+            } catch (error) {
+                log(`❌ Error checking results: ${error.message}`, 'error');
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            log('🚀 Project deletion test loaded');
+            log('👆 Click "Load All Projects" to start');
+        });
+    </script>
+</body>
+</html>

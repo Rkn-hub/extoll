@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Upload Test - Extoll</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: #e5e7eb;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .container {
+            background: rgba(15, 23, 42, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(51, 65, 85, 0.4);
+        }
+        .btn {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        }
+        .result {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success { border-left: 4px solid #10b981; }
+        .error { border-left: 4px solid #ef4444; }
+        .info { border-left: 4px solid #3b82f6; }
+        input[type="file"] {
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid rgba(51, 65, 85, 0.6);
+            color: #e2e8f0;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Simple Upload Test</h1>
+        <p>Clean test to check if your bucket uploads are working.</p>
+        
+        <div>
+            <h3>Step 1: Check Connection</h3>
+            <button class="btn" onclick="checkConnection()">Test Connection</button>
+            <div id="connectionResults"></div>
+        </div>
+        
+        <div>
+            <h3>Step 2: Test Upload</h3>
+            <input type="file" id="testFile" accept="image/*">
+            <button class="btn" onclick="testUpload()">Upload to Bucket</button>
+            <div id="uploadResults"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        // Configuration (inline to avoid conflicts)
+        const CONFIG = {
+            url: 'https://lvtkoryorwzknxzfpyzz.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2dGtvcnlvcnd6a254emZweXp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4MTAyODEsImV4cCI6MjA4MzM4NjI4MX0.eMZNHWpzSU-fSUFohCJLYuTzbqv9Yu3fY_BOLqa5ixs',
+            bucket: 'extoll-portfolio'
+        };
+
+        let client;
+
+        function logResult(section, message, type = 'info') {
+            const container = document.getElementById(section);
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            container.appendChild(div);
+        }
+
+        async function checkConnection() {
+            const section = 'connectionResults';
+            document.getElementById(section).innerHTML = '';
+            
+            logResult(section, 'Testing connection...', 'info');
+            
+            try {
+                // Initialize client
+                client = window.supabase.createClient(CONFIG.url, CONFIG.anonKey);
+                logResult(section, '✅ Supabase client created', 'success');
+                
+                // Test bucket access
+                const { data, error } = await client.storage
+                    .from(CONFIG.bucket)
+                    .list('', { limit: 1 });
+                
+                if (error) {
+                    if (error.message.includes('not found')) {
+                        logResult(section, `❌ Bucket "${CONFIG.bucket}" does not exist`, 'error');
+                        logResult(section, 'Create the bucket in your Supabase dashboard first', 'error');
+                    } else {
+                        logResult(section, `❌ Bucket error: ${error.message}`, 'error');
+                    }
+                    return false;
+                }
+                
+                logResult(section, `✅ Bucket "${CONFIG.bucket}" is accessible`, 'success');
+                return true;
+                
+            } catch (error) {
+                logResult(section, `❌ Connection failed: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function testUpload() {
+            const section = 'uploadResults';
+            document.getElementById(section).innerHTML = '';
+            
+            const fileInput = document.getElementById('testFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                logResult(section, 'Please select a file first', 'error');
+                return;
+            }
+            
+            if (!client) {
+                logResult(section, 'Please test connection first', 'error');
+                return;
+            }
+            
+            logResult(section, `Uploading: ${file.name} (${(file.size/1024).toFixed(1)}KB)`, 'info');
+            
+            try {
+                // Generate unique filename with FLAT structure
+                const timestamp = Date.now();
+                const extension = file.name.split('.').pop();
+                const fileName = `test-upload-${timestamp}.${extension}`;
+                
+                logResult(section, `Path: ${fileName}`, 'info');
+                
+                // Upload file
+                const { data, error } = await client.storage
+                    .from(CONFIG.bucket)
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
+                
+                if (error) {
+                    logResult(section, `❌ Upload failed: ${error.message}`, 'error');
+                    
+                    if (error.message.includes('not found')) {
+                        logResult(section, 'Bucket does not exist - create it in Supabase dashboard', 'error');
+                    } else if (error.message.includes('policy')) {
+                        logResult(section, 'Permission denied - check bucket policies', 'error');
+                    }
+                    return;
+                }
+                
+                // Get public URL
+                const { data: { publicUrl } } = client.storage
+                    .from(CONFIG.bucket)
+                    .getPublicUrl(fileName);
+                
+                logResult(section, '🎉 SUCCESS! File uploaded to bucket!', 'success');
+                logResult(section, `URL: <a href="${publicUrl}" target="_blank" style="color: #0ea5e9;">${publicUrl}</a>`, 'success');
+                
+                // Test if URL is accessible
+                try {
+                    const response = await fetch(publicUrl, { method: 'HEAD' });
+                    if (response.ok) {
+                        logResult(section, '✅ File is publicly accessible', 'success');
+                    } else {
+                        logResult(section, `⚠️ File uploaded but not accessible (${response.status})`, 'error');
+                    }
+                } catch (fetchError) {
+                    logResult(section, '⚠️ Could not verify public access', 'error');
+                }
+                
+            } catch (error) {
+                logResult(section, `❌ Upload error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test connection on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(checkConnection, 500);
+        });
+    </script>
+</body>
+</html>

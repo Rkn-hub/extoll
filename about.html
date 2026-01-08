@@ -55,6 +55,18 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(112, 253, 255, 0.1);
   }
+
+  /* Navigation logo preload */
+  .nav-logo {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Smooth navigation transitions */
+  .nav-link {
+    transition: all 0.2s ease;
+  }
+
   .neon-divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, #00A8FF, transparent);
@@ -149,25 +161,29 @@
 </div>
 <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 <!-- TopNavBar -->
-<header class="flex items-center justify-between whitespace-nowrap py-6">
-  <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
-    <img src="logo.png" alt="Extoll.Co Logo - Execution-first freelance collective" class="h-8 w-8 object-contain" loading="eager" decoding="sync">
-    <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
-  </a>
-  <div class="hidden md:flex items-center gap-9">
-    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="index.html">Home</a>
-    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="index.html#work">Work</a>
-    <a class="text-white/80 text-sm font-medium leading-normal hover:text-white transition-colors" href="services.html">Services</a>
-    <a class="text-white text-sm font-medium leading-normal relative" href="about.html">
-      About
-      <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-[#70FDFF] shadow-[0_0_8px_#70FDFF]"></span>
+<header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+  <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+    <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
+      <img src="logo.png" alt="Extoll.Co Logo - Execution-first freelance collective" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync">
+      <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
     </a>
+    <nav class="hidden md:flex flex-1 justify-end gap-8">
+      <div class="flex items-center gap-9">
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html">Home</a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html#work">Portfolio</a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="services.html">Services</a>
+        <a class="text-white relative text-sm font-medium leading-normal" href="about.html">
+          About
+          <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
+        </a>
+      </div>
+      <a href="contact.html">
+        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+          <span class="truncate">Contact Me</span>
+        </button>
+      </a>
+    </nav>
   </div>
-  <a href="contact.html">
-    <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-black text-sm font-bold leading-normal tracking-[0.015em] hover:shadow-[0_0_20px_theme(colors.primary/0.5)] transition-shadow">
-      <span class="truncate">Let's Collaborate</span>
-    </button>
-  </a>
 </header>
 
 <!-- Main Content -->
@@ -283,7 +299,7 @@
 <div class="flex flex-col gap-6 text-center">
 <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html">Home</a>
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Work</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Portfolio</a>
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="services.html">Services</a>
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="about.html">About</a>
 </div>
@@ -342,6 +358,21 @@ function initializeSparkleEffect() {
         }
     }, 700);
 }
+</script>
+
+<!-- Supabase Integration for Future Dynamic Content -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+// Initialize Supabase for potential future dynamic about content
+document.addEventListener('DOMContentLoaded', function() {
+    if (initializeSupabase()) {
+        console.log('✅ Supabase initialized on about page');
+        // Future: Load dynamic team info, company stats, etc.
+    } else {
+        console.log('⚠️ Supabase initialization failed on about page');
+    }
+});
 </script>
 </html>
 

@@ -5,17 +5,9 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Project Details - Extoll.Co</title>
 
-<!-- Resource hints for better performance -->
-<link rel="dns-prefetch" href="https://lnxvkbsbwymmzkyuixgd.supabase.co">
-<link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
-<link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
 <style>
   .glow-underline {
     position: relative;
@@ -38,178 +30,7 @@
     border: 1px solid rgba(0, 170, 255, 0.2);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   }
-  /* Cyber Card Styles - Simplified and Working */
-  .cyber-container {
-    position: relative;
-    width: 190px;
-    height: 254px;
-    margin: 0 auto;
-    cursor: pointer;
-  }
   
-  .cyber-card {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(45deg, #1a1a1a, #262626);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .cyber-container:hover .cyber-card {
-    transform: rotateY(5deg) rotateX(5deg);
-    border-color: rgba(0, 170, 255, 0.5);
-    box-shadow: 0 0 30px rgba(0, 170, 255, 0.3);
-  }
-  
-  .cyber-card-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .cyber-card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
-  }
-  
-  .cyber-card-glare {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(125deg, 
-      rgba(255, 255, 255, 0) 0%, 
-      rgba(255, 255, 255, 0.1) 50%, 
-      rgba(255, 255, 255, 0) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .cyber-container:hover .cyber-card-glare {
-    opacity: 1;
-  }
-  
-  .cyber-lines span {
-    position: absolute;
-    background: linear-gradient(90deg, transparent, rgba(0, 170, 255, 0.5), transparent);
-    height: 1px;
-    width: 100%;
-    animation: lineGrow 2s linear infinite;
-  }
-  
-  .cyber-lines span:nth-child(1) {
-    top: 20%;
-    animation-delay: 0s;
-  }
-  
-  .cyber-lines span:nth-child(2) {
-    top: 50%;
-    animation-delay: 0.5s;
-  }
-  
-  .cyber-lines span:nth-child(3) {
-    top: 80%;
-    animation-delay: 1s;
-  }
-  
-  @keyframes lineGrow {
-    0%, 100% {
-      transform: scaleX(0);
-      opacity: 0;
-    }
-    50% {
-      transform: scaleX(1);
-      opacity: 1;
-    }
-  }
-  
-  .cyber-corner-elements span {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    border: 2px solid rgba(0, 170, 255, 0.3);
-    transition: all 0.3s ease;
-  }
-  
-  .cyber-corner-elements span:nth-child(1) {
-    top: 10px;
-    left: 10px;
-    border-right: 0;
-    border-bottom: 0;
-  }
-  
-  .cyber-corner-elements span:nth-child(2) {
-    top: 10px;
-    right: 10px;
-    border-left: 0;
-    border-bottom: 0;
-  }
-  
-  .cyber-corner-elements span:nth-child(3) {
-    bottom: 10px;
-    left: 10px;
-    border-right: 0;
-    border-top: 0;
-  }
-  
-  .cyber-corner-elements span:nth-child(4) {
-    bottom: 10px;
-    right: 10px;
-    border-left: 0;
-    border-top: 0;
-  }
-  
-  .cyber-container:hover .cyber-corner-elements span {
-    border-color: rgba(0, 170, 255, 0.8);
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-  }
-  
-  /* Interactive 3D Hover Effects */
-  .cyber-container {
-    transform-style: preserve-3d;
-  }
-  
-  .cyber-card {
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
-  
-  /* Ensure clickable elements are accessible */
-  button, a, [onclick], .cursor-pointer {
-    position: relative;
-    z-index: 10;
-    pointer-events: auto !important;
-  }
-  
-  /* Fix any potential overlay issues */
-  .cyber-card-glare,
-  .cyber-lines span,
-  .cyber-corner-elements span {
-    pointer-events: none !important;
-  }
-  
-  /* Ensure cyber card images are clickable */
-  .cyber-card-image {
-    position: relative;
-    z-index: 15 !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
-  }
-  
-  /* Make sure cyber card content doesn't block clicks */
-  .cyber-card-content {
-    position: relative;
-    pointer-events: none;
-  }
-  
-  .cyber-card-content > img {
-    pointer-events: auto !important;
-  }
-  
-  /* Sparkle Animation Background */
   .sparkle-container {
     position: fixed;
     top: 0;
@@ -219,6 +40,17 @@
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
+  }
+
+  /* Navigation logo preload */
+  .nav-logo {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Smooth navigation transitions */
+  .nav-link {
+    transition: all 0.2s ease;
   }
   
   .sparkle {
@@ -232,80 +64,22 @@
     will-change: transform, opacity;
   }
   
-  .sparkle:nth-child(2n) {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 15s;
-    animation-delay: -3s;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .sparkle:nth-child(3n) {
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.7) 0%, rgba(112, 253, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 18s;
-    animation-delay: -6s;
-    width: 2px;
-    height: 2px;
-    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
-  
   @keyframes sparkleFloat {
     0% {
       transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
       opacity: 0;
     }
-    5% {
-      opacity: 0.8;
-      transform: translateY(95vh) translateX(5px) rotate(18deg) scale(0.3);
-    }
-    15% {
+    50% {
+      transform: translateY(50vh) translateX(10px) rotate(180deg) scale(1);
       opacity: 1;
-      transform: translateY(85vh) translateX(-8px) rotate(54deg) scale(0.7);
-    }
-    25% {
-      transform: translateY(75vh) translateX(12px) rotate(90deg) scale(1);
-    }
-    55% {
-      transform: translateY(45vh) translateX(-10px) rotate(198deg) scale(0.8);
-      opacity: 1;
-    }
-    85% {
-      transform: translateY(15vh) translateX(6px) rotate(306deg) scale(0.7);
-    }
-    95% {
-      opacity: 0.8;
-      transform: translateY(5vh) translateX(-3px) rotate(342deg) scale(0.4);
     }
     100% {
       transform: translateY(-5vh) translateX(0px) rotate(360deg) scale(0);
       opacity: 0;
     }
   }
-  
-  /* Ensure cyber containers allow clicks through to images */
-  .cyber-container {
-    pointer-events: none;
-  }
-  
-  .cyber-container .cyber-card-image {
-    pointer-events: auto !important;
-  }
-  
-  /* Progressive image loading with blur-up technique */
-  .image-loading {
-    filter: blur(5px);
-    transition: filter 0.3s ease;
-  }
-  
-  .image-loaded {
-    filter: blur(0px);
-  }
-  
-  /* Optimize image rendering */
-  .cyber-card-image {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
 </style>
+
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -333,36 +107,67 @@
 <div class="layout-container flex h-full grow flex-col">
 <div class="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
 <div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 sm:px-10 py-4">
-<a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
-<img src="logo.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
-<h2 class="text-white text-xl font-bold leading-tight tracking-tighter">Extoll.Co</h2>
-</a>
-<div class="hidden md:flex flex-1 justify-end gap-8">
-<div class="flex items-center gap-9">
-<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="index.html">Home</a>
-<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="index.html#work">Work</a>
-<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="services.html">Services</a>
-<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="about.html">About</a>
-</div>
-<a href="contact.html">
-<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,170,255,0.5)]">
-<span class="truncate">Hire Me</span>
-</button>
-</a>
-</div>
+
+<!-- Header -->
+<header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+  <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+    <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
+      <img src="logo.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain">
+      <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
+    </a>
+    <nav class="hidden md:flex flex-1 justify-end gap-8">
+      <div class="flex items-center gap-9">
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html">Home</a>
+        <a class="nav-link text-white relative text-sm font-medium leading-normal" href="index.html#work">
+          Portfolio
+          <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
+        </a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="services.html">Services</a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="about.html">About</a>
+      </div>
+      <a href="contact.html">
+        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+          <span class="truncate">Contact Me</span>
+        </button>
+      </a>
+    </nav>
+  </div>
 </header>
+
+<!-- Main Content -->
 <main class="flex-1 py-16 sm:py-20 md:py-24">
 <div class="flex flex-col gap-16 sm:gap-20 md:gap-24">
+
+<!-- Project Not Found Message (Hidden by default) -->
+<div id="project-not-found" class="hidden text-center px-4 py-20">
+<div class="glassmorphism-card p-12 rounded-xl max-w-md mx-auto">
+<div class="text-6xl mb-6">🔍</div>
+<h1 class="text-3xl font-bold text-white mb-4">Project Not Found</h1>
+<p class="text-gray-400 mb-6">The project you're looking for doesn't exist or hasn't been added yet.</p>
+<a href="index.html#work" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors">
+Back to Portfolio
+</a>
+</div>
+</div>
+
+<!-- Project Content (Hidden by default, shown when project loads) -->
+<div id="project-content" class="hidden">
+
+<!-- Project Title -->
 <section class="text-center px-4">
 <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tighter" id="project-title">
-<span class="glow-underline">Project Title</span>
+<span class="glow-underline">Loading...</span>
 </h1>
 </section>
+
+<!-- Project Hero Image -->
 <section class="px-4">
-<div class="w-5/6 max-w-5xl mx-auto bg-center bg-no-repeat bg-contain flex flex-col justify-end overflow-hidden rounded-xl min-h-[350px] md:min-h-[420px] lg:min-h-[500px] shadow-[0_10px_40px_rgba(0,170,255,0.1)]" id="project-hero"></div>
+<div class="w-5/6 max-w-5xl mx-auto bg-center bg-no-repeat bg-contain flex flex-col justify-end overflow-hidden rounded-xl min-h-[350px] md:min-h-[420px] lg:min-h-[500px] shadow-[0_10px_40px_rgba(0,170,255,0.1)]" id="project-hero">
+<!-- Hero image will be set via JavaScript -->
+</div>
 </section>
 
+<!-- Project Gallery -->
 <section class="px-4" id="project-gallery">
 <h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Gallery</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
@@ -370,26 +175,31 @@
 </div>
 </section>
 
-<div class="glow-divider mx-auto w-4/5"></div>
-
+<!-- Project Details -->
 <section class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4" id="project-details">
-<!-- Project details will be populated by JavaScript -->
+<div class="glassmorphism-card p-6 rounded-xl text-center">
+<h3 class="text-white text-lg font-bold mb-2">Category</h3>
+<p class="text-gray-400" id="project-category">Loading...</p>
+</div>
+<div class="glassmorphism-card p-6 rounded-xl text-center">
+<h3 class="text-white text-lg font-bold mb-2">Items</h3>
+<p class="text-gray-400" id="project-count">Loading...</p>
+</div>
+<div class="glassmorphism-card p-6 rounded-xl text-center">
+<h3 class="text-white text-lg font-bold mb-2">Created</h3>
+<p class="text-gray-400" id="project-date">Loading...</p>
+</div>
 </section>
 
-<div class="glow-divider mx-auto w-4/5"></div>
-
+<!-- Project Description -->
 <section class="px-4">
 <h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Overview</h2>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed" id="project-overview">
-<!-- Project overview will be populated by JavaScript -->
+<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed" id="project-description">
+Loading project description...
 </p>
 </section>
-<section class="px-4">
-<h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">My Role</h2>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed" id="project-role">
-<!-- Project role will be populated by JavaScript -->
-</p>
-</section>
+
+<!-- Call to Action -->
 <section class="bg-gradient-to-t from-primary/20 to-transparent p-10 sm:p-12 md:p-16 rounded-xl text-center flex flex-col items-center gap-6 border border-primary/20">
 <h2 class="text-white text-3xl sm:text-4xl font-black leading-tight tracking-tight max-w-lg">Hire Me for Your Project</h2>
 <p class="text-gray-400 max-w-xl">
@@ -401,6 +211,8 @@ Have a similar project in mind? I'm available for freelance work. Let's create s
 </button>
 </a>
 </section>
+
+</div> <!-- End project-content -->
 </div>
 </main>
 </div>
@@ -408,1505 +220,452 @@ Have a similar project in mind? I'm available for freelance work. Let's create s
 </div>
 </div>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="website-assets.js"></script>
 <script>
-/*
- * IMAGE LOADING OPTIMIZATIONS IMPLEMENTED:
- * 
- * 1. Supabase Image Optimization Parameters:
- *    - Thumbnails: 400x320px, quality=80, cover resize
- *    - Hero images: 1200x600px, quality=85, cover resize
- *    - Automatic format selection (WebP when supported)
- * 
- * 2. Performance Enhancements:
- *    - Resource hints (dns-prefetch, preconnect)
- *    - Critical image preloading (hero + first 3 gallery images)
- *    - Progressive loading with blur-up technique
- *    - Lazy loading with intersection observer
- *    - Service worker for image caching
- * 
- * 3. Error Handling:
- *    - Graceful fallbacks for failed image loads
- *    - Performance monitoring and slow load warnings
- *    - WebP support detection with fallback
- * 
- * 4. User Experience:
- *    - Smooth loading transitions
- *    - Visual feedback during loading
- *    - Optimized image rendering
- */
-
-// Simple test to ensure JavaScript is working
-console.log('Project page script loaded successfully - ' + new Date().toISOString());
-
-// Detect connection speed and adjust image quality
-function getOptimalImageParams() {
-    // Check for Network Information API
-    if ('connection' in navigator) {
-        const connection = navigator.connection;
-        const effectiveType = connection.effectiveType;
-        
-        switch (effectiveType) {
-            case 'slow-2g':
-            case '2g':
-                return { width: 240, height: 180, quality: 30 };
-            case '3g':
-                return { width: 280, height: 210, quality: 45 };
-            case '4g':
-            default:
-                return { width: 320, height: 240, quality: 60 };
-        }
-    }
-    
-    // Fallback for browsers without Network Information API
-    return { width: 320, height: 240, quality: 60 };
-}
-
-// Immediate test - try to update title right away
-setTimeout(function() {
-    const titleElement = document.getElementById('project-title');
-    if (titleElement) {
-        console.log('Found title element, updating...');
-        titleElement.innerHTML = '<span class="glow-underline">Festival Graphics Collection</span>';
-    } else {
-        console.log('Title element not found yet');
-    }
-}, 100);
+console.log('Project page script loaded successfully');
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, starting project page initialization...');
     
-    // Debug: Test if JavaScript is running
-    try {
-        // Get project parameter from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const project = urlParams.get('project') || 'festival';
-        
-        console.log('Project parameter from URL:', project);
+    // Initialize Supabase
+    if (!initializeSupabase()) {
+        console.error('Failed to initialize Supabase, falling back to localStorage');
+        loadFromLocalStorage();
+        return;
+    }
+    
+    // Get project parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectKey = urlParams.get('project');
+    
+    console.log('Project key from URL:', projectKey);
+    console.log('Full URL:', window.location.href);
+    
+    if (!projectKey) {
+        console.log('No project key in URL');
+        showProjectNotFound();
+        return;
+    }
+    
+    // Load project from Supabase
+    loadProjectFromSupabase(projectKey);
     
     // Initialize sparkle effect
     initializeSparkleEffect();
-    
-    // Register service worker for image caching (if available)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(() => {
-            // Service worker registration failed, continue without caching
-        });
-    }
-    
-    // Project data
-    const projects = {
-        'festival': {
-            title: 'Festival Graphics Collection',
-            heroGradient: 'linear-gradient(135deg, #f97316, #dc2626)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/festival.png',
-            timeline: '2 Weeks',
-            platform: 'Print & Digital',
-            industry: 'Events & Entertainment',
-            overview: 'A comprehensive festival graphics project that involved creating vibrant, eye-catching designs for promotional materials, social media, and event branding. The challenge was to capture the energy and excitement of the festival while maintaining visual consistency across all touchpoints.',
-            role: 'As the lead graphic designer, I was responsible for the entire creative process, from concept development and mood boarding to final artwork production. My work included creating the visual identity, designing promotional materials, social media assets, and ensuring brand consistency across all festival communications.',
-            images: [
-                'fest%20(1).jpg', 'fest%20(2).jpg', 'fest%20(3).jpg', 'fest%20(4).jpg', 'fest%20(5).jpg', 'fest%20(6).jpg',
-                'fest%20(7).jpg', 'fest%20(8).jpg', 'fest%20(9).jpg', 'fest%20(10).jpg', 'fest%20(11).jpg', 'fest%20(12).jpg',
-                'fest%20(13).jpg', 'fest%20(14).jpg', 'fest%20(15).jpg', 'fest%20(1).png'
-            ],
-            folder: 'festival'
-        },
-        'merchandise': {
-            title: 'Merchandise Design Collection',
-            heroGradient: 'linear-gradient(135deg, #a855f7, #ec4899)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/merchandise.png',
-            timeline: '3 Weeks',
-            platform: 'Print & Apparel',
-            industry: 'Fashion & Retail',
-            overview: 'A creative merchandise design project focused on developing unique apparel graphics and promotional materials. The goal was to create designs that would appeal to diverse audiences while maintaining brand consistency across different product lines.',
-            role: 'As the creative designer, I handled the entire design process from initial concept sketches to final production files. This included researching market trends, developing design concepts, and creating production-ready artwork for various merchandise applications.',
-            images: [
-                '1.jpg', '1%20(5).jpg', '2.jpg', '3.jpg', '3%20(3).jpg', '5.jpg', '6.jpg', '6%20(2).jpg', '7.jpg', 'pranayasucksatdesigning.jpg'
-            ],
-            folder: 'merchandise'
-        },
-        'posters': {
-            title: 'Poster Design Collection',
-            heroGradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/poster.png',
-            timeline: '4 Weeks',
-            platform: 'Print & Digital',
-            industry: 'Advertising & Campaigns',
-            overview: 'A diverse poster design project encompassing various campaigns and awareness initiatives. Each design was crafted to communicate specific messages effectively while maintaining visual impact and brand consistency.',
-            role: 'As the visual designer, I was responsible for conceptualizing and executing poster designs that would effectively communicate campaign messages. This involved understanding target audiences, developing visual concepts, and creating compelling designs that drive engagement.',
-            images: [
-                'shine.jpg', 'you!.png', 'Prevent%20sickness%20from%20air%20pollution.jpg', '4.jpg', '1%20(4).jpg', '2%20(4).jpg', '3%20(2).jpg', '5.jpg'
-            ],
-            folder: 'posters'
-        },
-        'smart-pet-collar': {
-            title: 'Smart Pet Collar',
-            heroGradient: 'linear-gradient(135deg, #10b981, #059669)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/pet%20collar.png',
-            timeline: '6 Weeks',
-            platform: 'IoT Device',
-            industry: 'Pet Technology',
-            overview: 'An innovative IoT-enabled pet monitoring and tracking device designed to help pet owners keep their furry friends safe and healthy. The project involved creating a user-friendly design that combines functionality with aesthetic appeal.',
-            role: 'As the product designer, I led the entire design process from initial research and concept development to final product specifications. This included user research, prototyping, industrial design, and creating detailed technical documentation.',
-            images: [
-                '2%20(1).jpg', '2%20(1).png', '2%20(2).png', '2%20(3).png', '2%20(4).png', '2%20(5).png'
-            ],
-            folder: 'smart-pet-collar'
-        },
-        'food-processor': {
-            title: 'Food Processor Design',
-            heroGradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/food.png',
-            timeline: '8 Weeks',
-            platform: 'Kitchen Appliance',
-            industry: 'Home & Kitchen',
-            overview: 'A modern kitchen appliance design focused on ergonomics, functionality, and aesthetic appeal. The challenge was to create a food processor that would be both powerful and user-friendly while fitting seamlessly into contemporary kitchen designs.',
-            role: 'As the industrial designer, I was responsible for the complete product development cycle including market research, concept development, 3D modeling, prototyping, and final design specifications. The project required close collaboration with engineering teams to ensure manufacturability.',
-            images: [
-                '1%20(1).jpeg', '1%20(2).jpeg', '1%20(3).jpeg', '1%20(4).jpeg'
-            ],
-            folder: 'food-processor'
-        },
-        'corporate-screen': {
-            title: 'Corporate Dashboard Design',
-            heroGradient: 'linear-gradient(135deg, #475569, #1e40af)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/corporate.png',
-            timeline: '12 Weeks',
-            platform: 'Web Application',
-            industry: 'Data Analytics',
-            overview: 'A next-generation dashboard for a data analytics platform. The core challenge was to simplify a complex set of tools into an intuitive, visually compelling interface that empowers users to make data-driven decisions efficiently.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png', 'screen%20(6).png',
-                'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png', 'screen%20(11).png', 'screen%20(12).png',
-                'screen%20(13).png', 'screen%20(14).png', 'screen%20(15).png', 'screen%20(16).png', 'screen%20(17).png', 'screen%20(18).png',
-                'screen%20(19).png', 'screen%20(20).png', 'screen%20(21).png', 'screen%20(22).png', 'screen%20(23).png', 'screen%20(24).png',
-                'screen%20(25).png', 'screen%20(26).png', 'screen%20(27).png', 'screen%20(28).png', 'screen%20(29).png', 'screen%20(30).png',
-                'screen%20(31).png', 'screen%20(32).png', 'screen%20(33).png', 'screen%20(34).png', 'screen%20(35).png', 'screen%20(36).png',
-                'screen%20(37).png', 'screen%20(38).png', 'screen%20(39).png', 'screen%20(40).png', 'screen%20(41).png'
-            ],
-            folder: 'corporate-screen'
-        },
-        'luxurious-screen': {
-            title: 'Luxurious UI Design',
-            heroGradient: 'linear-gradient(135deg, #d97706, #b45309)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/luxurious.png',
-            timeline: '14 Weeks',
-            platform: 'Web Application',
-            industry: 'UI/UX Design',
-            overview: 'A comprehensive premium UI collection featuring elegant, sophisticated interface designs. The core challenge was to create a cohesive design system that reflects high-end aesthetics while maintaining excellent usability and modern design principles.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png', 'screen%20(6).png',
-                'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png', 'screen%20(11).png', 'screen%20(12).png',
-                'screen%20(13).png', 'screen%20(14).png', 'screen%20(15).png', 'screen%20(16).png', 'screen%20(17).png', 'screen%20(18).png',
-                'screen%20(19).png', 'screen%20(20).png', 'screen%20(21).png', 'screen%20(22).png', 'screen%20(23).png', 'screen%20(24).png',
-                'screen%20(25).png', 'screen%20(26).png', 'screen%20(27).png', 'screen%20(28).png', 'screen%20(29).png', 'screen%20(30).png',
-                'screen%20(31).png', 'screen%20(32).png', 'screen%20(33).png', 'screen%20(34).png', 'screen%20(35).png', 'screen%20(36).png',
-                'screen%20(37).png', 'screen%20(38).png', 'screen%20(39).png', 'screen%20(40).png', 'screen%20(41).png', 'screen%20(42).png',
-                'screen%20(43).png', 'screen%20(44).png', 'screen%20(45).png', 'screen%20(46).png'
-            ],
-            folder: 'luxurious-screen'
-        },
-        'screen-apple': {
-            title: 'Apple Theme UI Design',
-            heroGradient: 'linear-gradient(135deg, #4b5563, #374151)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/apple.png',
-            timeline: '8 Weeks',
-            platform: 'iOS Application',
-            industry: 'Productivity',
-            overview: 'A productivity app following Apple\'s Human Interface Guidelines. The core challenge was to create a clean, intuitive interface that feels native to the Apple ecosystem while offering unique functionality and delightful user experiences.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png',
-                'screen%20(6).png', 'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png'
-            ],
-            folder: 'screen-apple'
-        },
-        'screen-dark': {
-            title: 'Dark Mode Interface',
-            heroGradient: 'linear-gradient(135deg, #374151, #111827)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/dark.png',
-            timeline: '10 Weeks',
-            platform: 'Web Application',
-            industry: 'Creative Tools',
-            overview: 'A dark mode interface for a creative professional tool. The core challenge was to reduce eye strain during extended use while maintaining visual hierarchy and ensuring all content remains accessible and readable in low-light conditions.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png',
-                'screen%20(6).png', 'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png',
-                'screen%20(11).png', 'screen%20(12).png', 'screen%20(13).png', 'screen%20(14).png'
-            ],
-            folder: 'screen-dark'
-        },
-        'screen-editorial': {
-            title: 'Editorial UI Design',
-            heroGradient: 'linear-gradient(135deg, #dc2626, #be185d)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/editorial.png',
-            timeline: '12 Weeks',
-            platform: 'Web Application',
-            industry: 'Digital Publishing',
-            overview: 'A digital magazine and content publishing platform. The core challenge was to create a reading experience that rivals print publications while leveraging digital capabilities for enhanced storytelling and reader engagement.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png',
-                'screen%20(6).png', 'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png', 'screen%20(11).png'
-            ],
-            folder: 'screen-editorial'
-        },
-        'screen-gradient': {
-            title: 'Gradient UI Design',
-            heroGradient: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/gradient.png',
-            timeline: '10 Weeks',
-            platform: 'Mobile Application',
-            industry: 'Social Media',
-            overview: 'A modern social media application targeting Gen Z users. The core challenge was to create a vibrant, energetic interface that stands out in a crowded market while maintaining usability and encouraging user-generated content.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png',
-                'screen%20(6).png', 'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png',
-                'screen%20(11).png'
-            ],
-            folder: 'screen-gradient'
-        },
-        'screen-minimal': {
-            title: 'Minimal UI Design',
-            heroGradient: 'linear-gradient(135deg, #6b7280, #4b5563)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/minimal.png',
-            timeline: '8 Weeks',
-            platform: 'Web Application',
-            industry: 'Productivity',
-            overview: 'A task management and productivity application. The core challenge was to create an interface that eliminates distractions and allows users to focus entirely on their work, following the principle that less is more.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen%20(2).png', 'screen%20(3).png', 'screen%20(5).png', 'screen%20(7).png', 'screen%20(9).png',
-                'screen%20(10).png', 'screen%20(11).png', 'screen%20(13).png', 'screen%20(14).png', 'screen%20(15).png',
-                'screen%20(16).png', 'screen%20(17).png', 'screen%20(18).png', 'screen%20(19).png'
-            ],
-            folder: 'screen-minimal'
-        },
-        'screen-premium': {
-            title: 'Premium UI Design',
-            heroGradient: 'linear-gradient(135deg, #059669, #047857)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/premium.png?v=' + Date.now(),
-            timeline: '16 Weeks',
-            platform: 'Web Application',
-            industry: 'Financial Services',
-            overview: 'A subscription-based financial services platform for high-net-worth individuals. The core challenge was to create an interface that conveys trust, sophistication, and exclusivity while providing powerful financial tools and insights.',
-            role: 'As the sole UI/UX designer, I was responsible for the entire design lifecycle, from initial research and wireframing to high-fidelity prototyping and developer handoff. My work included user journey mapping, creating a cohesive design system, and ensuring the final product was both beautiful and highly functional.',
-            images: [
-                'screen.png', 'screen%20(2).png', 'screen%20(3).png', 'screen%20(4).png', 'screen%20(5).png',
-                'screen%20(6).png', 'screen%20(7).png', 'screen%20(8).png', 'screen%20(9).png', 'screen%20(10).png', 'screen%20(11).png'
-            ],
-            folder: 'screen-premium'
-        },
-        '2d-animation': {
-            title: '2D Animation Collection',
-            heroGradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/Creative%202D%20animation%20scene%20design.png',
-            timeline: '8 Weeks',
-            platform: 'Animation & Motion Graphics',
-            industry: 'Entertainment & Marketing',
-            overview: 'A diverse collection of 2D animation projects including character animation, motion graphics, explainer videos, and animated storytelling. Each project showcases different animation techniques, from traditional frame-by-frame animation to modern motion graphics and digital character animation.',
-            role: 'As the lead animator and motion graphics designer, I handled the complete animation pipeline from concept and storyboarding to final animation and post-production. My work included character design, keyframe animation, motion graphics, timing, and bringing static designs to life through engaging animated sequences.',
-            images: [
-                '1751730728256.png',
-                '1751730728270.png',
-                '1751730728284.png',
-                '1751730728295.png',
-                '1751730728316.png',
-                '1751730728330.png',
-                '1751730728355.png',
-                '1751730728374.png',
-                '1751730728389.png',
-                'Comp%201.mp4',
-                'Comp%202.mp4',
-                'corrected.mp4',
-                'demo%20scene.mp4',
-                'f1.mp4',
-                'final2.mp4',
-                'finall_.mp4',
-                'finall_1.mp4',
-                'order.mp4',
-                'scene1.mp4',
-                'scene2.mp4',
-                'v2.mp4'
-            ],
-            folder: '2D-Animation'
-        },
-        'video-edits': {
-            title: 'Video Editing Collection',
-            heroGradient: 'linear-gradient(135deg, #ef4444, #dc2626)',
-            heroThumbnail: 'https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/thumbnail/Creative%20video%20editing%20tools%20and%20characters.png',
-            timeline: '6 Weeks',
-            platform: 'Video Production',
-            industry: 'Media & Entertainment',
-            overview: 'A comprehensive video editing collection showcasing diverse editing styles, from cinematic storytelling to dynamic promotional content. Each project demonstrates advanced editing techniques, color grading, motion graphics, and audio synchronization to create engaging visual narratives. Note: Some videos may require download for optimal viewing due to format compatibility.',
-            role: 'As the video editor and post-production specialist, I handled the complete editing workflow from raw footage to final delivery. My work included story structuring, cutting and pacing, color correction, audio mixing, motion graphics integration, and ensuring optimal output for various platforms and formats.',
-            images: [
-                '1%20(1).mkv',
-                '1%20(2).mkv',
-                '1%20(3).mkv',
-                '1%20(4).mkv',
-                '1%20(5).mkv',
-                '1%20(6).mkv',
-                '1%20(7).mkv',
-                '1%20(8).mkv',
-                '1%20(9).mkv',
-                '1%20(10).mkv',
-                '1%20(11).mkv',
-                '1%20(12).mkv',
-                '1%20(13).mkv',
-                '1%20(14).mkv',
-                '1%20(15).mkv',
-                '1%20(16).mkv',
-                '1%20(17).mkv',
-                '1%20(18).mkv',
-                '1%20(19).mkv'
-            ],
-            folder: 'video%20edits/edits'
-        }
-    };
-    
-    // Get current project data
-    const currentProject = projects[project] || projects['festival'];
-    
-    console.log('Current project loaded:', currentProject.title);
-    
-    // Preload critical images for better performance
-    preloadCriticalImages(currentProject);
-    
-    // Update page content
-    document.getElementById('project-title').innerHTML = `<span class="glow-underline">${currentProject.title}</span>`;
-    
-    console.log('Project title updated to:', currentProject.title);
-    
-    // Set hero background with optimized thumbnail image
-    const heroElement = document.getElementById('project-hero');
-    // Use optimized thumbnail with aggressive compression for faster loading
-    const optimizedHeroUrl = `${currentProject.heroThumbnail}?width=800&height=400&resize=cover&quality=60&format=webp`;
-    
-    // Test if the image loads, otherwise use gradient fallback
-    const testImg = new Image();
-    testImg.onload = () => {
-        heroElement.style.backgroundImage = `url('${optimizedHeroUrl}')`;
-        heroElement.style.backgroundSize = 'contain';
-        heroElement.style.backgroundPosition = 'center';
-        heroElement.style.backgroundRepeat = 'no-repeat';
-    };
-    testImg.onerror = () => {
-        // Fallback to gradient if image fails to load
-        heroElement.style.background = currentProject.heroGradient;
-        heroElement.style.display = 'flex';
-        heroElement.style.alignItems = 'center';
-        heroElement.style.justifyContent = 'center';
-        heroElement.innerHTML = `<h2 style="color: white; font-size: 2rem; font-weight: bold; text-align: center;">${currentProject.title}</h2>`;
-    };
-    testImg.src = optimizedHeroUrl;
-    // Clean banner with no text overlay
-    heroElement.innerHTML = '';
-    
-    document.getElementById('project-overview').textContent = currentProject.overview;
-    document.getElementById('project-role').textContent = currentProject.role;
-    
-    // Update project details
-    document.getElementById('project-details').innerHTML = `
-        <div class="glassmorphism-card rounded-xl p-6 text-center">
-            <h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Timeline</h3>
-            <p class="text-lg font-bold text-white">${currentProject.timeline}</p>
-        </div>
-        <div class="glassmorphism-card rounded-xl p-6 text-center">
-            <h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Platform</h3>
-            <p class="text-lg font-bold text-white">${currentProject.platform}</p>
-        </div>
-        <div class="glassmorphism-card rounded-xl p-6 text-center">
-            <h3 class="text-sm font-semibold uppercase tracking-widest text-primary/80 mb-2">Industry</h3>
-            <p class="text-lg font-bold text-white">${currentProject.industry}</p>
-        </div>
-    `;
-    
-    // Create gallery with lazy loading and optimized images/videos
-    const galleryGrid = document.getElementById('gallery-grid');
-    galleryGrid.innerHTML = '';
-    
-    // Populate global images array for lightbox navigation
-    allProjectImages = currentProject.images.map(image => {
-        // Special handling for video-edits project which uses different bucket
-        if (project === 'video-edits') {
-            return `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/video%20edits/edits/${image}`;
-        }
-        return `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/${currentProject.folder}/${image}`;
-    });
-    
-    console.log('Populated allProjectImages array with', allProjectImages.length, 'files:');
-    allProjectImages.forEach((url, index) => {
-        const filename = url.split('/').pop();
-        console.log(`  ${index}: ${decodeURIComponent(filename)}`);
-    });
-    
-    // Load only first 3 items initially for faster loading, then load more on scroll
-    const initialLoad = 3;
-    const totalItems = currentProject.images.length;
-    
-    // Create ALL items with sequential indices (0 to totalItems-1)
-    for (let globalIndex = 0; globalIndex < totalItems; globalIndex++) {
-        const filename = currentProject.images[globalIndex];
-        const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov') || filename.endsWith('.mkv');
-        
-        // Special handling for video-edits project which uses different bucket
-        let fullUrl;
-        if (project === 'video-edits') {
-            fullUrl = `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/video%20edits/edits/${filename}`;
-        } else {
-            fullUrl = `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/${currentProject.folder}/${filename}`;
-        }
-        
-        console.log(`Creating ${isVideo ? 'video' : 'image'} with sequential index ${globalIndex}:`, filename);
-        console.log('Full URL:', fullUrl);
-        
-        const itemElement = document.createElement('div');
-        itemElement.className = 'cyber-container';
-        
-        // Create the cyber card structure
-        const cyberCard = document.createElement('div');
-        cyberCard.className = 'cyber-card';
-        
-        const cardContent = document.createElement('div');
-        cardContent.className = 'cyber-card-content';
-        
-        if (isVideo) {
-            // Create video element for MP4/MOV/MKV files with optimized loading
-            const video = document.createElement('video');
-            video.src = fullUrl;
-            video.alt = `${currentProject.title} ${globalIndex + 1}`;
-            video.className = 'cyber-card-image cursor-pointer';
-            video.muted = true;
-            video.preload = 'none'; // Don't preload video data to save bandwidth
-            video.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
-            video.dataset.imageIndex = globalIndex;
-            
-            // Add error handling for unsupported video formats
-            video.addEventListener('error', function() {
-                console.warn(`Video format not supported: ${filename}`);
-                // Replace with a fallback message
-                const fallback = document.createElement('div');
-                fallback.className = 'cyber-card-image cursor-pointer';
-                fallback.dataset.imageIndex = globalIndex;
-                fallback.style.cssText = `
-                    width: 100%; 
-                    height: 100%; 
-                    background: linear-gradient(135deg, #ef4444, #dc2626);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    text-align: center;
-                    padding: 20px;
-                `;
-                fallback.innerHTML = `
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🎥</div>
-                    <div style="font-size: 0.9rem; font-weight: bold;">Video File</div>
-                    <div style="font-size: 0.7rem; opacity: 0.8; margin-top: 5px;">${filename.split('%20').join(' ')}</div>
-                    <div style="font-size: 0.6rem; opacity: 0.6; margin-top: 5px;">Click to download</div>
-                `;
-                
-                // Add click handler for fallback
-                fallback.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Open video in new tab for download/viewing
-                    window.open(fullUrl, '_blank');
-                });
-                
-                // Replace the video element with fallback
-                this.parentNode.replaceChild(fallback, this);
-            });
-            
-            // Add play icon overlay
-            const playOverlay = document.createElement('div');
-            playOverlay.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(0, 0, 0, 0.7);
-                border-radius: 50%;
-                width: 60px;
-                height: 60px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 24px;
-                pointer-events: none;
-                z-index: 10;
-            `;
-            playOverlay.innerHTML = '▶';
-            
-            // Add click handler for video
-            video.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const storedIndex = parseInt(this.dataset.imageIndex);
-                console.log('=== VIDEO CLICKED ===');
-                console.log('Clicked video sequential index:', storedIndex);
-                console.log('Video filename:', filename);
-                console.log('Total items in array:', allProjectImages.length);
-                console.log('Expected URL:', allProjectImages[storedIndex]);
-                console.log('=== OPENING LIGHTBOX ===');
-                openLightbox(null, storedIndex);
-            });
-            
-            cardContent.appendChild(video);
-            cardContent.appendChild(playOverlay);
-        } else {
-            // Create image element for PNG/JPG files with aggressive optimization
-            const thumbnailUrl = `${fullUrl}?width=320&height=240&resize=cover&quality=60&format=webp`;
-            const img = document.createElement('img');
-            img.src = thumbnailUrl;
-            img.alt = `${currentProject.title} ${globalIndex + 1}`;
-            img.className = 'cyber-card-image cursor-pointer image-loading';
-            img.loading = 'lazy';
-            img.decoding = 'async';
-            img.dataset.imageIndex = globalIndex;
-            
-            // Performance tracking
-            let loadStartTime;
-            try {
-                loadStartTime = performance.now();
-            } catch (e) {
-                loadStartTime = Date.now();
-            }
-            
-            // Progressive loading - remove blur when image loads
-            img.addEventListener('load', function() {
-                this.classList.remove('image-loading');
-                this.classList.add('image-loaded');
-                try {
-                    trackImagePerformance(filename, loadStartTime);
-                } catch (e) {
-                    console.log('Image loaded:', filename);
-                }
-            });
-            
-            // Handle load errors gracefully
-            img.addEventListener('error', function() {
-                this.classList.remove('image-loading');
-                this.style.backgroundColor = '#333';
-                this.style.color = '#fff';
-                this.style.display = 'flex';
-                this.style.alignItems = 'center';
-                this.style.justifyContent = 'center';
-                this.textContent = 'Image failed to load';
-                console.error(`Failed to load image: ${filename}`);
-            });
-            
-            // Add click handler for image
-            img.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const storedIndex = parseInt(this.dataset.imageIndex);
-                console.log('=== IMAGE CLICKED ===');
-                console.log('Clicked image sequential index:', storedIndex);
-                console.log('Image filename:', filename);
-                console.log('Total items in array:', allProjectImages.length);
-                console.log('Expected URL:', allProjectImages[storedIndex]);
-                console.log('=== OPENING LIGHTBOX ===');
-                openLightbox(null, storedIndex);
-            });
-            
-            cardContent.appendChild(img);
-        }
-        
-        // Create other elements
-        const glare = document.createElement('div');
-        glare.className = 'cyber-card-glare';
-        
-        const lines = document.createElement('div');
-        lines.className = 'cyber-lines';
-        lines.innerHTML = '<span></span><span></span><span></span>';
-        
-        const corners = document.createElement('div');
-        corners.className = 'cyber-corner-elements';
-        corners.innerHTML = '<span></span><span></span><span></span><span></span>';
-        
-        // Assemble the structure
-        cardContent.appendChild(glare);
-        cardContent.appendChild(lines);
-        cardContent.appendChild(corners);
-        cyberCard.appendChild(cardContent);
-        itemElement.appendChild(cyberCard);
-        
-        // Hide items beyond initial load (they'll be shown when "Load More" is clicked)
-        if (globalIndex >= initialLoad) {
-            itemElement.style.display = 'none';
-            itemElement.classList.add('load-more-image');
-        }
-        
-        galleryGrid.appendChild(itemElement);
-    }
-    
-    // Add "Load More" button if there are more than initialLoad items
-    if (totalItems > initialLoad) {
-        const loadMoreBtn = document.createElement('div');
-        loadMoreBtn.className = 'col-span-full flex justify-center mt-6';
-        loadMoreBtn.innerHTML = `
-            <button id="load-more-btn" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">
-                Load More Media (${totalItems - initialLoad} remaining)
-            </button>
-        `;
-        galleryGrid.appendChild(loadMoreBtn);
-        
-        // Load more functionality - just show hidden items
-        document.getElementById('load-more-btn').addEventListener('click', function() {
-            const hiddenItems = document.querySelectorAll('.load-more-image');
-            hiddenItems.forEach(itemElement => {
-                itemElement.style.display = 'block';
-                itemElement.classList.remove('load-more-image');
-            });
-            loadMoreBtn.remove();
-            
-            // Re-initialize 3D effects for newly shown items
-            setTimeout(() => {
-                initializeCyberCardEffects();
-            }, 100);
-        });
-    }
-    
-    // Initialize 3D hover effects for cyber cards
-    initializeCyberCardEffects();
-    
-    // Initialize intersection observer for better lazy loading
-    initializeIntersectionObserver();
-    
-    // Debug: Verify sequential indexing
-    setTimeout(() => {
-        const allImages = document.querySelectorAll('.cyber-card-image');
-        console.log('=== SEQUENTIAL INDEX VERIFICATION ===');
-        console.log('Total images in allProjectImages array:', allProjectImages.length);
-        console.log('Total images created in DOM:', allImages.length);
-        
-        // Verify all images have sequential indices
-        const domIndices = [];
-        allImages.forEach((img, domPosition) => {
-            const storedIndex = parseInt(img.dataset.imageIndex);
-            domIndices.push(storedIndex);
-            const filename = img.src.split('/').pop().split('?')[0];
-            console.log(`DOM position ${domPosition}: index ${storedIndex} -> ${decodeURIComponent(filename)}`);
-        });
-        
-        // Check if indices are sequential (0, 1, 2, 3, ...)
-        const sortedIndices = [...domIndices].sort((a, b) => a - b);
-        const expectedSequence = Array.from({length: allProjectImages.length}, (_, i) => i);
-        
-        console.log('Expected sequence:', expectedSequence);
-        console.log('Actual sorted indices:', sortedIndices);
-        
-        const isSequential = JSON.stringify(sortedIndices) === JSON.stringify(expectedSequence);
-        
-        if (isSequential) {
-            console.log('✅ PERFECT: All indices are sequential from 0 to', allProjectImages.length - 1);
-        } else {
-            console.error('❌ ERROR: Indices are not sequential!');
-            const missing = expectedSequence.filter(i => !sortedIndices.includes(i));
-            const extra = sortedIndices.filter(i => !expectedSequence.includes(i));
-            if (missing.length > 0) console.error('Missing indices:', missing);
-            if (extra.length > 0) console.error('Extra indices:', extra);
-        }
-        
-        console.log('=== END VERIFICATION ===');
-    }, 1000);
-    
-    // Debug: Test if images are clickable
-    setTimeout(() => {
-        const allImages = document.querySelectorAll('.cyber-card-image');
-        console.log('Found cyber card images:', allImages.length);
-        
-        allImages.forEach((img, index) => {
-            console.log(`Image ${index}:`, img.src);
-            
-            // Remove the test alert and use proper lightbox
-            img.addEventListener('click', function(e) {
-                console.log('Image clicked! Opening lightbox for:', this.src);
-                // Get the index from the data attribute
-                const imageIndex = parseInt(this.dataset.imageIndex);
-                if (!isNaN(imageIndex) && imageIndex >= 0 && imageIndex < allProjectImages.length) {
-                    openLightbox(null, imageIndex);
-                } else {
-                    console.error('Invalid image index:', imageIndex);
-                }
-            });
-            
-            // Add visual feedback (remove red border for production)
-            // img.style.border = '2px solid red';
-            img.title = 'Click to view full size';
-        });
-    }, 1000);
-    
-    } catch (error) {
-        console.error('Error in project page initialization:', error);
-        // Fallback: Set a basic title if everything fails
-        const titleElement = document.getElementById('project-title');
-        if (titleElement) {
-            titleElement.innerHTML = '<span class="glow-underline">Project Details</span>';
-        }
-    }
 });
 
-// Initialize intersection observer for better lazy loading
-function initializeIntersectionObserver() {
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        observer.unobserve(img);
-                    }
-                }
-            });
-        }, {
-            rootMargin: '50px 0px',
-            threshold: 0.01
-        });
-        
-        // Observe all images with data-src attribute
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
-}
-
-// 3D Interactive Hover Effects for Cyber Cards with Dynamic Colors
-function initializeCyberCardEffects() {
-    const cyberContainers = document.querySelectorAll('.cyber-container');
+async function loadProjectFromSupabase(projectKey) {
+    const result = await getProjectByKey(projectKey);
     
-    cyberContainers.forEach(container => {
-        const card = container.querySelector('.cyber-card');
-        const glare = container.querySelector('.cyber-card-glare');
-        const image = container.querySelector('.cyber-card-image');
-        const lines = container.querySelectorAll('.cyber-lines span');
-        const corners = container.querySelectorAll('.cyber-corner-elements span');
-        
-        if (!card || !image) return;
-        
-        // Extract colors from thumbnail and apply to cyber effects (non-blocking)
-        requestIdleCallback(() => {
-            extractImageColors(image).then(colors => {
-                const primaryColor = colors.primary;
-                const secondaryColor = colors.secondary;
-                
-                // Apply dynamic colors to cyber elements
-                card.style.setProperty('--cyber-primary', primaryColor);
-                card.style.setProperty('--cyber-secondary', secondaryColor);
-                
-                // Update border and glow colors
-                card.style.borderColor = `${primaryColor}20`; // 20% opacity
-                
-                // Update corner elements
-                corners.forEach(corner => {
-                    corner.style.borderColor = `${primaryColor}50`; // 50% opacity
-                });
-                
-                // Update scan lines
-                lines.forEach(line => {
-                    line.style.background = `linear-gradient(90deg, transparent, ${primaryColor}80, transparent)`;
-                });
-            }).catch(() => {
-                // Fallback to default colors if extraction fails
-                const defaultColor = 'rgb(0, 170, 255)';
-                card.style.setProperty('--cyber-primary', defaultColor);
-                card.style.setProperty('--cyber-secondary', defaultColor);
-            });
-        });
-        
-        container.addEventListener('mouseenter', () => {
-            card.style.transition = 'transform 0.1s ease-out, border-color 0.3s ease, box-shadow 0.3s ease';
-            
-            // Apply hover effects with dynamic colors
-            const primaryColor = card.style.getPropertyValue('--cyber-primary') || '#00aaff';
-            card.style.borderColor = `${primaryColor}80`; // 80% opacity on hover
-            card.style.boxShadow = `0 0 30px ${primaryColor}50, 0 0 60px ${primaryColor}30`;
-            
-            // Update corner elements on hover
-            corners.forEach(corner => {
-                corner.style.borderColor = `${primaryColor}`;
-                corner.style.boxShadow = `0 0 10px ${primaryColor}80`;
-            });
-        });
-        
-        container.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.5s ease-out, border-color 0.3s ease, box-shadow 0.3s ease';
-            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            
-            // Reset to default colors
-            const primaryColor = card.style.getPropertyValue('--cyber-primary') || '#00aaff';
-            card.style.borderColor = `${primaryColor}20`;
-            card.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.3)';
-            
-            // Reset corner elements
-            corners.forEach(corner => {
-                corner.style.borderColor = `${primaryColor}50`;
-                corner.style.boxShadow = 'none';
-            });
-            
-            if (glare) {
-                glare.style.background = 'linear-gradient(125deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%)';
-            }
-        });
-        
-        container.addEventListener('mousemove', (e) => {
-            const rect = container.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            const mouseX = e.clientX - centerX;
-            const mouseY = e.clientY - centerY;
-            
-            const rotateX = (mouseY / rect.height) * -30; // Max 30 degrees
-            const rotateY = (mouseX / rect.width) * 30;   // Max 30 degrees
-            
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-            
-            // Update glare effect to follow mouse with dynamic colors
-            if (glare) {
-                const primaryColor = card.style.getPropertyValue('--cyber-primary') || '#00aaff';
-                const glareX = ((mouseX / rect.width) + 0.5) * 100;
-                const glareY = ((mouseY / rect.height) + 0.5) * 100;
-                glare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, ${primaryColor}30 0%, ${primaryColor}15 30%, transparent 60%)`;
-            }
-        });
-    });
-}
-
-// Extract dominant colors from image
-async function extractImageColors(img) {
-    return new Promise((resolve) => {
-        // Create a canvas to analyze the image
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        // Set canvas size
-        canvas.width = 50;
-        canvas.height = 50;
-        
-        // Wait for image to load if not already loaded
-        if (img.complete) {
-            analyzeImage();
-        } else {
-            img.onload = analyzeImage;
-        }
-        
-        function analyzeImage() {
-            try {
-                // Draw image to canvas
-                ctx.drawImage(img, 0, 0, 50, 50);
-                
-                // Get image data
-                const imageData = ctx.getImageData(0, 0, 50, 50);
-                const data = imageData.data;
-                
-                // Analyze colors
-                const colorMap = {};
-                const colors = [];
-                
-                // Sample every 4th pixel for performance
-                for (let i = 0; i < data.length; i += 16) {
-                    const r = data[i];
-                    const g = data[i + 1];
-                    const b = data[i + 2];
-                    const a = data[i + 3];
-                    
-                    if (a > 128) { // Only consider non-transparent pixels
-                        // Group similar colors
-                        const colorKey = `${Math.floor(r/32)*32},${Math.floor(g/32)*32},${Math.floor(b/32)*32}`;
-                        colorMap[colorKey] = (colorMap[colorKey] || 0) + 1;
-                        colors.push({r, g, b});
-                    }
-                }
-                
-                // Find most common colors
-                const sortedColors = Object.entries(colorMap)
-                    .sort(([,a], [,b]) => b - a)
-                    .slice(0, 3);
-                
-                if (sortedColors.length > 0) {
-                    const [primaryRGB] = sortedColors[0][0].split(',').map(Number);
-                    const [secondaryRGB] = sortedColors.length > 1 ? 
-                        sortedColors[1][0].split(',').map(Number) : 
-                        sortedColors[0][0].split(',').map(Number);
-                    
-                    const primary = `rgb(${sortedColors[0][0]})`;
-                    const secondary = sortedColors.length > 1 ? 
-                        `rgb(${sortedColors[1][0]})` : 
-                        primary;
-                    
-                    resolve({ primary, secondary });
-                } else {
-                    // Fallback to default colors
-                    resolve({ 
-                        primary: 'rgb(0, 170, 255)', 
-                        secondary: 'rgb(0, 170, 255)' 
-                    });
-                }
-            } catch (error) {
-                console.warn('Color extraction failed, using defaults:', error);
-                resolve({ 
-                    primary: 'rgb(0, 170, 255)', 
-                    secondary: 'rgb(0, 170, 255)' 
-                });
-            }
-        }
-    });
-}
-
-// Global variables for lightbox navigation
-let currentImageIndex = 0;
-let allProjectImages = [];
-let isLightboxOpen = false; // Prevent multiple lightboxes
-
-// Simple lightbox function with navigation
-function openLightbox(mediaUrl, mediaIndex = 0) {
-    console.log('=== OPENING LIGHTBOX ===');
-    console.log('Requested index:', mediaIndex);
-    console.log('Total media files available:', allProjectImages.length);
-    
-    // Prevent multiple lightboxes
-    if (isLightboxOpen) {
-        console.log('Lightbox already open, ignoring request');
-        return;
-    }
-    
-    // Validate the index
-    if (mediaIndex < 0 || mediaIndex >= allProjectImages.length) {
-        console.error('Invalid media index:', mediaIndex, 'Valid range: 0 -', allProjectImages.length - 1);
-        return;
-    }
-    
-    // Set flags and current index
-    isLightboxOpen = true;
-    currentImageIndex = mediaIndex;
-    
-    // Remove any existing lightbox first
-    const existingLightbox = document.querySelector('.lightbox-overlay');
-    if (existingLightbox) {
-        existingLightbox.remove();
-    }
-    
-    // Create lightbox overlay
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox-overlay';
-    lightbox.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99999;
-        cursor: pointer;
-    `;
-    
-    // Determine if current file is video or image
-    const currentUrl = allProjectImages[currentImageIndex];
-    const isVideo = currentUrl.includes('.mp4') || currentUrl.includes('.mov') || currentUrl.includes('.mkv');
-    
-    // Create media element (image or video)
-    let mediaElement;
-    if (isVideo) {
-        mediaElement = document.createElement('video');
-        mediaElement.src = currentUrl;
-        mediaElement.controls = true;
-        mediaElement.muted = true;
-        mediaElement.autoplay = false;
-        mediaElement.style.cssText = `
-            max-width: 80vw;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 8px;
-            cursor: default;
-        `;
-        
-        // Add error handling for unsupported video formats in lightbox
-        mediaElement.addEventListener('error', function() {
-            console.warn('Video format not supported in lightbox:', currentUrl);
-            // Replace with download link
-            const fallback = document.createElement('div');
-            fallback.style.cssText = `
-                max-width: 80vw;
-                max-height: 80vh;
-                background: linear-gradient(135deg, #ef4444, #dc2626);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                text-align: center;
-                padding: 40px;
-                border-radius: 8px;
-                cursor: default;
-            `;
-            fallback.innerHTML = `
-                <div style="font-size: 4rem; margin-bottom: 20px;">🎥</div>
-                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">Video Format Not Supported</div>
-                <div style="font-size: 1rem; opacity: 0.9; margin-bottom: 20px;">This video format cannot be played in the browser</div>
-                <button onclick="window.open('${currentUrl}', '_blank')" style="
-                    background: rgba(255,255,255,0.2);
-                    border: 1px solid rgba(255,255,255,0.3);
-                    color: white;
-                    padding: 12px 24px;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    font-size: 1rem;
-                ">Download Video</button>
-            `;
-            
-            // Replace the video element
-            this.parentNode.replaceChild(fallback, this);
-            mediaElement = fallback;
-        });
+    if (result.success) {
+        console.log('Found project:', result.data);
+        loadProject(result.data);
     } else {
-        mediaElement = document.createElement('img');
-        mediaElement.src = currentUrl;
-        mediaElement.style.cssText = `
-            max-width: 80vw;
-            max-height: 80vh;
-            object-fit: contain;
-            border-radius: 8px;
-            cursor: default;
+        console.log('Project not found in Supabase, trying localStorage');
+        loadFromLocalStorage(projectKey);
+    }
+}
+
+function loadFromLocalStorage(projectKey) {
+    // Fallback to localStorage
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    console.log('Loaded projects from localStorage:', projects);
+    console.log('Number of projects:', projects.length);
+    
+    // Debug: Show all project keys
+    projects.forEach(p => {
+        console.log('Available project key:', p.key, 'Title:', p.title);
+    });
+    
+    // Find the specific project
+    const project = projects.find(p => p.key === projectKey);
+    
+    if (!project) {
+        console.log('Project not found with key:', projectKey);
+        console.log('Available keys:', projects.map(p => p.key));
+        showProjectNotFound();
+        return;
+    }
+    
+    // Convert localStorage format to Supabase format
+    const supabaseProject = {
+        id: project.id,
+        title: project.title,
+        key: project.key,
+        category: project.category,
+        description: project.description,
+        count: project.count,
+        thumbnail_url: project.thumbnailDataUrl,
+        created_at: project.createdAt,
+        project_images: project.images || [],
+        project_videos: project.videos || []
+    };
+    
+    console.log('Found project:', supabaseProject);
+    loadProject(supabaseProject);
+}
+
+function showProjectNotFound() {
+    document.getElementById('project-not-found').classList.remove('hidden');
+    document.getElementById('project-content').classList.add('hidden');
+}
+
+function loadProject(project) {
+    console.log('Loading project:', project.title);
+    
+    // Show project content
+    document.getElementById('project-content').classList.remove('hidden');
+    document.getElementById('project-not-found').classList.add('hidden');
+    
+    // Update page title
+    document.title = `${project.title} - Extoll.Co`;
+    
+    // Update project title
+    document.getElementById('project-title').innerHTML = `<span class="glow-underline">${project.title}</span>`;
+    
+    // Update hero image
+    const heroElement = document.getElementById('project-hero');
+    if (project.thumbnail_url) {
+        heroElement.style.backgroundImage = `url(${project.thumbnail_url})`;
+        heroElement.style.backgroundSize = 'cover';
+        heroElement.style.backgroundPosition = 'center';
+    } else {
+        // Create a gradient background with category icon
+        const categoryIcons = {
+            'graphics': '🎨',
+            'ui': '📱',
+            'product': '💼',
+            'animation': '🎬',
+            'video': '🎥'
+        };
+        
+        const icon = categoryIcons[project.category] || '📁';
+        heroElement.innerHTML = `
+            <div class="w-full h-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-8xl mb-4">${icon}</div>
+                    <h3 class="text-white text-2xl font-bold">${project.title}</h3>
+                </div>
+            </div>
         `;
     }
     
-    mediaElement.alt = `Project ${isVideo ? 'Video' : 'Image'} ${currentImageIndex + 1} of ${allProjectImages.length}`;
+    // Update project details (count will be updated after loading files)
+    document.getElementById('project-category').textContent = getCategoryDisplayName(project.category);
+    document.getElementById('project-count').textContent = 'Loading...';
+    document.getElementById('project-date').textContent = new Date(project.created_at).toLocaleDateString();
     
-    console.log(`Displaying ${isVideo ? 'video' : 'image'} at index:`, currentImageIndex, 'URL:', currentUrl);
+    // Update project description
+    document.getElementById('project-description').textContent = project.description;
     
-    // Create close button
-    const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '×';
-    closeBtn.style.cssText = `
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 100000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.3s ease;
+    // Load actual project files from Supabase storage
+    loadProjectFilesFromStorage(project.key, project.category);
+}
+
+// Load actual project files from Supabase storage
+async function loadProjectFilesFromStorage(projectKey, projectCategory) {
+    const galleryGrid = document.getElementById('gallery-grid');
+    
+    // Show loading state
+    galleryGrid.innerHTML = `
+        <div class="col-span-full glassmorphism-card p-12 rounded-xl text-center">
+            <div class="text-4xl mb-4">⏳</div>
+            <h3 class="text-white text-xl font-bold mb-2">Loading Project Files...</h3>
+            <p class="text-gray-400">Fetching images and videos from storage...</p>
+        </div>
     `;
     
-    // Create previous button
-    const prevBtn = document.createElement('button');
-    prevBtn.innerHTML = '‹';
-    prevBtn.style.cssText = `
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        font-size: 30px;
-        cursor: pointer;
-        z-index: 100000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.3s ease;
-        ${currentImageIndex === 0 ? 'opacity: 0.3; cursor: not-allowed;' : ''}
-    `;
-    
-    // Create next button
-    const nextBtn = document.createElement('button');
-    nextBtn.innerHTML = '›';
-    nextBtn.style.cssText = `
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        font-size: 30px;
-        cursor: pointer;
-        z-index: 100000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.3s ease;
-        ${currentImageIndex === allProjectImages.length - 1 ? 'opacity: 0.3; cursor: not-allowed;' : ''}
-    `;
-    
-    // Create media counter
-    const counter = document.createElement('div');
-    const mediaFilename = allProjectImages[currentImageIndex].split('/').pop().split('?')[0]; // Extract filename
-    const mediaType = isVideo ? 'Video' : 'Image';
-    counter.textContent = `${currentImageIndex + 1} / ${allProjectImages.length} - ${mediaType}: ${decodeURIComponent(mediaFilename)}`;
-    counter.style.cssText = `
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 14px;
-        z-index: 100000;
-        max-width: 80vw;
-        text-align: center;
-        word-break: break-all;
-    `;
-    
-    // Add elements to lightbox
-    lightbox.appendChild(mediaElement);
-    lightbox.appendChild(closeBtn);
-    lightbox.appendChild(prevBtn);
-    lightbox.appendChild(nextBtn);
-    lightbox.appendChild(counter);
-    
-    // Navigation functions - BULLETPROOF VERSION
-    const showMedia = (targetIndex) => {
-        console.log('=== SHOW MEDIA FUNCTION ===');
-        console.log('Current index before:', currentImageIndex);
-        console.log('Target index requested:', targetIndex);
-        console.log('Total media files:', allProjectImages.length);
+    try {
+        console.log('🔍 Loading files for project:', projectKey);
         
-        // Strict validation
-        if (typeof targetIndex !== 'number' || isNaN(targetIndex)) {
-            console.error('Invalid target index type:', typeof targetIndex, targetIndex);
-            return false;
-        }
-        
-        if (targetIndex < 0) {
-            console.error('Target index below 0:', targetIndex);
-            return false;
-        }
-        
-        if (targetIndex >= allProjectImages.length) {
-            console.error('Target index above maximum:', targetIndex, 'Max:', allProjectImages.length - 1);
-            return false;
-        }
-        
-        // Update current index
-        currentImageIndex = targetIndex;
-        
-        // Get new media URL and type
-        const newUrl = allProjectImages[currentImageIndex];
-        const newIsVideo = newUrl.includes('.mp4') || newUrl.includes('.mov') || newUrl.includes('.mkv');
-        
-        // Remove current media element
-        mediaElement.remove();
-        
-        // Create new media element
-        if (newIsVideo) {
-            mediaElement = document.createElement('video');
-            mediaElement.src = newUrl;
-            mediaElement.controls = true;
-            mediaElement.muted = true;
-            mediaElement.autoplay = false;
-            mediaElement.style.cssText = `
-                max-width: 80vw;
-                max-height: 80vh;
-                object-fit: contain;
-                border-radius: 8px;
-                cursor: default;
-            `;
-            
-            // Add error handling for unsupported video formats
-            mediaElement.addEventListener('error', function() {
-                console.warn('Video format not supported:', newUrl);
-                const fallback = document.createElement('div');
-                fallback.style.cssText = `
-                    max-width: 80vw;
-                    max-height: 80vh;
-                    background: linear-gradient(135deg, #ef4444, #dc2626);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    text-align: center;
-                    padding: 40px;
-                    border-radius: 8px;
-                    cursor: default;
-                `;
-                fallback.innerHTML = `
-                    <div style="font-size: 4rem; margin-bottom: 20px;">🎥</div>
-                    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">Video Format Not Supported</div>
-                    <button onclick="window.open('${newUrl}', '_blank')" style="
-                        background: rgba(255,255,255,0.2);
-                        border: 1px solid rgba(255,255,255,0.3);
-                        color: white;
-                        padding: 12px 24px;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-size: 1rem;
-                    ">Download Video</button>
-                `;
-                this.parentNode.replaceChild(fallback, this);
-                mediaElement = fallback;
+        // List files in the project folder
+        const { data: files, error } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .list(projectKey, {
+                limit: 1000,
+                sortBy: { column: 'created_at', order: 'desc' }
             });
-        } else {
-            mediaElement = document.createElement('img');
-            mediaElement.src = newUrl;
-            mediaElement.style.cssText = `
-                max-width: 80vw;
-                max-height: 80vh;
-                object-fit: contain;
-                border-radius: 8px;
-                cursor: default;
-            `;
-        }
         
-        mediaElement.alt = `Project ${newIsVideo ? 'Video' : 'Image'} ${currentImageIndex + 1} of ${allProjectImages.length}`;
-        
-        // Insert new media element at the beginning
-        lightbox.insertBefore(mediaElement, closeBtn);
-        
-        // Update counter
-        const mediaFilename = allProjectImages[currentImageIndex].split('/').pop().split('?')[0];
-        const mediaType = newIsVideo ? 'Video' : 'Image';
-        counter.textContent = `${currentImageIndex + 1} / ${allProjectImages.length} - ${mediaType}: ${decodeURIComponent(mediaFilename)}`;
-        
-        console.log('Successfully changed to index:', currentImageIndex);
-        console.log('Media filename:', decodeURIComponent(mediaFilename));
-        console.log('Media type:', mediaType);
-        
-        // Update button states
-        prevBtn.style.opacity = currentImageIndex === 0 ? '0.3' : '1';
-        prevBtn.style.cursor = currentImageIndex === 0 ? 'not-allowed' : 'pointer';
-        nextBtn.style.opacity = currentImageIndex === allProjectImages.length - 1 ? '0.3' : '1';
-        nextBtn.style.cursor = currentImageIndex === allProjectImages.length - 1 ? 'not-allowed' : 'pointer';
-        
-        console.log('=== END SHOW IMAGE ===');
-        return true;
-    };
-    
-    // Close handlers
-    const closeLightbox = () => {
-        console.log('=== CLOSING LIGHTBOX ===');
-        isLightboxOpen = false;
-        if (document.body.contains(lightbox)) {
-            document.body.removeChild(lightbox);
-        }
-        document.body.style.overflow = 'auto';
-        console.log('Lightbox closed');
-    };
-    
-    // BULLETPROOF NAVIGATION HANDLERS
-    
-    // Previous button handler
-    const handlePrevious = (e) => {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        console.log('=== PREVIOUS BUTTON HANDLER ===');
-        console.log('Current index:', currentImageIndex);
-        
-        if (currentImageIndex <= 0) {
-            console.log('Already at first image, cannot go back');
+        if (error) {
+            console.error('❌ Error loading project files:', error);
+            showNoFilesMessage();
+            updateProjectCount(0, projectCategory);
             return;
         }
         
-        const targetIndex = currentImageIndex - 1;
-        console.log('Attempting to go to index:', targetIndex, '(current - 1)');
-        
-        const success = showMedia(targetIndex);
-        if (success) {
-            console.log('Successfully moved to previous media');
-        } else {
-            console.error('Failed to move to previous media');
-        }
-        console.log('=== END PREVIOUS HANDLER ===');
-    };
-    
-    // Next button handler
-    const handleNext = (e) => {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        console.log('=== NEXT BUTTON HANDLER ===');
-        console.log('Current index:', currentImageIndex);
-        console.log('Max index:', allProjectImages.length - 1);
-        
-        if (currentImageIndex >= allProjectImages.length - 1) {
-            console.log('Already at last image, cannot go forward');
+        if (!files || files.length === 0) {
+            console.log('📁 No files found for project:', projectKey);
+            showNoFilesMessage();
+            updateProjectCount(0, projectCategory);
             return;
         }
         
-        const targetIndex = currentImageIndex + 1;
-        console.log('Attempting to go to index:', targetIndex, '(current + 1)');
+        console.log('✅ Found', files.length, 'files for project:', projectKey);
         
-        const success = showMedia(targetIndex);
-        if (success) {
-            console.log('Successfully moved to next media');
+        // Process files and get public URLs
+        const projectFiles = files.map(file => {
+            const filePath = `${projectKey}/${file.name}`;
+            const { data: urlData } = configSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl(filePath);
+            
+            return {
+                name: file.name,
+                path: filePath,
+                url: urlData.publicUrl,
+                type: getFileType(file.name),
+                size: file.metadata?.size || 0,
+                created_at: file.created_at
+            };
+        });
+        
+        // Separate images and videos
+        const images = projectFiles.filter(f => f.type === 'image');
+        const videos = projectFiles.filter(f => f.type === 'video');
+        
+        console.log('📊 File breakdown:', {
+            total: projectFiles.length,
+            images: images.length,
+            videos: videos.length
+        });
+        
+        // Update the project count display with actual file count
+        updateProjectCount(projectFiles.length, projectCategory);
+        
+        // Store files globally for navigation
+        window.currentProjectFiles = projectFiles;
+        window.currentProjectImages = images; // Store only images for lightbox
+        
+        // Create gallery
+        if (projectFiles.length > 0) {
+            let imageIndex = 0; // Track image index separately
+            
+            galleryGrid.innerHTML = projectFiles.map((file, index) => {
+                if (file.type === 'image') {
+                    const currentImageIndex = imageIndex;
+                    imageIndex++; // Increment for next image
+                    
+                    return `
+                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openLightbox(${currentImageIndex})">
+                            <img src="${file.url}" alt="Project Image ${currentImageIndex + 1}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <div class="text-white text-2xl">🔍</div>
+                            </div>
+                        </div>
+                    `;
+                } else if (file.type === 'video') {
+                    return `
+                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openVideoModal('${file.url}')">
+                            <video class="w-full h-full object-cover" preload="metadata">
+                                <source src="${file.url}" type="video/mp4">
+                            </video>
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                <div class="text-white text-4xl">▶️</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square flex items-center justify-center bg-gray-800">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">📄</div>
+                                <p class="text-white text-sm">Document</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
         } else {
-            console.error('Failed to move to next media');
+            showNoFilesMessage();
         }
-        console.log('=== END NEXT HANDLER ===');
+        
+    } catch (error) {
+        console.error('❌ Error loading project files:', error);
+        showNoFilesMessage();
+        updateProjectCount(0, projectCategory);
+    }
+}
+
+function updateProjectCount(count, category) {
+    const countElement = document.getElementById('project-count');
+    const fileType = (category === 'animation' || category === 'video') ? 'Files' : 'Images';
+    countElement.textContent = `${count} ${fileType}`;
+}
+
+function showNoFilesMessage() {
+    const galleryGrid = document.getElementById('gallery-grid');
+    galleryGrid.innerHTML = `
+        <div class="col-span-full glassmorphism-card p-12 rounded-xl text-center">
+            <div class="text-4xl mb-4">📷</div>
+            <h3 class="text-white text-xl font-bold mb-2">No Files Yet</h3>
+            <p class="text-gray-400">Project files will appear here when uploaded through the admin panel.</p>
+        </div>
+    `;
+}
+
+function getFileType(fileName) {
+    const extension = fileName.split('.').pop().toLowerCase();
+    
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension)) {
+        return 'image';
+    } else if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(extension)) {
+        return 'video';
+    } else {
+        return 'other';
+    }
+}
+
+function openLightbox(startIndex) {
+    const images = window.currentProjectImages || [];
+    if (images.length === 0) return;
+    
+    let currentIndex = startIndex;
+    
+    // Create lightbox modal
+    const lightbox = document.createElement('div');
+    lightbox.className = 'fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4';
+    lightbox.id = 'lightbox-modal';
+    
+    function updateLightboxContent() {
+        const currentImage = images[currentIndex];
+        lightbox.innerHTML = `
+            <div class="relative max-w-6xl max-h-full flex items-center justify-center">
+                <!-- Main Image -->
+                <img src="${currentImage.url}" alt="Project Image" class="max-w-full max-h-full object-contain">
+                
+                <!-- Close Button -->
+                <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10">
+                    ×
+                </button>
+                
+                <!-- Previous Button -->
+                ${images.length > 1 ? `
+                    <button onclick="previousImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                        ‹
+                    </button>
+                ` : ''}
+                
+                <!-- Next Button -->
+                ${images.length > 1 ? `
+                    <button onclick="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                        ›
+                    </button>
+                ` : ''}
+                
+                <!-- Image Counter -->
+                ${images.length > 1 ? `
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/70 px-4 py-2 rounded-full text-sm">
+                        ${currentIndex + 1} / ${images.length}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+    
+    // Global functions for navigation
+    window.closeLightbox = function() {
+        lightbox.remove();
+        delete window.closeLightbox;
+        delete window.previousImage;
+        delete window.nextImage;
     };
     
-    // Attach event listeners (remove any existing ones first)
-    prevBtn.removeEventListener('click', handlePrevious);
-    nextBtn.removeEventListener('click', handleNext);
-    
-    prevBtn.addEventListener('click', handlePrevious);
-    nextBtn.addEventListener('click', handleNext);
-    
-    // Other event listeners
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
+    window.previousImage = function() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateLightboxContent();
         }
-    });
+    };
     
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeLightbox();
-    });
+    window.nextImage = function() {
+        if (currentIndex < images.length - 1) {
+            currentIndex++;
+            updateLightboxContent();
+        }
+    };
     
-    // Keyboard support with bulletproof handlers
-    const handleKeydown = (e) => {
-        console.log('=== KEYBOARD HANDLER ===');
-        console.log('Key pressed:', e.key, 'Current index:', currentImageIndex);
-        
+    // Keyboard navigation
+    function handleKeyPress(e) {
         switch(e.key) {
             case 'Escape':
-                closeLightbox();
-                document.removeEventListener('keydown', handleKeydown);
+                window.closeLightbox();
                 break;
             case 'ArrowLeft':
-                console.log('Left arrow pressed - calling handlePrevious');
-                handlePrevious();
+                if (currentIndex > 0) window.previousImage();
                 break;
             case 'ArrowRight':
-                console.log('Right arrow pressed - calling handleNext');
-                handleNext();
+                if (currentIndex < images.length - 1) window.nextImage();
                 break;
         }
-        console.log('=== END KEYBOARD HANDLER ===');
+    }
+    
+    document.addEventListener('keydown', handleKeyPress);
+    
+    // Remove keyboard listener when lightbox closes
+    const originalClose = window.closeLightbox;
+    window.closeLightbox = function() {
+        document.removeEventListener('keydown', handleKeyPress);
+        originalClose();
     };
     
-    // Remove any existing keyboard listeners and add new one
-    document.removeEventListener('keydown', handleKeydown);
-    document.addEventListener('keydown', handleKeydown);
-    
-    // Handle media load error
-    mediaElement.onerror = () => {
-        console.error('Failed to load media:', currentUrl);
-        mediaElement.alt = 'Media failed to load';
-        if (!isVideo) {
-            mediaElement.style.cssText += 'background: #333; color: white; padding: 20px; text-align: center;';
+    // Close on click outside
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            window.closeLightbox();
         }
-    };
+    });
     
-    // Add to page
-    document.body.style.overflow = 'hidden';
+    updateLightboxContent();
     document.body.appendChild(lightbox);
-    
-    // Debug: Add comprehensive tracking
-    setTimeout(() => {
-        console.log('=== LIGHTBOX DEBUG SYSTEM ===');
-        console.log('Lightbox opened with index:', currentImageIndex);
-        console.log('Total images:', allProjectImages.length);
-        console.log('Current image URL:', allProjectImages[currentImageIndex]);
-        
-        // Test navigation logic
-        console.log('=== NAVIGATION LOGIC TEST ===');
-        const prev = currentImageIndex - 1;
-        const next = currentImageIndex + 1;
-        console.log(`Current index ${currentImageIndex}:`);
-        console.log(`  Previous would be: ${prev >= 0 ? prev : 'N/A (at start)'}`);
-        console.log(`  Next would be: ${next < allProjectImages.length ? next : 'N/A (at end)'}`);
-        
-        console.log('=== END DEBUG SYSTEM ===');
-    }, 100);
-    
-    console.log('Lightbox added to DOM');
 }
 
-// Preload critical images for better performance with aggressive optimization
-function preloadCriticalImages(project) {
-    // Preload hero thumbnail with smaller size
-    if (project.heroThumbnail) {
-        const heroImg = new Image();
-        heroImg.src = `${project.heroThumbnail}?width=800&height=400&resize=cover&quality=60&format=webp`;
-    }
+function openVideoModal(videoUrl) {
+    // Create video modal
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4';
+    modal.innerHTML = `
+        <div class="relative max-w-6xl max-h-full">
+            <video controls class="max-w-full max-h-full" autoplay>
+                <source src="${videoUrl}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button onclick="this.parentElement.parentElement.remove()" class="absolute top-4 right-4 text-white text-3xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200">
+                ×
+            </button>
+        </div>
+    `;
     
-    // Preload first 6 gallery images (more aggressive preloading)
-    const imagesToPreload = project.images.slice(0, 6);
-    imagesToPreload.forEach(filename => {
-        const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov') || filename.endsWith('.mkv');
-        if (!isVideo) {
-            const img = new Image();
-            // Special handling for video-edits project
-            if (project.folder === 'video%20edits/edits') {
-                img.src = `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/video%20edits/edits/${filename}?width=320&height=240&resize=cover&quality=50&format=webp`;
-            } else {
-                img.src = `https://lnxvkbsbwymmzkyuixgd.supabase.co/storage/v1/object/public/design-portfolio/${project.folder}/${filename}?width=320&height=240&resize=cover&quality=50&format=webp`;
-            }
+    // Close on click outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
         }
     });
-}
-
-// Detect WebP support for better image optimization
-function supportsWebP() {
-    return new Promise((resolve) => {
-        const webP = new Image();
-        webP.onload = webP.onerror = () => resolve(webP.height === 2);
-        webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
-    });
-}
-
-// Get optimized image URL with WebP support
-async function getOptimizedImageUrl(baseUrl, width = 400, height = 320, quality = 80) {
-    const webpSupported = await supportsWebP();
-    const format = webpSupported ? 'webp' : 'auto';
-    return `${baseUrl}?width=${width}&height=${height}&resize=cover&quality=${quality}&format=${format}`;
-}
-
-// Performance monitoring for image loading
-function trackImagePerformance(imageName, startTime) {
-    if ('performance' in window && 'measure' in performance) {
-        try {
-            const endTime = performance.now();
-            const loadTime = endTime - startTime;
-            console.log(`Image ${imageName} loaded in ${loadTime.toFixed(2)}ms`);
-            
-            // Track slow loading images (>2 seconds)
-            if (loadTime > 2000) {
-                console.warn(`Slow loading image detected: ${imageName} took ${loadTime.toFixed(2)}ms`);
-            }
-        } catch (e) {
-            // Performance API not available or failed
+    
+    // Close on Escape key
+    function handleEscape(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', handleEscape);
         }
     }
+    document.addEventListener('keydown', handleEscape);
+    
+    document.body.appendChild(modal);
+}
+
+// Helper function to get display names for categories
+function getCategoryDisplayName(category) {
+    const categoryMap = {
+        'graphics': 'Graphics Design',
+        'ui': 'UI/UX Design',
+        'product': 'Product Design',
+        'animation': '2D Animation',
+        'video': 'Video Editing'
+    };
+    return categoryMap[category] || category;
 }
 
 // Sparkle Background Effect
@@ -1914,58 +673,41 @@ function initializeSparkleEffect() {
     const sparkleContainer = document.getElementById('sparkleContainer');
     if (!sparkleContainer) return;
     
-    const numberOfSparkles = 25;
+    const numberOfSparkles = 20;
     
     function createSparkle() {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         
+        // Random horizontal position
         sparkle.style.left = Math.random() * 100 + '%';
-        sparkle.style.animationDelay = (Math.random() * 18) + 's';
         
-        const sizeVariations = [2, 2.5, 3, 3.5];
-        const size = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
-        sparkle.style.width = size + 'px';
-        sparkle.style.height = size + 'px';
-        
-        if (Math.random() > 0.7) {
-            sparkle.style.filter = 'blur(0.5px)';
-        }
+        // Random animation delay
+        sparkle.style.animationDelay = (Math.random() * 12) + 's';
         
         sparkleContainer.appendChild(sparkle);
         
+        // Remove sparkle after animation completes
         setTimeout(() => {
             if (sparkle.parentNode) {
                 sparkle.parentNode.removeChild(sparkle);
             }
-        }, 20000);
+        }, 12000);
     }
     
+    // Create initial sparkles
     for (let i = 0; i < numberOfSparkles; i++) {
-        setTimeout(() => createSparkle(), Math.random() * 8000);
+        setTimeout(() => createSparkle(), Math.random() * 5000);
     }
     
+    // Continuously create new sparkles
     setInterval(() => {
         if (sparkleContainer.children.length < numberOfSparkles * 1.5) {
             createSparkle();
         }
-    }, 700);
+    }, 800);
 }
 </script>
 
-<!-- Footer -->
-<footer class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-white/10">
-<div class="flex flex-col gap-6 text-center">
-<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html">Home</a>
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Work</a>
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="services.html">Services</a>
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="about.html">About</a>
-</div>
-<p class="text-white/50 text-sm font-normal leading-normal">© 2024 Extoll.Co. All Rights Reserved.</p>
-</div>
-</footer>
-
 </body>
 </html>
-

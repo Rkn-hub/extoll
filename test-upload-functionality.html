@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Functionality Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .upload-area {
+            border: 3px dashed rgba(14, 165, 233, 0.4);
+            background: rgba(14, 165, 233, 0.05);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        .upload-area:hover {
+            border-color: #0ea5e9;
+            background: rgba(14, 165, 233, 0.1);
+        }
+        input {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 10px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 5px;
+        }
+        button {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0284c7; }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Upload Functionality Test</h1>
+    
+    <div class="section">
+        <h2>Step 1: Enter Project Details</h2>
+        <label>Project Title:</label>
+        <input type="text" id="projectTitle" placeholder="Enter project title" onkeyup="generateProjectKey()">
+        <br>
+        <label>Project Key:</label>
+        <input type="text" id="projectKey" readonly>
+    </div>
+    
+    <div class="section">
+        <h2>Step 2: Test Image Upload</h2>
+        <div class="upload-area" id="imageUploadArea">
+            <div class="text-center">
+                <p>📷 Click to Upload Images</p>
+                <p>JPG, PNG, WebP (Multiple files)</p>
+            </div>
+            <input type="file" id="imageInput" style="display: none;" accept="image/*" multiple>
+        </div>
+        
+        <h3>Test Video Upload</h3>
+        <div class="upload-area" id="videoUploadArea">
+            <div class="text-center">
+                <p>🎥 Click to Upload Videos</p>
+                <p>MP4, WebM, MOV (Multiple files)</p>
+            </div>
+            <input type="file" id="videoInput" style="display: none;" accept="video/*" multiple>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Step 3: Test Upload Functions</h2>
+        <button onclick="testImageUpload()">Test Image Upload Function</button>
+        <button onclick="testVideoUpload()">Test Video Upload Function</button>
+        <button onclick="testSupabaseConnection()">Test Supabase Connection</button>
+    </div>
+    
+    <div class="section">
+        <h2>Debug Log</h2>
+        <div id="log" class="log">Ready to test upload functionality...\n</div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    
+    <script>
+        let testSupabase = null;
+        let selectedImages = [];
+        let selectedVideos = [];
+        
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            logElement.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'Log cleared...\n';
+        }
+        
+        function generateProjectKey() {
+            const title = document.getElementById('projectTitle').value;
+            const key = title.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            document.getElementById('projectKey').value = key;
+            log(`Generated key: "${key}" from title: "${title}"`);
+        }
+        
+        async function testSupabaseConnection() {
+            try {
+                log('🔧 Testing Supabase connection...');
+                
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error('Supabase library not loaded');
+                }
+                
+                if (typeof SUPABASE_CONFIG === 'undefined') {
+                    throw new Error('SUPABASE_CONFIG not loaded');
+                }
+                
+                if (initializeSupabase()) {
+                    testSupabase = configSupabase;
+                    log('✅ Supabase initialized successfully', 'success');
+                } else {
+                    throw new Error('Failed to initialize Supabase');
+                }
+                
+                // Test bucket access
+                const { data: buckets, error } = await testSupabase.storage.listBuckets();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                log(`✅ Found ${buckets.length} buckets`, 'success');
+                
+                const portfolioBucket = buckets.find(b => b.name === SUPABASE_CONFIG.bucket);
+                if (portfolioBucket) {
+                    log(`✅ Portfolio bucket found: ${SUPABASE_CONFIG.bucket}`, 'success');
+                } else {
+                    log(`❌ Portfolio bucket missing: ${SUPABASE_CONFIG.bucket}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ Supabase connection failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function testImageUpload() {
+            const projectKey = document.getElementById('projectKey').value;
+            
+            if (!projectKey) {
+                log('❌ Please enter a project title first', 'error');
+                return;
+            }
+            
+            if (selectedImages.length === 0) {
+                log('❌ Please select some images first', 'error');
+                return;
+            }
+            
+            log(`🚀 Testing handleProjectImageUpload with ${selectedImages.length} files`);
+            
+            // Simulate the admin panel function
+            handleProjectImageUpload(selectedImages);
+        }
+        
+        function testVideoUpload() {
+            const projectKey = document.getElementById('projectKey').value;
+            
+            if (!projectKey) {
+                log('❌ Please enter a project title first', 'error');
+                return;
+            }
+            
+            if (selectedVideos.length === 0) {
+                log('❌ Please select some videos first', 'error');
+                return;
+            }
+            
+            log(`🚀 Testing handleProjectVideoUpload with ${selectedVideos.length} files`);
+            
+            // Simulate the admin panel function
+            handleProjectVideoUpload(selectedVideos);
+        }
+        
+        // Copy the upload functions from admin.html
+        function handleProjectImageUpload(files) {
+            const projectKey = document.getElementById('projectKey').value;
+            
+            if (!projectKey) {
+                log('❌ Please enter a project title first to generate a project key', 'error');
+                return;
+            }
+            
+            if (!testSupabase) {
+                log('❌ Supabase not initialized. Please test connection first.', 'error');
+                return;
+            }
+            
+            log(`📤 Uploading images to project: ${projectKey}`);
+            
+            Array.from(files).forEach(function(file, index) {
+                const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
+                const filePath = projectKey + '/' + fileName;
+                
+                log(`📤 Uploading file: ${fileName} to path: ${filePath}`);
+                
+                testSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .upload(filePath, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    })
+                    .then(function(result) {
+                        if (result.error) {
+                            log(`❌ Upload failed: ${result.error.message}`, 'error');
+                            return;
+                        }
+                        
+                        log(`✅ Upload successful: ${result.data.path}`, 'success');
+                        
+                        // Get public URL
+                        const { data: urlData } = testSupabase.storage
+                            .from(SUPABASE_CONFIG.bucket)
+                            .getPublicUrl(filePath);
+                        
+                        log(`🔗 Public URL: ${urlData.publicUrl}`);
+                    })
+                    .catch(function(error) {
+                        log(`❌ Upload error: ${error.message}`, 'error');
+                    });
+            });
+        }
+        
+        function handleProjectVideoUpload(files) {
+            const projectKey = document.getElementById('projectKey').value;
+            
+            if (!projectKey) {
+                log('❌ Please enter a project title first to generate a project key', 'error');
+                return;
+            }
+            
+            if (!testSupabase) {
+                log('❌ Supabase not initialized. Please test connection first.', 'error');
+                return;
+            }
+            
+            log(`📤 Uploading videos to project: ${projectKey}`);
+            
+            Array.from(files).forEach(function(file, index) {
+                const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
+                const filePath = projectKey + '/' + fileName;
+                
+                log(`📤 Uploading video: ${fileName} to path: ${filePath}`);
+                
+                testSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .upload(filePath, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    })
+                    .then(function(result) {
+                        if (result.error) {
+                            log(`❌ Video upload failed: ${result.error.message}`, 'error');
+                            return;
+                        }
+                        
+                        log(`✅ Video upload successful: ${result.data.path}`, 'success');
+                        
+                        // Get public URL
+                        const { data: urlData } = testSupabase.storage
+                            .from(SUPABASE_CONFIG.bucket)
+                            .getPublicUrl(filePath);
+                        
+                        log(`🔗 Public URL: ${urlData.publicUrl}`);
+                    })
+                    .catch(function(error) {
+                        log(`❌ Video upload error: ${error.message}`, 'error');
+                    });
+            });
+        }
+        
+        // Setup event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Upload functionality test loaded');
+            
+            // Image upload area
+            const imageArea = document.getElementById('imageUploadArea');
+            const imageInput = document.getElementById('imageInput');
+            
+            imageArea.addEventListener('click', function() {
+                log('📷 Image upload area clicked');
+                imageInput.click();
+            });
+            
+            imageInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    selectedImages = Array.from(e.target.files);
+                    log(`📷 Selected ${e.target.files.length} image files:`);
+                    Array.from(e.target.files).forEach((file, index) => {
+                        log(`  ${index + 1}. ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+                    });
+                }
+            });
+            
+            // Video upload area
+            const videoArea = document.getElementById('videoUploadArea');
+            const videoInput = document.getElementById('videoInput');
+            
+            videoArea.addEventListener('click', function() {
+                log('🎥 Video upload area clicked');
+                videoInput.click();
+            });
+            
+            videoInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    selectedVideos = Array.from(e.target.files);
+                    log(`🎥 Selected ${e.target.files.length} video files:`);
+                    Array.from(e.target.files).forEach((file, index) => {
+                        log(`  ${index + 1}. ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+                    });
+                }
+            });
+            
+            log('✅ Event listeners attached');
+        });
+    </script>
+</body>
+</html>
+</content>
+</invoke>

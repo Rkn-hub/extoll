@@ -20,51 +20,6 @@
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 
-<!-- CRITICAL: Prevent logo flash with immediate CSS -->
-<style>
-/* Immediate logo preload and visibility control */
-.nav-logo {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Prevent flash of unstyled content */
-body {
-  visibility: hidden;
-}
-
-body.no-flash {
-  visibility: visible;
-}
-
-/* Ensure logo loads immediately */
-img[src="logo.png"] {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-</style>
-
-<!-- Immediate script to prevent flash -->
-<script>
-(function() {
-  // Preload logo immediately
-  const logoImg = new Image();
-  logoImg.src = 'logo.png';
-  
-  // Show body as soon as possible
-  document.addEventListener('DOMContentLoaded', function() {
-    document.body.classList.add('no-flash');
-  });
-  
-  // Fallback - show body after short delay even if DOM not ready
-  setTimeout(function() {
-    if (document.body) {
-      document.body.classList.add('no-flash');
-    }
-  }, 50);
-})();
-</script>
-
 <!-- Resource hints for better performance -->
 <link rel="dns-prefetch" href="//fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,9 +50,57 @@ img[src="logo.png"] {
   }
 </script>
 <style>
-  /* Navigation logo */
+  /* Page transition styles */
+  .page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0A0A0D;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .page-transition.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+
+  /* Prevent flash of content */
+  body {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  body.loaded {
+    opacity: 1;
+  }
+
+  /* Navigation logo preload */
   .nav-logo {
     opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Smooth navigation transitions */
+  .nav-link {
+    transition: all 0.2s ease;
+  }
+
+  /* Navigation logo preload */
+  .nav-logo {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Smooth navigation transitions */
+  .nav-link {
+    transition: all 0.2s ease;
   }
 
   .glow-bg {
@@ -232,6 +235,8 @@ img[src="logo.png"] {
 </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-gray-300 antialiased">
+<!-- Page Transition Overlay -->
+<div class="page-transition" id="pageTransition"></div>
 
 <!-- Sparkle Background Effect -->
 <div class="sparkle-container" id="sparkleContainer"></div>
@@ -261,23 +266,25 @@ Join WhatsApp Group
 <div class="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
 <div class="glow-bg"></div>
 <div class="layout-container z-10 flex h-full w-full max-w-6xl grow flex-col">
-<header class="flex w-full items-center justify-between whitespace-nowrap p-4 sm:px-10 py-5">
-<a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer" onclick="smoothNavigate(event, 'index.html')">
-<img src="logo.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" style="opacity: 1 !important; visibility: visible !important;" loading="eager" decoding="sync">
-<h2 class="text-white text-xl font-bold tracking-[-0.015em]">Extoll.Co</h2>
-</a>
-<div class="hidden md:flex flex-1 items-center justify-end gap-8">
-<div class="flex items-center gap-9">
-<a class="nav-link text-white/80 hover:text-white transition-colors text-sm font-medium" href="index.html" onclick="smoothNavigate(event, 'index.html')">Home</a>
-<a class="nav-link text-white/80 hover:text-white transition-colors text-sm font-medium" href="index.html#work" onclick="smoothNavigate(event, 'index.html#work')">Work</a>
-<a class="nav-link text-white/80 hover:text-white transition-colors text-sm font-medium" href="services.html" onclick="smoothNavigate(event, 'services.html')">Services</a>
-<a class="nav-link text-white/80 hover:text-white transition-colors text-sm font-medium" href="about.html" onclick="smoothNavigate(event, 'about.html')">About</a>
-<a class="text-primary text-sm font-medium relative" href="contact.html">
-Contact
-<span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary"></span>
-</a>
-</div>
-</div>
+<header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+  <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+    <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer" onclick="smoothNavigate(event, 'index.html')">
+      <img src="logo.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync">
+      <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
+    </a>
+    <nav class="hidden md:flex flex-1 justify-end gap-8">
+      <div class="flex items-center gap-9">
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html" onclick="smoothNavigate(event, 'index.html')">Home</a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="index.html#work" onclick="smoothNavigate(event, 'index.html#work')">Portfolio</a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="services.html" onclick="smoothNavigate(event, 'services.html')">Services</a>
+        <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="about.html" onclick="smoothNavigate(event, 'about.html')">About</a>
+        <a class="text-white relative text-sm font-medium leading-normal" href="contact.html">
+          Contact
+          <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
+        </a>
+      </div>
+    </nav>
+  </div>
 </header>
 <main class="flex flex-1 flex-col items-center justify-center py-16 sm:py-24">
 <div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -366,7 +373,7 @@ This site only features my work. <span class="text-white">Contact me directly</s
 <div class="flex flex-col gap-6 text-center">
 <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html">Home</a>
-<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Work</a>
+<a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="index.html#work">Portfolio</a>
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="services.html">Services</a>
 <a class="text-white/60 hover:text-white transition-colors text-sm font-normal leading-normal" href="about.html">About</a>
 </div>
@@ -375,24 +382,30 @@ This site only features my work. <span class="text-white">Contact me directly</s
 </footer>
 </div>
 </div>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
-// Simple Supabase connection for contact form
-const SUPABASE_URL = 'https://lnxvkbsbwymmzkyuixgd.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueHZrYnNid3ltbXpreXVpeGdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4NDQ1MjcsImV4cCI6MjA4MjQyMDUyN30.GRi__52bgNKWhi2cpEAukKmSYjof5yqPohGYIa3cqK4'
+// Contact form functionality using centralized Supabase config
 
 var whatsappGroupLink = 'https://chat.whatsapp.com/GieBKh7FHyqEglJEUFM9M3';
 
-// Submit to Supabase using REST API
+// Submit to Supabase using centralized config
 async function submitToSupabase(formData) {
+  // Initialize Supabase if not already done
+  if (!initializeSupabase()) {
+    console.error('Failed to initialize Supabase');
+    return { success: false, error: 'Supabase initialization failed' };
+  }
+
   try {
     console.log('Submitting to Supabase:', formData);
     
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/contact_submissions`, {
+    const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/contact_submissions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
         'Prefer': 'return=representation'
       },
       body: JSON.stringify({
@@ -541,12 +554,18 @@ document.getElementById('successModal').addEventListener('click', function(e) {
 window.addEventListener('load', async function() {
   console.log('Testing Supabase connection...');
   
+  // Initialize Supabase first
+  if (!initializeSupabase()) {
+    console.log('⚠️ Supabase initialization failed');
+    return;
+  }
+  
   try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/contact_submissions?select=count`, {
+    const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/contact_submissions?select=count`, {
       method: 'HEAD',
       headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
       }
     });
     
@@ -609,14 +628,38 @@ function initializeSparkleEffect() {
 // Smooth page transitions
 function smoothNavigate(event, url) {
   event.preventDefault();
-  window.location.href = url;
+  
+  const transition = document.getElementById('pageTransition');
+  transition.classList.add('active');
+  
+  setTimeout(() => {
+    window.location.href = url;
+  }, 300);
 }
 
 // Page load handling
 document.addEventListener('DOMContentLoaded', function() {
+  // Add loaded class to body to prevent flash
+  document.body.classList.add('loaded');
+  
   // Preload logo image
   const logoImg = new Image();
   logoImg.src = 'logo.png';
+  
+  // Remove transition overlay if present
+  const transition = document.getElementById('pageTransition');
+  if (transition) {
+    setTimeout(() => {
+      transition.classList.remove('active');
+    }, 100);
+  }
+});
+
+// Handle page visibility changes
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    document.body.classList.add('loaded');
+  }
 });
 </script>
 </body>

@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes" name="viewport"/>
+<title>Extoll.Co - Admin Panel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<style>
+html { font-size: 18px; }
+
+body { 
+    background: linear-gradient(135deg, #0A0A0D 0%, #1a1a2e 50%, #16213e 100%);
+    color: #e5e7eb; 
+    font-family: 'Space Grotesk', sans-serif; 
+    min-height: 100vh;
+    zoom: 1.1;
+    transform-origin: top left;
+}
+
+.glass-card {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(51, 65, 85, 0.4);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    color: white;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.25);
+    font-size: 18px;
+    min-height: 64px;
+}
+
+.btn-secondary {
+    background: rgba(14, 165, 233, 0.1);
+    color: #0ea5e9;
+    padding: 16px 32px;
+    border: 2px solid rgba(14, 165, 233, 0.4);
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-size: 16px;
+    min-height: 56px;
+}
+
+.form-input {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border: 2px solid rgba(51, 65, 85, 0.6) !important;
+    color: #e2e8f0 !important;
+    padding: 20px 24px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px) !important;
+    font-size: 18px !important;
+    min-height: 64px !important;
+}
+
+.form-textarea {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border: 2px solid rgba(51, 65, 85, 0.6) !important;
+    color: #e2e8f0 !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    min-height: 140px !important;
+    resize: vertical !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px) !important;
+    font-family: inherit !important;
+    font-size: 16px !important;
+}
+
+.upload-area {
+    border: 3px dashed rgba(14, 165, 233, 0.4);
+    background: rgba(14, 165, 233, 0.05);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.upload-area:hover {
+    border-color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.15);
+    transform: translateY(-2px);
+}
+
+.upload-area.dragover {
+    border-color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.2);
+    transform: scale(1.02);
+}
+
+.tab-button {
+    padding: 18px 36px;
+    background: rgba(15, 23, 42, 0.6);
+    border: none;
+    color: #94a3b8;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 12px 12px 0 0;
+    transition: all 0.3s ease;
+    margin-right: 4px;
+    font-size: 16px;
+}
+
+.tab-button.active {
+    color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    border-bottom: 3px solid #0ea5e9;
+}
+
+.notification {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 1000;
+    transform: translateX(400px);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.notification.show { transform: translateX(0); }
+.notification.success { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+.notification.error { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
+
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
+    <div class="glass-card p-16 rounded-xl w-full max-w-2xl">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-white mb-4">Admin Panel</h1>
+            <p class="text-gray-400 text-xl">Extoll.Co Project Management</p>
+        </div>
+        
+        <form id="loginForm" class="space-y-10">
+            <div>
+                <label class="block text-xl font-medium text-gray-300 mb-4">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Enter username" required>
+            </div>
+            
+            <div>
+                <label class="block text-xl font-medium text-gray-300 mb-4">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter password" required>
+            </div>
+            
+            <div class="text-center text-sm text-gray-400 bg-blue-600/10 border border-blue-600/30 rounded-lg p-4">
+                <strong>Admin:</strong> rkachal2k4@gmail.com / Ritesh12@<br>
+                <strong>Add Users:</strong> Supabase Dashboard → Authentication → Users
+            </div>
+            
+            <button type="submit" class="btn-primary w-full">Login</button>
+        </form>
+    </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div id="adminDashboard" class="hidden min-h-screen">
+    <!-- Header -->
+    <header class="bg-black/50 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-8">
+                <h1 class="text-3xl font-bold text-white">Extoll.Co Admin</h1>
+                <button id="logoutBtn" class="btn-secondary">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="border-b border-gray-800">
+            <nav class="flex space-x-8">
+                <button class="tab-button active" data-tab="projects">Projects</button>
+                <button class="tab-button" data-tab="assets">Website Assets</button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Projects Tab -->
+    <div id="projectsTab" class="tab-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-4xl font-bold text-white mb-12">Project Management</h2>
+        
+        <div class="glass-card p-10 rounded-xl space-y-8">
+            <!-- Add New Project Form -->
+            <div class="border-b border-gray-700 pb-8">
+                <h3 class="text-2xl font-bold text-white mb-6">Add New Project</h3>
+                
+                <form id="projectForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-lg font-medium text-gray-300 mb-3">Project Title</label>
+                            <input type="text" id="projectTitle" class="form-input" placeholder="Enter project title" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-lg font-medium text-gray-300 mb-3">Project Key</label>
+                            <input type="text" id="projectKey" class="form-input" placeholder="Auto-generated from title" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-lg font-medium text-gray-300 mb-3">Category</label>
+                            <select id="projectCategory" class="form-input">
+                                <option value="photography">Photography</option>
+                                <option value="design">Design</option>
+                                <option value="development">Development</option>
+                                <option value="art">Art</option>
+                                <option value="video">Video</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Description</label>
+                        <textarea id="projectDescription" class="form-textarea" placeholder="Enter project description" required></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Tags (comma separated)</label>
+                        <input type="text" id="projectTags" class="form-input" placeholder="e.g., wedding, portrait, outdoor">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Thumbnail</label>
+                        <div class="upload-area" id="thumbnailUpload">
+                            <div class="text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <p class="mt-2 text-gray-400">Upload thumbnail image</p>
+                            </div>
+                            <input type="file" id="thumbnailInput" class="hidden" accept="image/*">
+                        </div>
+                        <div id="thumbnailPreview" class="mt-4"></div>
+                    </div>
+                    
+                    <!-- Project Images Section -->
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Project Images</label>
+                        <div class="mb-4 p-3 bg-blue-600/10 border border-blue-600/30 rounded-lg">
+                            <p class="text-sm text-blue-400">💡 <strong>Tip:</strong> Enter a project title above to enable image uploads. You can upload images before or after creating the project.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Image Upload -->
+                            <div>
+                                <h4 class="text-base font-medium text-gray-300 mb-3">Upload Images</h4>
+                                <div class="upload-area" id="projectImageUpload">
+                                    <div class="text-center">
+                                        <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <p class="mt-2 text-sm text-gray-400">Upload Images</p>
+                                        <p class="text-xs text-gray-500">JPG, PNG, WebP (Multiple files)</p>
+                                    </div>
+                                    <input type="file" id="projectImageInput" class="hidden" accept="image/*" multiple>
+                                </div>
+                            </div>
+                            
+                            <!-- Video Upload -->
+                            <div>
+                                <h4 class="text-base font-medium text-gray-300 mb-3">Upload Videos</h4>
+                                <div class="upload-area" id="projectVideoUpload">
+                                    <div class="text-center">
+                                        <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                            <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2zM7 9h2v2H7V9z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <p class="mt-2 text-sm text-gray-400">Upload Videos</p>
+                                        <p class="text-xs text-gray-500">MP4, WebM, MOV (Multiple files)</p>
+                                    </div>
+                                    <input type="file" id="projectVideoInput" class="hidden" accept="video/*" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Upload Progress -->
+                        <div id="projectUploadProgress" class="hidden mt-4">
+                            <div class="bg-gray-800 p-4 rounded-lg">
+                                <h4 class="text-base font-bold text-white mb-2">Upload Progress</h4>
+                                <div id="projectUploadProgressList" class="space-y-2"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Project Gallery -->
+                        <div id="projectGallery" class="mt-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-base font-bold text-white">Project Files</h4>
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="forceLoadProjectFiles()" class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-4 rounded-lg font-bold">Load Files</button>
+                                    <select id="projectGalleryFilter" class="form-input" style="width: auto; font-size: 14px; padding: 8px 12px;" onchange="filterProjectGallery()">
+                                        <option value="all">All Files</option>
+                                        <option value="images">Images Only</option>
+                                        <option value="videos">Videos Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Gallery Grid -->
+                            <div id="projectGalleryGrid" class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                                <div class="text-center text-gray-400 text-sm py-8 col-span-full">
+                                    No files uploaded yet. Create the project first, then upload images and videos.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Create Project</button>
+                </form>
+            </div>
+            
+            <!-- Existing Projects -->
+            <div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-white">Existing Projects</h3>
+                    <div class="flex gap-4">
+                        <select id="filterCategory" class="form-input" style="width: auto; min-width: 150px;">
+                            <option value="">All Categories</option>
+                            <option value="photography">Photography</option>
+                            <option value="design">Design</option>
+                            <option value="development">Development</option>
+                            <option value="art">Art</option>
+                            <option value="video">Video</option>
+                            <option value="other">Other</option>
+                        </select>
+
+                        <button class="btn-secondary" onclick="refreshProjects()">Refresh</button>
+                    </div>
+                </div>
+                <div id="projectsList" class="space-y-4">
+                    <p class="text-gray-400">No projects found. Create your first project above.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assets Tab -->
+    <div id="assetsTab" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-4xl font-bold text-white mb-12">Website Assets Management</h2>
+        
+        <div class="glass-card p-10 rounded-xl space-y-8">
+            <!-- Asset Upload Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Logo Management -->
+                <div class="bg-gray-800/50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-white mb-4">Logo Management</h3>
+                    <div class="upload-area" id="logoUpload">
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-400">Upload Logo</p>
+                            <p class="text-xs text-gray-500">PNG, SVG, JPG</p>
+                        </div>
+                        <input type="file" id="logoInput" class="hidden" accept="image/*">
+                    </div>
+                    <div id="logoPreview" class="mt-4"></div>
+                    <div id="logoList" class="mt-4 space-y-2"></div>
+                </div>
+                
+                <!-- Banner Management -->
+                <div class="bg-gray-800/50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-white mb-4">Banner Management</h3>
+                    <div class="upload-area" id="bannerUpload">
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-400">Upload Banner</p>
+                            <p class="text-xs text-gray-500">JPG, PNG (1920x1080)</p>
+                        </div>
+                        <input type="file" id="bannerInput" class="hidden" accept="image/*">
+                    </div>
+                    <div id="bannerPreview" class="mt-4"></div>
+                    <div id="bannerList" class="mt-4 space-y-2"></div>
+                </div>
+                
+                <!-- Icons Management -->
+                <div class="bg-gray-800/50 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-white mb-4">Icons Management</h3>
+                    <div class="upload-area" id="iconsUpload">
+                        <div class="text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-400">Upload Icons</p>
+                            <p class="text-xs text-gray-500">SVG, PNG (Multiple)</p>
+                        </div>
+                        <input type="file" id="iconsInput" class="hidden" accept="image/*" multiple>
+                    </div>
+                    <div id="iconsPreview" class="mt-4"></div>
+                    <div id="iconsList" class="mt-4 space-y-2"></div>
+                </div>
+            </div>
+            
+            <!-- Website Settings -->
+            <div class="border-t border-gray-700 pt-8">
+                <h3 class="text-2xl font-bold text-white mb-6">Website Settings</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Site Title</label>
+                        <input type="text" id="siteTitle" class="form-input" placeholder="Your Portfolio Name">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Site Tagline</label>
+                        <input type="text" id="siteTagline" class="form-input" placeholder="Your Professional Tagline">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Contact Email</label>
+                        <input type="email" id="contactEmail" class="form-input" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Phone Number</label>
+                        <input type="tel" id="contactPhone" class="form-input" placeholder="+1 (555) 123-4567">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-lg font-medium text-gray-300 mb-3">About Text</label>
+                        <textarea id="aboutText" class="form-textarea" placeholder="Tell visitors about yourself and your work..."></textarea>
+                    </div>
+                </div>
+                <button class="btn-primary mt-6" onclick="saveWebsiteSettings()">Save Settings</button>
+            </div>
+            
+            <!-- Social Media Links -->
+            <div class="border-t border-gray-700 pt-8">
+                <h3 class="text-2xl font-bold text-white mb-6">Social Media Links</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Instagram</label>
+                        <input type="url" id="socialInstagram" class="form-input" placeholder="https://instagram.com/username">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Facebook</label>
+                        <input type="url" id="socialFacebook" class="form-input" placeholder="https://facebook.com/username">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Twitter</label>
+                        <input type="url" id="socialTwitter" class="form-input" placeholder="https://twitter.com/username">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">LinkedIn</label>
+                        <input type="url" id="socialLinkedin" class="form-input" placeholder="https://linkedin.com/in/username">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Behance</label>
+                        <input type="url" id="socialBehance" class="form-input" placeholder="https://behance.net/username">
+                    </div>
+                    <div>
+                        <label class="block text-lg font-medium text-gray-300 mb-3">Dribbble</label>
+                        <input type="url" id="socialDribbble" class="form-input" placeholder="https://dribbble.com/username">
+                    </div>
+                </div>
+                <button class="btn-primary mt-6" onclick="saveSocialLinks()">Save Social Links</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notification -->
+<div id="notification" class="notification">
+    <span id="notificationText"></span>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<script>
+// Configuration is now loaded from supabase-config.js
+
+let currentUser = null;
+let adminSupabase = null;
+let selectedFile = null;
+let selectedThumbnail = null;
+let projects = [];
+let currentProject = null;
+let galleryFiles = [];
+let selectedFiles = [];
+let websiteSettings = {};
+let socialLinks = {};
+
+// Notification function
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notificationText');
+    
+    if (notification && notificationText) {
+        notificationText.textContent = message;
+        notification.className = 'notification ' + type;
+        notification.classList.add('show');
+        
+        setTimeout(function() {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+}
+
+// Login handler
+async function handleLogin(e) {
+    e.preventDefault();
+    
+    console.log('🔐 Login attempt started');
+    
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    
+    if (!usernameInput || !passwordInput) {
+        console.error('❌ Input elements not found');
+        showNotification('Form elements not found', 'error');
+        return;
+    }
+    
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    
+    console.log('Username:', username);
+    console.log('Password length:', password.length);
+    
+    // Initialize Supabase if not already done
+    if (!adminSupabase) {
+        console.log('🔧 Initializing Supabase for authentication...');
+        const initResult = initializeSupabase();
+        if (initResult) {
+            adminSupabase = configSupabase;
+        } else {
+            showNotification('Failed to initialize authentication system', 'error');
+            return;
+        }
+    }
+    
+    try {
+        // Try Supabase Authentication first
+        console.log('🔍 Attempting Supabase authentication...');
+        
+        const { data, error } = await adminSupabase.auth.signInWithPassword({
+            email: username,
+            password: password
+        });
+        
+        if (error) throw error;
+        
+        if (data.user) {
+            console.log('✅ Login successful via Supabase Authentication');
+            currentUser = { 
+                email: data.user.email, 
+                id: data.user.id,
+                role: data.user.user_metadata?.role || 'admin'
+            };
+            showDashboard();
+            showNotification('Login successful!', 'success');
+            loadProjects();
+            return;
+        }
+        
+    } catch (supabaseError) {
+        console.log('⚠️ Supabase authentication failed:', supabaseError.message);
+        
+        // Fallback to config credentials if Supabase auth fails
+        if ((username === 'admin' || username === SUPABASE_CONFIG.adminEmail) && 
+            (password === 'extoll2024' || password === SUPABASE_CONFIG.adminPassword)) {
+            console.log('✅ Login successful via config credentials');
+            currentUser = { email: username, id: 'admin', role: 'admin' };
+            showDashboard();
+            showNotification('Login successful!', 'success');
+            loadProjects();
+            
+            // Try to authenticate with Supabase for metadata access
+            trySupabaseAuth();
+            return;
+        }
+        
+        // Show appropriate error message
+        if (supabaseError.message.includes('Invalid login credentials')) {
+            showNotification('Invalid credentials. Add users in Supabase Authentication → Users', 'error');
+        } else if (supabaseError.message.includes('Email not confirmed')) {
+            showNotification('Email not confirmed. Check user settings in Supabase Dashboard', 'error');
+        } else {
+            showNotification('Login failed: ' + supabaseError.message, 'error');
+        }
+    }
+}
+
+// Remove the separate tryDirectSupabaseAuth function as it's now integrated above
+
+// Try Supabase authentication for metadata bucket access
+async function trySupabaseAuth() {
+    try {
+        console.log('🔐 Attempting Supabase authentication for metadata access...');
+        
+        // Ensure we're using the same client as the config functions
+        if (!configSupabase) {
+            console.log('🔧 Initializing shared Supabase client...');
+            const initResult = initializeSupabase();
+            if (!initResult) {
+                throw new Error('Failed to initialize Supabase client');
+            }
+            adminSupabase = configSupabase; // Sync the clients
+        }
+        
+        // Use the signInAdmin function from config
+        const authResult = await signInAdmin();
+        
+        if (authResult.success) {
+            console.log('✅ Supabase authentication successful - metadata bucket access enabled');
+            
+            // Test metadata bucket access
+            const bucketTest = await testMetadataBucketAccess();
+            
+            if (bucketTest.success) {
+                showNotification('Metadata bucket access enabled', 'success');
+            } else {
+                showNotification('Authentication successful but bucket access failed', 'warning');
+                console.error('🚫 Bucket access issue:', bucketTest.error);
+            }
+        } else {
+            console.log('❌ Supabase authentication failed:', authResult.error);
+            showNotification('Authentication failed - using local storage only', 'warning');
+            console.log('📝 Note: Projects will be stored locally only');
+            
+            // Show specific error guidance
+            if (authResult.error.includes('Invalid login credentials')) {
+                console.error('💡 Create admin user: Supabase Dashboard → Authentication → Users → Add user');
+                console.error('   Email: admin@extoll.co, Password: extoll2024');
+            }
+        }
+    } catch (error) {
+        console.error('❌ Supabase auth error:', error);
+        showNotification('Authentication error - using local storage only', 'warning');
+    }
+}
+
+// Show dashboard
+function showDashboard() {
+    console.log('🎯 Showing dashboard...');
+    
+    const loginScreen = document.getElementById('loginScreen');
+    const adminDashboard = document.getElementById('adminDashboard');
+    
+    if (loginScreen && adminDashboard) {
+        loginScreen.classList.add('hidden');
+        adminDashboard.classList.remove('hidden');
+        console.log('✅ Dashboard shown successfully');
+    } else {
+        console.error('❌ Dashboard elements not found');
+    }
+}
+
+// Logout handler
+function handleLogout() {
+    console.log('🚪 Logging out');
+    currentUser = null;
+    showLogin();
+    showNotification('Logged out', 'success');
+}
+
+// Show login
+function showLogin() {
+    const loginScreen = document.getElementById('loginScreen');
+    const adminDashboard = document.getElementById('adminDashboard');
+    
+    if (loginScreen && adminDashboard) {
+        loginScreen.classList.remove('hidden');
+        adminDashboard.classList.add('hidden');
+    }
+}
+
+// Tab switching
+function switchTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(function(button) {
+        button.classList.remove('active');
+    });
+    
+    const activeTab = document.querySelector('[data-tab="' + tabName + '"]');
+    if (activeTab) {
+        activeTab.classList.add('active');
+    }
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(function(content) {
+        content.classList.add('hidden');
+    });
+    
+    const targetTab = {
+        'projects': 'projectsTab',
+        'assets': 'assetsTab'
+    };
+    
+    const targetElement = document.getElementById(targetTab[tabName]);
+    if (targetElement) {
+        targetElement.classList.remove('hidden');
+    }
+    
+    // Load data when switching to specific tabs
+    if (tabName === 'projects') {
+        loadProjects();
+    } else if (tabName === 'assets') {
+        loadWebsiteAssets();
+    }
+}
+
+// File upload functions
+function handleFileSelect(file) {
+    selectedFile = file;
+    const preview = document.getElementById('testPreview');
+    
+    if (preview) {
+        preview.innerHTML = '<div class="bg-gray-800 p-4 rounded-lg">' +
+            '<p class="text-white"><strong>Selected:</strong> ' + file.name + '</p>' +
+            '<p class="text-gray-400"><strong>Size:</strong> ' + (file.size / 1024 / 1024).toFixed(2) + ' MB</p>' +
+            '<p class="text-gray-400"><strong>Type:</strong> ' + file.type + '</p>' +
+            '</div>';
+    }
+    
+    logMessage('📁 File selected: ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+}
+
+function logMessage(message) {
+    const log = document.getElementById('uploadLog');
+    if (log) {
+        const timestamp = new Date().toLocaleTimeString();
+        log.innerHTML += '[' + timestamp + '] ' + message + '\n';
+        log.scrollTop = log.scrollHeight;
+    }
+    console.log(message);
+}
+
+// Test upload function
+function testUpload() {
+    if (!selectedFile) {
+        showNotification('Please select a file first', 'error');
+        return;
+    }
+    
+    if (!adminSupabase) {
+        showNotification('Supabase not initialized', 'error');
+        return;
+    }
+    
+    logMessage('🚀 Starting upload test...');
+    
+    // Test upload with project folder structure
+    const timestamp = Date.now();
+    const extension = selectedFile.name.split('.').pop();
+    const fileName = 'test-' + timestamp + '.' + extension;
+    const filePath = 'test-project/' + fileName; // Project folder structure
+    
+    logMessage('📤 Uploading to: ' + filePath);
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .upload(filePath, selectedFile, {
+            cacheControl: '3600',
+            upsert: true
+        })
+        .then(function(result) {
+            if (result.error) {
+                throw result.error;
+            }
+            
+            logMessage('✅ File uploaded successfully: ' + result.data.path);
+            
+            // Get public URL
+            const publicUrlResult = adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl(filePath);
+            
+            const publicUrl = publicUrlResult.data.publicUrl;
+            logMessage('🔗 Public URL: ' + publicUrl);
+            
+            showNotification('Upload successful!', 'success');
+        })
+        .catch(function(error) {
+            logMessage('❌ Upload failed: ' + error.message);
+            showNotification('Upload failed: ' + error.message, 'error');
+            console.error('Upload error:', error);
+        });
+}
+
+// Project functions
+function generateProjectKey(title) {
+    return title.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+}
+
+function handleThumbnailSelect(file) {
+    selectedThumbnail = file;
+    const preview = document.getElementById('thumbnailPreview');
+    
+    if (file.type.startsWith('image/') && preview) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = '<div style="display: inline-block; position: relative;">' +
+                '<img src="' + e.target.result + '" alt="Thumbnail preview" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">' +
+                '<button onclick="removeThumbnail()" style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">×</button>' +
+                '</div>';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeThumbnail() {
+    selectedThumbnail = null;
+    const preview = document.getElementById('thumbnailPreview');
+    const input = document.getElementById('thumbnailInput');
+    if (preview) preview.innerHTML = '';
+    if (input) input.value = '';
+}
+
+async function handleProjectSubmit(e) {
+    e.preventDefault();
+    
+    const title = document.getElementById('projectTitle').value;
+    const key = document.getElementById('projectKey').value;
+    const description = document.getElementById('projectDescription').value;
+    const category = document.getElementById('projectCategory').value;
+    const tags = document.getElementById('projectTags').value;
+    
+    if (!selectedThumbnail) {
+        showNotification('Please select a thumbnail image', 'error');
+        return;
+    }
+    
+    if (!adminSupabase) {
+        showNotification('Supabase not initialized', 'error');
+        return;
+    }
+    
+    try {
+        // Upload thumbnail with project folder structure
+        const thumbnailFileName = 'thumb-' + Date.now() + '.' + selectedThumbnail.name.split('.').pop();
+        const thumbnailPath = key + '/' + thumbnailFileName;
+        
+        const uploadResult = await adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(thumbnailPath, selectedThumbnail, {
+                cacheControl: '3600',
+                upsert: true
+            });
+        
+        if (uploadResult.error) {
+            throw uploadResult.error;
+        }
+        
+        const publicUrlResult = adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .getPublicUrl(thumbnailPath);
+        
+        const thumbnailUrl = publicUrlResult.data.publicUrl;
+        
+        // Create project object
+        const projectData = {
+            title: title,
+            key: key,
+            description: description,
+            category: category,
+            count: 1, // Default count, will be updated when files are uploaded
+            thumbnail_url: thumbnailUrl
+        };
+        
+        // Store in Supabase metadata bucket
+        try {
+            const result = await createProject(projectData);
+            
+            if (result.success) {
+                console.log('✅ Project stored in metadata bucket');
+                // Also store in localStorage as backup
+                const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+                existingProjects.push(result.data);
+                localStorage.setItem('projects', JSON.stringify(existingProjects));
+                
+                showNotification('Project created successfully!', 'success');
+            } else {
+                console.log('❌ Metadata bucket failed, storing in localStorage only:', result.error);
+                // Store in localStorage as fallback
+                const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+                projectData.id = Date.now().toString();
+                projectData.created_at = new Date().toISOString();
+                existingProjects.push(projectData);
+                localStorage.setItem('projects', JSON.stringify(existingProjects));
+                
+                showNotification('Project created (local storage only)', 'warning');
+            }
+        } catch (error) {
+            console.error('❌ Error creating project:', error);
+            // Store in localStorage as fallback
+            const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+            projectData.id = Date.now().toString();
+            projectData.created_at = new Date().toISOString();
+            existingProjects.push(projectData);
+            localStorage.setItem('projects', JSON.stringify(existingProjects));
+            
+            showNotification('Project created (local storage only)', 'warning');
+        }
+        
+        // Reset form
+        document.getElementById('projectForm').reset();
+        removeThumbnail();
+        
+        // Refresh projects list
+        loadProjects();
+        
+        console.log('Project created:', projectData);
+    } catch (error) {
+        showNotification('Project creation failed: ' + error.message, 'error');
+        console.error('Project creation error:', error);
+    }
+}
+
+async function loadProjects() {
+    try {
+        // Try to load from Supabase metadata bucket first
+        const result = await getProjects();
+        
+        if (result.success && result.data.length > 0) {
+            projects = result.data;
+            console.log('✅ Loaded projects from metadata bucket:', projects.length);
+        } else {
+            // Fallback to localStorage
+            const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+            projects = existingProjects;
+            console.log('📦 Loaded projects from localStorage:', projects.length);
+        }
+        
+        displayProjects();
+    } catch (error) {
+        console.error('❌ Error loading projects:', error);
+        // Fallback to localStorage on error
+        const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+        projects = existingProjects;
+        displayProjects();
+    }
+}
+
+function displayProjects() {
+    const projectsList = document.getElementById('projectsList');
+    const categoryFilter = document.getElementById('filterCategory').value;
+    
+    let filteredProjects = projects;
+    
+    if (categoryFilter) {
+        filteredProjects = filteredProjects.filter(p => p.category === categoryFilter);
+    }
+    
+    if (filteredProjects.length === 0) {
+        projectsList.innerHTML = '<p class="text-gray-400">No projects found matching the current filters.</p>';
+        return;
+    }
+    
+    projectsList.innerHTML = filteredProjects.map(project => `
+        <div class="bg-gray-800/50 p-6 rounded-lg cursor-pointer hover:bg-gray-800/70 transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="openProjectManager('${project.id}')">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start gap-4 flex-1">
+                    ${project.thumbnail_url ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-20 h-20 object-cover rounded-lg">` : ''}
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h4 class="text-xl font-bold text-white">${project.title}</h4>
+                            <span class="px-2 py-1 text-xs rounded-full bg-blue-600/20 text-blue-400">${project.category}</span>
+                        </div>
+                        <p class="text-gray-400 mb-2">${project.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            ${project.tags ? project.tags.map(tag => `<span class="px-2 py-1 text-xs bg-gray-700 text-gray-300 rounded">${tag}</span>`).join('') : ''}
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>Key: ${project.key}</p>
+                            <p>Created: ${new Date(project.created_at).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 ml-4">
+                    <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm transition-colors" onclick="event.stopPropagation(); deleteProject('${project.id}')">Delete</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+
+
+function refreshProjects() {
+    loadProjects();
+    showNotification('Projects refreshed', 'success');
+}
+
+function openProjectManager(id) {
+    // Redirect to project manager in same tab
+    window.location.href = `project-manager.html?id=${id}`;
+}
+
+function editProject(id) {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+    
+    // Fill form with project data
+    document.getElementById('projectTitle').value = project.title;
+    document.getElementById('projectKey').value = project.key;
+    document.getElementById('projectDescription').value = project.description;
+    document.getElementById('projectCategory').value = project.category;
+    document.getElementById('projectTags').value = project.tags ? project.tags.join(', ') : '';
+    
+    // Show thumbnail if exists
+    if (project.thumbnail_url) {
+        const preview = document.getElementById('thumbnailPreview');
+        preview.innerHTML = `
+            <div style="display: inline-block; position: relative;">
+                <img src="${project.thumbnail_url}" alt="Current thumbnail" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
+                <p class="text-xs text-gray-400 mt-2">Current thumbnail</p>
+            </div>
+        `;
+    }
+    
+    // Load project files for image management
+    loadProjectFiles(project.key);
+    
+    // Change form button to update
+    const submitBtn = document.querySelector('#projectForm button[type="submit"]');
+    submitBtn.textContent = 'Update Project';
+    submitBtn.onclick = function(e) {
+        e.preventDefault();
+        updateProject(id);
+    };
+    
+    showNotification('Project loaded for editing', 'success');
+}
+
+async function updateProject(id) {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+    
+    // Update project data
+    project.title = document.getElementById('projectTitle').value;
+    project.description = document.getElementById('projectDescription').value;
+    project.category = document.getElementById('projectCategory').value;
+    project.tags = document.getElementById('projectTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    project.updated_at = new Date().toISOString();
+    
+    try {
+        // Update in Supabase metadata bucket first using the config function
+        console.log('🔄 Updating project in metadata bucket:', project.key);
+        
+        // Use the updateProject function from supabase-config.js
+        if (typeof window.updateProject === 'function') {
+            const result = await window.updateProject(project.key, project);
+            
+            if (result.success) {
+                console.log('✅ Project updated in metadata bucket');
+                showNotification('Project updated successfully!', 'success');
+            } else {
+                console.log('❌ Metadata bucket update failed:', result.error);
+                showNotification('Project updated locally (cloud sync failed)', 'warning');
+            }
+        } else {
+            // Fallback: manually update metadata bucket
+            if (adminSupabase && SUPABASE_CONFIG.metadataBucket) {
+                const metadataFileName = `projects/${project.key}.json`;
+                const uploadResult = await adminSupabase.storage
+                    .from(SUPABASE_CONFIG.metadataBucket)
+                    .upload(metadataFileName, JSON.stringify(project, null, 2), {
+                        contentType: 'application/json',
+                        upsert: true
+                    });
+                
+                if (uploadResult.error) {
+                    console.error('❌ Metadata update failed:', uploadResult.error);
+                    showNotification('Project updated locally (cloud sync failed)', 'warning');
+                } else {
+                    console.log('✅ Project metadata updated successfully');
+                    showNotification('Project updated successfully!', 'success');
+                }
+            } else {
+                showNotification('Project updated locally only', 'warning');
+            }
+        }
+    } catch (error) {
+        console.error('❌ Error updating project metadata:', error);
+        showNotification('Project updated locally (cloud sync failed)', 'warning');
+    }
+    
+    // Update in localStorage as backup
+    localStorage.setItem('projects', JSON.stringify(projects));
+    
+    // Reset form
+    document.getElementById('projectForm').reset();
+    removeThumbnail();
+    
+    // Reset button
+    const submitBtn = document.querySelector('#projectForm button[type="submit"]');
+    submitBtn.textContent = 'Create Project';
+    submitBtn.onclick = null;
+    
+    // Clear current editing project
+    currentEditingProject = null;
+    
+    // Refresh projects list
+    loadProjects();
+}
+
+function duplicateProject(id) {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+    
+    const newProject = {
+        ...project,
+        id: Date.now().toString(),
+        title: project.title + ' (Copy)',
+        key: project.key + '-copy',
+        created_at: new Date().toISOString()
+    };
+    
+    projects.push(newProject);
+    localStorage.setItem('projects', JSON.stringify(projects));
+    
+    showNotification('Project duplicated successfully!', 'success');
+    loadProjects();
+}
+
+async function deleteProject(id) {
+    if (!confirm('Are you sure you want to delete this project? This will also delete all associated files.')) return;
+    
+    const projectIndex = projects.findIndex(p => p.id === id);
+    if (projectIndex === -1) {
+        showNotification('Project not found', 'error');
+        return;
+    }
+    
+    const project = projects[projectIndex];
+    console.log('🗑️ Deleting project:', project.title, '(ID:', id, ')');
+    
+    try {
+        // Delete from metadata bucket using the config function
+        if (project.key) {
+            console.log('🗑️ Deleting from metadata bucket...');
+            const metadataResult = await deleteProjectMetadata(project.key);
+            
+            if (metadataResult.success) {
+                console.log('✅ Project metadata deleted from bucket');
+            } else {
+                console.error('❌ Failed to delete metadata:', metadataResult.error);
+            }
+        }
+        
+        // Delete project files from public storage bucket
+        if (adminSupabase && project.key) {
+            console.log('🗑️ Deleting project files and folder...');
+            
+            const listResult = await adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .list(project.key);
+            
+            if (listResult.error) {
+                console.error('❌ Error listing project files:', listResult.error);
+            } else if (listResult.data && listResult.data.length > 0) {
+                const filesToDelete = listResult.data.map(file => project.key + '/' + file.name);
+                console.log('🗑️ Deleting', filesToDelete.length, 'project files:', filesToDelete);
+                
+                const deleteResult = await adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .remove(filesToDelete);
+                
+                if (deleteResult.error) {
+                    console.error('❌ Error deleting project files:', deleteResult.error);
+                    showNotification('Error deleting some project files', 'warning');
+                } else {
+                    console.log('✅ Project files deleted from storage');
+                    
+                    // Verify deletion by listing again
+                    const verifyResult = await adminSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .list(project.key);
+                    
+                    if (verifyResult.data && verifyResult.data.length > 0) {
+                        console.warn('⚠️ Some files may still remain:', verifyResult.data.length);
+                        
+                        // Try to delete remaining files
+                        const remainingFiles = verifyResult.data.map(file => project.key + '/' + file.name);
+                        console.log('🗑️ Attempting to delete remaining files:', remainingFiles);
+                        
+                        const finalDeleteResult = await adminSupabase.storage
+                            .from(SUPABASE_CONFIG.bucket)
+                            .remove(remainingFiles);
+                        
+                        if (finalDeleteResult.error) {
+                            console.error('❌ Error deleting remaining files:', finalDeleteResult.error);
+                        } else {
+                            console.log('✅ Remaining files deleted');
+                        }
+                    } else {
+                        console.log('✅ Project folder is now empty');
+                    }
+                }
+            } else {
+                console.log('📁 No project files found to delete');
+            }
+            
+            // Additional cleanup: Try to delete any hidden or system files
+            try {
+                console.log('🧹 Performing additional cleanup for folder:', project.key);
+                
+                // List with different parameters to catch any remaining files
+                const deepListResult = await adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .list(project.key, {
+                        limit: 1000,
+                        offset: 0
+                    });
+                
+                if (deepListResult.data && deepListResult.data.length > 0) {
+                    console.log('🔍 Found additional files during deep scan:', deepListResult.data.length);
+                    const additionalFiles = deepListResult.data.map(file => project.key + '/' + file.name);
+                    
+                    const cleanupResult = await adminSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .remove(additionalFiles);
+                    
+                    if (cleanupResult.error) {
+                        console.error('❌ Error during additional cleanup:', cleanupResult.error);
+                    } else {
+                        console.log('✅ Additional cleanup completed');
+                    }
+                }
+            } catch (cleanupError) {
+                console.warn('⚠️ Additional cleanup failed:', cleanupError.message);
+            }
+        }
+        
+        // Remove from local projects array and localStorage
+        projects.splice(projectIndex, 1);
+        localStorage.setItem('projects', JSON.stringify(projects));
+        
+        console.log('✅ Project removed from local storage');
+        showNotification('Project deleted successfully!', 'success');
+        loadProjects();
+        
+    } catch (error) {
+        console.error('❌ Error during project deletion:', error);
+        
+        // Still remove from local storage even if cloud deletion fails
+        projects.splice(projectIndex, 1);
+        localStorage.setItem('projects', JSON.stringify(projects));
+        
+        showNotification('Project deleted locally (cloud deletion may have failed)', 'warning');
+        loadProjects();
+    }
+}
+
+function manageProjectFiles(id) {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+    
+    // Load project for editing and show image management
+    editProject(id);
+    
+    // Scroll to the image management section
+    setTimeout(function() {
+        const imageSection = document.getElementById('projectGallery');
+        if (imageSection) {
+            imageSection.scrollIntoView({ behavior: 'smooth' });
+            // Load project files
+            loadProjectFiles(project.key);
+        }
+    }, 100);
+}
+
+// Refresh project files manually
+function refreshProjectFiles() {
+    if (currentEditingProject && currentEditingProject.key) {
+        console.log('🔄 Manually refreshing project files for:', currentEditingProject.key);
+        loadProjectFiles(currentEditingProject.key);
+    } else {
+        // Try to get project key from the form
+        const projectKey = document.getElementById('projectKey').value;
+        if (projectKey) {
+            console.log('🔄 Refreshing files using form project key:', projectKey);
+            loadProjectFiles(projectKey);
+        } else {
+            showNotification('No project selected for file refresh', 'warning');
+        }
+    }
+}
+
+// Force load project files with multiple fallback methods
+function forceLoadProjectFiles() {
+    console.log('🚀 Force loading project files...');
+    
+    // Method 1: Try currentEditingProject
+    if (currentEditingProject && currentEditingProject.key) {
+        console.log('📁 Method 1: Using currentEditingProject key:', currentEditingProject.key);
+        loadProjectFiles(currentEditingProject.key);
+        return;
+    }
+    
+    // Method 2: Try form project key
+    const projectKey = document.getElementById('projectKey').value;
+    if (projectKey) {
+        console.log('📁 Method 2: Using form project key:', projectKey);
+        loadProjectFiles(projectKey);
+        return;
+    }
+    
+    // Method 3: Try to find project from projects array using form title
+    const projectTitle = document.getElementById('projectTitle').value;
+    if (projectTitle && projects.length > 0) {
+        const foundProject = projects.find(p => p.title === projectTitle);
+        if (foundProject) {
+            console.log('📁 Method 3: Found project by title:', foundProject.key);
+            currentEditingProject = foundProject;
+            loadProjectFiles(foundProject.key);
+            return;
+        }
+    }
+    
+    // Method 4: Show all available projects for manual selection
+    console.log('📁 Method 4: Showing available projects for manual selection');
+    if (projects.length > 0) {
+        const projectKeys = projects.map(p => `${p.title} (${p.key})`).join('\n');
+        const selectedKey = prompt(`No project key found. Available projects:\n\n${projectKeys}\n\nEnter project key manually:`);
+        
+        if (selectedKey) {
+            console.log('📁 Manual project key entered:', selectedKey);
+            loadProjectFiles(selectedKey);
+            return;
+        }
+    }
+    
+    showNotification('Could not determine project key. Please edit a project first.', 'error');
+    console.error('❌ All methods failed to find project key');
+}
+
+// Debug function to check current state
+function debugProjectFiles() {
+    console.log('🔍 DEBUG: Current project files state');
+    console.log('currentEditingProject:', currentEditingProject);
+    console.log('projects array:', projects);
+    console.log('projectFiles array:', projectFiles);
+    console.log('Form project key:', document.getElementById('projectKey')?.value);
+    console.log('Form project title:', document.getElementById('projectTitle')?.value);
+    console.log('adminSupabase:', !!adminSupabase);
+    console.log('SUPABASE_CONFIG.bucket:', SUPABASE_CONFIG?.bucket);
+    
+    // Make this function available globally for console access
+    window.debugProjectFiles = debugProjectFiles;
+    window.forceLoadProjectFiles = forceLoadProjectFiles;
+    window.loadProjectFiles = loadProjectFiles;
+}
+
+// Project Image Management Functions
+let currentEditingProject = null;
+let projectFiles = [];
+
+// Update project file count after uploads
+async function updateProjectFileCount(projectKey) {
+    try {
+        console.log('🔢 Updating file count for project:', projectKey);
+        
+        // Get current file count from storage
+        const listResult = await adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .list(projectKey);
+        
+        if (listResult.error) {
+            console.error('❌ Error getting file count:', listResult.error);
+            return;
+        }
+        
+        const fileCount = listResult.data ? listResult.data.length : 0;
+        console.log('📊 Current file count:', fileCount);
+        
+        // Find and update the project in the projects array
+        const projectIndex = projects.findIndex(p => p.key === projectKey);
+        if (projectIndex !== -1) {
+            projects[projectIndex].count = fileCount;
+            projects[projectIndex].updated_at = new Date().toISOString();
+            
+            // Update localStorage
+            localStorage.setItem('projects', JSON.stringify(projects));
+            
+            // Update Supabase metadata bucket
+            try {
+                if (adminSupabase && SUPABASE_CONFIG.metadataBucket) {
+                    const metadataFileName = `projects/${projectKey}.json`;
+                    const uploadResult = await adminSupabase.storage
+                        .from(SUPABASE_CONFIG.metadataBucket)
+                        .upload(metadataFileName, JSON.stringify(projects[projectIndex], null, 2), {
+                            contentType: 'application/json',
+                            upsert: true
+                        });
+                    
+                    if (uploadResult.error) {
+                        console.error('❌ Metadata update failed:', uploadResult.error);
+                    } else {
+                        console.log('✅ Project count updated in metadata bucket');
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error updating metadata:', error);
+            }
+            
+            // Refresh the projects display
+            displayProjects();
+            
+            console.log('✅ Project file count updated:', fileCount);
+        } else {
+            console.warn('⚠️ Project not found in projects array:', projectKey);
+        }
+    } catch (error) {
+        console.error('❌ Error updating project file count:', error);
+    }
+}
+
+function handleProjectImageUpload(files) {
+    // Check if we have a project to upload to
+    const projectKey = currentEditingProject ? currentEditingProject.key : document.getElementById('projectKey').value;
+    
+    if (!projectKey) {
+        showNotification('Please enter a project title first to generate a project key', 'error');
+        return;
+    }
+    
+    if (!adminSupabase) {
+        showNotification('Supabase not initialized. Please check your connection.', 'error');
+        return;
+    }
+    
+    console.log('📤 Uploading images to project:', projectKey);
+    
+    const progressList = document.getElementById('projectUploadProgressList');
+    const progressSection = document.getElementById('projectUploadProgress');
+    progressSection.classList.remove('hidden');
+    
+    let uploadedCount = 0;
+    const totalFiles = files.length;
+    
+    Array.from(files).forEach(function(file, index) {
+        const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
+        const filePath = projectKey + '/' + fileName;
+        
+        console.log('📤 Uploading file:', fileName, 'to path:', filePath);
+        
+        const progressItem = document.createElement('div');
+        progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
+        progressItem.innerHTML = `
+            <span class="text-white">${file.name}</span>
+            <span class="text-gray-400">Uploading...</span>
+        `;
+        progressList.appendChild(progressItem);
+        
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(filePath, file, {
+                cacheControl: '3600',
+                upsert: true
+            })
+            .then(function(result) {
+                if (result.error) {
+                    console.error('❌ Upload failed:', result.error);
+                    progressItem.innerHTML = `
+                        <span class="text-white">${file.name}</span>
+                        <span class="text-red-400">Failed: ${result.error.message}</span>
+                    `;
+                    return;
+                }
+                
+                console.log('✅ Upload successful:', result.data.path);
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-green-400">✓ Uploaded</span>
+                `;
+                
+                uploadedCount++;
+                
+                // Update project count when all files are uploaded
+                if (uploadedCount === totalFiles) {
+                    updateProjectFileCount(projectKey);
+                }
+                
+                // Refresh gallery after upload if we're editing
+                if (currentEditingProject) {
+                    setTimeout(function() {
+                        loadProjectFiles(currentEditingProject.key);
+                    }, 1000);
+                } else {
+                    // For new projects, just show success
+                    showNotification('Image uploaded successfully!', 'success');
+                }
+            })
+            .catch(function(error) {
+                console.error('❌ Upload error:', error);
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-red-400">Error: ${error.message}</span>
+                `;
+            });
+    });
+}
+
+function handleProjectVideoUpload(files) {
+    // Check if we have a project to upload to
+    const projectKey = currentEditingProject ? currentEditingProject.key : document.getElementById('projectKey').value;
+    
+    if (!projectKey) {
+        showNotification('Please enter a project title first to generate a project key', 'error');
+        return;
+    }
+    
+    if (!adminSupabase) {
+        showNotification('Supabase not initialized. Please check your connection.', 'error');
+        return;
+    }
+    
+    console.log('📤 Uploading videos to project:', projectKey);
+    
+    const progressList = document.getElementById('projectUploadProgressList');
+    const progressSection = document.getElementById('projectUploadProgress');
+    progressSection.classList.remove('hidden');
+    
+    let uploadedCount = 0;
+    const totalFiles = files.length;
+    
+    Array.from(files).forEach(function(file, index) {
+        const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
+        const filePath = projectKey + '/' + fileName;
+        
+        console.log('📤 Uploading video:', fileName, 'to path:', filePath);
+        
+        const progressItem = document.createElement('div');
+        progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
+        progressItem.innerHTML = `
+            <span class="text-white">${file.name}</span>
+            <span class="text-gray-400">Uploading...</span>
+        `;
+        progressList.appendChild(progressItem);
+        
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(filePath, file, {
+                cacheControl: '3600',
+                upsert: true
+            })
+            .then(function(result) {
+                if (result.error) {
+                    console.error('❌ Video upload failed:', result.error);
+                    progressItem.innerHTML = `
+                        <span class="text-white">${file.name}</span>
+                        <span class="text-red-400">Failed: ${result.error.message}</span>
+                    `;
+                    return;
+                }
+                
+                console.log('✅ Video upload successful:', result.data.path);
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-green-400">✓ Uploaded</span>
+                `;
+                
+                uploadedCount++;
+                
+                // Update project count when all files are uploaded
+                if (uploadedCount === totalFiles) {
+                    updateProjectFileCount(projectKey);
+                }
+                
+                // Refresh gallery after upload if we're editing
+                if (currentEditingProject) {
+                    setTimeout(function() {
+                        loadProjectFiles(currentEditingProject.key);
+                    }, 1000);
+                } else {
+                    // For new projects, just show success
+                    showNotification('Video uploaded successfully!', 'success');
+                }
+            })
+            .catch(function(error) {
+                console.error('❌ Video upload error:', error);
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-red-400">Error: ${error.message}</span>
+                `;
+            });
+    });
+}
+
+function loadProjectFiles(projectKey) {
+    if (!adminSupabase || !projectKey) {
+        console.error('❌ Cannot load project files: adminSupabase or projectKey missing');
+        return;
+    }
+    
+    console.log('🔍 Loading project files for:', projectKey);
+    currentEditingProject = projects.find(p => p.key === projectKey);
+    
+    // Show loading state
+    const grid = document.getElementById('projectGalleryGrid');
+    if (grid) {
+        grid.innerHTML = '<div class="text-center text-gray-400 text-sm py-8 col-span-full">Loading project files...</div>';
+    }
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .list(projectKey, {
+            limit: 1000,
+            sortBy: { column: 'created_at', order: 'desc' }
+        })
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ Error loading project files:', result.error);
+                if (grid) {
+                    grid.innerHTML = '<div class="text-center text-red-400 text-sm py-8 col-span-full">Error loading files: ' + result.error.message + '</div>';
+                }
+                return;
+            }
+            
+            console.log('📁 Raw files from storage:', result.data);
+            
+            if (!result.data || result.data.length === 0) {
+                console.log('📁 No files found for project:', projectKey);
+                projectFiles = [];
+                if (grid) {
+                    grid.innerHTML = '<div class="text-center text-gray-400 text-sm py-8 col-span-full">No files uploaded yet. Create the project first, then upload images and videos.</div>';
+                }
+                return;
+            }
+            
+            projectFiles = result.data
+                .filter(function(file) {
+                    // Filter out thumbnail files
+                    return !file.name.startsWith('thumb-');
+                })
+                .map(function(file) {
+                    const publicUrlResult = adminSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .getPublicUrl(projectKey + '/' + file.name);
+                    
+                    const fileData = {
+                        name: file.name,
+                        path: projectKey + '/' + file.name,
+                        url: publicUrlResult.data.publicUrl,
+                        size: file.metadata?.size || 0,
+                        created_at: file.created_at,
+                        type: getFileType(file.name)
+                    };
+                    
+                    console.log('📄 Processed file:', fileData);
+                    return fileData;
+                });
+            
+            console.log('✅ Loaded', projectFiles.length, 'project files');
+            displayProjectGallery();
+        })
+        .catch(function(error) {
+            console.error('❌ Error loading project files:', error);
+            if (grid) {
+                grid.innerHTML = '<div class="text-center text-red-400 text-sm py-8 col-span-full">Error loading files: ' + error.message + '</div>';
+            }
+        });
+}
+
+function displayProjectGallery() {
+    const grid = document.getElementById('projectGalleryGrid');
+    const filter = document.getElementById('projectGalleryFilter').value;
+    
+    if (!grid) {
+        console.error('❌ Project gallery grid element not found');
+        return;
+    }
+    
+    console.log('🎨 Displaying project gallery with', projectFiles.length, 'files');
+    
+    let filteredFiles = projectFiles;
+    
+    // Apply filter
+    if (filter === 'images') {
+        filteredFiles = filteredFiles.filter(f => f.type === 'image');
+    } else if (filter === 'videos') {
+        filteredFiles = filteredFiles.filter(f => f.type === 'video');
+    }
+    
+    console.log('🔍 After filtering:', filteredFiles.length, 'files (filter:', filter, ')');
+    
+    if (filteredFiles.length === 0) {
+        const message = projectFiles.length === 0 
+            ? 'No files uploaded yet. Upload some images or videos above.'
+            : `No ${filter} found. Try changing the filter or upload more files.`;
+        grid.innerHTML = `<div class="text-center text-gray-400 text-sm py-8 col-span-full">${message}</div>`;
+        return;
+    }
+    
+    grid.innerHTML = filteredFiles.map(function(file, index) {
+        return `
+            <div class="relative group cursor-pointer bg-gray-800 rounded-lg overflow-hidden aspect-square">
+                ${file.type === 'image' ? 
+                    `<img src="${file.url}" alt="${file.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-gray-700\\'>❌ Failed to load</div>'">` :
+                    file.type === 'video' ?
+                    `<video class="w-full h-full object-cover" preload="metadata">
+                        <source src="${file.url}" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/50">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                        </svg>
+                    </div>` :
+                    `<div class="w-full h-full flex items-center justify-center bg-gray-700">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+                        </svg>
+                    </div>`
+                }
+                <div class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button class="bg-red-600 hover:bg-red-700 text-white p-1 rounded-full text-xs transition-colors" onclick="deleteProjectFile('${file.path}')" title="Delete file">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6v11a1 1 0 001 1h12a1 1 0 001-1V6H3z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 bg-black/75 text-white p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                    <p class="truncate" title="${file.name}">${file.name}</p>
+                    <p class="text-xs text-gray-300">${(file.size / 1024).toFixed(1)} KB</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    console.log('✅ Gallery displayed with', filteredFiles.length, 'files');
+}
+
+function filterProjectGallery() {
+    displayProjectGallery();
+}
+
+function deleteProjectFile(filePath) {
+    if (!confirm('Are you sure you want to delete this file?')) return;
+    
+    console.log('🗑️ Deleting file:', filePath);
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .remove([filePath])
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ Error deleting file:', result.error);
+                showNotification('Error deleting file: ' + result.error.message, 'error');
+                return;
+            }
+            
+            console.log('✅ File deleted successfully:', filePath);
+            showNotification('File deleted successfully', 'success');
+            
+            if (currentEditingProject) {
+                // Reload project files to refresh the gallery
+                loadProjectFiles(currentEditingProject.key);
+                
+                // Update project file count
+                setTimeout(function() {
+                    updateProjectFileCount(currentEditingProject.key);
+                }, 1000);
+            }
+        })
+        .catch(function(error) {
+            console.error('❌ Error deleting file:', error);
+            showNotification('Error deleting file: ' + error.message, 'error');
+        });
+}
+
+// Gallery Management Functions
+function refreshProjectSelector() {
+    const selector = document.getElementById('projectSelector');
+    const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+    
+    selector.innerHTML = '<option value="">Select a project...</option>';
+    
+    existingProjects.forEach(function(project) {
+        const option = document.createElement('option');
+        option.value = project.id;
+        option.textContent = project.title + ' (' + project.key + ')';
+        selector.appendChild(option);
+    });
+}
+
+function loadProjectGallery() {
+    const projectId = document.getElementById('projectSelector').value;
+    const uploadSection = document.getElementById('galleryUploadSection');
+    const displaySection = document.getElementById('galleryDisplay');
+    
+    if (!projectId) {
+        uploadSection.classList.add('hidden');
+        displaySection.classList.add('hidden');
+        return;
+    }
+    
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    
+    currentProject = project;
+    uploadSection.classList.remove('hidden');
+    displaySection.classList.remove('hidden');
+    
+    // Load existing files from storage
+    loadProjectFiles(project.key);
+}
+
+function loadProjectFiles(projectKey) {
+    if (!adminSupabase) return;
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .list(projectKey, {
+            limit: 1000,
+            sortBy: { column: 'created_at', order: 'desc' }
+        })
+        .then(function(result) {
+            if (result.error) {
+                console.error('Error loading project files:', result.error);
+                return;
+            }
+            
+            galleryFiles = result.data.map(function(file) {
+                const publicUrlResult = adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .getPublicUrl(projectKey + '/' + file.name);
+                
+                return {
+                    name: file.name,
+                    path: projectKey + '/' + file.name,
+                    url: publicUrlResult.data.publicUrl,
+                    size: file.metadata?.size || 0,
+                    created_at: file.created_at,
+                    type: getFileType(file.name)
+                };
+            });
+            
+            displayGallery();
+        })
+        .catch(function(error) {
+            console.error('Error loading project files:', error);
+        });
+}
+
+function getFileType(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+    const videoExts = ['mp4', 'webm', 'mov', 'avi', 'mkv'];
+    
+    if (imageExts.includes(ext)) return 'image';
+    if (videoExts.includes(ext)) return 'video';
+    return 'other';
+}
+
+function displayGallery() {
+    const grid = document.getElementById('galleryGrid');
+    const filter = document.getElementById('galleryFilter').value;
+    const sortBy = document.getElementById('gallerySortBy').value;
+    
+    let filteredFiles = galleryFiles;
+    
+    // Apply filter
+    if (filter === 'images') {
+        filteredFiles = filteredFiles.filter(f => f.type === 'image');
+    } else if (filter === 'videos') {
+        filteredFiles = filteredFiles.filter(f => f.type === 'video');
+    }
+    
+    // Apply sorting
+    filteredFiles.sort(function(a, b) {
+        switch (sortBy) {
+            case 'newest':
+                return new Date(b.created_at) - new Date(a.created_at);
+            case 'oldest':
+                return new Date(a.created_at) - new Date(b.created_at);
+            case 'name':
+                return a.name.localeCompare(b.name);
+            case 'size':
+                return b.size - a.size;
+            default:
+                return 0;
+        }
+    });
+    
+    grid.innerHTML = filteredFiles.map(function(file, index) {
+        const isSelected = selectedFiles.includes(file.path);
+        return `
+            <div class="relative group cursor-pointer ${isSelected ? 'ring-2 ring-blue-500' : ''}" onclick="toggleFileSelection('${file.path}')">
+                <div class="aspect-square bg-gray-800 rounded-lg overflow-hidden">
+                    ${file.type === 'image' ? 
+                        `<img src="${file.url}" alt="${file.name}" class="w-full h-full object-cover">` :
+                        file.type === 'video' ?
+                        `<video class="w-full h-full object-cover" preload="metadata">
+                            <source src="${file.url}" type="video/mp4">
+                        </video>
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/50">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                        </div>` :
+                        `<div class="w-full h-full flex items-center justify-center bg-gray-700">
+                            <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+                            </svg>
+                        </div>`
+                    }
+                </div>
+                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button class="bg-red-600 text-white p-1 rounded-full text-xs" onclick="event.stopPropagation(); deleteFile('${file.path}')">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6v11a1 1 0 001 1h12a1 1 0 001-1V6H3z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 bg-black/75 text-white p-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                    <p class="truncate">${file.name}</p>
+                    <p>${formatFileSize(file.size)}</p>
+                </div>
+                ${isSelected ? '<div class="absolute top-2 left-2 bg-blue-500 text-white p-1 rounded-full text-xs">✓</div>' : ''}
+            </div>
+        `;
+    }).join('');
+    
+    updateBulkActions();
+}
+
+function toggleFileSelection(filePath) {
+    const index = selectedFiles.indexOf(filePath);
+    if (index === -1) {
+        selectedFiles.push(filePath);
+    } else {
+        selectedFiles.splice(index, 1);
+    }
+    displayGallery();
+}
+
+function selectAllFiles() {
+    selectedFiles = galleryFiles.map(f => f.path);
+    displayGallery();
+}
+
+function deselectAllFiles() {
+    selectedFiles = [];
+    displayGallery();
+}
+
+function updateBulkActions() {
+    const bulkActions = document.getElementById('bulkActions');
+    const selectedCount = document.getElementById('selectedCount');
+    
+    selectedCount.textContent = selectedFiles.length;
+    
+    if (selectedFiles.length > 0) {
+        bulkActions.classList.remove('hidden');
+    } else {
+        bulkActions.classList.add('hidden');
+    }
+}
+
+function deleteFile(filePath) {
+    if (!confirm('Are you sure you want to delete this file?')) return;
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .remove([filePath])
+        .then(function(result) {
+            if (result.error) {
+                showNotification('Error deleting file: ' + result.error.message, 'error');
+                return;
+            }
+            
+            showNotification('File deleted successfully', 'success');
+            loadProjectFiles(currentProject.key);
+        })
+        .catch(function(error) {
+            showNotification('Error deleting file: ' + error.message, 'error');
+        });
+}
+
+function deleteSelectedFiles() {
+    if (selectedFiles.length === 0) return;
+    
+    if (!confirm(`Are you sure you want to delete ${selectedFiles.length} selected files?`)) return;
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .remove(selectedFiles)
+        .then(function(result) {
+            if (result.error) {
+                showNotification('Error deleting files: ' + result.error.message, 'error');
+                return;
+            }
+            
+            showNotification(`${selectedFiles.length} files deleted successfully`, 'success');
+            selectedFiles = [];
+            loadProjectFiles(currentProject.key);
+        })
+        .catch(function(error) {
+            showNotification('Error deleting files: ' + error.message, 'error');
+        });
+}
+
+function filterGallery() {
+    displayGallery();
+}
+
+function sortGallery() {
+    displayGallery();
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Website Assets Management Functions
+function loadWebsiteAssets() {
+    // Load existing assets from storage
+    if (!adminSupabase) return;
+    
+    ['logo', 'banner', 'icons'].forEach(function(assetType) {
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .list('website-assets', {
+                limit: 100,
+                search: assetType
+            })
+            .then(function(result) {
+                if (result.error) return;
+                
+                const listElement = document.getElementById(assetType + 'List');
+                if (!listElement) return;
+                
+                const assets = result.data.filter(file => file.name.includes(assetType));
+                
+                listElement.innerHTML = assets.map(function(asset) {
+                    const publicUrlResult = adminSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .getPublicUrl('website-assets/' + asset.name);
+                    
+                    return `
+                        <div class="flex justify-between items-center p-2 bg-gray-700 rounded text-sm">
+                            <span class="text-white truncate">${asset.name}</span>
+                            <button class="text-red-400 hover:text-red-300" onclick="deleteAsset('website-assets/${asset.name}')">Delete</button>
+                        </div>
+                    `;
+                }).join('');
+            });
+    });
+    
+    // Load website settings
+    const savedSettings = localStorage.getItem('websiteSettings');
+    if (savedSettings) {
+        websiteSettings = JSON.parse(savedSettings);
+        
+        document.getElementById('siteTitle').value = websiteSettings.title || '';
+        document.getElementById('siteTagline').value = websiteSettings.tagline || '';
+        document.getElementById('contactEmail').value = websiteSettings.email || '';
+        document.getElementById('contactPhone').value = websiteSettings.phone || '';
+        document.getElementById('aboutText').value = websiteSettings.about || '';
+    }
+    
+    // Load social links
+    const savedSocial = localStorage.getItem('socialLinks');
+    if (savedSocial) {
+        socialLinks = JSON.parse(savedSocial);
+        
+        document.getElementById('socialInstagram').value = socialLinks.instagram || '';
+        document.getElementById('socialFacebook').value = socialLinks.facebook || '';
+        document.getElementById('socialTwitter').value = socialLinks.twitter || '';
+        document.getElementById('socialLinkedin').value = socialLinks.linkedin || '';
+        document.getElementById('socialBehance').value = socialLinks.behance || '';
+        document.getElementById('socialDribbble').value = socialLinks.dribbble || '';
+    }
+}
+
+function deleteAsset(assetPath) {
+    if (!confirm('Are you sure you want to delete this asset?')) return;
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .remove([assetPath])
+        .then(function(result) {
+            if (result.error) {
+                showNotification('Error deleting asset: ' + result.error.message, 'error');
+                return;
+            }
+            
+            showNotification('Asset deleted successfully', 'success');
+            loadWebsiteAssets();
+        })
+        .catch(function(error) {
+            showNotification('Error deleting asset: ' + error.message, 'error');
+        });
+}
+
+function saveWebsiteSettings() {
+    websiteSettings = {
+        title: document.getElementById('siteTitle').value,
+        tagline: document.getElementById('siteTagline').value,
+        email: document.getElementById('contactEmail').value,
+        phone: document.getElementById('contactPhone').value,
+        about: document.getElementById('aboutText').value
+    };
+    
+    localStorage.setItem('websiteSettings', JSON.stringify(websiteSettings));
+    showNotification('Website settings saved successfully!', 'success');
+}
+
+function saveSocialLinks() {
+    socialLinks = {
+        instagram: document.getElementById('socialInstagram').value,
+        facebook: document.getElementById('socialFacebook').value,
+        twitter: document.getElementById('socialTwitter').value,
+        linkedin: document.getElementById('socialLinkedin').value,
+        behance: document.getElementById('socialBehance').value,
+        dribbble: document.getElementById('socialDribbble').value
+    };
+    
+    localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+    showNotification('Social links saved successfully!', 'success');
+}
+
+// File Upload Functions for Gallery
+function handleGalleryImageUpload(files) {
+    if (!currentProject || !adminSupabase) return;
+    
+    const progressList = document.getElementById('uploadProgressList');
+    const progressSection = document.getElementById('uploadProgress');
+    progressSection.classList.remove('hidden');
+    
+    Array.from(files).forEach(function(file, index) {
+        const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
+        const filePath = currentProject.key + '/' + fileName;
+        
+        const progressItem = document.createElement('div');
+        progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
+        progressItem.innerHTML = `
+            <span class="text-white">${file.name}</span>
+            <span class="text-gray-400">Uploading...</span>
+        `;
+        progressList.appendChild(progressItem);
+        
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(filePath, file, {
+                cacheControl: '3600',
+                upsert: true
+            })
+            .then(function(result) {
+                if (result.error) {
+                    progressItem.innerHTML = `
+                        <span class="text-white">${file.name}</span>
+                        <span class="text-red-400">Failed</span>
+                    `;
+                    return;
+                }
+                
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-green-400">✓ Uploaded</span>
+                `;
+                
+                // Refresh gallery after upload
+                setTimeout(function() {
+                    loadProjectFiles(currentProject.key);
+                }, 1000);
+            })
+            .catch(function(error) {
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-red-400">Error</span>
+                `;
+            });
+    });
+}
+
+function handleGalleryVideoUpload(files) {
+    if (!currentProject || !adminSupabase) return;
+    
+    const progressList = document.getElementById('uploadProgressList');
+    const progressSection = document.getElementById('uploadProgress');
+    progressSection.classList.remove('hidden');
+    
+    Array.from(files).forEach(function(file, index) {
+        const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
+        const filePath = currentProject.key + '/' + fileName;
+        
+        const progressItem = document.createElement('div');
+        progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
+        progressItem.innerHTML = `
+            <span class="text-white">${file.name}</span>
+            <span class="text-gray-400">Uploading...</span>
+        `;
+        progressList.appendChild(progressItem);
+        
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(filePath, file, {
+                cacheControl: '3600',
+                upsert: true
+            })
+            .then(function(result) {
+                if (result.error) {
+                    progressItem.innerHTML = `
+                        <span class="text-white">${file.name}</span>
+                        <span class="text-red-400">Failed</span>
+                    `;
+                    return;
+                }
+                
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-green-400">✓ Uploaded</span>
+                `;
+                
+                // Refresh gallery after upload
+                setTimeout(function() {
+                    loadProjectFiles(currentProject.key);
+                }, 1000);
+            })
+            .catch(function(error) {
+                progressItem.innerHTML = `
+                    <span class="text-white">${file.name}</span>
+                    <span class="text-red-400">Error</span>
+                `;
+            });
+    });
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Tab navigation
+    document.querySelectorAll('.tab-button').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            const tab = e.target.getAttribute('data-tab');
+            switchTab(tab);
+        });
+    });
+    
+    // File upload area
+    const uploadArea = document.getElementById('testUpload');
+    const fileInput = document.getElementById('testFileInput');
+    
+    if (uploadArea && fileInput) {
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+    }
+    
+    // Project form
+    const projectForm = document.getElementById('projectForm');
+    const titleInput = document.getElementById('projectTitle');
+    const keyInput = document.getElementById('projectKey');
+    const thumbnailArea = document.getElementById('thumbnailUpload');
+    const thumbnailInput = document.getElementById('thumbnailInput');
+    
+    if (titleInput && keyInput) {
+        titleInput.addEventListener('input', function(e) {
+            const key = generateProjectKey(e.target.value);
+            keyInput.value = key;
+        });
+    }
+    
+    if (thumbnailArea && thumbnailInput) {
+        thumbnailArea.addEventListener('click', function() {
+            thumbnailInput.click();
+        });
+        
+        thumbnailInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleThumbnailSelect(e.target.files[0]);
+            }
+        });
+    }
+    
+    if (projectForm) {
+        projectForm.addEventListener('submit', handleProjectSubmit);
+    }
+    
+    // Project upload areas
+    const projectImageArea = document.getElementById('projectImageUpload');
+    const projectImageInput = document.getElementById('projectImageInput');
+    const projectVideoArea = document.getElementById('projectVideoUpload');
+    const projectVideoInput = document.getElementById('projectVideoInput');
+    
+    if (projectImageArea && projectImageInput) {
+        console.log('✅ Project image upload area found, attaching event listeners');
+        
+        projectImageArea.addEventListener('click', function() {
+            console.log('📷 Project image upload area clicked');
+            projectImageInput.click();
+        });
+        
+        projectImageInput.addEventListener('change', function(e) {
+            console.log('📷 Project image files selected:', e.target.files.length);
+            if (e.target.files.length > 0) {
+                handleProjectImageUpload(e.target.files);
+            }
+        });
+    } else {
+        console.error('❌ Project image upload elements not found:', {
+            area: !!projectImageArea,
+            input: !!projectImageInput
+        });
+    }
+    
+    if (projectVideoArea && projectVideoInput) {
+        console.log('✅ Project video upload area found, attaching event listeners');
+        
+        projectVideoArea.addEventListener('click', function() {
+            console.log('🎥 Project video upload area clicked');
+            projectVideoInput.click();
+        });
+        
+        projectVideoInput.addEventListener('change', function(e) {
+            console.log('🎥 Project video files selected:', e.target.files.length);
+            if (e.target.files.length > 0) {
+                handleProjectVideoUpload(e.target.files);
+            }
+        });
+    } else {
+        console.error('❌ Project video upload elements not found:', {
+            area: !!projectVideoArea,
+            input: !!projectVideoInput
+        });
+    }
+    
+    // Filter change listeners
+    const filterCategory = document.getElementById('filterCategory');
+    
+    if (filterCategory) {
+        filterCategory.addEventListener('change', displayProjects);
+    }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Admin panel initializing...');
+    
+    // Initialize Supabase using the config file functions
+    if (typeof window.supabase !== 'undefined') {
+        // Initialize the shared Supabase client from config
+        const initResult = initializeSupabase();
+        if (initResult) {
+            adminSupabase = configSupabase; // Use the same client as the config functions
+            console.log('✅ Supabase initialized using shared client');
+            
+            // Test Supabase connection
+            testSupabaseConnection();
+        } else {
+            console.error('❌ Failed to initialize Supabase from config');
+        }
+    } else {
+        console.warn('⚠️ Supabase not loaded');
+    }
+    
+    // Setup event listeners
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+        console.log('✅ Login form event listener attached');
+    }
+    
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+    
+    setupEventListeners();
+    
+    // Initialize debug functions
+    debugProjectFiles();
+    
+    // Show login screen
+    showLogin();
+    console.log('✅ Admin panel initialized successfully');
+});
+
+// Test Supabase connection and configuration
+async function testSupabaseConnection() {
+    try {
+        console.log('🧪 Testing Supabase connection...');
+        
+        // Test basic connection
+        if (!adminSupabase) {
+            throw new Error('Supabase client not initialized');
+        }
+        
+        // Test if we can access the public bucket
+        const { data: publicBuckets, error: publicError } = await adminSupabase.storage.listBuckets();
+        
+        if (publicError) {
+            console.warn('⚠️ Could not list buckets:', publicError.message);
+        } else {
+            console.log('✅ Supabase connection successful');
+            
+            // Check if required buckets exist
+            const portfolioBucket = publicBuckets.find(b => b.name === SUPABASE_CONFIG.bucket);
+            const metadataBucket = publicBuckets.find(b => b.name === SUPABASE_CONFIG.metadataBucket);
+            
+            console.log('📦 Bucket status:');
+            console.log(`   ${SUPABASE_CONFIG.bucket}: ${portfolioBucket ? '✅ Found' : '❌ Missing'}`);
+            console.log(`   ${SUPABASE_CONFIG.metadataBucket}: ${metadataBucket ? '✅ Found' : '❌ Missing'}`);
+            
+            if (!portfolioBucket) {
+                console.error('💡 Create bucket:', SUPABASE_CONFIG.bucket, '(set to PUBLIC)');
+            }
+            
+            if (!metadataBucket) {
+                console.error('💡 Create bucket:', SUPABASE_CONFIG.metadataBucket, '(set to PRIVATE)');
+            }
+        }
+    } catch (error) {
+        console.error('❌ Supabase connection test failed:', error.message);
+    }
+}
+</script>
+
+</body>
+</html>
