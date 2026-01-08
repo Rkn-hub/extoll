@@ -374,5 +374,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Dynamic Content Loading Script -->
+<script>
+// Load dynamic content from admin panel for About page
+function loadDynamicAboutContent() {
+    console.log('🔄 Loading dynamic about content from admin panel...');
+    
+    // Load website content
+    const savedContent = localStorage.getItem('websiteContent');
+    if (savedContent) {
+        const content = JSON.parse(savedContent);
+        console.log('📄 Found saved website content for about page:', content);
+        
+        // Update About Section
+        const aboutTitle = document.querySelector('h1');
+        const aboutTagline = document.querySelector('.text-primary');
+        
+        if (aboutTitle && content.aboutTitle) {
+            aboutTitle.textContent = content.aboutTitle;
+            console.log('✅ Updated about title');
+        }
+        
+        if (aboutTagline && content.aboutTagline) {
+            aboutTagline.textContent = content.aboutTagline;
+            console.log('✅ Updated about tagline');
+        }
+        
+        // Update footer tagline
+        const footerTagline = document.querySelector('.text-white.font-semibold');
+        if (footerTagline && content.aboutTagline) {
+            footerTagline.textContent = `Extoll — ${content.aboutTagline}`;
+            console.log('✅ Updated footer tagline');
+        }
+    } else {
+        console.log('ℹ️ No saved website content found, using defaults');
+    }
+    
+    console.log('✅ Dynamic about content loading complete');
+}
+
+// Load dynamic content when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadDynamicAboutContent();
+});
+</script>
 </html>
 

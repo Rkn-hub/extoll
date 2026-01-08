@@ -1694,5 +1694,133 @@ async function extractImageColors(img) {
 }
 </script>
 
+<!-- Dynamic Content Loading Script -->
+<script>
+// Load dynamic content from admin panel
+function loadDynamicContent() {
+    console.log('🔄 Loading dynamic content from admin panel...');
+    
+    // Load website content
+    const savedContent = localStorage.getItem('websiteContent');
+    if (savedContent) {
+        const content = JSON.parse(savedContent);
+        console.log('📄 Found saved website content:', content);
+        
+        // Update Hero Section
+        const heroTitle = document.querySelector('h1');
+        const heroSubtitle = document.querySelector('.text-primary');
+        const heroDescription = document.querySelector('.text-gray-400');
+        
+        if (heroTitle && content.heroTitle) {
+            heroTitle.textContent = content.heroTitle;
+            console.log('✅ Updated hero title');
+        }
+        
+        if (heroSubtitle && content.heroSubtitle) {
+            heroSubtitle.textContent = content.heroSubtitle;
+            console.log('✅ Updated hero subtitle');
+        }
+        
+        if (heroDescription && content.heroDescription) {
+            heroDescription.textContent = content.heroDescription;
+            console.log('✅ Updated hero description');
+        }
+        
+        // Update Portfolio Section
+        const portfolioTitle = document.querySelector('#work .text-white.text-4xl');
+        const portfolioDesc = document.querySelector('#work .text-neutral-400');
+        
+        if (portfolioTitle && content.portfolioTitle) {
+            portfolioTitle.textContent = content.portfolioTitle;
+            console.log('✅ Updated portfolio title');
+        }
+        
+        if (portfolioDesc && content.portfolioDescription) {
+            portfolioDesc.textContent = content.portfolioDescription;
+            console.log('✅ Updated portfolio description');
+        }
+        
+        // Update Contact Information (if elements exist)
+        const contactElements = {
+            phone: document.querySelector('[href*="tel:"]'),
+            whatsapp: document.querySelector('[href*="wa.me"]'),
+            email: document.querySelector('[href*="mailto:"]'),
+            instagram: document.querySelector('[href*="instagram"]')
+        };
+        
+        if (contactElements.phone && content.contactPhone) {
+            contactElements.phone.href = 'tel:' + content.contactPhone;
+            const phoneText = contactElements.phone.querySelector('p');
+            if (phoneText) phoneText.textContent = content.contactPhone;
+        }
+        
+        if (contactElements.email && content.contactEmail) {
+            contactElements.email.href = 'mailto:' + content.contactEmail;
+            const emailText = contactElements.email.querySelector('p');
+            if (emailText) emailText.textContent = content.contactEmail;
+        }
+    } else {
+        console.log('ℹ️ No saved website content found, using defaults');
+    }
+    
+    // Load team information
+    const savedTeam = localStorage.getItem('teamInfo');
+    if (savedTeam) {
+        const team = JSON.parse(savedTeam);
+        console.log('👥 Found saved team info:', team);
+        
+        // Update team section title
+        const teamTitle = document.querySelector('h2:contains("Our Team")') || 
+                         document.querySelector('.text-white:contains("Team")');
+        if (teamTitle && team.sectionTitle) {
+            teamTitle.textContent = team.sectionTitle;
+            console.log('✅ Updated team section title');
+        }
+        
+        // Update individual team members (if team section exists)
+        const teamMembers = document.querySelectorAll('.team-member');
+        if (teamMembers.length >= 4) {
+            const teamData = [
+                { name: team.team1Name, role: team.team1Role },
+                { name: team.team2Name, role: team.team2Role },
+                { name: team.team3Name, role: team.team3Role },
+                { name: team.team4Name, role: team.team4Role }
+            ];
+            
+            teamMembers.forEach((member, index) => {
+                if (teamData[index]) {
+                    const nameEl = member.querySelector('.team-name');
+                    const roleEl = member.querySelector('.team-role');
+                    
+                    if (nameEl && teamData[index].name) {
+                        nameEl.textContent = teamData[index].name;
+                    }
+                    if (roleEl && teamData[index].role) {
+                        roleEl.textContent = teamData[index].role;
+                    }
+                }
+            });
+            console.log('✅ Updated team member information');
+        }
+    } else {
+        console.log('ℹ️ No saved team info found, using defaults');
+    }
+    
+    console.log('✅ Dynamic content loading complete');
+}
+
+// Load dynamic content when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadDynamicContent();
+});
+
+// Also load when returning to the page (in case content was updated)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        loadDynamicContent();
+    }
+});
+</script>
+
 </body>
 </html>

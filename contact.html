@@ -662,6 +662,57 @@ document.addEventListener('visibilitychange', function() {
   }
 });
 </script>
+
+<!-- Dynamic Content Loading Script -->
+<script>
+// Load dynamic content from admin panel for Contact page
+function loadDynamicContactContent() {
+    console.log('🔄 Loading dynamic contact content from admin panel...');
+    
+    // Load website content
+    const savedContent = localStorage.getItem('websiteContent');
+    if (savedContent) {
+        const content = JSON.parse(savedContent);
+        console.log('📄 Found saved website content for contact page:', content);
+        
+        // Update contact email
+        const emailLink = document.querySelector('[href*="mailto:"]');
+        const emailText = document.querySelector('p:contains("extoll.co.in@gmail.com")');
+        
+        if (emailLink && content.contactEmail) {
+            emailLink.href = 'mailto:' + content.contactEmail;
+            console.log('✅ Updated email link');
+        }
+        
+        if (emailText && content.contactEmail) {
+            emailText.textContent = content.contactEmail;
+            console.log('✅ Updated email text');
+        }
+        
+        // Update form action
+        const formScript = document.querySelector('script:contains("formsubmit.co")');
+        if (formScript && content.contactEmail) {
+            // Update the form submission URL in the script
+            const scriptContent = formScript.textContent;
+            const updatedScript = scriptContent.replace(
+                /https:\/\/formsubmit\.co\/[^'"]*/g,
+                'https://formsubmit.co/' + content.contactEmail
+            );
+            formScript.textContent = updatedScript;
+            console.log('✅ Updated form submission email');
+        }
+    } else {
+        console.log('ℹ️ No saved website content found, using defaults');
+    }
+    
+    console.log('✅ Dynamic contact content loading complete');
+}
+
+// Load dynamic content when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadDynamicContactContent();
+});
+</script>
 </body>
 </html>
 
