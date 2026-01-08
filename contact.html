@@ -457,6 +457,29 @@ async function submitToFormSubmit(formData) {
   try {
     console.log('Falling back to FormSubmit...');
     
+    // Get dynamic email from Supabase or use default
+    let submitEmail = 'extoll.co.in@gmail.com'; // default
+    
+    try {
+      const supabase = configSupabase;
+      if (supabase) {
+        const result = await supabase.storage
+          .from(SUPABASE_CONFIG.metadataBucket)
+          .download('website-content.json');
+        
+        if (!result.error) {
+          const jsonText = await result.data.text();
+          const content = JSON.parse(jsonText);
+          if (content.contactEmail) {
+            submitEmail = content.contactEmail;
+            console.log('Using dynamic email for FormSubmit:', submitEmail);
+          }
+        }
+      }
+    } catch (e) {
+      console.log('Could not load dynamic email, using default');
+    }
+    
     const form = new FormData();
     form.append('name', formData.name);
     form.append('email', formData.email);
@@ -465,7 +488,7 @@ async function submitToFormSubmit(formData) {
     form.append('_subject', 'New Contact from Extoll.Co');
     form.append('_captcha', 'false');
 
-    const response = await fetch('https://formsubmit.co/extoll.co.in@gmail.com', {
+    const response = await fetch(`https://formsubmit.co/${submitEmail}`, {
       method: 'POST',
       body: form
     });

@@ -114,3 +114,37 @@ CREATE TRIGGER update_projects_updated_at
     BEFORE UPDATE ON projects 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
+
+-- Create contact_submissions table for contact form
+CREATE TABLE IF NOT EXISTS contact_submissions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT,
+    message TEXT NOT NULL,
+    source TEXT DEFAULT 'contact_page',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS for contact_submissions
+ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing contact policies if they exist
+DROP POLICY IF EXISTS "Public can submit contact forms" ON contact_submissions;
+DROP POLICY IF EXISTS "Authenticated users can read contact submissions" ON contact_submissions;
+
+-- Create policy to allow anyone to insert contact submissions (for public contact form)
+CREATE POLICY "Public can submit contact forms" ON contact_submissions
+    FOR INSERT WITH CHECK (true);
+
+-- Create policy to allow authenticated users to read contact submissions (for admin)
+CREATE POLICY "Authenticated users can read contact submissions" ON contact_submissions
+    FOR SELECT USING (auth.role() = 'authenticated');
+
+-- Add trigger to update updated_at on contact_submissions table
+DROP TRIGGER IF EXISTS update_contact_submissions_updated_at ON contact_submissions;
+CREATE TRIGGER update_contact_submissions_updated_at 
+    BEFORE UPDATE ON contact_submissions 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
