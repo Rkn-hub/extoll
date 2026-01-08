@@ -134,9 +134,9 @@ ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public can submit contact forms" ON contact_submissions;
 DROP POLICY IF EXISTS "Authenticated users can read contact submissions" ON contact_submissions;
 
--- Create policy to allow anyone to insert contact submissions (for public contact form)
-CREATE POLICY "Public can submit contact forms" ON contact_submissions
-    FOR INSERT WITH CHECK (true);
+-- Create policy to allow anonymous users to insert contact submissions
+CREATE POLICY "Allow anonymous contact submissions" ON contact_submissions
+    FOR INSERT TO anon WITH CHECK (true);
 
 -- Create policy to allow authenticated users to read contact submissions (for admin)
 CREATE POLICY "Authenticated users can read contact submissions" ON contact_submissions
