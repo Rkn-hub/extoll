@@ -65,6 +65,42 @@
   /* Smooth navigation transitions */
   .nav-link {
     transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .nav-link:hover {
+    color: #00aaff;
+    transform: translateY(-1px);
+  }
+  
+  /* Add subtle underline effect on hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #00aaff;
+    transition: width 0.2s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Cursor styles for all interactive elements */
+  button,
+  .cursor-pointer,
+  .nav-link,
+  [onclick],
+  a[href] {
+    cursor: pointer !important;
+  }
+
+  /* Ensure disabled buttons show not-allowed cursor */
+  button:disabled {
+    cursor: not-allowed !important;
   }
 
   .neon-divider {
@@ -164,7 +200,7 @@
 <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
   <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
     <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
-      <img src="logo.png" alt="Extoll.Co Logo - Execution-first freelance collective" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync">
+      <img src="logo.png" alt="Extoll.Co Logo - Execution-first freelance collective" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync" id="navLogo">
       <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
     </a>
     <nav class="hidden md:flex flex-1 justify-end gap-8">
@@ -394,7 +430,7 @@ function loadDynamicAboutContent() {
     
     // Load website content from Supabase
     supabase.storage
-        .from(SUPABASE_CONFIG.metadataBucket)
+        .from(SUPABASE_CONFIG.bucket)
         .download('website-content.json')
         .then(function(result) {
             if (result.error) {
@@ -434,13 +470,139 @@ function loadDynamicAboutContent() {
             console.error('❌ Error loading website content from Supabase:', error);
         });
     
+    // Load team info from Supabase
+    supabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .download('team-info.json')
+        .then(function(result) {
+            if (result.error) {
+                console.log('ℹ️ No saved team info found in Supabase, using defaults');
+                return;
+            }
+            
+            result.data.text().then(function(jsonText) {
+                const team = JSON.parse(jsonText);
+                console.log('👥 Found saved team info for about page from Supabase:', team);
+                
+                // Update team section title
+                const teamTitles = document.querySelectorAll('h2');
+                teamTitles.forEach(function(title) {
+                    if (title.textContent.includes('Team') || title.textContent.includes('Capabilities')) {
+                        if (team.sectionTitle) {
+                            title.textContent = team.sectionTitle;
+                            console.log('✅ Updated team section title to:', team.sectionTitle);
+                        }
+                    }
+                });
+                
+                // Update team members - find the team grid more reliably
+                const teamGrids = document.querySelectorAll('.grid');
+                let teamGrid = null;
+                
+                // Find the grid that contains team member cards
+                teamGrids.forEach(function(grid) {
+                    const hasTeamCards = grid.querySelector('.bg-white\\/5');
+                    if (hasTeamCards && grid.classList.contains('gap-6')) {
+                        teamGrid = grid;
+                    }
+                });
+                
+                if (teamGrid && team.members && Array.isArray(team.members)) {
+                    console.log('👥 Updating team members with new data:', team.members);
+                    
+                    // Clear existing team members
+                    teamGrid.innerHTML = '';
+                    
+                    // Add dynamic team members
+                    team.members.forEach(function(member) {
+                        if (member.name || member.role) {
+                            const memberDiv = document.createElement('div');
+                            memberDiv.className = 'bg-white/5 p-6 rounded-lg border border-white/10';
+                            memberDiv.innerHTML = `
+                                <h3 class="text-primary font-semibold text-lg mb-2">${member.name || 'Team Member'}</h3>
+                                <p class="text-white/80 text-sm leading-relaxed">${member.role || 'Role description not available.'}</p>
+                            `;
+                            teamGrid.appendChild(memberDiv);
+                        }
+                    });
+                    
+                    console.log('✅ Updated team members from Supabase - added', team.members.length, 'members');
+                } else if (teamGrid && team.team1Name) {
+                    console.log('👥 Using legacy team format');
+                    
+                    // Fallback to old format for backward compatibility
+                    teamGrid.innerHTML = '';
+                    
+                    const members = [
+                        { name: team.team1Name, role: team.team1Role },
+                        { name: team.team2Name, role: team.team2Role },
+                        { name: team.team3Name, role: team.team3Role },
+                        { name: team.team4Name, role: team.team4Role }
+                    ];
+                    
+                    members.forEach(function(member) {
+                        if (member.name || member.role) {
+                            const memberDiv = document.createElement('div');
+                            memberDiv.className = 'bg-white/5 p-6 rounded-lg border border-white/10';
+                            memberDiv.innerHTML = `
+                                <h3 class="text-primary font-semibold text-lg mb-2">${member.name || 'Team Member'}</h3>
+                                <p class="text-white/80 text-sm leading-relaxed">${member.role || 'Role description not available.'}</p>
+                            `;
+                            teamGrid.appendChild(memberDiv);
+                        }
+                    });
+                    
+                    console.log('✅ Updated team members from legacy format');
+                } else {
+                    console.warn('⚠️ Team grid not found or no team data available');
+                    console.log('Available grids:', teamGrids.length);
+                    console.log('Team data:', team);
+                }
+            });
+        })
+        .catch(function(error) {
+            console.error('❌ Error loading team info from Supabase:', error);
+        });
+    
     console.log('✅ Dynamic about content loading complete');
 }
 
 // Load dynamic content when page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadDynamicAboutContent();
+    loadLogo();
 });
+
+// Load logo from Supabase
+function loadLogo() {
+  if (!initializeSupabase()) {
+    return;
+  }
+  
+  const supabase = configSupabase;
+  
+  supabase.storage
+    .from(SUPABASE_CONFIG.bucket)
+    .list('logo')
+    .then(function(result) {
+      if (result.data && result.data.length > 0) {
+        const logoFile = result.data[0].name;
+        const logoUrl = supabase.storage
+          .from(SUPABASE_CONFIG.bucket)
+          .getPublicUrl('logo/' + logoFile);
+        
+        if (logoUrl.data && logoUrl.data.publicUrl) {
+          const logoElement = document.getElementById('navLogo');
+          if (logoElement) {
+            logoElement.src = logoUrl.data.publicUrl;
+          }
+        }
+      }
+    })
+    .catch(function(error) {
+      console.error('Error loading logo:', error);
+    });
+}
 </script>
 </html>
 

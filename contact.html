@@ -50,6 +50,11 @@
   }
 </script>
 <style>
+  /* Prevent flash of hardcoded content - smooth transition */
+  .contact-info {
+    transition: opacity 0.1s ease;
+  }
+
   /* Page transition styles */
   .page-transition {
     position: fixed;
@@ -90,17 +95,28 @@
   /* Smooth navigation transitions */
   .nav-link {
     transition: all 0.2s ease;
+    position: relative;
   }
-
-  /* Navigation logo preload */
-  .nav-logo {
-    opacity: 1;
-    transition: opacity 0.2s ease;
+  
+  .nav-link:hover {
+    color: #00aaff;
+    transform: translateY(-1px);
   }
-
-  /* Smooth navigation transitions */
-  .nav-link {
-    transition: all 0.2s ease;
+  
+  /* Add subtle underline effect on hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #00aaff;
+    transition: width 0.2s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
   }
 
   .glow-bg {
@@ -124,6 +140,26 @@
     box-shadow: 0 0 0 1px #00aaff, 0 0 10px 2px rgba(0, 168, 255, 0.3);
     border-color: #00aaff;
   }
+
+  /* Cursor styles for all interactive elements */
+  button,
+  .cursor-pointer,
+  .nav-link,
+  .mobile-nav-link,
+  [onclick],
+  [data-section],
+  a[href],
+  input[type="submit"],
+  .contact-info a {
+    cursor: pointer !important;
+  }
+
+  /* Ensure disabled buttons show not-allowed cursor */
+  button:disabled,
+  input:disabled {
+    cursor: not-allowed !important;
+  }
+
   .modal {
     display: none;
     position: fixed;
@@ -160,86 +196,11 @@
     from { transform: translateY(50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
-  
-  /* Sparkle Animation Background */
-  .sparkle-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
-  
-  .sparkle {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.9) 0%, rgba(0, 170, 255, 0.5) 40%, transparent 100%);
-    border-radius: 50%;
-    animation: sparkleFloat 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    opacity: 0;
-    will-change: transform, opacity;
-  }
-  
-  .sparkle:nth-child(2n) {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 15s;
-    animation-delay: -3s;
-    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .sparkle:nth-child(3n) {
-    background: radial-gradient(circle, rgba(0, 170, 255, 0.7) 0%, rgba(112, 253, 255, 0.4) 40%, transparent 100%);
-    animation-duration: 18s;
-    animation-delay: -6s;
-    width: 2px;
-    height: 2px;
-    animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
-  
-  @keyframes sparkleFloat {
-    0% {
-      transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
-      opacity: 0;
-    }
-    5% {
-      opacity: 0.8;
-      transform: translateY(95vh) translateX(5px) rotate(18deg) scale(0.3);
-    }
-    15% {
-      opacity: 1;
-      transform: translateY(85vh) translateX(-8px) rotate(54deg) scale(0.7);
-    }
-    25% {
-      transform: translateY(75vh) translateX(12px) rotate(90deg) scale(1);
-    }
-    55% {
-      transform: translateY(45vh) translateX(-10px) rotate(198deg) scale(0.8);
-      opacity: 1;
-    }
-    85% {
-      transform: translateY(15vh) translateX(6px) rotate(306deg) scale(0.7);
-    }
-    95% {
-      opacity: 0.8;
-      transform: translateY(5vh) translateX(-3px) rotate(342deg) scale(0.4);
-    }
-    100% {
-      transform: translateY(-5vh) translateX(0px) rotate(360deg) scale(0);
-      opacity: 0;
-    }
-  }
 </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-gray-300 antialiased">
 <!-- Page Transition Overlay -->
 <div class="page-transition" id="pageTransition"></div>
-
-<!-- Sparkle Background Effect -->
-<div class="sparkle-container" id="sparkleContainer"></div>
 
 <!-- Success Modal -->
 <div id="successModal" class="modal">
@@ -269,7 +230,7 @@ Join WhatsApp Group
 <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
   <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
     <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer" onclick="smoothNavigate(event, 'index.html')">
-      <img src="logo.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync">
+      <img src="logo.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync" id="navLogo">
       <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
     </a>
     <nav class="hidden md:flex flex-1 justify-end gap-8">
@@ -296,43 +257,43 @@ This site only features my work. <span class="text-white">Contact me directly</s
 </p>
 </div>
 <div class="border-t border-white/10 my-4 lg:my-0"></div>
-<div class="flex flex-col gap-5">
-<h3 class="text-white text-lg font-bold">Or reach me directly</h3>
+<div class="flex flex-col gap-5 contact-info" id="contactInfoSection">
+<h3 id="contactSectionTitle" class="text-white text-lg font-bold">Or reach me directly</h3>
 <div class="flex flex-col sm:flex-row lg:flex-col gap-5 text-left">
-<a class="flex items-center gap-4 group" href="tel:+919315158312">
+<a id="phoneLink" class="flex items-center gap-4 group" href="tel:+919315158312">
 <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
 <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'wght' 300;">call</span>
 </div>
 <div>
 <p class="text-sm text-gray-400">Phone</p>
-<p class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">+91 9315158312</p>
+<p id="phoneText" class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">+91 9315158312</p>
 </div>
 </a>
-<a class="flex items-center gap-4 group" href="https://wa.me/919315158312">
+<a id="whatsappLink" class="flex items-center gap-4 group" href="https://wa.me/919315158312">
 <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
 <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'wght' 300;">chat_bubble</span>
 </div>
 <div>
 <p class="text-sm text-gray-400">WhatsApp</p>
-<p class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">+91 9315158312</p>
+<p id="whatsappText" class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">+91 9315158312</p>
 </div>
 </a>
-<a class="flex items-center gap-4 group" href="mailto:extoll.co.in@gmail.com">
+<a id="emailLink" class="flex items-center gap-4 group" href="mailto:extoll.co.in@gmail.com">
 <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
 <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'wght' 300;">mail</span>
 </div>
 <div>
 <p class="text-sm text-gray-400">Email</p>
-<p class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">extoll.co.in@gmail.com</p>
+<p id="emailText" class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">extoll.co.in@gmail.com</p>
 </div>
 </a>
-<a class="flex items-center gap-4 group" href="https://instagram.com/Extoll.Co">
+<a id="instagramLink" class="flex items-center gap-4 group" href="https://instagram.com/extollco">
 <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
 <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44c0-.795-.645-1.44-1.441-1.44z"></path></svg>
 </div>
 <div>
 <p class="text-sm text-gray-400">Instagram</p>
-<p class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">@Extoll.Co</p>
+<p id="instagramText" class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">@ExtollCo</p>
 </div>
 </a>
 </div>
@@ -386,20 +347,16 @@ This site only features my work. <span class="text-white">Contact me directly</s
 <script src="supabase-config.js"></script>
 <script>
 // Contact form functionality using centralized Supabase config
-
 var whatsappGroupLink = 'https://chat.whatsapp.com/GieBKh7FHyqEglJEUFM9M3';
 
 // Submit to Supabase using centralized config
 async function submitToSupabase(formData) {
-  // Initialize Supabase if not already done
   if (!initializeSupabase()) {
     console.error('Failed to initialize Supabase');
     return { success: false, error: 'Supabase initialization failed' };
   }
 
   try {
-    console.log('Submitting to Supabase:', formData);
-    
     const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/contact_submissions`, {
       method: 'POST',
       headers: {
@@ -417,37 +374,13 @@ async function submitToSupabase(formData) {
       })
     });
 
-    console.log('Supabase response status:', response.status);
-    console.log('Supabase response headers:', [...response.headers.entries()]);
-    
-    const responseText = await response.text();
-    console.log('Supabase response text:', responseText);
-    
-    let result;
-    try {
-      result = JSON.parse(responseText);
-    } catch (e) {
-      result = { message: responseText };
-    }
-    
     if (!response.ok) {
-      console.error('Supabase error details:', {
-        status: response.status,
-        statusText: response.statusText,
-        result: result
-      });
-      throw new Error(`HTTP ${response.status}: ${result.message || response.statusText}`);
+      throw new Error(`HTTP ${response.status}`);
     }
     
-    console.log('✅ Supabase submission successful:', result);
-    return { success: true, data: result };
+    return { success: true };
   } catch (error) {
-    console.error('❌ Supabase submission error:', error);
-    console.error('Error details:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack
-    });
+    console.error('Supabase submission error:', error);
     return { success: false, error: error.message };
   }
 }
@@ -455,31 +388,6 @@ async function submitToSupabase(formData) {
 // Fallback to FormSubmit
 async function submitToFormSubmit(formData) {
   try {
-    console.log('Falling back to FormSubmit...');
-    
-    // Get dynamic email from Supabase or use default
-    let submitEmail = 'extoll.co.in@gmail.com'; // default
-    
-    try {
-      const supabase = configSupabase;
-      if (supabase) {
-        const result = await supabase.storage
-          .from(SUPABASE_CONFIG.metadataBucket)
-          .download('website-content.json');
-        
-        if (!result.error) {
-          const jsonText = await result.data.text();
-          const content = JSON.parse(jsonText);
-          if (content.contactEmail) {
-            submitEmail = content.contactEmail;
-            console.log('Using dynamic email for FormSubmit:', submitEmail);
-          }
-        }
-      }
-    } catch (e) {
-      console.log('Could not load dynamic email, using default');
-    }
-    
     const form = new FormData();
     form.append('name', formData.name);
     form.append('email', formData.email);
@@ -488,19 +396,15 @@ async function submitToFormSubmit(formData) {
     form.append('_subject', 'New Contact from Extoll.Co');
     form.append('_captcha', 'false');
 
+    // Use dynamic email if available, otherwise use default
+    const submitEmail = window.dynamicContactEmail || 'extoll.co.in@gmail.com';
     const response = await fetch(`https://formsubmit.co/${submitEmail}`, {
       method: 'POST',
       body: form
     });
 
-    if (response.ok) {
-      console.log('✅ FormSubmit successful');
-      return { success: true };
-    } else {
-      throw new Error('FormSubmit failed');
-    }
+    return { success: response.ok };
   } catch (error) {
-    console.error('❌ FormSubmit error:', error);
     return { success: false, error: error.message };
   }
 }
@@ -529,27 +433,20 @@ document.getElementById('contactForm').addEventListener('submit', async function
     return;
   }
   
-  console.log('Form submitted with data:', formData);
-  
   // Try Supabase first
   const supabaseResult = await submitToSupabase(formData);
   
   if (supabaseResult.success) {
-    // Success with Supabase
-    console.log('Form submitted successfully to Supabase');
     document.getElementById('successModal').classList.add('show');
     document.getElementById('contactForm').reset();
   } else {
     // Try FormSubmit as fallback
-    console.log('Supabase failed, trying FormSubmit...');
     const formSubmitResult = await submitToFormSubmit(formData);
     
     if (formSubmitResult.success) {
-      console.log('Form submitted successfully to FormSubmit');
       document.getElementById('successModal').classList.add('show');
       document.getElementById('contactForm').reset();
     } else {
-      console.error('Both submission methods failed');
       alert('Sorry, there was an error sending your message. Please try again or contact us directly.');
     }
   }
@@ -573,81 +470,6 @@ document.getElementById('successModal').addEventListener('click', function(e) {
   }
 });
 
-// Test connection on page load
-window.addEventListener('load', async function() {
-  console.log('Testing Supabase connection...');
-  
-  // Initialize Supabase first
-  if (!initializeSupabase()) {
-    console.log('⚠️ Supabase initialization failed');
-    return;
-  }
-  
-  try {
-    const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/contact_submissions?select=count`, {
-      method: 'HEAD',
-      headers: {
-        'apikey': SUPABASE_CONFIG.anonKey,
-        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
-      }
-    });
-    
-    if (response.ok) {
-      console.log('✅ Supabase connection successful');
-    } else {
-      console.log('⚠️ Supabase connection issue:', response.status, response.statusText);
-    }
-  } catch (error) {
-    console.log('⚠️ Supabase connection error:', error.message);
-  }
-  
-  // Initialize sparkle effect
-  initializeSparkleEffect();
-});
-
-// Sparkle Background Effect
-function initializeSparkleEffect() {
-  const sparkleContainer = document.getElementById('sparkleContainer');
-  if (!sparkleContainer) return;
-  
-  const numberOfSparkles = 25;
-  
-  function createSparkle() {
-    const sparkle = document.createElement('div');
-    sparkle.className = 'sparkle';
-    
-    sparkle.style.left = Math.random() * 100 + '%';
-    sparkle.style.animationDelay = (Math.random() * 18) + 's';
-    
-    const sizeVariations = [2, 2.5, 3, 3.5];
-    const size = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
-    sparkle.style.width = size + 'px';
-    sparkle.style.height = size + 'px';
-    
-    if (Math.random() > 0.7) {
-      sparkle.style.filter = 'blur(0.5px)';
-    }
-    
-    sparkleContainer.appendChild(sparkle);
-    
-    setTimeout(() => {
-      if (sparkle.parentNode) {
-        sparkle.parentNode.removeChild(sparkle);
-      }
-    }, 20000);
-  }
-  
-  for (let i = 0; i < numberOfSparkles; i++) {
-    setTimeout(() => createSparkle(), Math.random() * 8000);
-  }
-  
-  setInterval(() => {
-    if (sparkleContainer.children.length < numberOfSparkles * 1.5) {
-      createSparkle();
-    }
-  }, 700);
-}
-
 // Smooth page transitions
 function smoothNavigate(event, url) {
   event.preventDefault();
@@ -660,23 +482,118 @@ function smoothNavigate(event, url) {
   }, 300);
 }
 
-// Page load handling
+// Optimized contact content loading - prevent flash with cache
+function loadDynamicContactContent() {
+  // Try to load from cache first to prevent flash
+  const cachedContent = sessionStorage.getItem('extoll_contact_content');
+  if (cachedContent) {
+    try {
+      const content = JSON.parse(cachedContent);
+      updateContactElements(content);
+    } catch (e) {
+      // Ignore cache errors
+    }
+  }
+  
+  if (!initializeSupabase()) {
+    return; // Use default values already in HTML
+  }
+  
+  const supabase = configSupabase;
+  
+  // Load fresh content from Supabase
+  supabase.storage
+    .from(SUPABASE_CONFIG.bucket)
+    .download('website-content.json')
+    .then(function(result) {
+      if (result.error) {
+        return; // Use default values already in HTML
+      }
+      
+      result.data.text().then(function(jsonText) {
+        const content = JSON.parse(jsonText);
+        
+        // Cache the content for next page load
+        sessionStorage.setItem('extoll_contact_content', jsonText);
+        
+        // Update contact elements
+        updateContactElements(content);
+      }).catch(function() {
+        // Use defaults on error - already in HTML
+      });
+    })
+    .catch(function() {
+      // Use defaults on error - already in HTML
+    });
+}
+
+// Helper function to update contact elements
+function updateContactElements(content) {
+  if (content.contactTitle) {
+    const element = document.getElementById('contactSectionTitle');
+    if (element) element.textContent = content.contactTitle;
+  }
+  
+  if (content.contactPhone) {
+    const textEl = document.getElementById('phoneText');
+    const linkEl = document.getElementById('phoneLink');
+    if (textEl) textEl.textContent = content.contactPhone;
+    if (linkEl) linkEl.href = 'tel:' + content.contactPhone.replace(/[^\d+]/g, '');
+  }
+  
+  if (content.whatsappNumber) {
+    const textEl = document.getElementById('whatsappText');
+    const linkEl = document.getElementById('whatsappLink');
+    if (textEl) textEl.textContent = content.whatsappNumber;
+    if (linkEl) linkEl.href = 'https://wa.me/' + content.whatsappNumber.replace(/[^\d]/g, '');
+  }
+  
+  if (content.contactEmail) {
+    const textEl = document.getElementById('emailText');
+    const linkEl = document.getElementById('emailLink');
+    if (textEl) textEl.textContent = content.contactEmail;
+    if (linkEl) linkEl.href = 'mailto:' + content.contactEmail;
+    window.dynamicContactEmail = content.contactEmail;
+  }
+  
+  if (content.instagramHandle) {
+    const textEl = document.getElementById('instagramText');
+    if (textEl) textEl.textContent = content.instagramHandle;
+  }
+  
+  if (content.instagramUrl) {
+    const linkEl = document.getElementById('instagramLink');
+    if (linkEl) linkEl.href = content.instagramUrl;
+  }
+}
+
+// Page load handling - immediate content load to prevent flash
 document.addEventListener('DOMContentLoaded', function() {
-  // Add loaded class to body to prevent flash
   document.body.classList.add('loaded');
   
-  // Preload logo image
-  const logoImg = new Image();
-  logoImg.src = 'logo.png';
-  
-  // Remove transition overlay if present
   const transition = document.getElementById('pageTransition');
   if (transition) {
     setTimeout(() => {
       transition.classList.remove('active');
     }, 100);
   }
+  
+  // Load contact content immediately to prevent flash of old values
+  loadDynamicContactContent();
 });
+
+// Preload content before DOM is ready to prevent flash
+(function() {
+  // Try to load content as early as possible
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDynamicContactContent();
+    });
+  } else {
+    // DOM already loaded
+    loadDynamicContactContent();
+  }
+})();
 
 // Handle page visibility changes
 document.addEventListener('visibilitychange', function() {
@@ -684,79 +601,51 @@ document.addEventListener('visibilitychange', function() {
     document.body.classList.add('loaded');
   }
 });
-</script>
 
-<!-- Dynamic Content Loading Script -->
-<script>
-// Load dynamic content from Supabase for Contact page
-function loadDynamicContactContent() {
-    console.log('🔄 Loading dynamic contact content from Supabase...');
-    
-    // Initialize Supabase
-    const initResult = initializeSupabase();
-    if (!initResult) {
-        console.error('❌ Failed to initialize Supabase');
-        return;
-    }
-    
-    const supabase = configSupabase;
-    
-    // Load website content from Supabase
-    supabase.storage
-        .from(SUPABASE_CONFIG.metadataBucket)
-        .download('website-content.json')
-        .then(function(result) {
-            if (result.error) {
-                console.log('ℹ️ No saved website content found in Supabase, using defaults');
-                return;
-            }
-            
-            result.data.text().then(function(jsonText) {
-                const content = JSON.parse(jsonText);
-                console.log('📄 Found saved website content for contact page from Supabase:', content);
-                
-                // Update contact email
-                const emailLink = document.querySelector('[href*="mailto:"]');
-                const emailText = document.querySelector('p:contains("extoll.co.in@gmail.com")');
-                
-                if (emailLink && content.contactEmail) {
-                    emailLink.href = 'mailto:' + content.contactEmail;
-                    console.log('✅ Updated email link');
-                }
-                
-                if (emailText && content.contactEmail) {
-                    emailText.textContent = content.contactEmail;
-                    console.log('✅ Updated email text');
-                }
-                
-                // Update form action
-                const formScript = document.querySelector('script:contains("formsubmit.co")');
-                if (formScript && content.contactEmail) {
-                    // Update the form submission URL in the script
-                    const scriptContent = formScript.textContent;
-                    const updatedScript = scriptContent.replace(
-                        /https:\/\/formsubmit\.co\/[^'"]*/g,
-                        'https://formsubmit.co/' + content.contactEmail
-                    );
-                    formScript.textContent = updatedScript;
-                    console.log('✅ Updated form submission email');
-                }
-                
-                console.log('✅ Contact content updated from Supabase');
-            });
-        })
-        .catch(function(error) {
-            console.error('❌ Error loading website content from Supabase:', error);
-        });
-    
-    console.log('✅ Dynamic contact content loading complete');
+// Manual refresh for debugging
+function refreshContactContent() {
+  loadDynamicContactContent();
 }
 
-// Load dynamic content when page loads
+// Make available globally for debugging
+window.refreshContactContent = refreshContactContent;
+window.loadDynamicContactContent = loadDynamicContactContent;
+
+// Load logo from Supabase
+function loadLogo() {
+  if (!initializeSupabase()) {
+    return;
+  }
+  
+  const supabase = configSupabase;
+  
+  supabase.storage
+    .from(SUPABASE_CONFIG.bucket)
+    .list('logo')
+    .then(function(result) {
+      if (result.data && result.data.length > 0) {
+        const logoFile = result.data[0].name;
+        const logoUrl = supabase.storage
+          .from(SUPABASE_CONFIG.bucket)
+          .getPublicUrl('logo/' + logoFile);
+        
+        if (logoUrl.data && logoUrl.data.publicUrl) {
+          const logoElement = document.getElementById('navLogo');
+          if (logoElement) {
+            logoElement.src = logoUrl.data.publicUrl;
+          }
+        }
+      }
+    })
+    .catch(function(error) {
+      console.error('Error loading logo:', error);
+    });
+}
+
+// Load logo on page load
 document.addEventListener('DOMContentLoaded', function() {
-    loadDynamicContactContent();
+  loadLogo();
 });
 </script>
 </body>
 </html>
-

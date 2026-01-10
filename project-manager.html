@@ -137,6 +137,34 @@ body {
 .notification.error { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
 .notification.warning { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); }
 
+/* Cursor styles for all interactive elements */
+button,
+.cursor-pointer,
+.btn-primary,
+.btn-secondary,
+.upload-area,
+.file-item,
+.thumbnail-item,
+[onclick],
+input[type="submit"],
+input[type="file"],
+select,
+a[href] {
+    cursor: pointer !important;
+}
+
+/* Ensure disabled buttons show not-allowed cursor */
+button:disabled,
+input:disabled,
+select:disabled {
+    cursor: not-allowed !important;
+}
+
+/* Specific cursor for drag and drop areas */
+.upload-area.dragover {
+    cursor: copy !important;
+}
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -504,7 +532,18 @@ async function loadProjectFiles() {
                 type: getFileType(file.name),
                 isThumbnail: file.name.startsWith('thumb-')
             };
-        }).filter(file => !file.isThumbnail); // Filter out thumbnail files from gallery
+        }).filter(file => {
+            const fileName = file.name.toLowerCase();
+            // Filter out thumbnail files, logo files, and banner files
+            return !file.isThumbnail &&
+                   !fileName.startsWith('logo') &&
+                   !fileName.startsWith('banner') &&
+                   !fileName.includes('/logo/') &&
+                   !fileName.includes('/banner/') &&
+                   fileName !== 'logo.png' &&
+                   fileName !== 'banner.jpg' &&
+                   fileName !== 'banner.png';
+        }); // Filter out thumbnail, logo, and banner files from gallery
         
         console.log('✅ Loaded', projectFiles.length, 'files');
         displayFiles();

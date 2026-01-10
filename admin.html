@@ -146,6 +146,35 @@ body {
 .notification.success { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
 .notification.error { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
 
+/* Cursor styles for all interactive elements */
+button,
+.cursor-pointer,
+.tab-button,
+.btn-primary,
+.btn-secondary,
+.upload-area,
+[onclick],
+[data-tab],
+input[type="submit"],
+input[type="file"],
+select,
+.project-tile,
+.asset-item {
+    cursor: pointer !important;
+}
+
+/* Ensure disabled buttons show not-allowed cursor */
+button:disabled,
+input:disabled,
+select:disabled {
+    cursor: not-allowed !important;
+}
+
+/* Specific cursor for drag and drop areas */
+.upload-area.dragover {
+    cursor: copy !important;
+}
+
 .hidden { display: none; }
 </style>
 </head>
@@ -168,11 +197,6 @@ body {
             <div>
                 <label class="block text-xl font-medium text-gray-300 mb-4">Password</label>
                 <input type="password" id="password" class="form-input" placeholder="Enter password" required>
-            </div>
-            
-            <div class="text-center text-sm text-gray-400 bg-blue-600/10 border border-blue-600/30 rounded-lg p-4">
-                <strong>Admin:</strong> rkachal2k4@gmail.com / Ritesh12@<br>
-                <strong>Add Users:</strong> Supabase Dashboard → Authentication → Users
             </div>
             
             <button type="submit" class="btn-primary w-full">Login</button>
@@ -312,7 +336,6 @@ body {
                             <div class="flex justify-between items-center mb-4">
                                 <h4 class="text-base font-bold text-white">Project Files</h4>
                                 <div class="flex gap-2">
-                                    <button type="button" onclick="forceLoadProjectFiles()" class="bg-green-600 hover:bg-green-700 text-white text-sm py-2 px-4 rounded-lg font-bold">Load Files</button>
                                     <select id="projectGalleryFilter" class="form-input" style="width: auto; font-size: 14px; padding: 8px 12px;" onchange="filterProjectGallery()">
                                         <option value="all">All Files</option>
                                         <option value="images">Images Only</option>
@@ -330,7 +353,7 @@ body {
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn-primary">Create Project</button>
+                    <button type="submit" class="btn-primary" id="projectSubmitBtn">Create Project</button>
                 </form>
             </div>
             
@@ -347,8 +370,6 @@ body {
                             <option value="animation">2D Animation</option>
                             <option value="video">Video Editing</option>
                         </select>
-
-                        <button class="btn-secondary" onclick="refreshProjects()">Refresh</button>
                     </div>
                 </div>
                 <div id="projectsList" class="space-y-4">
@@ -501,12 +522,15 @@ body {
                     </div>
                 </div>
 
-                <button class="btn-primary mt-6" onclick="saveWebsiteContent()">Save All Content</button>
+                <button class="btn-primary mt-6" onclick="saveWebsiteContent()" id="saveContentBtn">Save All Content</button>
             </div>
             
             <!-- Team Management -->
             <div class="border-t border-gray-700 pt-8">
-                <h3 class="text-2xl font-bold text-white mb-6">Team & Capabilities</h3>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-white">Team & Capabilities</h3>
+                    <button class="btn-secondary" onclick="addTeamMember()">+ Add Member</button>
+                </div>
                 
                 <!-- Team Section Title -->
                 <div class="mb-6">
@@ -514,70 +538,12 @@ body {
                     <input type="text" id="teamSectionTitle" class="form-input" placeholder="Our Team & Capabilities">
                 </div>
 
-                <!-- Team Members -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Team Member 1 -->
-                    <div class="bg-gray-800/50 p-6 rounded-lg">
-                        <h4 class="text-lg font-semibold text-white mb-4">Team Member 1</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                                <input type="text" id="team1Name" class="form-input" placeholder="Ritesh">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Role/Specialization</label>
-                                <textarea id="team1Role" class="form-textarea" rows="3" placeholder="Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 2 -->
-                    <div class="bg-gray-800/50 p-6 rounded-lg">
-                        <h4 class="text-lg font-semibold text-white mb-4">Team Member 2</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                                <input type="text" id="team2Name" class="form-input" placeholder="Nikhil">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Role/Specialization</label>
-                                <textarea id="team2Role" class="form-textarea" rows="3" placeholder="Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 3 -->
-                    <div class="bg-gray-800/50 p-6 rounded-lg">
-                        <h4 class="text-lg font-semibold text-white mb-4">Team Member 3</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                                <input type="text" id="team3Name" class="form-input" placeholder="Yuvraj Gupta">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Role/Specialization</label>
-                                <textarea id="team3Role" class="form-textarea" rows="3" placeholder="Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 4 -->
-                    <div class="bg-gray-800/50 p-6 rounded-lg">
-                        <h4 class="text-lg font-semibold text-white mb-4">Team Member 4</h4>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                                <input type="text" id="team4Name" class="form-input" placeholder="Arpit">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-1">Role/Specialization</label>
-                                <textarea id="team4Role" class="form-textarea" rows="3" placeholder="Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support."></textarea>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Dynamic Team Members Container -->
+                <div id="teamMembersContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Team members will be dynamically added here -->
                 </div>
 
-                <button class="btn-primary mt-6" onclick="saveTeamInfo()">Save Team Information</button>
+                <button class="btn-primary mt-6" onclick="saveTeamInfo()" id="saveTeamBtn">Save Team Information</button>
             </div>
         </div>
     </div>
@@ -779,6 +745,64 @@ function handleLogout() {
     showNotification('Logged out', 'success');
 }
 
+// Check authentication state on page load
+async function checkAuthenticationState() {
+    console.log('🔍 Checking authentication state...');
+    
+    try {
+        if (!adminSupabase) {
+            console.log('❌ Supabase not initialized, showing login');
+            showLogin();
+            return;
+        }
+        
+        // Check if user is already authenticated
+        const { data: { user }, error } = await adminSupabase.auth.getUser();
+        
+        if (error) {
+            console.log('❌ Auth check error:', error.message);
+            showLogin();
+            return;
+        }
+        
+        if (user) {
+            console.log('✅ User already authenticated:', user.email);
+            currentUser = { 
+                email: user.email, 
+                authenticated: true,
+                source: 'supabase'
+            };
+            showDashboard();
+            showNotification('Welcome back, ' + user.email, 'success');
+        } else {
+            console.log('ℹ️ No authenticated user found, showing login');
+            showLogin();
+        }
+        
+    } catch (error) {
+        console.error('❌ Authentication check failed:', error);
+        showLogin();
+    }
+}
+
+// Show dashboard
+function showDashboard() {
+    const loginScreen = document.getElementById('loginScreen');
+    const adminDashboard = document.getElementById('adminDashboard');
+    
+    if (loginScreen && adminDashboard) {
+        loginScreen.classList.add('hidden');
+        adminDashboard.classList.remove('hidden');
+        
+        // Load initial data
+        loadProjects();
+        loadWebsiteContent();
+        loadTeamInfo();
+        
+        console.log('✅ Dashboard shown');
+    }
+}
+
 // Show login
 function showLogin() {
     const loginScreen = document.getElementById('loginScreen');
@@ -939,6 +963,12 @@ function removeThumbnail() {
 async function handleProjectSubmit(e) {
     e.preventDefault();
     
+    // Change button to saving state
+    const submitBtn = document.getElementById('projectSubmitBtn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Creating...';
+    submitBtn.disabled = true;
+    
     const title = document.getElementById('projectTitle').value;
     const key = document.getElementById('projectKey').value;
     const description = document.getElementById('projectDescription').value;
@@ -947,11 +977,17 @@ async function handleProjectSubmit(e) {
     
     if (!selectedThumbnail) {
         showNotification('Please select a thumbnail image', 'error');
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
         return;
     }
     
     if (!adminSupabase) {
         showNotification('Supabase not initialized', 'error');
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
         return;
     }
     
@@ -1029,10 +1065,22 @@ async function handleProjectSubmit(e) {
         // Refresh projects list
         loadProjects();
         
+        // Change button to success state
+        submitBtn.textContent = '✅ Created';
+        submitBtn.disabled = false;
+        
+        // Reset button after 3 seconds
+        setTimeout(function() {
+            submitBtn.textContent = 'Create Project';
+        }, 3000);
+        
         console.log('Project created:', projectData);
     } catch (error) {
         showNotification('Project creation failed: ' + error.message, 'error');
         console.error('Project creation error:', error);
+        // Reset button on error
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
     }
 }
 
@@ -1751,8 +1799,16 @@ function loadProjectFiles(projectKey) {
             
             projectFiles = result.data
                 .filter(function(file) {
-                    // Filter out thumbnail files
-                    return !file.name.startsWith('thumb-');
+                    const fileName = file.name.toLowerCase();
+                    // Filter out thumbnail files, logo files, and banner files
+                    return !fileName.startsWith('thumb-') &&
+                           !fileName.startsWith('logo') &&
+                           !fileName.startsWith('banner') &&
+                           !fileName.includes('/logo/') &&
+                           !fileName.includes('/banner/') &&
+                           fileName !== 'logo.png' &&
+                           fileName !== 'banner.jpg' &&
+                           fileName !== 'banner.png';
                 })
                 .map(function(file) {
                     const publicUrlResult = adminSupabase.storage
@@ -2152,30 +2208,86 @@ function loadWebsiteAssets() {
 }
 
 function loadSpecificAsset(assetType) {
+    console.log('📥 Loading asset:', assetType);
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    // Use the correct folder for each asset type
+    const folderName = assetType; // 'logo' or 'banner'
+    
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .list('website-assets', {
-            limit: 10,
-            search: assetType
+        .list(folderName, {
+            limit: 10
         })
         .then(function(result) {
-            if (result.error) return;
+            console.log(`📁 ${assetType} folder contents:`, result);
             
             const previewElement = document.getElementById(assetType + 'Preview');
-            if (!previewElement) return;
+            if (!previewElement) {
+                console.warn(`❌ Preview element not found: ${assetType}Preview`);
+                return;
+            }
             
-            const assets = result.data.filter(file => file.name.includes(assetType));
+            if (result.error) {
+                console.error(`❌ Error loading ${assetType}:`, result.error);
+                // Show empty state
+                previewElement.innerHTML = `
+                    <div class="text-center text-gray-400 py-8">
+                        <p>No ${assetType} uploaded</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const assets = result.data || [];
+            console.log(`📄 Found ${assets.length} ${assetType} files:`, assets);
             
             if (assets.length > 0) {
-                const latestAsset = assets[0];
+                // Get the first (and should be only) asset
+                const asset = assets[0];
                 const publicUrlResult = adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
-                    .getPublicUrl('website-assets/' + latestAsset.name);
+                    .getPublicUrl(folderName + '/' + asset.name);
                 
+                if (publicUrlResult.data && publicUrlResult.data.publicUrl) {
+                    previewElement.innerHTML = `
+                        <div class="relative">
+                            <img src="${publicUrlResult.data.publicUrl}" alt="${assetType}" class="w-full h-32 object-cover rounded" 
+                                 onerror="this.parentElement.innerHTML='<div class=\\'text-center text-red-400 py-8\\'>Failed to load ${assetType}</div>'">
+                            <button class="absolute top-2 right-2 bg-red-600 text-white p-1 rounded text-xs hover:bg-red-700" 
+                                    onclick="deleteAsset('${folderName}/${asset.name}', '${assetType}')">Delete</button>
+                        </div>
+                    `;
+                    console.log(`✅ ${assetType} preview loaded:`, publicUrlResult.data.publicUrl);
+                } else {
+                    console.error(`❌ Failed to get public URL for ${assetType}`);
+                    previewElement.innerHTML = `
+                        <div class="text-center text-red-400 py-8">
+                            <p>Error loading ${assetType}</p>
+                        </div>
+                    `;
+                }
+            } else {
+                // No assets found - show empty state
                 previewElement.innerHTML = `
-                    <div class="relative">
-                        <img src="${publicUrlResult.data.publicUrl}" alt="${assetType}" class="w-full h-32 object-cover rounded">
-                        <button class="absolute top-2 right-2 bg-red-600 text-white p-1 rounded text-xs" onclick="deleteAsset('website-assets/${latestAsset.name}')">Delete</button>
+                    <div class="text-center text-gray-400 py-8">
+                        <p>No ${assetType} uploaded</p>
+                    </div>
+                `;
+                console.log(`ℹ️ No ${assetType} files found`);
+            }
+        })
+        .catch(function(error) {
+            console.error(`❌ Error loading ${assetType}:`, error);
+            const previewElement = document.getElementById(assetType + 'Preview');
+            if (previewElement) {
+                previewElement.innerHTML = `
+                    <div class="text-center text-red-400 py-8">
+                        <p>Error loading ${assetType}</p>
                     </div>
                 `;
             }
@@ -2191,7 +2303,7 @@ function loadWebsiteContent() {
     }
     
     adminSupabase.storage
-        .from(SUPABASE_CONFIG.metadataBucket)
+        .from(SUPABASE_CONFIG.bucket)
         .download('website-content.json')
         .then(function(result) {
             if (result.error) {
@@ -2270,7 +2382,7 @@ function loadTeamInfo() {
     }
     
     adminSupabase.storage
-        .from(SUPABASE_CONFIG.metadataBucket)
+        .from(SUPABASE_CONFIG.bucket)
         .download('team-info.json')
         .then(function(result) {
             if (result.error) {
@@ -2284,14 +2396,20 @@ function loadTeamInfo() {
                 console.log('👥 Loaded team info from Supabase:', team);
                 
                 document.getElementById('teamSectionTitle').value = team.sectionTitle || 'Our Team & Capabilities';
-                document.getElementById('team1Name').value = team.team1Name || 'Ritesh';
-                document.getElementById('team1Role').value = team.team1Role || 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.';
-                document.getElementById('team2Name').value = team.team2Name || 'Nikhil';
-                document.getElementById('team2Role').value = team.team2Role || 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.';
-                document.getElementById('team3Name').value = team.team3Name || 'Yuvraj Gupta';
-                document.getElementById('team3Role').value = team.team3Role || 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.';
-                document.getElementById('team4Name').value = team.team4Name || 'Arpit';
-                document.getElementById('team4Role').value = team.team4Role || 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.';
+                
+                // Load dynamic team members
+                if (team.members && Array.isArray(team.members)) {
+                    loadDynamicTeamMembers(team.members);
+                } else {
+                    // Fallback to old format for backward compatibility
+                    const members = [
+                        { name: team.team1Name || 'Ritesh', role: team.team1Role || 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.' },
+                        { name: team.team2Name || 'Nikhil', role: team.team2Role || 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.' },
+                        { name: team.team3Name || 'Yuvraj Gupta', role: team.team3Role || 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.' },
+                        { name: team.team4Name || 'Arpit', role: team.team4Role || 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.' }
+                    ];
+                    loadDynamicTeamMembers(members);
+                }
                 
                 console.log('✅ Team information loaded successfully');
             });
@@ -2307,36 +2425,186 @@ function loadDefaultTeamInfo() {
     
     // Set default values
     document.getElementById('teamSectionTitle').value = 'Our Team & Capabilities';
-    document.getElementById('team1Name').value = 'Ritesh';
-    document.getElementById('team1Role').value = 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.';
-    document.getElementById('team2Name').value = 'Nikhil';
-    document.getElementById('team2Role').value = 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.';
-    document.getElementById('team3Name').value = 'Yuvraj Gupta';
-    document.getElementById('team3Role').value = 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.';
-    document.getElementById('team4Name').value = 'Arpit';
-    document.getElementById('team4Role').value = 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.';
+    
+    // Load default team members
+    const defaultMembers = [
+        { name: 'Ritesh', role: 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.' },
+        { name: 'Nikhil', role: 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.' },
+        { name: 'Yuvraj Gupta', role: 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.' },
+        { name: 'Arpit', role: 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.' }
+    ];
+    
+    loadDynamicTeamMembers(defaultMembers);
+}
+
+function loadDynamicTeamMembers(members) {
+    console.log('👥 Loading dynamic team members:', members);
+    
+    const container = document.getElementById('teamMembersContainer');
+    if (!container) {
+        console.error('❌ Team members container not found');
+        return;
+    }
+    
+    // Clear existing content
+    container.innerHTML = '';
+    
+    // Add each team member
+    members.forEach(function(member, index) {
+        addTeamMemberToDOM(member.name, member.role, index);
+    });
+}
+
+function addTeamMemberToDOM(name, role, index) {
+    const container = document.getElementById('teamMembersContainer');
+    if (!container) {
+        console.error('❌ Team members container not found');
+        return;
+    }
+    
+    const memberDiv = document.createElement('div');
+    memberDiv.className = 'bg-gray-800/50 p-6 rounded-lg';
+    memberDiv.setAttribute('data-member-index', index);
+    
+    memberDiv.innerHTML = `
+        <div class="flex justify-between items-start mb-4">
+            <h4 class="text-lg font-semibold text-white">Team Member ${index + 1}</h4>
+            <button type="button" class="text-red-400 hover:text-red-300 text-sm" onclick="removeTeamMember(${index})">
+                Remove
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                <input type="text" id="teamMember${index}Name" class="form-input" placeholder="Team member name" value="${name || ''}">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Role & Description</label>
+                <textarea id="teamMember${index}Role" class="form-textarea" rows="3" placeholder="Describe their role and capabilities">${role || ''}</textarea>
+            </div>
+        </div>
+    `;
+    
+    container.appendChild(memberDiv);
+}
+
+function addTeamMember() {
+    console.log('➕ Adding new team member');
+    
+    const container = document.getElementById('teamMembersContainer');
+    if (!container) {
+        console.error('❌ Team members container not found');
+        return;
+    }
+    
+    // Get current number of team members
+    const currentMembers = container.querySelectorAll('[data-member-index]');
+    const newIndex = currentMembers.length;
+    
+    // Add new team member to DOM
+    addTeamMemberToDOM('', '', newIndex);
+    
+    showNotification('New team member added', 'success');
+}
+
+function removeTeamMember(index) {
+    console.log('➖ Removing team member at index:', index);
+    
+    const container = document.getElementById('teamMembersContainer');
+    if (!container) {
+        console.error('❌ Team members container not found');
+        return;
+    }
+    
+    const memberDiv = container.querySelector(`[data-member-index="${index}"]`);
+    if (memberDiv) {
+        memberDiv.remove();
+        
+        // Re-index remaining members
+        const remainingMembers = container.querySelectorAll('[data-member-index]');
+        remainingMembers.forEach(function(member, newIndex) {
+            member.setAttribute('data-member-index', newIndex);
+            
+            // Update the header
+            const header = member.querySelector('h4');
+            if (header) {
+                header.textContent = `Team Member ${newIndex + 1}`;
+            }
+            
+            // Update the remove button
+            const removeBtn = member.querySelector('button[onclick*="removeTeamMember"]');
+            if (removeBtn) {
+                removeBtn.setAttribute('onclick', `removeTeamMember(${newIndex})`);
+            }
+            
+            // Update input IDs
+            const nameInput = member.querySelector('input[type="text"]');
+            const roleTextarea = member.querySelector('textarea');
+            
+            if (nameInput) {
+                nameInput.id = `teamMember${newIndex}Name`;
+            }
+            if (roleTextarea) {
+                roleTextarea.id = `teamMember${newIndex}Role`;
+            }
+        });
+        
+        showNotification('Team member removed', 'success');
+    } else {
+        console.error('❌ Team member not found at index:', index);
+    }
 }
 
 function saveTeamInfo() {
     console.log('👥 Saving team information to Supabase...');
     
+    // Change button to saving state
+    const saveBtn = document.getElementById('saveTeamBtn');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    
     if (!adminSupabase) {
         console.error('❌ Supabase not initialized');
         showNotification('Error: Supabase not connected', 'error');
+        // Reset button
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
         return;
     }
     
     try {
+        const container = document.getElementById('teamMembersContainer');
+        if (!container) {
+            console.error('❌ Team members container not found');
+            showNotification('Error: Team members container not found', 'error');
+            return;
+        }
+        
+        // Collect all team members
+        const memberElements = container.querySelectorAll('[data-member-index]');
+        const members = [];
+        
+        memberElements.forEach(function(memberElement, index) {
+            const nameInput = memberElement.querySelector(`#teamMember${index}Name`);
+            const roleTextarea = memberElement.querySelector(`#teamMember${index}Role`);
+            
+            if (nameInput && roleTextarea) {
+                const name = nameInput.value.trim();
+                const role = roleTextarea.value.trim();
+                
+                if (name || role) { // Only save if there's content
+                    members.push({
+                        name: name,
+                        role: role
+                    });
+                }
+            }
+        });
+        
         const team = {
             sectionTitle: document.getElementById('teamSectionTitle').value,
-            team1Name: document.getElementById('team1Name').value,
-            team1Role: document.getElementById('team1Role').value,
-            team2Name: document.getElementById('team2Name').value,
-            team2Role: document.getElementById('team2Role').value,
-            team3Name: document.getElementById('team3Name').value,
-            team3Role: document.getElementById('team3Role').value,
-            team4Name: document.getElementById('team4Name').value,
-            team4Role: document.getElementById('team4Role').value,
+            members: members,
             updatedAt: new Date().toISOString()
         };
         
@@ -2346,7 +2614,7 @@ function saveTeamInfo() {
         const teamBlob = new Blob([JSON.stringify(team, null, 2)], { type: 'application/json' });
         
         adminSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
+            .from(SUPABASE_CONFIG.bucket)
             .upload('team-info.json', teamBlob, {
                 cacheControl: '3600',
                 upsert: true
@@ -2357,29 +2625,60 @@ function saveTeamInfo() {
                 if (result.error) {
                     console.error('❌ Save error:', result.error);
                     showNotification('Error saving team information: ' + result.error.message, 'error');
+                    // Reset button on error
+                    const saveBtn = document.getElementById('saveTeamBtn');
+                    saveBtn.textContent = 'Save Team Information';
+                    saveBtn.disabled = false;
                     return;
                 }
                 
                 console.log('✅ Team information saved to Supabase successfully');
                 showNotification('Team information saved successfully!', 'success');
+                
+                // Change button to saved state
+                const saveBtn = document.getElementById('saveTeamBtn');
+                saveBtn.textContent = '✅ Saved';
+                saveBtn.disabled = false;
+                
+                // Reset button after 3 seconds
+                setTimeout(function() {
+                    saveBtn.textContent = 'Save Team Information';
+                }, 3000);
             })
             .catch(function(error) {
                 console.error('❌ Save catch error:', error);
                 showNotification('Error saving team information: ' + error.message, 'error');
+                // Reset button on error
+                const saveBtn = document.getElementById('saveTeamBtn');
+                saveBtn.textContent = 'Save Team Information';
+                saveBtn.disabled = false;
             });
             
     } catch (error) {
         console.error('❌ Error preparing team information:', error);
         showNotification('Error saving team information: ' + error.message, 'error');
+        // Reset button on error
+        const saveBtn = document.getElementById('saveTeamBtn');
+        saveBtn.textContent = 'Save Team Information';
+        saveBtn.disabled = false;
     }
 }
 
 function saveWebsiteContent() {
     console.log('💾 Saving website content to Supabase...');
     
+    // Change button to saving state
+    const saveBtn = document.getElementById('saveContentBtn');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    
     if (!adminSupabase) {
         console.error('❌ Supabase not initialized');
         showNotification('Error: Supabase not connected', 'error');
+        // Reset button
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
         return;
     }
     
@@ -2411,17 +2710,21 @@ function saveWebsiteContent() {
             portfolioTitle: document.getElementById('portfolioTitle').value,
             portfolioDescription: document.getElementById('portfolioDescription').value,
             
+            // Logo and Banner URLs (preserve existing if not changed)
+            logoUrl: window.currentLogoUrl || null,
+            bannerUrl: window.currentBannerUrl || null,
+            
             // Metadata
             updatedAt: new Date().toISOString()
         };
         
         console.log('💾 Content to save to Supabase:', content);
         
-        // Save as JSON file to Supabase storage
+        // Save as JSON file to Supabase storage (use main bucket since metadata bucket might not exist)
         const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
         
         adminSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
+            .from(SUPABASE_CONFIG.bucket)
             .upload('website-content.json', contentBlob, {
                 cacheControl: '3600',
                 upsert: true
@@ -2432,27 +2735,49 @@ function saveWebsiteContent() {
                 if (result.error) {
                     console.error('❌ Save error:', result.error);
                     showNotification('Error saving website content: ' + result.error.message, 'error');
+                    // Reset button on error
+                    const saveBtn = document.getElementById('saveContentBtn');
+                    saveBtn.textContent = 'Save All Content';
+                    saveBtn.disabled = false;
                     return;
                 }
                 
                 console.log('✅ Website content saved to Supabase successfully');
                 showNotification('All website content saved successfully!', 'success');
+                
+                // Change button to saved state
+                const saveBtn = document.getElementById('saveContentBtn');
+                saveBtn.textContent = '✅ Saved';
+                saveBtn.disabled = false;
+                
+                // Reset button after 3 seconds
+                setTimeout(function() {
+                    saveBtn.textContent = 'Save All Content';
+                }, 3000);
             })
             .catch(function(error) {
                 console.error('❌ Save catch error:', error);
                 showNotification('Error saving website content: ' + error.message, 'error');
+                // Reset button on error
+                const saveBtn = document.getElementById('saveContentBtn');
+                saveBtn.textContent = 'Save All Content';
+                saveBtn.disabled = false;
             });
             
     } catch (error) {
         console.error('❌ Error preparing website content:', error);
         showNotification('Error saving website content: ' + error.message, 'error');
+        // Reset button on error
+        const saveBtn = document.getElementById('saveContentBtn');
+        saveBtn.textContent = 'Save All Content';
+        saveBtn.disabled = false;
     }
 }
 
-function deleteAsset(assetPath) {
-    console.log('🗑️ Attempting to delete asset:', assetPath);
+function deleteAsset(assetPath, assetType) {
+    console.log('🗑️ Attempting to delete asset:', assetPath, 'type:', assetType);
     
-    if (!confirm('Are you sure you want to delete this asset?')) {
+    if (!confirm(`Are you sure you want to delete this ${assetType}?`)) {
         console.log('❌ Delete cancelled by user');
         return;
     }
@@ -2478,12 +2803,85 @@ function deleteAsset(assetPath) {
             }
             
             console.log('✅ Asset deleted successfully');
-            showNotification('Asset deleted successfully', 'success');
-            loadWebsiteAssets();
+            showNotification(`${assetType} deleted successfully`, 'success');
+            
+            // Clean up the website-content.json
+            cleanupWebsiteContentAfterDelete(assetType);
+            
+            // Reload the specific asset to show empty state
+            loadSpecificAsset(assetType);
         })
         .catch(function(error) {
             console.error('❌ Delete catch error:', error);
             showNotification('Error deleting asset: ' + error.message, 'error');
+        });
+}
+
+function cleanupWebsiteContentAfterDelete(assetType) {
+    console.log('🧹 Cleaning up website content after deleting:', assetType);
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    // Load existing website content
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .download('website-content.json')
+        .then(function(result) {
+            let content = {};
+            
+            if (!result.error && result.data) {
+                return result.data.text().then(function(jsonText) {
+                    content = JSON.parse(jsonText);
+                    console.log('📄 Loaded existing website content for cleanup:', content);
+                    return content;
+                });
+            } else {
+                console.log('ℹ️ No existing website content found');
+                return content;
+            }
+        })
+        .then(function(content) {
+            // Remove the asset URL from content
+            if (assetType === 'logo') {
+                delete content.logoUrl;
+                window.currentLogoUrl = null;
+                console.log('🗑️ Removed logoUrl from website content');
+            } else if (assetType === 'banner') {
+                delete content.bannerUrl;
+                window.currentBannerUrl = null;
+                console.log('🗑️ Removed bannerUrl from website content');
+            }
+            
+            content.updatedAt = new Date().toISOString();
+            
+            console.log('💾 Saving cleaned website content:', content);
+            
+            // Save updated content back to Supabase
+            const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+            
+            return adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload('website-content.json', contentBlob, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
+        })
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ Error cleaning website content:', result.error);
+                showNotification('Asset deleted but failed to update website content', 'warning');
+                return;
+            }
+            
+            console.log('✅ Website content cleaned successfully');
+            showNotification(`${assetType} removed from website content. Refresh homepage to see changes.`, 'success');
+        })
+        .catch(function(error) {
+            console.error('❌ Error cleaning website content:', error);
+            showNotification('Asset deleted but failed to update website content', 'warning');
         });
 }
 
@@ -2496,17 +2894,50 @@ function handleLogoUpload(file) {
         return;
     }
     
-    const fileName = 'logo.' + file.name.split('.').pop();
-    const filePath = 'website-assets/' + fileName;
+    // Sanitize filename for JSON safety
+    const sanitizedFileName = sanitizeFilename(file.name);
+    const filePath = 'logo/' + sanitizedFileName;
     
-    console.log('📤 Uploading to:', filePath);
+    console.log('📤 Uploading to:', filePath, '(sanitized from:', file.name, ')');
+    console.log('🔧 Upload configuration:', {
+        bucket: SUPABASE_CONFIG.bucket,
+        adminSupabase: !!adminSupabase,
+        fileSize: file.size,
+        fileType: file.type
+    });
     showNotification('Uploading logo...', 'info');
     
+    // First, delete any existing logo files to keep only one
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: true
+        .list('logo')
+        .then(function(listResult) {
+            console.log('📁 Logo folder list result:', listResult);
+            if (listResult.data && listResult.data.length > 0) {
+                console.log('🗑️ Deleting existing logo files:', listResult.data);
+                // Delete existing logo files
+                const filesToDelete = listResult.data.map(file => 'logo/' + file.name);
+                return adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .remove(filesToDelete);
+            }
+            return { data: null, error: null };
+        })
+        .then(function(deleteResult) {
+            console.log('🗑️ Delete result:', deleteResult);
+            // Upload new logo
+            console.log('📤 Starting upload with params:', {
+                bucket: SUPABASE_CONFIG.bucket,
+                path: filePath,
+                fileSize: file.size,
+                fileType: file.type
+            });
+            return adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
         })
         .then(function(result) {
             console.log('📤 Upload result:', result);
@@ -2519,11 +2950,81 @@ function handleLogoUpload(file) {
             
             console.log('✅ Logo uploaded successfully');
             showNotification('Logo uploaded successfully!', 'success');
+            
+            // Update website content with logo filename
+            updateWebsiteContentWithLogo(sanitizedFileName);
+            
+            // Also update the global variable for immediate use
+            window.currentLogoUrl = sanitizedFileName;
+            console.log('🔄 Set global logo URL:', sanitizedFileName);
+            
             loadSpecificAsset('logo');
         })
         .catch(function(error) {
             console.error('❌ Upload catch error:', error);
             showNotification('Error uploading logo: ' + error.message, 'error');
+        });
+}
+
+function updateWebsiteContentWithLogo(logoFileName) {
+    console.log('📷 Updating website content with logo:', logoFileName);
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    // Load existing website content
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .download('website-content.json')
+        .then(function(result) {
+            let content = {};
+            
+            if (!result.error && result.data) {
+                return result.data.text().then(function(jsonText) {
+                    content = JSON.parse(jsonText);
+                    console.log('📄 Loaded existing website content for logo update:', content);
+                    return content;
+                });
+            } else {
+                console.log('ℹ️ No existing website content, creating new for logo');
+                return content;
+            }
+        })
+        .then(function(content) {
+            // Add logo URL to content
+            content.logoUrl = logoFileName;
+            content.updatedAt = new Date().toISOString();
+            
+            // Store logo URL globally for future saves
+            window.currentLogoUrl = logoFileName;
+            
+            console.log('💾 Saving updated website content with logo:', content);
+            
+            // Save updated content back to Supabase
+            const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+            
+            return adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload('website-content.json', contentBlob, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
+        })
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ Error saving website content with logo:', result.error);
+                showNotification('Error updating website content with logo', 'error');
+                return;
+            }
+            
+            console.log('✅ Website content updated with logo successfully');
+            showNotification('Website content updated with new logo! Refresh homepage to see changes.', 'success');
+        })
+        .catch(function(error) {
+            console.error('❌ Error updating website content with logo:', error);
+            showNotification('Error updating website content: ' + error.message, 'error');
         });
 }
 
@@ -2536,17 +3037,41 @@ function handleBannerUpload(file) {
         return;
     }
     
-    const fileName = 'banner.' + file.name.split('.').pop();
-    const filePath = 'website-assets/' + fileName;
+    // Sanitize filename for JSON safety
+    const sanitizedFileName = sanitizeFilename(file.name);
+    const filePath = 'banner/' + sanitizedFileName;
     
-    console.log('📤 Uploading to:', filePath);
+    console.log('📤 Uploading to:', filePath, '(sanitized from:', file.name, ')');
+    console.log('🔧 Upload configuration:', {
+        bucket: SUPABASE_CONFIG.bucket,
+        adminSupabase: !!adminSupabase,
+        fileSize: file.size,
+        fileType: file.type
+    });
     showNotification('Uploading banner...', 'info');
     
+    // First, delete any existing banner files to keep only one
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: true
+        .list('banner')
+        .then(function(listResult) {
+            if (listResult.data && listResult.data.length > 0) {
+                // Delete existing banner files
+                const filesToDelete = listResult.data.map(file => 'banner/' + file.name);
+                return adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .remove(filesToDelete);
+            }
+            return { data: null, error: null };
+        })
+        .then(function() {
+            // Upload new banner
+            return adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
         })
         .then(function(result) {
             console.log('📤 Upload result:', result);
@@ -2559,12 +3084,657 @@ function handleBannerUpload(file) {
             
             console.log('✅ Banner uploaded successfully');
             showNotification('Banner uploaded successfully!', 'success');
+            
+            // Update website content with banner filename
+            updateWebsiteContentWithBanner(sanitizedFileName);
+            
+            // Also update the global variable for immediate use
+            window.currentBannerUrl = sanitizedFileName;
+            console.log('🔄 Set global banner URL:', sanitizedFileName);
+            
             loadSpecificAsset('banner');
         })
         .catch(function(error) {
             console.error('❌ Upload catch error:', error);
             showNotification('Error uploading banner: ' + error.message, 'error');
         });
+}
+
+function updateWebsiteContentWithBanner(bannerFileName) {
+    console.log('🖼️ Updating website content with banner:', bannerFileName);
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    // Load existing website content
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .download('website-content.json')
+        .then(function(result) {
+            let content = {};
+            
+            if (!result.error && result.data) {
+                return result.data.text().then(function(jsonText) {
+                    content = JSON.parse(jsonText);
+                    console.log('📄 Loaded existing website content for banner update:', content);
+                    return content;
+                });
+            } else {
+                console.log('ℹ️ No existing website content, creating new for banner');
+                return content;
+            }
+        })
+        .then(function(content) {
+            // Add banner URL to content
+            content.bannerUrl = bannerFileName;
+            content.updatedAt = new Date().toISOString();
+            
+            // Store banner URL globally for future saves
+            window.currentBannerUrl = bannerFileName;
+            
+            console.log('💾 Saving updated website content with banner:', content);
+            
+            // Save updated content back to Supabase
+            const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+            
+            return adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload('website-content.json', contentBlob, {
+                    cacheControl: '3600',
+                    upsert: true
+                });
+        })
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ Error saving website content with banner:', result.error);
+                showNotification('Error updating website content with banner', 'error');
+                return;
+            }
+            
+            console.log('✅ Website content updated with banner successfully');
+            showNotification('Website content updated with new banner! Refresh homepage to see changes.', 'success');
+        })
+        .catch(function(error) {
+            console.error('❌ Error updating website content with banner:', error);
+            showNotification('Error updating website content: ' + error.message, 'error');
+        });
+}
+
+function testWebsiteContent() {
+    console.log('🧪 Testing website content from Supabase...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
+    
+    // Load website content from Supabase
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .download('website-content.json')
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ No website-content.json found:', result.error);
+                showNotification('No website-content.json file found in Supabase', 'error');
+                return;
+            }
+            
+            return result.data.text().then(function(jsonText) {
+                const content = JSON.parse(jsonText);
+                console.log('📄 Current website-content.json:', content);
+                
+                // Show banner info specifically
+                if (content.bannerUrl) {
+                    console.log('✅ Banner URL found:', content.bannerUrl);
+                    showNotification(`Banner URL found: ${content.bannerUrl}`, 'success');
+                } else {
+                    console.log('❌ No banner URL in website content');
+                    showNotification('No banner URL found in website content', 'error');
+                }
+                
+                // Show full content in alert for easy viewing
+                alert('Website Content:\n\n' + JSON.stringify(content, null, 2));
+            });
+        })
+        .catch(function(error) {
+            console.error('❌ Error testing website content:', error);
+            showNotification('Error loading website content: ' + error.message, 'error');
+        });
+}
+
+// Filename sanitization function for JSON safety
+function sanitizeFilename(filename) {
+    console.log('🧹 Sanitizing filename:', filename);
+    
+    // Get file extension
+    const lastDotIndex = filename.lastIndexOf('.');
+    const name = lastDotIndex > 0 ? filename.substring(0, lastDotIndex) : filename;
+    const extension = lastDotIndex > 0 ? filename.substring(lastDotIndex) : '';
+    
+    // Sanitize the name part
+    let sanitized = name
+        // Replace problematic characters with safe alternatives
+        .replace(/['"\\]/g, '') // Remove quotes and backslashes
+        .replace(/[<>:"/|?*]/g, '-') // Replace Windows forbidden chars with dash
+        .replace(/\s+/g, '_') // Replace spaces with underscores
+        .replace(/[^\w\-_.]/g, '') // Keep only alphanumeric, dash, underscore, dot
+        .replace(/_{2,}/g, '_') // Replace multiple underscores with single
+        .replace(/-{2,}/g, '-') // Replace multiple dashes with single
+        .replace(/^[._-]+|[._-]+$/g, '') // Remove leading/trailing dots, underscores, dashes
+        .substring(0, 100); // Limit length to 100 characters
+    
+    // Ensure we have a valid name
+    if (!sanitized) {
+        sanitized = 'file_' + Date.now();
+    }
+    
+    const result = sanitized + extension.toLowerCase();
+    console.log('✅ Sanitized filename:', filename, '→', result);
+    
+    return result;
+}
+
+function testSupabaseUpload() {
+    console.log('🧪 Testing Supabase upload functionality...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
+    
+    // Create a simple test file
+    const testContent = 'This is a test file created at ' + new Date().toISOString();
+    const testFile = new Blob([testContent], { type: 'text/plain' });
+    const testPath = 'test-upload.txt';
+    
+    console.log('📤 Testing upload to:', testPath);
+    console.log('🔧 Test configuration:', {
+        bucket: SUPABASE_CONFIG.bucket,
+        adminSupabase: !!adminSupabase,
+        fileSize: testFile.size,
+        fileType: testFile.type
+    });
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .upload(testPath, testFile, {
+            cacheControl: '3600',
+            upsert: true
+        })
+        .then(function(result) {
+            console.log('📤 Test upload result:', result);
+            
+            if (result.error) {
+                console.error('❌ Test upload error:', result.error);
+                showNotification('Test upload failed: ' + result.error.message, 'error');
+                
+                // Check specific error types
+                if (result.error.message.includes('not found')) {
+                    showNotification('Bucket not found. Check if extoll-portfolio bucket exists.', 'error');
+                } else if (result.error.message.includes('access denied') || result.error.message.includes('unauthorized')) {
+                    showNotification('Access denied. Check authentication and bucket policies.', 'error');
+                } else if (result.error.message.includes('Invalid JWT')) {
+                    showNotification('Authentication expired. Try logging out and back in.', 'error');
+                }
+                return;
+            }
+            
+            console.log('✅ Test upload successful!');
+            showNotification('Test upload successful! Upload functionality is working.', 'success');
+            
+            // Clean up test file
+            adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .remove([testPath])
+                .then(function(deleteResult) {
+                    console.log('🗑️ Test file cleanup:', deleteResult);
+                });
+        })
+        .catch(function(error) {
+            console.error('❌ Test upload catch error:', error);
+            showNotification('Test upload failed: ' + error.message, 'error');
+        });
+}
+
+function fixWebsiteContentUrls() {
+    console.log('🔧 Fixing website content URLs...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
+    
+    showNotification('Checking for logo and banner files...', 'info');
+    
+    // Check for logo and banner files in their respective folders
+    Promise.all([
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+    ])
+    .then(function([logoResult, bannerResult]) {
+        console.log('📁 Logo files:', logoResult);
+        console.log('📁 Banner files:', bannerResult);
+        
+        const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
+        const bannerFile = bannerResult.data && bannerResult.data.length > 0 ? bannerResult.data[0].name : null;
+        
+        console.log('📷 Found logo:', logoFile);
+        console.log('🖼️ Found banner:', bannerFile);
+        
+        if (!logoFile && !bannerFile) {
+            showNotification('No logo or banner files found in storage', 'warning');
+            return;
+        }
+        
+        // Load existing website content
+        return adminSupabase.storage
+            .from(SUPABASE_CONFIG.metadataBucket)
+            .download('website-content.json')
+            .then(function(result) {
+                let content = {};
+                
+                if (!result.error && result.data) {
+                    return result.data.text().then(function(jsonText) {
+                        content = JSON.parse(jsonText);
+                        return content;
+                    });
+                } else {
+                    console.log('ℹ️ No existing website content, creating new');
+                    return content;
+                }
+            })
+            .then(function(content) {
+                // Add logo and banner URLs
+                if (logoFile) {
+                    content.logoUrl = logoFile;
+                    window.currentLogoUrl = logoFile;
+                    console.log('✅ Added logoUrl:', logoFile);
+                }
+                
+                if (bannerFile) {
+                    content.bannerUrl = bannerFile;
+                    window.currentBannerUrl = bannerFile;
+                    console.log('✅ Added bannerUrl:', bannerFile);
+                }
+                
+                content.updatedAt = new Date().toISOString();
+                
+                console.log('💾 Saving fixed website content:', content);
+                
+                // Save updated content
+                const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+                
+                return adminSupabase.storage
+                    .from(SUPABASE_CONFIG.metadataBucket)
+                    .upload('website-content.json', contentBlob, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
+            })
+            .then(function(result) {
+                if (result.error) {
+                    console.error('❌ Error saving fixed content:', result.error);
+                    showNotification('Error saving fixed content: ' + result.error.message, 'error');
+                    return;
+                }
+                
+                console.log('✅ Website content fixed successfully');
+                showNotification('Logo and banner URLs added to website content! Refresh homepage to see changes.', 'success');
+            });
+    })
+    .catch(function(error) {
+        console.error('❌ Error fixing website content:', error);
+        showNotification('Error fixing website content: ' + error.message, 'error');
+    });
+}
+
+function testDirectAssetLoad() {
+    console.log('🧪 Testing direct asset loading...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    // Check what files exist in logo and banner folders
+    Promise.all([
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+    ])
+    .then(function([logoResult, bannerResult]) {
+        console.log('📁 Logo folder result:', logoResult);
+        console.log('📁 Banner folder result:', bannerResult);
+        
+        if (logoResult.data && logoResult.data.length > 0) {
+            const logoFile = logoResult.data[0];
+            const logoUrl = adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl('logo/' + logoFile.name);
+            
+            console.log('📷 Logo URL:', logoUrl);
+            
+            // Test if we can load the logo
+            const testImg = new Image();
+            testImg.onload = function() {
+                console.log('✅ Logo loads successfully:', logoUrl.data.publicUrl);
+                showNotification('Logo file loads successfully: ' + logoFile.name, 'success');
+            };
+            testImg.onerror = function() {
+                console.error('❌ Logo failed to load:', logoUrl.data.publicUrl);
+                showNotification('Logo file failed to load: ' + logoFile.name, 'error');
+            };
+            testImg.src = logoUrl.data.publicUrl;
+        } else {
+            console.log('ℹ️ No logo files found');
+            showNotification('No logo files found in storage', 'warning');
+        }
+        
+        if (bannerResult.data && bannerResult.data.length > 0) {
+            const bannerFile = bannerResult.data[0];
+            const bannerUrl = adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl('banner/' + bannerFile.name);
+            
+            console.log('🖼️ Banner URL:', bannerUrl);
+            
+            // Test if we can load the banner
+            const testImg = new Image();
+            testImg.onload = function() {
+                console.log('✅ Banner loads successfully:', bannerUrl.data.publicUrl);
+                showNotification('Banner file loads successfully: ' + bannerFile.name, 'success');
+            };
+            testImg.onerror = function() {
+                console.error('❌ Banner failed to load:', bannerUrl.data.publicUrl);
+                showNotification('Banner file failed to load: ' + bannerFile.name, 'error');
+            };
+            testImg.src = bannerUrl.data.publicUrl;
+        } else {
+            console.log('ℹ️ No banner files found');
+            showNotification('No banner files found in storage', 'warning');
+        }
+    })
+    .catch(function(error) {
+        console.error('❌ Error testing direct asset load:', error);
+        showNotification('Error testing assets: ' + error.message, 'error');
+    });
+}
+
+function createSimpleWebsiteContent() {
+    console.log('🔧 Creating simple website content with logo/banner URLs...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    showNotification('Creating website content file...', 'info');
+    
+    // Check for logo and banner files
+    Promise.all([
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+    ])
+    .then(function([logoResult, bannerResult]) {
+        const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
+        const bannerFile = bannerResult.data && bannerResult.data.length > 0 ? bannerResult.data[0].name : null;
+        
+        console.log('📷 Found logo:', logoFile);
+        console.log('🖼️ Found banner:', bannerFile);
+        
+        // Create simple website content
+        const content = {
+            heroTitle: "Crafting Digital Experiences That Stand Out",
+            heroSubtitle: "Where ideas meet execution.",
+            heroDescription: "Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team's best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.",
+            aboutTitle: "About Extoll",
+            aboutTagline: "Execution-first freelance collective. Powered by Startup Ops.",
+            portfolioTitle: "Portfolio",
+            portfolioDescription: "Showcase of our creative work and professional projects across various design disciplines.",
+            updatedAt: new Date().toISOString()
+        };
+        
+        // Add logo and banner URLs if files exist
+        if (logoFile) {
+            content.logoUrl = logoFile;
+            window.currentLogoUrl = logoFile;
+            console.log('✅ Added logoUrl:', logoFile);
+        }
+        
+        if (bannerFile) {
+            content.bannerUrl = bannerFile;
+            window.currentBannerUrl = bannerFile;
+            console.log('✅ Added bannerUrl:', bannerFile);
+        }
+        
+        console.log('💾 Creating website content:', content);
+        
+        // Save to main bucket (since metadata bucket might not exist)
+        const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+        
+        return adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload('website-content.json', contentBlob, {
+                cacheControl: '3600',
+                upsert: true
+            });
+    })
+    .then(function(result) {
+        console.log('💾 Save result:', result);
+        
+        if (result.error) {
+            console.error('❌ Error saving to main bucket:', result.error);
+            showNotification('Error creating website content: ' + result.error.message, 'error');
+            return;
+        }
+        
+        console.log('✅ Website content created successfully in main bucket');
+        showNotification('Website content created! Now update homepage to load from main bucket.', 'success');
+    })
+    .catch(function(error) {
+        console.error('❌ Error creating website content:', error);
+        showNotification('Error creating website content: ' + error.message, 'error');
+    });
+}
+
+function updateHomepageAssetsNow() {
+    console.log('🚀 Updating homepage assets directly...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    showNotification('Scanning for logo and banner files...', 'info');
+    
+    // Get logo and banner files
+    Promise.all([
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+    ])
+    .then(function([logoResult, bannerResult]) {
+        console.log('📁 Logo files:', logoResult);
+        console.log('📁 Banner files:', bannerResult);
+        
+        const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
+        const bannerFile = bannerResult.data && bannerResult.data.length > 0 ? bannerResult.data[0].name : null;
+        
+        if (!logoFile && !bannerFile) {
+            showNotification('No logo or banner files found. Please upload them first.', 'warning');
+            return;
+        }
+        
+        // Create simple update instructions
+        let instructions = 'Go to homepage, open console (F12), and run:\n\n';
+        
+        if (logoFile) {
+            instructions += 'Logo update:\n';
+            instructions += 'const logo = document.querySelector(".website-logo, .nav-logo");\n';
+            instructions += 'if (logo) logo.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl('logo/' + logoFile).data.publicUrl + '";\n\n';
+        }
+        
+        if (bannerFile) {
+            instructions += 'Banner update:\n';
+            instructions += 'const banner = document.querySelector(".hero-banner");\n';
+            instructions += 'if (banner) banner.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl('banner/' + bannerFile).data.publicUrl + '";\n\n';
+        }
+        
+        // Show instructions in alert
+        alert('Copy and run this in homepage console:\n\n' + instructions);
+        
+        showNotification('Instructions shown! Copy the code and run it on homepage.', 'success');
+    })
+    .catch(function(error) {
+        console.error('❌ Error updating homepage assets:', error);
+        showNotification('Error: ' + error.message, 'error');
+    });
+}
+
+function createAndTestContent() {
+    console.log('🧪 Creating and testing website content...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        return;
+    }
+    
+    // Get current form values
+    const content = {
+        heroTitle: document.getElementById('heroTitle')?.value || "Crafting Digital Experiences That Stand Out",
+        heroSubtitle: document.getElementById('heroSubtitle')?.value || "Where ideas meet execution.",
+        heroDescription: document.getElementById('heroDescription')?.value || "Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create.",
+        aboutTitle: document.getElementById('aboutTitle')?.value || "About Extoll",
+        aboutTagline: document.getElementById('aboutTagline')?.value || "Execution-first freelance collective. Powered by Startup Ops.",
+        aboutDescription: document.getElementById('aboutDescription')?.value || "Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.",
+        servicesTitle: document.getElementById('servicesTitle')?.value || "Services",
+        servicesDescription: document.getElementById('servicesDescription')?.value || "Professional design and creative services tailored to bring your vision to life",
+        contactTitle: document.getElementById('contactTitle')?.value || "Or reach me directly",
+        contactPhone: document.getElementById('contactPhone')?.value || "+91 9316158312",
+        whatsappNumber: document.getElementById('whatsappNumber')?.value || "+91 9316158312",
+        contactEmail: document.getElementById('contactEmail')?.value || "extoll.co.in@gmail.com",
+        instagramHandle: document.getElementById('instagramHandle')?.value || "@ExtollCo",
+        instagramUrl: document.getElementById('instagramUrl')?.value || "https://instagram.com/extollco",
+        portfolioTitle: document.getElementById('portfolioTitle')?.value || "Portfolio",
+        portfolioDescription: document.getElementById('portfolioDescription')?.value || "Showcase of our creative work and professional projects across various design disciplines.",
+        updatedAt: new Date().toISOString()
+    };
+    
+    // Get team info
+    const container = document.getElementById('teamMembersContainer');
+    let teamMembers = [];
+    
+    if (container) {
+        const memberElements = container.querySelectorAll('[data-member-index]');
+        memberElements.forEach(function(memberElement, index) {
+            const nameInput = memberElement.querySelector(`#teamMember${index}Name`);
+            const roleTextarea = memberElement.querySelector(`#teamMember${index}Role`);
+            
+            if (nameInput && roleTextarea) {
+                const name = nameInput.value.trim();
+                const role = roleTextarea.value.trim();
+                
+                if (name || role) {
+                    teamMembers.push({ name: name, role: role });
+                }
+            }
+        });
+    }
+    
+    // Default team members if none found
+    if (teamMembers.length === 0) {
+        teamMembers = [
+            { name: 'Ritesh', role: 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.' },
+            { name: 'Nikhil', role: 'Specializes in 2D Animation, Video Editing, UI/UX Design, Web Development, and App Development, bringing motion, storytelling, and polished digital experiences to every project.' },
+            { name: 'Yuvraj Gupta', role: 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.' },
+            { name: 'Arpit', role: 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.' }
+        ];
+    }
+    
+    const teamInfo = {
+        sectionTitle: document.getElementById('teamSectionTitle')?.value || 'Our Team & Capabilities',
+        members: teamMembers,
+        updatedAt: new Date().toISOString()
+    };
+    
+    console.log('💾 Content to save:', content);
+    console.log('👥 Team info to save:', teamInfo);
+    showNotification('Creating website content and team info files...', 'info');
+    
+    // Save both files to main bucket
+    const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+    const teamBlob = new Blob([JSON.stringify(teamInfo, null, 2)], { type: 'application/json' });
+    
+    Promise.all([
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload('website-content.json', contentBlob, {
+                cacheControl: '3600',
+                upsert: true
+            }),
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload('team-info.json', teamBlob, {
+                cacheControl: '3600',
+                upsert: true
+            })
+    ])
+    .then(function(results) {
+        const [contentResult, teamResult] = results;
+        
+        if (contentResult.error) {
+            console.error('❌ Content upload error:', contentResult.error);
+            showNotification('Error uploading website content: ' + contentResult.error.message, 'error');
+            return;
+        }
+        
+        if (teamResult.error) {
+            console.error('❌ Team upload error:', teamResult.error);
+            showNotification('Error uploading team info: ' + teamResult.error.message, 'error');
+            return;
+        }
+        
+        console.log('✅ Both content files created successfully');
+        showNotification('Website content and team info created! Refresh homepage, about page, and contact page to see updates.', 'success');
+        
+        // Test loading content back
+        setTimeout(function() {
+            Promise.all([
+                adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .download('website-content.json'),
+                adminSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .download('team-info.json')
+            ])
+            .then(function(testResults) {
+                const [contentTest, teamTest] = testResults;
+                
+                if (contentTest.data && teamTest.data) {
+                    Promise.all([
+                        contentTest.data.text(),
+                        teamTest.data.text()
+                    ])
+                    .then(function(texts) {
+                        const [contentText, teamText] = texts;
+                        const loadedContent = JSON.parse(contentText);
+                        const loadedTeam = JSON.parse(teamText);
+                        
+                        console.log('✅ Content verified:', loadedContent);
+                        console.log('✅ Team info verified:', loadedTeam);
+                        showNotification('All content verified! Pages should now update with new content.', 'success');
+                    });
+                }
+            });
+        }, 1000);
+    })
+    .catch(function(error) {
+        console.error('❌ Error creating content:', error);
+        showNotification('Error: ' + error.message, 'error');
+    });
 }
 
 
@@ -2891,10 +4061,182 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize debug functions
     debugProjectFiles();
     
-    // Show login screen
-    showLogin();
+    // Check if user is already authenticated instead of always showing login
+    checkAuthenticationState();
+    
+    // Monitor authentication state changes
+    if (adminSupabase) {
+        adminSupabase.auth.onAuthStateChange((event, session) => {
+            console.log('🔄 Auth state changed:', event, session?.user?.email);
+            
+            if (event === 'SIGNED_OUT' || !session) {
+                console.log('🚪 User signed out or session expired');
+                currentUser = null;
+                showLogin();
+                showNotification('Session expired. Please login again.', 'warning');
+            } else if (event === 'SIGNED_IN' && session?.user) {
+                console.log('✅ User signed in:', session.user.email);
+                currentUser = { 
+                    email: session.user.email, 
+                    authenticated: true,
+                    source: 'supabase'
+                };
+                // Don't auto-show dashboard here as it might be called during manual login
+            }
+        });
+    }
+    
     console.log('✅ Admin panel initialized successfully');
 });
+
+function testContactUpdate() {
+    console.log('📞 Testing contact update functionality...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
+    
+    // Get current contact values from form
+    const testContent = {
+        contactTitle: document.getElementById('contactTitle')?.value || 'Test Contact Title - Updated ' + new Date().toLocaleTimeString(),
+        contactPhone: document.getElementById('contactPhone')?.value || '+91 1234567890',
+        whatsappNumber: document.getElementById('whatsappNumber')?.value || '+91 1234567890',
+        contactEmail: document.getElementById('contactEmail')?.value || 'test@extoll.co',
+        instagramHandle: document.getElementById('instagramHandle')?.value || '@TestExtoll',
+        instagramUrl: document.getElementById('instagramUrl')?.value || 'https://instagram.com/testextoll',
+        updatedAt: new Date().toISOString()
+    };
+    
+    console.log('📞 Test contact data:', testContent);
+    showNotification('Creating test contact content...', 'info');
+    
+    // Save test content
+    const contentBlob = new Blob([JSON.stringify(testContent, null, 2)], { type: 'application/json' });
+    
+    adminSupabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .upload('website-content.json', contentBlob, {
+            cacheControl: '3600',
+            upsert: true
+        })
+        .then(function(result) {
+            if (result.error) {
+                console.error('❌ Error saving test contact content:', result.error);
+                showNotification('Error saving test content: ' + result.error.message, 'error');
+                return;
+            }
+            
+            console.log('✅ Test contact content saved successfully');
+            showNotification('Test contact content saved! Now open contact.html page to see updates.', 'success');
+            
+            // Also show the test data
+            const testInfo = `Test Contact Data Saved:
+            
+Contact Title: ${testContent.contactTitle}
+Phone: ${testContent.contactPhone}
+WhatsApp: ${testContent.whatsappNumber}
+Email: ${testContent.contactEmail}
+Instagram Handle: ${testContent.instagramHandle}
+Instagram URL: ${testContent.instagramUrl}
+
+Instructions:
+1. Open contact.html page in browser
+2. Check browser console for loading messages
+3. Verify contact details are updated
+4. If not working, try refreshing the page
+5. Use browser dev tools to debug`;
+            
+            alert(testInfo);
+            console.log('📞 Test contact info:', testInfo);
+        })
+        .catch(function(error) {
+            console.error('❌ Error creating test contact content:', error);
+            showNotification('Error: ' + error.message, 'error');
+        });
+}
+
+function debugContentLoading() {
+    console.log('🔍 Debugging content loading...');
+    
+    if (!adminSupabase) {
+        console.error('❌ Supabase not initialized');
+        showNotification('Error: Supabase not connected', 'error');
+        return;
+    }
+    
+    showNotification('Checking content files...', 'info');
+    
+    // Check both website-content.json and team-info.json
+    Promise.all([
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .download('website-content.json'),
+        adminSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .download('team-info.json')
+    ])
+    .then(function(results) {
+        const [contentResult, teamResult] = results;
+        
+        console.log('📄 Website content result:', contentResult);
+        console.log('👥 Team info result:', teamResult);
+        
+        let debugInfo = 'Content Debug Results:\n\n';
+        
+        if (contentResult.error) {
+            debugInfo += '❌ Website Content: ' + contentResult.error.message + '\n';
+        } else {
+            contentResult.data.text().then(function(contentText) {
+                const content = JSON.parse(contentText);
+                debugInfo += '✅ Website Content Found:\n';
+                debugInfo += '  - Hero Title: ' + (content.heroTitle || 'Not set') + '\n';
+                debugInfo += '  - Contact Email: ' + (content.contactEmail || 'Not set') + '\n';
+                debugInfo += '  - Contact Phone: ' + (content.contactPhone || 'Not set') + '\n';
+                debugInfo += '  - Instagram Handle: ' + (content.instagramHandle || 'Not set') + '\n';
+                debugInfo += '  - Updated At: ' + (content.updatedAt || 'Not set') + '\n\n';
+                
+                if (teamResult.error) {
+                    debugInfo += '❌ Team Info: ' + teamResult.error.message + '\n';
+                    alert(debugInfo);
+                } else {
+                    teamResult.data.text().then(function(teamText) {
+                        const team = JSON.parse(teamText);
+                        debugInfo += '✅ Team Info Found:\n';
+                        debugInfo += '  - Section Title: ' + (team.sectionTitle || 'Not set') + '\n';
+                        
+                        if (team.members && Array.isArray(team.members)) {
+                            debugInfo += '  - Team Members (' + team.members.length + '):\n';
+                            team.members.forEach(function(member, index) {
+                                debugInfo += '    ' + (index + 1) + '. ' + (member.name || 'No name') + '\n';
+                            });
+                        } else if (team.team1Name) {
+                            debugInfo += '  - Legacy Format: ' + team.team1Name + ', ' + team.team2Name + ', etc.\n';
+                        } else {
+                            debugInfo += '  - No team members found\n';
+                        }
+                        
+                        debugInfo += '  - Updated At: ' + (team.updatedAt || 'Not set') + '\n\n';
+                        debugInfo += 'Instructions:\n';
+                        debugInfo += '1. Save content using "Save All Content" button\n';
+                        debugInfo += '2. Save team info using "Save Team Information" button\n';
+                        debugInfo += '3. Refresh homepage, about page, and contact page\n';
+                        debugInfo += '4. Check browser console for loading errors\n';
+                        
+                        alert(debugInfo);
+                        console.log('📋 Debug Info:', debugInfo);
+                        showNotification('Debug complete - check console and alert for details', 'success');
+                    });
+                }
+            });
+        }
+    })
+    .catch(function(error) {
+        console.error('❌ Debug error:', error);
+        showNotification('Debug failed: ' + error.message, 'error');
+    });
+}
 
 // Test Supabase connection and configuration
 async function testSupabaseConnection() {
