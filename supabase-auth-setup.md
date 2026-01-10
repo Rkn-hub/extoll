@@ -78,7 +78,7 @@ const SUPABASE_CONFIG = {
 
 ### Debug Authentication:
 1. Open browser console (F12)
-2. Go to admin.html
+2. Go to 4dm1n.html
 3. Login with admin/extoll2024
 4. Look for these messages:
    - ✅ "Admin signed in successfully"
@@ -97,7 +97,7 @@ const SUPABASE_CONFIG = {
 - **Solution**: Check bucket policies are applied correctly
 
 **Issue**: "signInAdmin is not a function"
-- **Solution**: Ensure supabase-config.js is loaded before admin.html
+- **Solution**: Ensure supabase-config.js is loaded before 4dm1n.html
 
 ## Step 5: Bucket Policies Verification
 
@@ -140,7 +140,7 @@ CREATE POLICY "Authenticated users can delete metadata" ON storage.objects
 ## Step 6: Test Complete Workflow
 
 ### Full Test Sequence:
-1. **Login**: admin.html → Login with admin/extoll2024
+1. **Login**: 4dm1n.html → Login with admin/extoll2024
 2. **Create Project**: Fill form → Upload thumbnail → Create
 3. **Verify Storage**: Check both buckets have files
 4. **Check Portfolio**: index.html should show project from metadata bucket

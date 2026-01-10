@@ -25,7 +25,7 @@ extoll-portfolio/
 
 ## 🎯 **What's Working:**
 
-### **1. Admin Panel** (`admin.html`)
+### **1. Admin Panel** (`4dm1n.html`)
 - ✅ **Login**: `admin` / `extoll2024`
 - ✅ **File Upload Test**: Upload to `test-project/` folder
 - ✅ **Project Creation**: Creates project folders with thumbnails
@@ -60,7 +60,7 @@ extoll-portfolio/
 ## 📝 **Files Status:**
 
 ### **Working Files:**
-- ✅ `admin.html` - Full admin panel (fixed)
+- ✅ `4dm1n.html` - Full admin panel (fixed)
 - ✅ `supabase-config.js` - Upload functions (updated)
 - ✅ `simple-upload-test.html` - Basic upload test
 - ✅ `quick-upload-test.html` - Authentication test

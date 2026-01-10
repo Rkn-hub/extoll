@@ -19,7 +19,7 @@ You can now manage all users directly through **Supabase Authentication** - no c
 3. Click **"Create user"**
 
 ### **Step 3: Test Login**
-1. Go to `admin.html`
+1. Go to `4dm1n.html`
 2. Login with the new user's email and password
 3. They should have access to the admin panel
 
@@ -92,7 +92,7 @@ Currently, all authenticated users have **admin access**. If you need different 
 
 1. **Add in Supabase**: Authentication → Users → Add user
 2. **Set Details**: Email, password, auto-confirm ✅
-3. **Test Login**: Have them login to `admin.html`
+3. **Test Login**: Have them login to `4dm1n.html`
 4. **Done!** They now have admin access
 
 This approach is much simpler and more professional than a custom user management system! 🚀

@@ -21,7 +21,7 @@
 - [x] Paste and **Run** the SQL
 
 ### 4. Test the Setup
-- [x] Open `admin.html`
+- [x] Open `4dm1n.html`
 - [x] Login with `rkachal2k4@gmail.com` / `Ritesh12@`
 - [x] Verify login works and projects load
 

@@ -38,7 +38,7 @@ The admin panel was using a separate Supabase client from the metadata functions
 3. Paste and **Run** the SQL
 
 ### Step 3: Test the Fix
-1. Open `admin.html`
+1. Open `4dm1n.html`
 2. Login with `admin` / `extoll2024`
 3. Create a test project
 4. Check browser console for success messages:

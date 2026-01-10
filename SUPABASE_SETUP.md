@@ -121,7 +121,7 @@ Add this script tag to the `<head>` section of your HTML files:
 ## ✅ Step 8: Test Connection
 
 1. Open your browser's developer console (F12)
-2. Open `admin.html`
+2. Open `4dm1n.html`
 3. You should see: "✅ Supabase initialized successfully"
 4. Try logging in with your admin credentials
 5. Try adding a test project
