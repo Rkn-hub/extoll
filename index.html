@@ -951,7 +951,7 @@ Send Us a Message
 <script src="supabase-config.js"></script>
 <script src="website-assets.js"></script>
 <script>
-// Dynamic Project Loading Function - Optimized for public metadata bucket
+// Dynamic Project Loading Function - Optimized for public access
 async function loadDynamicProjects() {
     const portfolioGrid = document.getElementById('portfolio-grid');
     
@@ -964,12 +964,168 @@ async function loadDynamicProjects() {
         return;
     }
     
-    // Use optimized public function for faster loading
-    console.log('🚀 Attempting to load from public metadata bucket...');
-    const result = await getProjectsPublic();
+    // Try multiple methods to load projects for public users
+    console.log('🚀 Attempting to load projects with public access...');
     
-    if (result.success && result.data.length > 0) {
+    let result = null;
+    
+    // Method 1: Try to load from public metadata bucket
+    try {
+        result = await loadProjectsFromPublicBucket();
+        if (result.success && result.data.length > 0) {
+            console.log('✅ Loaded projects from public bucket method');
+        }
+    } catch (error) {
+        console.log('⚠️ Public bucket method failed:', error.message);
+    }
+    
+    // Method 2: Fallback to getProjectsPublic if first method fails
+    if (!result || !result.success || result.data.length === 0) {
+        try {
+            result = await getProjectsPublic();
+            if (result.success && result.data.length > 0) {
+                console.log('✅ Loaded projects from getProjectsPublic method');
+            }
+        } catch (error) {
+            console.log('⚠️ getProjectsPublic method failed:', error.message);
+        }
+    }
+    
+    // Method 3: Final fallback to regular getProjects (for authenticated users)
+    if (!result || !result.success || result.data.length === 0) {
+        try {
+            result = await getProjects();
+            if (result.success && result.data.length > 0) {
+                console.log('✅ Loaded projects from authenticated method');
+            }
+        } catch (error) {
+            console.log('⚠️ Authenticated method failed:', error.message);
+        }
+    }
+    
+    if (result && result.success && result.data.length > 0) {
         const projects = result.data;
+        console.log('✅ Final result: Loaded', projects.length, 'projects');
+        
+        // Update localStorage with fresh data from Supabase
+        localStorage.setItem('projects', JSON.stringify(projects));
+        console.log('💾 Updated localStorage with fresh Supabase data');
+        
+        // Generate project cards dynamically
+        portfolioGrid.innerHTML = projects.map(project => {
+            return createProjectCard(project);
+        }).join('');
+        
+        // Re-initialize portfolio functionality after loading
+        initializePortfolioInteractions();
+    } else {
+        console.log('📦 All methods failed, falling back to localStorage');
+        console.log('Final result:', result);
+        // Fallback to localStorage
+        loadFromLocalStorage();
+    }
+}
+
+// New method: Load projects directly from public portfolio bucket
+async function loadProjectsFromPublicBucket() {
+    try {
+        console.log('🔍 Scanning public portfolio bucket for projects...');
+        
+        const supabase = configSupabase;
+        
+        // List all folders in the main portfolio bucket (each folder is a project)
+        const { data: folders, error: listError } = await supabase.storage
+            .from(SUPABASE_CONFIG.bucket) // extoll-portfolio bucket
+            .list('', {
+                limit: 100,
+                sortBy: { column: 'created_at', order: 'desc' }
+            });
+        
+        if (listError) {
+            console.error('❌ Failed to list portfolio bucket:', listError.message);
+            return { success: false, error: listError.message };
+        }
+        
+        if (!folders || folders.length === 0) {
+            console.log('📁 No folders found in portfolio bucket');
+            return { success: true, data: [] };
+        }
+        
+        console.log('📂 Found', folders.length, 'items in portfolio bucket');
+        
+        // Filter out non-project folders (like website-assets, logo, banner)
+        const projectFolders = folders.filter(folder => 
+            folder.name && 
+            !folder.name.startsWith('website-assets') &&
+            !folder.name.startsWith('logo') &&
+            !folder.name.startsWith('banner') &&
+            folder.name !== 'logo' &&
+            folder.name !== 'banner'
+        );
+        
+        console.log('🎯 Found', projectFolders.length, 'potential project folders');
+        
+        const projects = [];
+        
+        // For each project folder, try to get project info
+        for (const folder of projectFolders) {
+            try {
+                const projectKey = folder.name;
+                
+                // Try to find a thumbnail file
+                const { data: files, error: filesError } = await supabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .list(projectKey, { limit: 50 });
+                
+                if (!filesError && files && files.length > 0) {
+                    // Find thumbnail file
+                    const thumbnailFile = files.find(file => 
+                        file.name.startsWith('thumb-') || 
+                        file.name.includes('thumbnail')
+                    );
+                    
+                    let thumbnailUrl = null;
+                    if (thumbnailFile) {
+                        const { data: thumbUrlData } = supabase.storage
+                            .from(SUPABASE_CONFIG.bucket)
+                            .getPublicUrl(`${projectKey}/${thumbnailFile.name}`);
+                        thumbnailUrl = thumbUrlData?.publicUrl;
+                    }
+                    
+                    // Count non-thumbnail files
+                    const projectFiles = files.filter(file => 
+                        !file.name.startsWith('thumb-') && 
+                        !file.name.includes('thumbnail')
+                    );
+                    
+                    // Create a basic project object
+                    const project = {
+                        id: projectKey,
+                        key: projectKey,
+                        title: projectKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                        category: 'graphics', // Default category
+                        description: `Project: ${projectKey}`,
+                        count: projectFiles.length,
+                        thumbnail_url: thumbnailUrl,
+                        created_at: folder.created_at || new Date().toISOString()
+                    };
+                    
+                    projects.push(project);
+                    console.log('✅ Added project:', project.title, `(${project.count} files)`);
+                }
+            } catch (projectError) {
+                console.warn('⚠️ Failed to process project folder:', folder.name, projectError.message);
+            }
+        }
+        
+        console.log(`🎉 Successfully loaded ${projects.length} projects from public bucket`);
+        return { success: true, data: projects };
+        
+    } catch (error) {
+        console.error('❌ Public bucket loading failed:', error.message);
+        return { success: false, error: error.message };
+    }
+}
         console.log('✅ Loaded projects from public metadata bucket:', projects.length, 'projects');
         
         // Update localStorage with fresh data from Supabase
