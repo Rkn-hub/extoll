@@ -1116,26 +1116,6 @@ async function loadProjectsFromPublicBucket() {
         return { success: false, error: error.message };
     }
 }
-        console.log('✅ Loaded projects from public metadata bucket:', projects.length, 'projects');
-        
-        // Update localStorage with fresh data from Supabase
-        localStorage.setItem('projects', JSON.stringify(projects));
-        console.log('💾 Updated localStorage with fresh Supabase data');
-        
-        // Generate project cards dynamically
-        portfolioGrid.innerHTML = projects.map(project => {
-            return createProjectCard(project);
-        }).join('');
-        
-        // Re-initialize portfolio functionality after loading
-        initializePortfolioInteractions();
-    } else {
-        console.log('📦 No projects in public metadata bucket or error occurred, falling back to localStorage');
-        console.log('Public metadata result:', result);
-        // Fallback to localStorage
-        loadFromLocalStorage();
-    }
-}
 
 // Fallback to localStorage if Supabase fails
 function loadFromLocalStorage() {
@@ -1880,8 +1860,6 @@ async function extractImageColors(img) {
 </script>
 
 <!-- Dynamic Content Loading Script -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
 <script>
 // Load dynamic content from Supabase
 function loadDynamicContent() {
@@ -2082,91 +2060,6 @@ function updateTeamSection(team) {
         console.log('✅ Updated team members - added', team.members.length, 'members');
     }
 }
-                teamTitles.forEach(function(title) {
-                    if (title.textContent.includes('Team') || title.textContent.includes('Capabilities')) {
-                        if (team.sectionTitle) {
-                            title.textContent = team.sectionTitle;
-                            console.log('✅ Updated team section title to:', team.sectionTitle);
-                        }
-                    }
-                });
-                
-                // Find the team grid and update members
-                const teamGrids = document.querySelectorAll('.grid');
-                let teamGrid = null;
-                
-                // Find the grid that contains team member cards (look for bg-white/5 class)
-                teamGrids.forEach(function(grid) {
-                    const hasTeamCards = grid.querySelector('.bg-white\\/5');
-                    if (hasTeamCards && grid.parentElement.querySelector('h3')) {
-                        const parentH3 = grid.parentElement.querySelector('h3');
-                        if (parentH3 && (parentH3.textContent.includes('Team') || parentH3.textContent.includes('Capabilities'))) {
-                            teamGrid = grid;
-                        }
-                    }
-                });
-                
-                if (teamGrid && team.members && Array.isArray(team.members)) {
-                    console.log('👥 Updating team members with new format:', team.members);
-                    
-                    // Clear existing team members
-                    teamGrid.innerHTML = '';
-                    
-                    // Add dynamic team members
-                    team.members.forEach(function(member) {
-                        if (member.name || member.role) {
-                            const memberDiv = document.createElement('div');
-                            memberDiv.className = 'bg-white/5 p-6 rounded-lg border border-white/10';
-                            memberDiv.innerHTML = `
-                                <h4 class="text-primary font-semibold text-lg mb-2">${member.name || 'Team Member'}</h4>
-                                <p class="text-white/80 text-sm leading-relaxed">${member.role || 'Role description not available.'}</p>
-                            `;
-                            teamGrid.appendChild(memberDiv);
-                        }
-                    });
-                    
-                    console.log('✅ Updated team members from Supabase - added', team.members.length, 'members');
-                } else if (teamGrid && team.team1Name) {
-                    console.log('👥 Using legacy team format');
-                    
-                    // Fallback to old format for backward compatibility
-                    teamGrid.innerHTML = '';
-                    
-                    const members = [
-                        { name: team.team1Name, role: team.team1Role },
-                        { name: team.team2Name, role: team.team2Role },
-                        { name: team.team3Name, role: team.team3Role },
-                        { name: team.team4Name, role: team.team4Role }
-                    ];
-                    
-                    members.forEach(function(member) {
-                        if (member.name || member.role) {
-                            const memberDiv = document.createElement('div');
-                            memberDiv.className = 'bg-white/5 p-6 rounded-lg border border-white/10';
-                            memberDiv.innerHTML = `
-                                <h4 class="text-primary font-semibold text-lg mb-2">${member.name || 'Team Member'}</h4>
-                                <p class="text-white/80 text-sm leading-relaxed">${member.role || 'Role description not available.'}</p>
-                            `;
-                            teamGrid.appendChild(memberDiv);
-                        }
-                    });
-                    
-                    console.log('✅ Updated team members from legacy format');
-                } else {
-                    console.warn('⚠️ Team grid not found or no team data available');
-                    console.log('Available grids:', teamGrids.length);
-                    console.log('Team data:', team);
-                }
-                
-                console.log('✅ Team information updated from Supabase');
-            });
-        })
-        .catch(function(error) {
-            console.error('❌ Error loading team information from Supabase:', error);
-        });
-    
-    console.log('✅ Dynamic content loading complete');
-}
 
 // Helper function to update index contact elements (prevent flash)
 function updateIndexContactElements(content) {
@@ -2194,9 +2087,198 @@ function updateIndexContactElements(content) {
 
 // Load dynamic content when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    loadDynamicContent();
-    loadLogo(); // Add logo loading
-    loadAssetsDirectly(); // Add direct asset loading
+    // Load all content on page load
+    loadDynamicProjects(); // Load portfolio projects
+    loadDynamicContent();  // Load website content
+    loadLogo();           // Load logo
+    loadAssetsDirectly(); // Load banner and other assets
+    
+    // Add refresh functionality - reload projects every 30 seconds if page is visible
+    let refreshInterval;
+    
+    function startAutoRefresh() {
+        refreshInterval = setInterval(() => {
+            if (!document.hidden) {
+                console.log('🔄 Auto-refreshing portfolio...');
+                loadDynamicProjects();
+            }
+        }, 30000); // 30 seconds
+    }
+    
+    function stopAutoRefresh() {
+        if (refreshInterval) {
+            clearInterval(refreshInterval);
+            refreshInterval = null;
+        }
+    }
+    
+    // Start auto-refresh
+    startAutoRefresh();
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAutoRefresh();
+        } else {
+            startAutoRefresh();
+            // Refresh immediately when page becomes visible
+            loadDynamicProjects();
+        }
+    });
+    
+    // Also refresh when window gains focus
+    window.addEventListener('focus', () => {
+        console.log('🔄 Page focused, refreshing portfolio...');
+        loadDynamicProjects();
+    });
+    
+    // Test click functionality
+    console.log('Page loaded, testing click functionality...');
+    
+    // Check for stored filter from services page
+    const storedFilter = sessionStorage.getItem('portfolioFilter');
+    if (storedFilter) {
+        console.log('Found stored filter:', storedFilter);
+        // Clear the stored filter
+        sessionStorage.removeItem('portfolioFilter');
+        
+        // Wait for page to load, then apply filter
+        setTimeout(() => {
+            const targetFilter = document.querySelector(`[data-filter="${storedFilter}"]`);
+            if (targetFilter) {
+                console.log('Applying filter:', storedFilter);
+                targetFilter.click();
+                
+                // Scroll to work section
+                const workSection = document.getElementById('work');
+                if (workSection) {
+                    workSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }, 1000); // Increased delay to ensure everything is loaded
+    }
+    
+    // Test all buttons
+    const buttons = document.querySelectorAll('button');
+    console.log('Found buttons:', buttons.length);
+    
+    buttons.forEach((button, index) => {
+        button.addEventListener('click', function(e) {
+            console.log(`Button ${index} clicked:`, this.textContent.trim());
+        });
+    });
+    
+    // Test all links
+    const links = document.querySelectorAll('a[href]');
+    console.log('Found links:', links.length);
+    
+    links.forEach((link, index) => {
+        link.addEventListener('click', function(e) {
+            console.log(`Link ${index} clicked:`, this.href);
+        });
+    });
+    
+    // Ensure we start at the top
+    window.scrollTo(0, 0);
+    
+    // Check if we should scroll to work section
+    const hasWorkHash = window.location.hash === '#work';
+    
+    if (hasWorkHash) {
+        // Scroll to work section after a short delay
+        setTimeout(() => {
+            const workSection = document.getElementById('work');
+            if (workSection) {
+                workSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 100);
+    }
+    
+    // Clean up any hash from URL after handling it
+    if (window.location.hash) {
+        history.replaceState(null, null, window.location.pathname);
+    }
+    
+    // Navigation functionality
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]'); // Select all sections with IDs
+    
+    // Smooth scroll navigation
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const targetSection = this.getAttribute('data-section');
+            const href = this.getAttribute('href');
+            
+            // If it has data-section, handle internal scroll navigation
+            if (targetSection) {
+                e.preventDefault();
+                const targetElement = document.getElementById(targetSection);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            }
+            // If it has href (external link), let it navigate normally
+            // No need to prevent default for external links
+        });
+    });
+    
+    // Update active navigation on scroll with better detection
+    let scrollTimeout;
+    
+    function updateActiveNavigation() {
+        const scrollPosition = window.scrollY + 200; // Offset for fixed header
+        let current = 'home'; // Default to home
+        
+        console.log('Sections found:', sections.length); // Debug
+        
+        // Check each section to find which one is currently in view
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            console.log(`Section ${sectionId}: ${sectionTop} - ${sectionBottom}, scroll: ${scrollPosition}`); // Debug
+            
+            // If scroll position is within this section
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                current = sectionId;
+            }
+        });
+        
+        console.log('Active section:', current); // Debug
+        
+        // Update navigation active states
+        navLinks.forEach(link => {
+            const wasActive = link.classList.contains('nav-active');
+            const targetSection = link.getAttribute('data-section');
+            const shouldBeActive = targetSection === current;
+            
+            if (shouldBeActive && !wasActive) {
+                link.classList.add('nav-active');
+                console.log('Activated nav:', targetSection); // Debug
+            } else if (!shouldBeActive && wasActive) {
+                link.classList.remove('nav-active');
+                console.log('Deactivated nav:', targetSection); // Debug
+            }
+        });
+    }
+    
+    // Throttled scroll handler
+    window.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateActiveNavigation, 50);
+    });
+    
+    // Initial call to set active navigation
+    updateActiveNavigation();
+    
+    // Initialize 3D hover effects for cyber cards
+    initializeCyberCardEffects();
+    
+    // Initialize sparkle background effect
+    initializeSparkleEffect();
 });
 
 // Load logo from Supabase
@@ -2231,13 +2313,7 @@ function loadLogo() {
 }
 
 // Also load when returning to the page (in case content was updated)
-document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-        loadDynamicContent();
-        loadLogo(); // Reload logo when page becomes visible
-        loadAssetsDirectly(); // Reload assets when page becomes visible
-    }
-});
+// Note: This is now handled in the main DOMContentLoaded event listener above
 
 // Optimized direct asset loading function - loads first file from logo/ and banner/ folders
 function loadAssetsDirectly() {
