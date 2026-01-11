@@ -951,7 +951,7 @@ Send Us a Message
 <script src="supabase-config.js"></script>
 <script src="website-assets.js"></script>
 <script>
-// Dynamic Project Loading Function
+// Dynamic Project Loading Function - Optimized for public metadata bucket
 async function loadDynamicProjects() {
     const portfolioGrid = document.getElementById('portfolio-grid');
     
@@ -964,13 +964,13 @@ async function loadDynamicProjects() {
         return;
     }
     
-    // Always try to get fresh data from Supabase first
-    console.log('☁️ Attempting to load from Supabase metadata bucket...');
-    const result = await getProjects();
+    // Use optimized public function for faster loading
+    console.log('🚀 Attempting to load from public metadata bucket...');
+    const result = await getProjectsPublic();
     
     if (result.success && result.data.length > 0) {
         const projects = result.data;
-        console.log('✅ Loaded projects from Supabase:', projects.length, 'projects');
+        console.log('✅ Loaded projects from public metadata bucket:', projects.length, 'projects');
         
         // Update localStorage with fresh data from Supabase
         localStorage.setItem('projects', JSON.stringify(projects));
@@ -984,8 +984,8 @@ async function loadDynamicProjects() {
         // Re-initialize portfolio functionality after loading
         initializePortfolioInteractions();
     } else {
-        console.log('📦 No projects in Supabase or error occurred, falling back to localStorage');
-        console.log('Supabase result:', result);
+        console.log('📦 No projects in public metadata bucket or error occurred, falling back to localStorage');
+        console.log('Public metadata result:', result);
         // Fallback to localStorage
         loadFromLocalStorage();
     }
@@ -1756,148 +1756,180 @@ function loadDynamicContent() {
     const supabase = configSupabase;
     console.log('✅ Supabase initialized on homepage, loading content...');
     
-    // Load website content from Supabase
-    supabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json')
-        .then(function(result) {
-            console.log('📥 Website content download result:', result);
-            if (result.error) {
-                console.log('ℹ️ No saved website content found in Supabase, using defaults');
-                console.log('❌ Download error:', result.error);
-                return;
-            }
-            
-            result.data.text().then(function(jsonText) {
+    // Optimized content loading with public URLs
+    Promise.all([
+        // Load website content
+        supabase.storage.from(SUPABASE_CONFIG.bucket).download('website-content.json'),
+        // Load team information
+        supabase.storage.from(SUPABASE_CONFIG.bucket).download('team-info.json')
+    ]).then(function([contentResult, teamResult]) {
+        
+        // Process website content
+        if (!contentResult.error && contentResult.data) {
+            contentResult.data.text().then(function(jsonText) {
                 const content = JSON.parse(jsonText);
                 console.log('📄 Found saved website content from Supabase:', content);
                 
-                // Update Hero Section
-                const heroTitle = document.querySelector('h1');
-                const heroSubtitle = document.querySelector('.text-primary');
-                const heroDescription = document.querySelector('.text-gray-400');
+                // Update Hero Section with optimized selectors
+                updateHeroSection(content);
                 
-                if (heroTitle && content.heroTitle) {
-                    heroTitle.textContent = content.heroTitle;
-                    console.log('✅ Updated hero title');
-                }
-                
-                if (heroSubtitle && content.heroSubtitle) {
-                    heroSubtitle.textContent = content.heroSubtitle;
-                    console.log('✅ Updated hero subtitle');
-                }
-                
-                if (heroDescription && content.heroDescription) {
-                    heroDescription.textContent = content.heroDescription;
-                    console.log('✅ Updated hero description');
-                }
-                
-                // Update Hero Banner
-                const heroBanner = document.querySelector('.hero-banner');
-                console.log('🖼️ Banner loading debug:', {
-                    heroBanner: !!heroBanner,
-                    bannerUrl: content.bannerUrl,
-                    fullContent: content
-                });
-                
-                if (heroBanner && content.bannerUrl) {
-                    // Load banner from Supabase storage
-                    const bannerUrl = supabase.storage
-                        .from(SUPABASE_CONFIG.bucket)
-                        .getPublicUrl('banner/' + content.bannerUrl);
-                    
-                    console.log('🖼️ Banner URL construction:', {
-                        bucket: SUPABASE_CONFIG.bucket,
-                        path: 'banner/' + content.bannerUrl,
-                        result: bannerUrl
-                    });
-                    
-                    if (bannerUrl.data && bannerUrl.data.publicUrl) {
-                        heroBanner.src = bannerUrl.data.publicUrl;
-                        console.log('✅ Updated hero banner from Supabase:', bannerUrl.data.publicUrl);
-                    } else {
-                        console.error('❌ Failed to get banner public URL:', bannerUrl);
-                    }
-                } else if (heroBanner) {
-                    console.log('ℹ️ No banner URL found in content, keeping default');
-                } else {
-                    console.error('❌ Hero banner element not found');
-                }
-                
-                // Update Logo
-                const websiteLogo = document.querySelector('.website-logo, .nav-logo');
-                console.log('📷 Logo loading debug:', {
-                    websiteLogo: !!websiteLogo,
-                    logoUrl: content.logoUrl
-                });
-                
-                if (websiteLogo && content.logoUrl) {
-                    // Load logo from Supabase storage
-                    const logoUrl = supabase.storage
-                        .from(SUPABASE_CONFIG.bucket)
-                        .getPublicUrl('logo/' + content.logoUrl);
-                    
-                    console.log('📷 Logo URL construction:', {
-                        bucket: SUPABASE_CONFIG.bucket,
-                        path: 'logo/' + content.logoUrl,
-                        result: logoUrl
-                    });
-                    
-                    if (logoUrl.data && logoUrl.data.publicUrl) {
-                        websiteLogo.src = logoUrl.data.publicUrl;
-                        console.log('✅ Updated website logo from Supabase:', logoUrl.data.publicUrl);
-                    } else {
-                        console.error('❌ Failed to get logo public URL:', logoUrl);
-                    }
-                } else if (websiteLogo) {
-                    console.log('ℹ️ No logo URL found in content, keeping default');
-                } else {
-                    console.error('❌ Website logo element not found');
-                }
+                // Update Logo and Banner with optimized public URLs
+                updateAssetsOptimized(content, supabase);
                 
                 // Update Portfolio Section
-                const portfolioTitle = document.querySelector('#work .text-white.text-4xl');
-                const portfolioDesc = document.querySelector('#work .text-neutral-400');
+                updatePortfolioSection(content);
                 
-                if (portfolioTitle && content.portfolioTitle) {
-                    portfolioTitle.textContent = content.portfolioTitle;
-                    console.log('✅ Updated portfolio title');
-                }
-                
-                if (portfolioDesc && content.portfolioDescription) {
-                    portfolioDesc.textContent = content.portfolioDescription;
-                    console.log('✅ Updated portfolio description');
-                }
-                
-                // Cache content for faster loading on next visit
+                // Cache content for faster loading
                 sessionStorage.setItem('extoll_index_content', jsonText);
                 
                 // Update contact elements
                 updateIndexContactElements(content);
                 
                 console.log('✅ Website content updated from Supabase');
+            }).catch(function(error) {
+                console.error('❌ Error parsing website content:', error);
             });
-        })
-        .catch(function(error) {
-            console.error('❌ Error loading website content from Supabase:', error);
-        });
-    
-    // Load team information from Supabase
-    supabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .download('team-info.json')
-        .then(function(result) {
-            if (result.error) {
-                console.log('ℹ️ No saved team info found in Supabase, using defaults');
-                return;
-            }
-            
-            result.data.text().then(function(jsonText) {
+        } else {
+            console.log('ℹ️ No saved website content found, using defaults');
+        }
+        
+        // Process team information
+        if (!teamResult.error && teamResult.data) {
+            teamResult.data.text().then(function(jsonText) {
                 const team = JSON.parse(jsonText);
                 console.log('👥 Found saved team info from Supabase:', team);
-                
-                // Update team section title - find h3 that contains "Team"
-                const teamTitles = document.querySelectorAll('h3');
+                updateTeamSection(team);
+                console.log('✅ Team information updated from Supabase');
+            }).catch(function(error) {
+                console.error('❌ Error parsing team info:', error);
+            });
+        } else {
+            console.log('ℹ️ No saved team info found, using defaults');
+        }
+        
+    }).catch(function(error) {
+        console.error('❌ Error loading content from Supabase:', error);
+    });
+}
+
+// Optimized helper functions for better performance
+function updateHeroSection(content) {
+    const heroTitle = document.querySelector('h1');
+    const heroSubtitle = document.querySelector('.text-primary');
+    const heroDescription = document.querySelector('.text-gray-400');
+    
+    if (heroTitle && content.heroTitle) {
+        heroTitle.textContent = content.heroTitle;
+        console.log('✅ Updated hero title');
+    }
+    
+    if (heroSubtitle && content.heroSubtitle) {
+        heroSubtitle.textContent = content.heroSubtitle;
+        console.log('✅ Updated hero subtitle');
+    }
+    
+    if (heroDescription && content.heroDescription) {
+        heroDescription.textContent = content.heroDescription;
+        console.log('✅ Updated hero description');
+    }
+}
+
+function updateAssetsOptimized(content, supabase) {
+    // Update Banner with optimized public URL
+    const heroBanner = document.querySelector('.hero-banner');
+    if (heroBanner && content.bannerUrl) {
+        const bannerPublicUrl = supabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .getPublicUrl('banner/' + content.bannerUrl);
+        
+        if (bannerPublicUrl.data?.publicUrl) {
+            heroBanner.src = bannerPublicUrl.data.publicUrl;
+            heroBanner.loading = 'eager'; // Prioritize banner loading
+            console.log('✅ Updated hero banner');
+        }
+    }
+    
+    // Update Logo with optimized public URL
+    const websiteLogo = document.querySelector('.website-logo, .nav-logo');
+    if (websiteLogo && content.logoUrl) {
+        const logoPublicUrl = supabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .getPublicUrl('logo/' + content.logoUrl);
+        
+        if (logoPublicUrl.data?.publicUrl) {
+            websiteLogo.src = logoPublicUrl.data.publicUrl;
+            websiteLogo.loading = 'eager'; // Prioritize logo loading
+            console.log('✅ Updated website logo');
+        }
+    }
+}
+
+function updatePortfolioSection(content) {
+    const portfolioTitle = document.querySelector('#work .text-white.text-4xl');
+    const portfolioDesc = document.querySelector('#work .text-neutral-400');
+    
+    if (portfolioTitle && content.portfolioTitle) {
+        portfolioTitle.textContent = content.portfolioTitle;
+        console.log('✅ Updated portfolio title');
+    }
+    
+    if (portfolioDesc && content.portfolioDescription) {
+        portfolioDesc.textContent = content.portfolioDescription;
+        console.log('✅ Updated portfolio description');
+    }
+}
+
+function updateTeamSection(team) {
+    // Update team section title
+    const teamTitles = document.querySelectorAll('h3');
+    teamTitles.forEach(function(title) {
+        if (title.textContent.includes('Team') || title.textContent.includes('Capabilities')) {
+            if (team.sectionTitle) {
+                title.textContent = team.sectionTitle;
+                console.log('✅ Updated team section title');
+            }
+        }
+    });
+    
+    // Find and update team grid
+    const teamGrids = document.querySelectorAll('.grid');
+    let teamGrid = null;
+    
+    teamGrids.forEach(function(grid) {
+        const hasTeamCards = grid.querySelector('.bg-white\\/5');
+        if (hasTeamCards && grid.parentElement.querySelector('h3')) {
+            const parentH3 = grid.parentElement.querySelector('h3');
+            if (parentH3 && (parentH3.textContent.includes('Team') || parentH3.textContent.includes('Capabilities'))) {
+                teamGrid = grid;
+            }
+        }
+    });
+    
+    if (teamGrid && team.members && Array.isArray(team.members)) {
+        console.log('👥 Updating team members with optimized rendering');
+        
+        // Use DocumentFragment for better performance
+        const fragment = document.createDocumentFragment();
+        
+        team.members.forEach(function(member) {
+            if (member.name || member.role) {
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'bg-white/5 p-6 rounded-lg border border-white/10';
+                memberDiv.innerHTML = `
+                    <h4 class="text-primary font-semibold text-lg mb-2">${member.name || 'Team Member'}</h4>
+                    <p class="text-white/80 text-sm leading-relaxed">${member.role || 'Role description not available.'}</p>
+                `;
+                fragment.appendChild(memberDiv);
+            }
+        });
+        
+        // Clear and update in one operation
+        teamGrid.innerHTML = '';
+        teamGrid.appendChild(fragment);
+        
+        console.log('✅ Updated team members - added', team.members.length, 'members');
+    }
+}
                 teamTitles.forEach(function(title) {
                     if (title.textContent.includes('Team') || title.textContent.includes('Capabilities')) {
                         if (team.sectionTitle) {
@@ -2055,7 +2087,7 @@ document.addEventListener('visibilitychange', function() {
     }
 });
 
-// Direct asset loading function - loads first file from logo/ and banner/ folders
+// Optimized direct asset loading function - loads first file from logo/ and banner/ folders
 function loadAssetsDirectly() {
     console.log('🔄 Loading assets directly from Supabase...');
     
@@ -2068,57 +2100,53 @@ function loadAssetsDirectly() {
     
     const supabase = configSupabase;
     
-    // Load logo
-    supabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .list('logo')
-        .then(function(result) {
-            if (result.data && result.data.length > 0) {
-                const logoFile = result.data[0].name;
-                const logoUrl = supabase.storage
-                    .from(SUPABASE_CONFIG.bucket)
-                    .getPublicUrl('logo/' + logoFile);
-                
-                if (logoUrl.data && logoUrl.data.publicUrl) {
-                    const logoElement = document.querySelector('.website-logo, .nav-logo');
-                    if (logoElement) {
-                        logoElement.src = logoUrl.data.publicUrl;
-                        console.log('✅ Logo loaded:', logoUrl.data.publicUrl);
-                    }
+    // Optimized parallel loading of logo and banner
+    Promise.all([
+        supabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
+        supabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+    ]).then(function([logoResult, bannerResult]) {
+        
+        // Process logo with optimized public URL
+        if (logoResult.data && logoResult.data.length > 0) {
+            const logoFile = logoResult.data[0].name;
+            const logoPublicUrl = supabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl('logo/' + logoFile);
+            
+            if (logoPublicUrl.data?.publicUrl) {
+                const logoElement = document.querySelector('.website-logo, .nav-logo');
+                if (logoElement) {
+                    logoElement.src = logoPublicUrl.data.publicUrl;
+                    logoElement.loading = 'eager'; // Prioritize logo loading
+                    console.log('✅ Logo loaded directly');
                 }
-            } else {
-                console.log('ℹ️ No logo files found');
             }
-        })
-        .catch(function(error) {
-            console.error('❌ Error loading logo:', error);
-        });
-    
-    // Load banner
-    supabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .list('banner')
-        .then(function(result) {
-            if (result.data && result.data.length > 0) {
-                const bannerFile = result.data[0].name;
-                const bannerUrl = supabase.storage
-                    .from(SUPABASE_CONFIG.bucket)
-                    .getPublicUrl('banner/' + bannerFile);
-                
-                if (bannerUrl.data && bannerUrl.data.publicUrl) {
-                    const bannerElement = document.querySelector('.hero-banner');
-                    if (bannerElement) {
-                        bannerElement.src = bannerUrl.data.publicUrl;
-                        console.log('✅ Banner loaded:', bannerUrl.data.publicUrl);
-                    }
+        } else {
+            console.log('ℹ️ No logo files found');
+        }
+        
+        // Process banner with optimized public URL
+        if (bannerResult.data && bannerResult.data.length > 0) {
+            const bannerFile = bannerResult.data[0].name;
+            const bannerPublicUrl = supabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl('banner/' + bannerFile);
+            
+            if (bannerPublicUrl.data?.publicUrl) {
+                const bannerElement = document.querySelector('.hero-banner');
+                if (bannerElement) {
+                    bannerElement.src = bannerPublicUrl.data.publicUrl;
+                    bannerElement.loading = 'eager'; // Prioritize banner loading
+                    console.log('✅ Banner loaded directly');
                 }
-            } else {
-                console.log('ℹ️ No banner files found');
             }
-        })
-        .catch(function(error) {
-            console.error('❌ Error loading banner:', error);
-        });
+        } else {
+            console.log('ℹ️ No banner files found');
+        }
+        
+    }).catch(function(error) {
+        console.error('❌ Error loading assets directly:', error);
+    });
 }
 </script>
 
