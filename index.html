@@ -951,7 +951,7 @@ Send Us a Message
 <script src="supabase-config.js"></script>
 <script src="website-assets.js"></script>
 <script>
-// Dynamic Project Loading Function - Optimized for public access
+// Dynamic Project Loading Function - Simplified for public metadata bucket
 async function loadDynamicProjects() {
     const portfolioGrid = document.getElementById('portfolio-grid');
     
@@ -964,64 +964,54 @@ async function loadDynamicProjects() {
         return;
     }
     
-    // Try multiple methods to load projects for public users
-    console.log('🚀 Attempting to load projects with public access...');
+    // Since metadata bucket is now public, use getProjectsPublic directly
+    console.log('🚀 Loading from public metadata bucket (no auth required)...');
     
-    let result = null;
-    
-    // Method 1: Try to load from public metadata bucket
     try {
-        result = await loadProjectsFromPublicBucket();
-        if (result.success && result.data.length > 0) {
-            console.log('✅ Loaded projects from public bucket method');
+        const result = await getProjectsPublic();
+        console.log('📊 getProjectsPublic result:', result);
+        
+        if (result.success && result.data && result.data.length > 0) {
+            const projects = result.data;
+            console.log('✅ Successfully loaded', projects.length, 'projects from public metadata bucket');
+            
+            // Update localStorage with fresh data
+            localStorage.setItem('projects', JSON.stringify(projects));
+            console.log('💾 Updated localStorage with fresh Supabase data');
+            
+            // Generate project cards
+            portfolioGrid.innerHTML = projects.map(project => {
+                return createProjectCard(project);
+            }).join('');
+            
+            // Re-initialize portfolio functionality
+            initializePortfolioInteractions();
+            
+            console.log('🎉 Portfolio loaded successfully for public user');
+        } else {
+            console.log('📦 No projects found in public metadata bucket, trying fallback methods...');
+            
+            // Try the new public bucket scanning method as fallback
+            const fallbackResult = await loadProjectsFromPublicBucket();
+            console.log('📊 Fallback result:', fallbackResult);
+            
+            if (fallbackResult.success && fallbackResult.data.length > 0) {
+                const projects = fallbackResult.data;
+                console.log('✅ Loaded', projects.length, 'projects from fallback method');
+                
+                localStorage.setItem('projects', JSON.stringify(projects));
+                portfolioGrid.innerHTML = projects.map(project => {
+                    return createProjectCard(project);
+                }).join('');
+                initializePortfolioInteractions();
+            } else {
+                console.log('📦 All Supabase methods failed, falling back to localStorage');
+                loadFromLocalStorage();
+            }
         }
     } catch (error) {
-        console.log('⚠️ Public bucket method failed:', error.message);
-    }
-    
-    // Method 2: Fallback to getProjectsPublic if first method fails
-    if (!result || !result.success || result.data.length === 0) {
-        try {
-            result = await getProjectsPublic();
-            if (result.success && result.data.length > 0) {
-                console.log('✅ Loaded projects from getProjectsPublic method');
-            }
-        } catch (error) {
-            console.log('⚠️ getProjectsPublic method failed:', error.message);
-        }
-    }
-    
-    // Method 3: Final fallback to regular getProjects (for authenticated users)
-    if (!result || !result.success || result.data.length === 0) {
-        try {
-            result = await getProjects();
-            if (result.success && result.data.length > 0) {
-                console.log('✅ Loaded projects from authenticated method');
-            }
-        } catch (error) {
-            console.log('⚠️ Authenticated method failed:', error.message);
-        }
-    }
-    
-    if (result && result.success && result.data.length > 0) {
-        const projects = result.data;
-        console.log('✅ Final result: Loaded', projects.length, 'projects');
-        
-        // Update localStorage with fresh data from Supabase
-        localStorage.setItem('projects', JSON.stringify(projects));
-        console.log('💾 Updated localStorage with fresh Supabase data');
-        
-        // Generate project cards dynamically
-        portfolioGrid.innerHTML = projects.map(project => {
-            return createProjectCard(project);
-        }).join('');
-        
-        // Re-initialize portfolio functionality after loading
-        initializePortfolioInteractions();
-    } else {
-        console.log('📦 All methods failed, falling back to localStorage');
-        console.log('Final result:', result);
-        // Fallback to localStorage
+        console.error('❌ Error loading projects:', error);
+        console.log('📦 Error occurred, falling back to localStorage');
         loadFromLocalStorage();
     }
 }
@@ -1153,8 +1143,10 @@ function loadFromLocalStorage() {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     
     console.log('📦 Loading from localStorage:', projects.length, 'projects found');
+    console.log('📦 localStorage projects:', projects);
     
     if (projects.length === 0) {
+        console.log('📦 No projects in localStorage, showing empty state');
         showEmptyState();
         return;
     }
@@ -1170,12 +1162,16 @@ function loadFromLocalStorage() {
 
 function showEmptyState() {
     const portfolioGrid = document.getElementById('portfolio-grid');
+    console.log('🚫 Showing empty state - no projects found anywhere');
     portfolioGrid.innerHTML = `
         <div class="col-span-full text-center py-20">
             <div class="glass-card p-12 rounded-xl max-w-md mx-auto">
                 <div class="text-6xl mb-6">🎨</div>
                 <h3 class="text-2xl font-bold text-white mb-4">No Projects Yet</h3>
                 <p class="text-gray-400 mb-6">Check back soon for our latest creative work and projects.</p>
+                <button onclick="loadDynamicProjects()" class="bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors">
+                    Try Again
+                </button>
             </div>
         </div>
     `;
