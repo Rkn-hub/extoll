@@ -186,9 +186,15 @@ let currentFilter = 'all';
 
 // Load all projects on page load
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Portfolio page loaded, initializing...');
     loadAllProjects();
     setupMobileMenu();
     loadLogo();
+    
+    // Debug: Check if elements exist
+    console.log('📋 Debug - Portfolio grid element:', document.getElementById('portfolio-grid'));
+    console.log('📋 Debug - Header element:', document.querySelector('header'));
+    console.log('📋 Debug - Mobile menu button:', document.getElementById('mobile-menu-btn'));
 });
 
 // Load all projects from Supabase
@@ -246,6 +252,35 @@ function loadFromLocalStorage() {
     allProjects = projects;
     filteredProjects = [...allProjects];
     console.log('📦 Loaded', allProjects.length, 'projects from localStorage');
+    
+    if (allProjects.length === 0) {
+        // Show some sample projects if nothing is available
+        console.log('📦 No projects found, showing sample projects');
+        allProjects = [
+            {
+                id: 'sample-1',
+                key: 'sample-project-1',
+                title: 'Sample Graphics Project',
+                category: 'graphics',
+                description: 'A beautiful graphics design project showcasing creative solutions.',
+                count: 5,
+                thumbnail_url: null,
+                created_at: new Date().toISOString()
+            },
+            {
+                id: 'sample-2', 
+                key: 'sample-project-2',
+                title: 'Sample UI Design',
+                category: 'ui',
+                description: 'Modern UI/UX design for web applications.',
+                count: 8,
+                thumbnail_url: null,
+                created_at: new Date().toISOString()
+            }
+        ];
+        filteredProjects = [...allProjects];
+    }
+    
     displayProjects();
     setupFilters();
 }
@@ -339,16 +374,25 @@ function setupMobileMenu() {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     
-    mobileMenuBtn.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-    });
+    console.log('📱 Setting up mobile menu...', { mobileMenuBtn, mobileMenu });
     
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-            mobileMenu.classList.add('hidden');
-        }
-    });
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+            console.log('📱 Mobile menu button clicked');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+        
+        console.log('✅ Mobile menu setup complete');
+    } else {
+        console.error('❌ Mobile menu elements not found');
+    }
 }
 
 // Load logo from Supabase
@@ -380,6 +424,189 @@ function loadLogo() {
         .catch(function(error) {
             console.error('Error loading logo:', error);
         });
+}
+
+// Load projects directly from public portfolio bucket
+async function loadProjectsFromPublicBucket() {
+    try {
+        console.log('🔍 Scanning public portfolio bucket for projects...');
+        
+        const supabase = configSupabase;
+        
+        // List all folders in the main portfolio bucket (each folder is a project)
+        const { data: folders, error: listError } = await supabase.storage
+            .from(SUPABASE_CONFIG.bucket) // extoll-portfolio bucket
+            .list('', {
+                limit: 100,
+                sortBy: { column: 'created_at', order: 'desc' }
+            });
+        
+        if (listError) {
+            console.error('❌ Failed to list portfolio bucket:', listError.message);
+            return { success: false, error: listError.message };
+        }
+        
+        if (!folders || folders.length === 0) {
+            console.log('📁 No folders found in portfolio bucket');
+            return { success: true, data: [] };
+        }
+        
+        console.log('📂 Found', folders.length, 'items in portfolio bucket');
+        
+        // Filter out non-project folders (like website-assets, logo, banner)
+        const projectFolders = folders.filter(folder => 
+            folder.name && 
+            !folder.name.startsWith('website-assets') &&
+            !folder.name.startsWith('logo') &&
+            !folder.name.startsWith('banner') &&
+            folder.name !== 'logo' &&
+            folder.name !== 'banner'
+        );
+        
+        console.log('🎯 Found', projectFolders.length, 'potential project folders');
+        
+        const projects = [];
+        
+        // For each project folder, try to get project info
+        for (const folder of projectFolders) {
+            try {
+                const projectKey = folder.name;
+                
+                // Try to find a thumbnail file
+                const { data: files, error: filesError } = await supabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .list(projectKey, { limit: 50 });
+                
+                if (!filesError && files && files.length > 0) {
+                    // Find thumbnail file
+                    const thumbnailFile = files.find(file => 
+                        file.name.startsWith('thumb-') || 
+                        file.name.includes('thumbnail')
+                    );
+                    
+                    let thumbnailUrl = null;
+                    if (thumbnailFile) {
+                        const { data: thumbUrlData } = supabase.storage
+                            .from(SUPABASE_CONFIG.bucket)
+                            .getPublicUrl(`${projectKey}/${thumbnailFile.name}`);
+                        thumbnailUrl = thumbUrlData?.publicUrl;
+                    }
+                    
+                    // Count non-thumbnail files
+                    const projectFiles = files.filter(file => 
+                        !file.name.startsWith('thumb-') && 
+                        !file.name.includes('thumbnail')
+                    );
+                    
+                    // Create a basic project object
+                    const project = {
+                        id: projectKey,
+                        key: projectKey,
+                        title: projectKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                        category: 'graphics', // Default category
+                        description: `Project: ${projectKey}`,
+                        count: projectFiles.length,
+                        thumbnail_url: thumbnailUrl,
+                        created_at: folder.created_at || new Date().toISOString()
+                    };
+                    
+                    projects.push(project);
+                    console.log('✅ Added project:', project.title, `(${project.count} files)`);
+                }
+            } catch (projectError) {
+                console.warn('⚠️ Failed to process project folder:', folder.name, projectError.message);
+            }
+        }
+        
+        console.log(`🎉 Successfully loaded ${projects.length} projects from public bucket`);
+        return { success: true, data: projects };
+        
+    } catch (error) {
+        console.error('❌ Public bucket loading failed:', error.message);
+        return { success: false, error: error.message };
+    }
+}
+
+// Create project card HTML
+function createProjectCard(project) {
+    // Create thumbnail HTML
+    let thumbnailHtml;
+    if (project.thumbnail_url) {
+        thumbnailHtml = `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-48 object-cover rounded-lg">`;
+    } else {
+        // Default thumbnail with project initial
+        const initial = project.title ? project.title.charAt(0).toUpperCase() : 'P';
+        thumbnailHtml = `
+            <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-primary/40 rounded-lg flex items-center justify-center">
+                <span class="text-4xl font-bold text-white">${initial}</span>
+            </div>
+        `;
+    }
+    
+    // Get category display name
+    const categoryDisplay = getCategoryDisplayName(project.category || 'graphics');
+    
+    return `
+        <div class="portfolio-item bg-card-dark rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-300 cursor-pointer group" 
+             data-category="${project.category || 'graphics'}" 
+             data-project="${project.key}">
+            <div class="relative overflow-hidden">
+                ${thumbnailHtml}
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                <div class="absolute top-4 right-4 bg-primary/90 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    ${categoryDisplay}
+                </div>
+            </div>
+            <div class="p-6">
+                <h3 class="text-white text-lg font-bold mb-2 group-hover:text-primary transition-colors">${project.title}</h3>
+                <p class="text-gray-400 text-sm mb-4 line-clamp-2">${project.description || 'Creative design project showcasing innovative solutions.'}</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-primary text-sm font-medium">${project.count || 1} ${(project.count || 1) === 1 ? 'Item' : 'Items'}</span>
+                    <div class="flex items-center text-gray-400 text-xs">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        ${new Date(project.created_at).toLocaleDateString()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Helper function to get display names for categories
+function getCategoryDisplayName(category) {
+    const categoryMap = {
+        'graphics': 'Graphics Design',
+        'product': 'Product Design', 
+        'ui': 'UI/UX Design',
+        'animation': '2D Animation',
+        'video': 'Video Editing'
+    };
+    return categoryMap[category] || 'Design';
+}
+
+// Initialize portfolio interactions (clicking)
+function initializePortfolioInteractions() {
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    // Project click handlers
+    portfolioItems.forEach((item, index) => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const projectKey = this.getAttribute('data-project');
+            
+            // Navigate to project page with project parameter
+            if (projectKey) {
+                window.location.href = `project.html?project=${projectKey}`;
+            }
+        });
+        
+        // Ensure cursor is pointer
+        item.style.cursor = 'pointer';
+    });
 }
 </script>
 
