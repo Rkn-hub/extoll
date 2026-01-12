@@ -586,7 +586,7 @@
             Home
             <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
           </a>
-          <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" data-section="work">Portfolio</a>
+          <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="portfolio.html">Portfolio</a>
           <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" href="services.html">Services</a>
           <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal" data-section="about">About</a>
         </div>
@@ -610,7 +610,7 @@
   <div id="mobileMenu" class="md:hidden hidden bg-background-dark/95 backdrop-blur-md border-t border-white/10">
     <div class="px-4 py-6 space-y-4">
       <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" data-section="home">Home</a>
-      <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" data-section="work">Portfolio</a>
+      <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" href="portfolio.html">Portfolio</a>
       <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" href="services.html">Services</a>
       <a class="mobile-nav-link block text-white/80 text-lg font-medium py-3 px-2 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer" data-section="about">About</a>
       <div class="pt-4 border-t border-white/10">
@@ -673,36 +673,24 @@
 <div class="flex flex-col gap-16 py-12 md:py-20 lg:py-24">
 <div class="flex flex-wrap justify-between items-center gap-6 px-4">
 <div class="flex flex-col gap-4">
-<p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Portfolio</p>
-<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">Showcase of our creative work and professional projects across various design disciplines.</p>
+<p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Featured Work</p>
+<p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">A selection of our best creative work and professional projects.</p>
 </div>
 </div>
 <div class="flex flex-col gap-12">
-<div class="flex flex-col gap-6">
-<div class="border-b border-solid border-neutral-800/50"></div>
-<div class="flex gap-2 p-3 flex-wrap">
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4" data-filter="all">
-<p class="text-white text-sm font-medium leading-normal">All</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="graphics">
-<p class="text-neutral-300 text-sm font-medium leading-normal">Graphics Design</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="product">
-<p class="text-neutral-300 text-sm font-medium leading-normal">Product Design</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="ui">
-<p class="text-neutral-300 text-sm font-medium leading-normal">UI/UX Design</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="animation">
-<p class="text-neutral-300 text-sm font-medium leading-normal">2D Animation</p>
-</div>
-<div class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[#141a1e] pl-4 pr-4 border border-transparent hover:border-neutral-700" data-filter="video">
-<p class="text-neutral-300 text-sm font-medium leading-normal">Video Editing</p>
-</div>
-</div>
-</div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 px-4 py-8" id="portfolio-grid">
-<!-- Projects will be dynamically loaded from admin panel -->
+<!-- Featured projects will be dynamically loaded -->
+</div>
+
+<!-- View All Portfolio Button -->
+<div class="flex justify-center py-4">
+<a href="portfolio.html" class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors cursor-pointer inline-flex items-center gap-2">
+View All Projects
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</a>
+</div>
 </div>
 </div>
 </div>
@@ -952,26 +940,11 @@ Send Us a Message
 <script src="website-assets.js?v=2024011101"></script>
 <script>
 // Dynamic Project Loading Function - Simplified for public metadata bucket
+// Dynamic Featured Projects Loading Function - Shows only 6 featured projects on homepage
 async function loadDynamicProjects() {
     const portfolioGrid = document.getElementById('portfolio-grid');
     
-    console.log('🔄 Loading projects for portfolio...');
-    
-    // Enhanced cache clearing - remove all potentially suspicious cached data
-    console.log('🧹 Clearing all cached project data...');
-    localStorage.removeItem('projects');
-    localStorage.removeItem('extoll_projects');
-    sessionStorage.removeItem('extoll_index_content');
-    sessionStorage.removeItem('portfolioFilter');
-    
-    // Also clear any cached projects that might contain suspicious entries
-    const allLocalStorageKeys = Object.keys(localStorage);
-    allLocalStorageKeys.forEach(key => {
-        if (key.includes('project') || key.includes('portfolio')) {
-            localStorage.removeItem(key);
-            console.log('🧹 Cleared suspicious cache key:', key);
-        }
-    });
+    console.log('🔄 Loading featured projects for homepage...');
     
     // Initialize Supabase
     if (!initializeSupabase()) {
@@ -988,27 +961,26 @@ async function loadDynamicProjects() {
         console.log('📊 getProjectsPublic result:', result);
         
         if (result.success && result.data && result.data.length > 0) {
-            const projects = result.data;
+            let projects = result.data;
             console.log('✅ Successfully loaded', projects.length, 'projects from public portfolio bucket');
             
-            // Log each project for debugging
-            projects.forEach((project, index) => {
-                console.log(`  ${index + 1}. ${project.title} (key: ${project.key})`);
-            });
+            // Limit to 6 featured projects for homepage
+            const featuredProjects = projects.slice(0, 6);
+            console.log('🌟 Showing', featuredProjects.length, 'featured projects on homepage');
             
-            // Update localStorage with fresh data
+            // Update localStorage with all projects (for portfolio page)
             localStorage.setItem('projects', JSON.stringify(projects));
-            console.log('💾 Updated localStorage with fresh Supabase data');
+            console.log('💾 Updated localStorage with all project data');
             
-            // Generate project cards
-            portfolioGrid.innerHTML = projects.map(project => {
+            // Generate featured project cards only
+            portfolioGrid.innerHTML = featuredProjects.map(project => {
                 return createProjectCard(project);
             }).join('');
             
-            // Re-initialize portfolio functionality
-            initializePortfolioInteractions();
+            // Re-initialize portfolio functionality (simplified for homepage)
+            initializeFeaturedPortfolioInteractions();
             
-            console.log('🎉 Portfolio loaded successfully for public user');
+            console.log('🎉 Featured portfolio loaded successfully for homepage');
         } else {
             console.log('📦 No projects found in public portfolio bucket, trying fallback methods...');
             
@@ -1017,19 +989,18 @@ async function loadDynamicProjects() {
             console.log('📊 Fallback result:', fallbackResult);
             
             if (fallbackResult.success && fallbackResult.data.length > 0) {
-                const projects = fallbackResult.data;
+                let projects = fallbackResult.data;
                 console.log('✅ Loaded', projects.length, 'projects from fallback method');
                 
-                // Log each project for debugging
-                projects.forEach((project, index) => {
-                    console.log(`  ${index + 1}. ${project.title} (key: ${project.key})`);
-                });
+                // Limit to 6 featured projects for homepage
+                const featuredProjects = projects.slice(0, 6);
+                console.log('🌟 Showing', featuredProjects.length, 'featured projects from fallback');
                 
                 localStorage.setItem('projects', JSON.stringify(projects));
-                portfolioGrid.innerHTML = projects.map(project => {
+                portfolioGrid.innerHTML = featuredProjects.map(project => {
                     return createProjectCard(project);
                 }).join('');
-                initializePortfolioInteractions();
+                initializeFeaturedPortfolioInteractions();
             } else {
                 console.log('📦 All Supabase methods failed, falling back to localStorage');
                 loadFromLocalStorage();
@@ -1237,55 +1208,24 @@ function loadFromLocalStorage() {
     const portfolioGrid = document.getElementById('portfolio-grid');
     const allProjects = JSON.parse(localStorage.getItem('projects') || '[]');
     
-    console.log('📦 Loading from localStorage:', allProjects.length, 'projects found');
+    console.log('📦 Loading featured projects from localStorage:', allProjects.length, 'total projects found');
     
-    // Enhanced filtering for localStorage - remove any suspicious projects
-    const validProjects = allProjects.filter(project => {
-        if (!project.title || !project.key) {
-            console.log('🚫 Filtering out project with missing title/key:', project);
-            return false;
-        }
-        
-        const titleLower = project.title.toLowerCase();
-        const keyLower = project.key.toLowerCase();
-        
-        // Filter out suspicious projects
-        if (titleLower.includes('document') ||
-            titleLower.includes('json') ||
-            keyLower.includes('document') ||
-            keyLower.includes('json') ||
-            project.key.endsWith('.json') ||
-            titleLower.includes('website-config') ||
-            titleLower.includes('website-assets') ||
-            ['website-assets', 'website-config', 'logo', 'banner'].includes(project.key)) {
-            
-            console.log('🚫 Filtering out suspicious localStorage project:', project.title, project.key);
-            return false;
-        }
-        
-        return true;
-    });
-    
-    console.log('📦 After filtering:', validProjects.length, 'valid projects');
-    
-    if (validProjects.length === 0) {
-        console.log('📦 No valid projects in localStorage, showing empty state');
+    if (allProjects.length === 0) {
+        console.log('📦 No projects in localStorage, showing empty state');
         showEmptyState();
         return;
     }
     
-    // Update localStorage with filtered projects
-    if (validProjects.length !== allProjects.length) {
-        localStorage.setItem('projects', JSON.stringify(validProjects));
-        console.log('🧹 Updated localStorage with filtered projects');
-    }
+    // Limit to 6 featured projects for homepage
+    const featuredProjects = allProjects.slice(0, 6);
+    console.log('🌟 Showing', featuredProjects.length, 'featured projects from localStorage');
     
-    portfolioGrid.innerHTML = validProjects.map(project => {
+    portfolioGrid.innerHTML = featuredProjects.map(project => {
         return createProjectCard(project);
     }).join('');
     
-    console.log('✅ Portfolio loaded from localStorage with', validProjects.length, 'valid projects');
-    initializePortfolioInteractions();
+    console.log('✅ Featured portfolio loaded from localStorage');
+    initializeFeaturedPortfolioInteractions();
 }
 
 function showEmptyState() {
@@ -1431,6 +1371,31 @@ function initializePortfolioInteractions() {
         // Ensure cursor is pointer
         item.style.cursor = 'pointer';
     });
+}
+
+// Simplified portfolio interactions for homepage featured projects (no filtering)
+function initializeFeaturedPortfolioInteractions() {
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    // Project click handlers only (no filtering needed for featured projects)
+    portfolioItems.forEach((item, index) => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const projectKey = this.getAttribute('data-project');
+            
+            // Navigate to project page with project parameter
+            if (projectKey) {
+                window.location.href = `project.html?project=${projectKey}`;
+            }
+        });
+        
+        // Ensure cursor is pointer
+        item.style.cursor = 'pointer';
+    });
+    
+    console.log('✅ Featured portfolio interactions initialized for', portfolioItems.length, 'projects');
 }
 
 /* REMOVED: Duplicate DOMContentLoaded block - functionality moved to consolidated block below
