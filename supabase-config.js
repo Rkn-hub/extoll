@@ -9,21 +9,34 @@ const SUPABASE_CONFIG = {
     adminEmail: 'rkachal2k4@gmail.com', // Your admin email
     adminPassword: 'Ritesh12@', // Your admin password
     
-    // Storage bucket configuration - Single bucket with structured folders
+    // Single bucket configuration with structured project folders
     bucket: 'extoll-portfolio', // Main bucket name (public)
-    metadataBucket: 'extoll-metadata', // Metadata bucket (now public for better performance)
-    folders: {
-        thumbnail: 'thumbnail',
-        images: 'images', 
-        videos: 'videos'
+    
+    // Project folder structure within the bucket
+    projectStructure: {
+        metadata: 'project.json',    // Project metadata file in each project folder
+        thumbnail: 'thumbnail',      // Thumbnail subfolder
+        images: 'images',           // Images subfolder
+        videos: 'videos'            // Videos subfolder
     },
-    // Website assets folder (not project-specific)
+    
+    // Website global settings and assets
     websiteAssets: {
         folder: 'website-assets',
         subfolders: {
             logo: 'logo',
             banner: 'banner',
             icons: 'icons'
+        }
+    },
+    
+    // Global website configuration files
+    globalSettings: {
+        folder: 'website-config',
+        files: {
+            content: 'website-content.json',    // Website content settings
+            team: 'team-info.json',            // Team information
+            social: 'social-links.json'        // Social media links
         }
     }
 };
@@ -138,10 +151,10 @@ async function getCurrentUser() {
     }
 }
 
-// Function to test metadata bucket access
-async function testMetadataBucketAccess() {
+// Function to test portfolio bucket access
+async function testPortfolioBucketAccess() {
     try {
-        console.log('🧪 Testing metadata bucket access...');
+        console.log('🧪 Testing portfolio bucket access...');
         
         // Ensure Supabase is initialized first
         if (!configSupabase) {
@@ -151,16 +164,16 @@ async function testMetadataBucketAccess() {
             }
         }
         
-        // Try to list files in metadata bucket
+        // Try to list files in portfolio bucket
         const { data, error } = await configSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
-            .list('projects', { limit: 1 });
+            .from(SUPABASE_CONFIG.bucket)
+            .list('', { limit: 1 });
         
         if (error) {
-            console.error('❌ Metadata bucket access failed:', error.message);
+            console.error('❌ Portfolio bucket access failed:', error.message);
             
             if (error.message.includes('not found')) {
-                console.error('💡 Solution: Create the extoll-metadata bucket in Supabase Storage');
+                console.error('💡 Solution: Create the extoll-portfolio bucket in Supabase Storage');
             } else if (error.message.includes('access denied') || error.message.includes('unauthorized')) {
                 console.error('💡 Solution: Check bucket policies and authentication');
             }
@@ -168,10 +181,10 @@ async function testMetadataBucketAccess() {
             return { success: false, error: error.message };
         }
         
-        console.log('✅ Metadata bucket access successful');
+        console.log('✅ Portfolio bucket access successful');
         return { success: true, data };
     } catch (error) {
-        console.error('❌ Metadata bucket test failed:', error.message);
+        console.error('❌ Portfolio bucket test failed:', error.message);
         return { success: false, error: error.message };
     }
 }
@@ -221,24 +234,24 @@ async function createProject(projectData) {
             console.warn('⚠️ Failed to save to database, continuing with metadata only:', dbError.message);
         }
         
-        // Also save to metadata bucket (for admin panel compatibility)
+        // Save project metadata to portfolio bucket in project folder
         try {
-            const metadataFileName = `projects/${projectData.key}.json`;
+            const metadataPath = `${projectData.key}/${SUPABASE_CONFIG.projectStructure.metadata}`;
             
             const { data, error } = await configSupabase.storage
-                .from(SUPABASE_CONFIG.metadataBucket)
-                .upload(metadataFileName, JSON.stringify(projectWithMeta, null, 2), {
+                .from(SUPABASE_CONFIG.bucket)
+                .upload(metadataPath, JSON.stringify(projectWithMeta, null, 2), {
                     contentType: 'application/json',
                     upsert: true // Allow overwriting if exists
                 });
             
             if (error) {
-                console.warn('⚠️ Failed to save to metadata bucket:', error.message);
+                console.warn('⚠️ Failed to save project metadata:', error.message);
             } else {
-                console.log('✅ Project metadata also stored in bucket');
+                console.log('✅ Project metadata stored in portfolio bucket:', metadataPath);
             }
         } catch (metadataError) {
-            console.warn('⚠️ Metadata bucket save failed:', metadataError.message);
+            console.warn('⚠️ Project metadata save failed:', metadataError.message);
         }
         
         console.log('✅ Project created successfully:', projectWithMeta);
@@ -266,71 +279,90 @@ async function getProjects() {
                 .select('*')
                 .order('created_at', { ascending: false });
             
-            if (!dbError && dbProjects && dbProjects.length > 0) {
+            if (!dbError && dbProjects) {
                 console.log('✅ Projects fetched from database:', dbProjects.length);
-                return { success: true, data: dbProjects };
+                
+                // If database has projects, return them
+                if (dbProjects.length > 0) {
+                    return { success: true, data: dbProjects };
+                }
+                
+                // If database is empty, try to sync from portfolio bucket
+                console.log('📦 Database empty, attempting to sync from portfolio bucket...');
+                const syncResult = await syncPortfolioToDatabase();
+                if (syncResult.success && syncResult.data.length > 0) {
+                    return { success: true, data: syncResult.data };
+                }
             }
         } catch (dbError) {
-            console.log('⚠️ Database access failed, trying metadata bucket:', dbError.message);
+            console.log('⚠️ Database access failed, trying portfolio bucket:', dbError.message);
         }
         
-        // Fallback to metadata bucket (requires authentication)
+        // Fallback to scanning portfolio bucket for project folders
         try {
-            // List all project metadata files
-            const { data: files, error: listError } = await configSupabase.storage
-                .from(SUPABASE_CONFIG.metadataBucket)
-                .list('projects', {
-                    limit: 100,
-                    sortBy: { column: 'created_at', order: 'desc' }
-                });
+            console.log('🔍 Scanning portfolio bucket for project folders...');
+            
+            // List all folders in the portfolio bucket (excluding website-assets)
+            const { data: folders, error: listError } = await configSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .list('', { limit: 100 });
             
             if (listError) throw listError;
             
-            if (!files || files.length === 0) {
-                console.log('📭 No project metadata files found');
+            if (!folders || folders.length === 0) {
+                console.log('📭 No folders found in portfolio bucket');
                 return { success: true, data: [] };
             }
             
-            // Download and parse each metadata file
+            // Filter out system folders and get only project folders
+            const projectFolders = folders.filter(folder => 
+                folder.name !== SUPABASE_CONFIG.websiteAssets.folder && 
+                folder.name !== SUPABASE_CONFIG.globalSettings.folder &&
+                folder.name !== '.emptyFolderPlaceholder'
+            );
+            
+            console.log('📁 Found project folders:', projectFolders.map(f => f.name));
+            
+            // Download project.json from each project folder
             const projects = [];
-            for (const file of files) {
-                if (file.name.endsWith('.json')) {
-                    try {
-                        const { data: fileData, error: downloadError } = await configSupabase.storage
-                            .from(SUPABASE_CONFIG.metadataBucket)
-                            .download(`projects/${file.name}`);
-                        
-                        if (downloadError) {
-                            console.warn('⚠️ Failed to download:', file.name, downloadError);
-                            continue;
-                        }
-                        
-                        const text = await fileData.text();
-                        const project = JSON.parse(text);
-                        projects.push(project);
-                    } catch (parseError) {
-                        console.warn('⚠️ Failed to parse:', file.name, parseError);
+            for (const folder of projectFolders) {
+                try {
+                    const metadataPath = `${folder.name}/${SUPABASE_CONFIG.projectStructure.metadata}`;
+                    
+                    const { data: fileData, error: downloadError } = await configSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .download(metadataPath);
+                    
+                    if (downloadError) {
+                        console.warn('⚠️ No metadata found for project:', folder.name);
+                        continue;
                     }
+                    
+                    const text = await fileData.text();
+                    const project = JSON.parse(text);
+                    projects.push(project);
+                    
+                    console.log('✅ Loaded project metadata:', project.title);
+                } catch (parseError) {
+                    console.warn('⚠️ Failed to parse metadata for:', folder.name, parseError);
                 }
             }
             
             // Sort by created_at descending
             projects.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             
-            console.log('✅ Projects fetched from metadata bucket:', projects.length);
+            console.log('✅ Projects fetched from portfolio bucket:', projects.length);
             return { success: true, data: projects };
-        } catch (metadataError) {
-            console.log('⚠️ Metadata bucket access failed:', metadataError.message);
+        } catch (portfolioError) {
+            console.log('⚠️ Portfolio bucket access failed:', portfolioError.message);
         }
         
-        // Final fallback to localStorage
-        console.log('📦 Falling back to localStorage...');
-        const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-        return { success: true, data: localProjects };
+        // No fallback - return empty array
+        console.log('📭 No projects found in any source');
+        return { success: true, data: [] };
         
     } catch (error) {
         console.error('❌ Get projects failed:', error.message);
-        // Return empty array instead of error for public users
         return { success: true, data: [] };
     }
 }
@@ -350,26 +382,26 @@ async function getProjectByKey(key) {
                 return { success: true, data: dbProject };
             }
         } catch (dbError) {
-            console.log('⚠️ Database access failed, trying metadata bucket:', dbError.message);
+            console.log('⚠️ Database access failed, trying portfolio bucket:', dbError.message);
         }
         
-        // Fallback to metadata bucket (requires authentication)
+        // Fallback to portfolio bucket project folder
         try {
-            const metadataFileName = `projects/${key}.json`;
+            const metadataPath = `${key}/${SUPABASE_CONFIG.projectStructure.metadata}`;
             
             const { data: fileData, error } = await configSupabase.storage
-                .from(SUPABASE_CONFIG.metadataBucket)
-                .download(metadataFileName);
+                .from(SUPABASE_CONFIG.bucket)
+                .download(metadataPath);
             
             if (error) throw error;
             
             const text = await fileData.text();
             const project = JSON.parse(text);
             
-            console.log('✅ Project fetched from metadata bucket by key:', project);
+            console.log('✅ Project fetched from portfolio bucket by key:', project);
             return { success: true, data: project };
-        } catch (metadataError) {
-            console.log('⚠️ Metadata bucket access failed:', metadataError.message);
+        } catch (portfolioError) {
+            console.log('⚠️ Portfolio bucket access failed:', portfolioError.message);
         }
         
         // Final fallback to localStorage
@@ -400,19 +432,39 @@ async function deleteProjectMetadata(projectKey) {
             }
         }
         
-        const metadataFileName = `projects/${projectKey}.json`;
+        // Delete from database table first (for public access)
+        try {
+            const { error: dbError } = await configSupabase
+                .from('projects')
+                .delete()
+                .eq('key', projectKey);
+            
+            if (!dbError) {
+                console.log('✅ Project deleted from database:', projectKey);
+            } else {
+                console.warn('⚠️ Failed to delete from database:', dbError.message);
+            }
+        } catch (dbError) {
+            console.warn('⚠️ Database deletion failed:', dbError.message);
+        }
         
-        // Delete metadata file from private bucket
+        // Delete project.json from the project folder in portfolio bucket
+        const metadataPath = `${projectKey}/${SUPABASE_CONFIG.projectStructure.metadata}`;
+        
         const { data, error } = await configSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
-            .remove([metadataFileName]);
+            .from(SUPABASE_CONFIG.bucket)
+            .remove([metadataPath]);
         
-        if (error) throw error;
+        if (error) {
+            console.warn('⚠️ Failed to delete project metadata file:', error.message);
+            // Don't throw error here as the main deletion should continue
+        } else {
+            console.log('✅ Project metadata deleted from portfolio bucket:', projectKey);
+        }
         
-        console.log('✅ Project metadata deleted from bucket:', projectKey);
         return { success: true, data };
     } catch (error) {
-        console.error('❌ Delete project failed:', error.message);
+        console.error('❌ Delete project metadata failed:', error.message);
         return { success: false, error: error.message };
     }
 }
@@ -457,24 +509,24 @@ async function updateProject(projectKey, projectData) {
             console.warn('⚠️ Failed to update in database, continuing with metadata only:', dbError.message);
         }
         
-        // Also update metadata bucket (for admin panel compatibility)
+        // Also update project.json in portfolio bucket (for consistency)
         try {
-            const metadataFileName = `projects/${projectKey}.json`;
+            const metadataPath = `${projectKey}/${SUPABASE_CONFIG.projectStructure.metadata}`;
             
             const { data, error } = await configSupabase.storage
-                .from(SUPABASE_CONFIG.metadataBucket)
-                .upload(metadataFileName, JSON.stringify(projectWithMeta, null, 2), {
+                .from(SUPABASE_CONFIG.bucket)
+                .upload(metadataPath, JSON.stringify(projectWithMeta, null, 2), {
                     contentType: 'application/json',
                     upsert: true // Allow overwriting
                 });
             
             if (error) {
-                console.warn('⚠️ Failed to update metadata bucket:', error.message);
+                console.warn('⚠️ Failed to update project metadata in portfolio bucket:', error.message);
             } else {
-                console.log('✅ Project metadata also updated in bucket');
+                console.log('✅ Project metadata also updated in portfolio bucket');
             }
         } catch (metadataError) {
-            console.warn('⚠️ Metadata bucket update failed:', metadataError.message);
+            console.warn('⚠️ Portfolio bucket metadata update failed:', metadataError.message);
         }
         
         console.log('✅ Project updated successfully:', projectWithMeta);
@@ -491,7 +543,7 @@ async function updateProject(projectKey, projectData) {
 // These functions take advantage of the public metadata bucket
 // for faster loading without authentication requirements
 
-// Fast public project loading (no auth required)
+// Fast public project loading (no auth required) - Enhanced with bulletproof filtering
 async function getProjectsPublic() {
     try {
         if (!configSupabase) {
@@ -500,44 +552,110 @@ async function getProjectsPublic() {
             }
         }
         
-        console.log('🚀 Loading projects from public metadata bucket...');
+        console.log('🚀 Loading projects from portfolio bucket...');
         
-        // List all project files in metadata bucket
-        const { data: files, error: listError } = await configSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
-            .list('projects');
+        // List all folders in portfolio bucket
+        const { data: folders, error: listError } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .list('');
         
         if (listError) {
-            console.error('❌ Failed to list project files:', listError.message);
+            console.error('❌ Failed to list portfolio folders:', listError.message);
             return { success: false, error: listError.message };
         }
         
-        if (!files || files.length === 0) {
-            console.log('📁 No project files found in metadata bucket');
+        if (!folders || folders.length === 0) {
+            console.log('📁 No folders found in portfolio bucket');
             return { success: true, data: [] };
         }
         
-        // Download and parse each project file
+        // Enhanced filtering - more comprehensive system folder detection
+        const systemFolders = [
+            SUPABASE_CONFIG.websiteAssets.folder,    // 'website-assets'
+            SUPABASE_CONFIG.globalSettings.folder,   // 'website-config'
+            'logo',                                   // legacy logo folder
+            'banner',                                 // legacy banner folder
+            '.emptyFolderPlaceholder',
+            'website-assets',                         // explicit check
+            'website-config',                         // explicit check
+            'assets',                                 // common asset folder
+            'config'                                  // common config folder
+        ];
+        
+        const projectFolders = folders.filter(folder => {
+            const folderName = folder.name.toLowerCase();
+            
+            // Skip system folders (case-insensitive)
+            if (systemFolders.some(sysFolder => folderName === sysFolder.toLowerCase())) {
+                console.log('🚫 Filtering out system folder:', folder.name);
+                return false;
+            }
+            
+            // Skip hidden files/folders
+            if (folder.name.startsWith('.')) {
+                console.log('🚫 Filtering out hidden item:', folder.name);
+                return false;
+            }
+            
+            // Skip JSON files in root (should never be projects)
+            if (folder.name.endsWith('.json')) {
+                console.log('🚫 Filtering out JSON file:', folder.name);
+                return false;
+            }
+            
+            // Skip any file-like items (projects should be folders)
+            if (folder.name.includes('.') && !folder.name.includes('-') && !folder.name.includes('_')) {
+                console.log('🚫 Filtering out file-like item:', folder.name);
+                return false;
+            }
+            
+            // Skip common non-project names
+            const nonProjectNames = ['document', 'documents', 'temp', 'tmp', 'test', 'backup'];
+            if (nonProjectNames.some(name => folderName.includes(name))) {
+                console.log('🚫 Filtering out non-project folder:', folder.name);
+                return false;
+            }
+            
+            console.log('✅ Including project folder:', folder.name);
+            return true;
+        });
+        
+        console.log(`📁 Found ${projectFolders.length} project folders after enhanced filtering`);
+        
+        // Download and parse each project's metadata with validation
         const projects = [];
-        for (const file of files) {
-            if (file.name.endsWith('.json')) {
-                try {
-                    const { data: fileData, error: downloadError } = await configSupabase.storage
-                        .from(SUPABASE_CONFIG.metadataBucket)
-                        .download(`projects/${file.name}`);
+        for (const folder of projectFolders) {
+            try {
+                const { data: fileData, error: downloadError } = await configSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .download(`${folder.name}/project.json`);
+                
+                if (!downloadError && fileData) {
+                    const projectText = await fileData.text();
+                    const project = JSON.parse(projectText);
                     
-                    if (!downloadError && fileData) {
-                        const projectText = await fileData.text();
-                        const project = JSON.parse(projectText);
+                    // Additional validation - ensure project has required fields and isn't a system item
+                    if (project.title && project.key && 
+                        !project.title.toLowerCase().includes('document') &&
+                        !project.title.toLowerCase().includes('json') &&
+                        !project.key.toLowerCase().includes('document') &&
+                        !project.key.toLowerCase().includes('json') &&
+                        !project.key.endsWith('.json')) {
+                        
                         projects.push(project);
+                        console.log('✅ Loaded valid project:', project.title);
+                    } else {
+                        console.log('🚫 Skipping invalid/system project:', project.title || folder.name);
                     }
-                } catch (parseError) {
-                    console.warn('⚠️ Failed to parse project file:', file.name, parseError.message);
+                } else {
+                    console.log('⚠️ No project.json found in folder:', folder.name);
                 }
+            } catch (parseError) {
+                console.warn('⚠️ Failed to parse project in folder:', folder.name, parseError.message);
             }
         }
         
-        console.log(`✅ Loaded ${projects.length} projects from public metadata bucket`);
+        console.log(`✅ Loaded ${projects.length} valid projects from portfolio bucket`);
         return { success: true, data: projects };
         
     } catch (error) {
@@ -546,7 +664,7 @@ async function getProjectsPublic() {
     }
 }
 
-// Fast public content loading (no auth required)
+// Fast public content loading (no auth required) - Updated for single bucket
 async function getWebsiteContentPublic() {
     try {
         if (!configSupabase) {
@@ -555,21 +673,23 @@ async function getWebsiteContentPublic() {
             }
         }
         
-        console.log('🚀 Loading website content from public metadata bucket...');
+        console.log('🚀 Loading website content from portfolio bucket...');
+        
+        const contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
         
         const { data: fileData, error } = await configSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
-            .download('website-content.json');
+            .from(SUPABASE_CONFIG.bucket)
+            .download(contentPath);
         
         if (error) {
-            console.log('ℹ️ No website content found in metadata bucket, using defaults');
+            console.log('ℹ️ No website content found in portfolio bucket, using defaults');
             return { success: false, error: error.message };
         }
         
         const contentText = await fileData.text();
         const content = JSON.parse(contentText);
         
-        console.log('✅ Website content loaded from public metadata bucket');
+        console.log('✅ Website content loaded from portfolio bucket');
         return { success: true, data: content };
         
     } catch (error) {
@@ -578,7 +698,7 @@ async function getWebsiteContentPublic() {
     }
 }
 
-// Fast public team info loading (no auth required)
+// Fast public team info loading (no auth required) - Updated for single bucket
 async function getTeamInfoPublic() {
     try {
         if (!configSupabase) {
@@ -587,21 +707,23 @@ async function getTeamInfoPublic() {
             }
         }
         
-        console.log('🚀 Loading team info from public metadata bucket...');
+        console.log('🚀 Loading team info from portfolio bucket...');
+        
+        const teamPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`;
         
         const { data: fileData, error } = await configSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
-            .download('team-info.json');
+            .from(SUPABASE_CONFIG.bucket)
+            .download(teamPath);
         
         if (error) {
-            console.log('ℹ️ No team info found in metadata bucket, using defaults');
+            console.log('ℹ️ No team info found in portfolio bucket, using defaults');
             return { success: false, error: error.message };
         }
         
         const teamText = await fileData.text();
         const team = JSON.parse(teamText);
         
-        console.log('✅ Team info loaded from public metadata bucket');
+        console.log('✅ Team info loaded from portfolio bucket');
         return { success: true, data: team };
         
     } catch (error) {
@@ -610,9 +732,200 @@ async function getTeamInfoPublic() {
     }
 }
 
-// Make optimized functions available globally
+// Sync portfolio bucket projects to database
+async function syncPortfolioToDatabase() {
+    try {
+        console.log('🔄 Syncing portfolio bucket projects to database...');
+        
+        // List all project folders in portfolio bucket
+        const { data: folders, error: listError } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .list('', { limit: 100 });
+        
+        if (listError) throw listError;
+        
+        // Filter out system folders and get only project folders
+        const systemFolders = [
+            SUPABASE_CONFIG.websiteAssets.folder,    // 'website-assets'
+            SUPABASE_CONFIG.globalSettings.folder,   // 'website-config'
+            'logo',                                   // legacy logo folder
+            'banner',                                 // legacy banner folder
+            '.emptyFolderPlaceholder'
+        ];
+        
+        const projectFolders = folders.filter(folder => {
+            // Skip system folders
+            if (systemFolders.includes(folder.name)) {
+                console.log('🚫 Sync: Filtering out system folder:', folder.name);
+                return false;
+            }
+            
+            // Skip hidden files/folders
+            if (folder.name.startsWith('.')) {
+                console.log('🚫 Sync: Filtering out hidden item:', folder.name);
+                return false;
+            }
+            
+            // Skip JSON files in root
+            if (folder.name.endsWith('.json')) {
+                console.log('🚫 Sync: Filtering out JSON file:', folder.name);
+                return false;
+            }
+            
+            console.log('✅ Sync: Including project folder:', folder.name);
+            return true;
+        });
+        
+        const syncedProjects = [];
+        
+        for (const folder of projectFolders) {
+            try {
+                // Download project metadata
+                const metadataPath = `${folder.name}/${SUPABASE_CONFIG.projectStructure.metadata}`;
+                const { data: fileData, error: downloadError } = await configSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .download(metadataPath);
+                
+                if (downloadError) {
+                    console.warn('⚠️ No metadata found for:', folder.name);
+                    continue;
+                }
+                
+                const text = await fileData.text();
+                const project = JSON.parse(text);
+                
+                // Check if project already exists in database
+                const { data: existingProject } = await configSupabase
+                    .from('projects')
+                    .select('id')
+                    .eq('key', project.key)
+                    .single();
+                
+                if (!existingProject) {
+                    // Insert project into database
+                    const { data: newProject, error: insertError } = await configSupabase
+                        .from('projects')
+                        .insert([{
+                            title: project.title,
+                            key: project.key,
+                            category: project.category,
+                            description: project.description,
+                            count: project.count || 1,
+                            thumbnail_url: project.thumbnail_url || null
+                        }])
+                        .select()
+                        .single();
+                    
+                    if (!insertError && newProject) {
+                        console.log('✅ Synced project to database:', project.title);
+                        syncedProjects.push(newProject);
+                    }
+                }
+            } catch (parseError) {
+                console.warn('⚠️ Failed to sync project:', folder.name, parseError);
+            }
+        }
+        
+        console.log(`✅ Synced ${syncedProjects.length} projects to database`);
+        
+        // Return all projects from database after sync
+        const { data: allProjects } = await configSupabase
+            .from('projects')
+            .select('*')
+            .order('created_at', { ascending: false });
+        
+        return { success: true, data: allProjects || [] };
+        
+    } catch (error) {
+        console.error('❌ Portfolio sync failed:', error.message);
+        return { success: false, error: error.message };
+    }
+}
+
+// Make all functions available globally
 if (typeof window !== 'undefined') {
+    // Authentication functions
+    window.signInAdmin = signInAdmin;
+    window.signOutAdmin = signOutAdmin;
+    window.getCurrentUser = getCurrentUser;
+    window.testPortfolioBucketAccess = testPortfolioBucketAccess;
+    
+    // CRUD functions
+    window.createProject = createProject;
+    window.getProjects = getProjects;
+    window.getProjectByKey = getProjectByKey;
+    window.updateProject = updateProject;
+    window.deleteProjectMetadata = deleteProjectMetadata;
+    
+    // Public access functions
     window.getProjectsPublic = getProjectsPublic;
     window.getWebsiteContentPublic = getWebsiteContentPublic;
     window.getTeamInfoPublic = getTeamInfoPublic;
+    
+    // Utility functions
+    window.syncPortfolioToDatabase = syncPortfolioToDatabase;
+    window.saveWebsiteContent = saveWebsiteContent;
+    window.saveTeamInfo = saveTeamInfo;
+    
+    // Configuration
+    window.SUPABASE_CONFIG = SUPABASE_CONFIG;
+    window.initializeSupabase = initializeSupabase;
+}
+
+// Save website content to portfolio bucket
+async function saveWebsiteContent(contentData) {
+    try {
+        if (!configSupabase) {
+            if (!initializeSupabase()) {
+                throw new Error('Failed to initialize Supabase client');
+            }
+        }
+        
+        const contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
+        
+        const { data, error } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(contentPath, JSON.stringify(contentData, null, 2), {
+                contentType: 'application/json',
+                upsert: true
+            });
+        
+        if (error) throw error;
+        
+        console.log('✅ Website content saved to portfolio bucket');
+        return { success: true, data };
+        
+    } catch (error) {
+        console.error('❌ Save website content failed:', error.message);
+        return { success: false, error: error.message };
+    }
+}
+
+// Save team info to portfolio bucket
+async function saveTeamInfo(teamData) {
+    try {
+        if (!configSupabase) {
+            if (!initializeSupabase()) {
+                throw new Error('Failed to initialize Supabase client');
+            }
+        }
+        
+        const teamPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`;
+        
+        const { data, error } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload(teamPath, JSON.stringify(teamData, null, 2), {
+                contentType: 'application/json',
+                upsert: true
+            });
+        
+        if (error) throw error;
+        
+        console.log('✅ Team info saved to portfolio bucket');
+        return { success: true, data };
+        
+    } catch (error) {
+        console.error('❌ Save team info failed:', error.message);
+        return { success: false, error: error.message };
+    }
 }

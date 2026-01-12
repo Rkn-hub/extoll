@@ -504,7 +504,7 @@ function loadDynamicContactContent() {
   // Load fresh content from Supabase
   supabase.storage
     .from(SUPABASE_CONFIG.bucket)
-    .download('website-content.json')
+    .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`)
     .then(function(result) {
       if (result.error) {
         return; // Use default values already in HTML
@@ -611,7 +611,7 @@ function refreshContactContent() {
 window.refreshContactContent = refreshContactContent;
 window.loadDynamicContactContent = loadDynamicContactContent;
 
-// Load logo from Supabase
+// Load logo from Supabase with fallback to old location
 function loadLogo() {
   if (!initializeSupabase()) {
     return;
@@ -619,27 +619,41 @@ function loadLogo() {
   
   const supabase = configSupabase;
   
-  supabase.storage
-    .from(SUPABASE_CONFIG.bucket)
-    .list('logo')
-    .then(function(result) {
-      if (result.data && result.data.length > 0) {
-        const logoFile = result.data[0].name;
-        const logoUrl = supabase.storage
-          .from(SUPABASE_CONFIG.bucket)
-          .getPublicUrl('logo/' + logoFile);
-        
-        if (logoUrl.data && logoUrl.data.publicUrl) {
-          const logoElement = document.getElementById('navLogo');
-          if (logoElement) {
-            logoElement.src = logoUrl.data.publicUrl;
-          }
+  // Try new location first, then fallback to old location
+  Promise.all([
+    supabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+    supabase.storage.from(SUPABASE_CONFIG.bucket).list('logo') // Fallback to old location
+  ]).then(function([newLogoResult, oldLogoResult]) {
+    let logoResult = newLogoResult;
+    let logoPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`;
+    
+    // If new location fails or is empty, use old location
+    if (newLogoResult.error || !newLogoResult.data || newLogoResult.data.length === 0) {
+      console.log('📁 Logo not found in new location, trying old location...');
+      logoResult = oldLogoResult;
+      logoPath = 'logo';
+    }
+    
+    if (logoResult.data && logoResult.data.length > 0) {
+      const logoFile = logoResult.data[0].name;
+      const logoUrl = supabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .getPublicUrl(`${logoPath}/${logoFile}`);
+      
+      if (logoUrl.data && logoUrl.data.publicUrl) {
+        const logoElement = document.getElementById('navLogo');
+        if (logoElement) {
+          logoElement.src = logoUrl.data.publicUrl;
+          console.log('✅ Logo loaded from:', logoPath);
         }
       }
-    })
-    .catch(function(error) {
-      console.error('Error loading logo:', error);
-    });
+    } else {
+      console.log('⚠️ No logo found in either location');
+    }
+  })
+  .catch(function(error) {
+    console.error('❌ Error loading logo:', error);
+  });
 }
 
 // Load logo on page load

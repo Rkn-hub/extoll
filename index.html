@@ -710,10 +710,10 @@
 </section>
 
 <!-- Services Section -->
-<section id="services" class="flex flex-1 justify-center px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-8 lg:py-12 mb-16 lg:mb-24">
+<section id="services" class="w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-8 lg:py-12 mb-16 lg:mb-24">
 <!-- Section Divider -->
 <div class="w-full border-t border-neutral-800/30 mb-8"></div>
-<div class="flex w-full max-w-[1280px] flex-1 flex-col">
+<div class="w-full max-w-[1280px] mx-auto">
 <div class="flex flex-col gap-12 py-12 md:py-16 lg:py-20">
 <div class="text-center">
 <h2 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] mb-4">Services</h2>
@@ -769,10 +769,10 @@
 </section>
 
 <!-- About Section -->
-<section id="about" class="flex flex-1 justify-center px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-8 lg:py-12 mb-16 lg:mb-24">
+<section id="about" class="w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-8 lg:py-12 mb-16 lg:mb-24">
 <!-- Section Divider -->
 <div class="w-full border-t border-neutral-800/30 mb-8"></div>
-<div class="flex w-full max-w-[1280px] flex-1 flex-col">
+<div class="w-full max-w-[1280px] mx-auto">
 <div class="flex flex-col gap-12 py-12 md:py-16 lg:py-20">
 <div class="text-center">
 <h2 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] mb-4">About Extoll</h2>
@@ -864,17 +864,13 @@ We believe great work happens when creative talent meets structured operations. 
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="flex flex-1 justify-center px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-8 lg:py-12 mb-16 lg:mb-24">
+<section id="contact" class="w-full px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 py-8 lg:py-12 mb-16 lg:mb-24">
 <!-- Section Divider -->
 <div class="w-full border-t border-neutral-800/30 mb-8"></div>
-<div class="flex w-full max-w-[1280px] flex-1 flex-col">
+<div class="w-full max-w-[1280px] mx-auto">
 <div class="flex flex-col gap-12 py-12 md:py-16 lg:py-20">
 <div class="text-center">
 <h2 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] mb-4">Get In Touch</h2>
@@ -946,10 +942,6 @@ Send Us a Message
 </div>
 </div>
 </div>
-
-</div>
-</div>
-</div>
 </section>
 
 </div>
@@ -965,6 +957,22 @@ async function loadDynamicProjects() {
     
     console.log('🔄 Loading projects for portfolio...');
     
+    // Enhanced cache clearing - remove all potentially suspicious cached data
+    console.log('🧹 Clearing all cached project data...');
+    localStorage.removeItem('projects');
+    localStorage.removeItem('extoll_projects');
+    sessionStorage.removeItem('extoll_index_content');
+    sessionStorage.removeItem('portfolioFilter');
+    
+    // Also clear any cached projects that might contain suspicious entries
+    const allLocalStorageKeys = Object.keys(localStorage);
+    allLocalStorageKeys.forEach(key => {
+        if (key.includes('project') || key.includes('portfolio')) {
+            localStorage.removeItem(key);
+            console.log('🧹 Cleared suspicious cache key:', key);
+        }
+    });
+    
     // Initialize Supabase
     if (!initializeSupabase()) {
         console.error('Failed to initialize Supabase, falling back to localStorage');
@@ -973,7 +981,7 @@ async function loadDynamicProjects() {
     }
     
     // Since metadata bucket is now public, use getProjectsPublic directly
-    console.log('🚀 Loading from public metadata bucket (no auth required)...');
+    console.log('🚀 Loading from public portfolio bucket (no auth required)...');
     
     try {
         const result = await getProjectsPublic();
@@ -981,7 +989,12 @@ async function loadDynamicProjects() {
         
         if (result.success && result.data && result.data.length > 0) {
             const projects = result.data;
-            console.log('✅ Successfully loaded', projects.length, 'projects from public metadata bucket');
+            console.log('✅ Successfully loaded', projects.length, 'projects from public portfolio bucket');
+            
+            // Log each project for debugging
+            projects.forEach((project, index) => {
+                console.log(`  ${index + 1}. ${project.title} (key: ${project.key})`);
+            });
             
             // Update localStorage with fresh data
             localStorage.setItem('projects', JSON.stringify(projects));
@@ -997,7 +1010,7 @@ async function loadDynamicProjects() {
             
             console.log('🎉 Portfolio loaded successfully for public user');
         } else {
-            console.log('📦 No projects found in public metadata bucket, trying fallback methods...');
+            console.log('📦 No projects found in public portfolio bucket, trying fallback methods...');
             
             // Try the new public bucket scanning method as fallback
             const fallbackResult = await loadProjectsFromPublicBucket();
@@ -1006,6 +1019,11 @@ async function loadDynamicProjects() {
             if (fallbackResult.success && fallbackResult.data.length > 0) {
                 const projects = fallbackResult.data;
                 console.log('✅ Loaded', projects.length, 'projects from fallback method');
+                
+                // Log each project for debugging
+                projects.forEach((project, index) => {
+                    console.log(`  ${index + 1}. ${project.title} (key: ${project.key})`);
+                });
                 
                 localStorage.setItem('projects', JSON.stringify(projects));
                 portfolioGrid.innerHTML = projects.map(project => {
@@ -1051,26 +1069,113 @@ async function loadProjectsFromPublicBucket() {
         
         console.log('📂 Found', folders.length, 'items in portfolio bucket');
         
-        // Filter out non-project folders (like website-assets, logo, banner)
-        const projectFolders = folders.filter(folder => 
-            folder.name && 
-            !folder.name.startsWith('website-assets') &&
-            !folder.name.startsWith('logo') &&
-            !folder.name.startsWith('banner') &&
-            folder.name !== 'logo' &&
-            folder.name !== 'banner'
-        );
+        // Enhanced filtering - more comprehensive system folder detection
+        const systemFolders = [
+            'website-assets',
+            'website-config', 
+            'logo',
+            'banner',
+            '.emptyFolderPlaceholder',
+            'assets',                                 // common asset folder
+            'config'                                  // common config folder
+        ];
         
-        console.log('🎯 Found', projectFolders.length, 'potential project folders');
+        // Enhanced system files detection
+        const systemFiles = [
+            'website-content.json',
+            'team-info.json',
+            'social-links.json'
+        ];
+        
+        // Filter to only get actual project folders (exclude system folders and files) - Enhanced
+        const potentialProjectFolders = folders.filter(item => {
+            const itemName = item.name.toLowerCase();
+            
+            // Skip if it's a system folder (case-insensitive)
+            if (systemFolders.some(sysFolder => itemName === sysFolder.toLowerCase())) {
+                console.log('🚫 Skipping system folder:', item.name);
+                return false;
+            }
+            
+            // Skip if it's a system file (not a folder)
+            if (systemFiles.some(sysFile => itemName === sysFile.toLowerCase())) {
+                console.log('🚫 Skipping system file:', item.name);
+                return false;
+            }
+            
+            // Skip if it's any JSON file in root (should be in folders)
+            if (item.name.endsWith('.json')) {
+                console.log('🚫 Skipping loose JSON file:', item.name);
+                return false;
+            }
+            
+            // Skip if it starts with a dot (hidden files/folders)
+            if (item.name.startsWith('.')) {
+                console.log('🚫 Skipping hidden item:', item.name);
+                return false;
+            }
+            
+            // Skip any file-like items (projects should be folders)
+            if (item.name.includes('.') && !item.name.includes('-') && !item.name.includes('_')) {
+                console.log('🚫 Skipping file-like item:', item.name);
+                return false;
+            }
+            
+            // Skip common non-project names
+            const nonProjectNames = ['document', 'documents', 'temp', 'tmp', 'test', 'backup'];
+            if (nonProjectNames.some(name => itemName.includes(name))) {
+                console.log('🚫 Skipping non-project folder:', item.name);
+                return false;
+            }
+            
+            console.log('✅ Potential project folder:', item.name);
+            return true;
+        });
+        
+        console.log('🎯 Found', potentialProjectFolders.length, 'potential project folders');
         
         const projects = [];
         
-        // For each project folder, try to get project info
-        for (const folder of projectFolders) {
+        // For each potential project folder, verify it has project.json and load it
+        for (const folder of potentialProjectFolders) {
             try {
                 const projectKey = folder.name;
                 
-                // Try to find a thumbnail file
+                // First, check if this folder contains project.json (required for projects)
+                const { data: projectMetadata, error: metadataError } = await supabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .download(`${projectKey}/project.json`);
+                
+                if (metadataError) {
+                    console.log('⚠️ Folder', projectKey, 'has no project.json, skipping');
+                    continue; // Skip folders without project.json
+                }
+                
+                // Parse project metadata with enhanced validation
+                let projectData;
+                try {
+                    const metadataText = await projectMetadata.text();
+                    projectData = JSON.parse(metadataText);
+                    
+                    // Enhanced validation - ensure project has required fields and isn't a system item
+                    if (!projectData.title || !projectData.key ||
+                        projectData.title.toLowerCase().includes('document') ||
+                        projectData.title.toLowerCase().includes('json') ||
+                        projectData.key.toLowerCase().includes('document') ||
+                        projectData.key.toLowerCase().includes('json') ||
+                        projectData.key.endsWith('.json')) {
+                        
+                        console.warn('⚠️ Invalid/system project in', projectKey, '- skipping');
+                        continue;
+                    }
+                    
+                    console.log('✅ Found valid project:', projectData.title);
+                } catch (parseError) {
+                    console.warn('⚠️ Invalid project.json in', projectKey, '- skipping');
+                    continue;
+                }
+                
+                // Now get thumbnail and other files
                 const { data: files, error: filesError } = await supabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .list(projectKey, { limit: 50 });
@@ -1090,10 +1195,12 @@ async function loadProjectsFromPublicBucket() {
                         thumbnailUrl = thumbUrlData?.publicUrl;
                     }
                     
-                    // Count non-thumbnail files
+                    // Count non-thumbnail, non-metadata files
                     const projectFiles = files.filter(file => 
                         !file.name.startsWith('thumb-') && 
-                        !file.name.includes('thumbnail')
+                        !file.name.includes('thumbnail') &&
+                        file.name !== 'project.json' &&
+                        !file.name.endsWith('.json')
                     );
                     
                     // Create a basic project object
@@ -1128,23 +1235,56 @@ async function loadProjectsFromPublicBucket() {
 // Fallback to localStorage if Supabase fails
 function loadFromLocalStorage() {
     const portfolioGrid = document.getElementById('portfolio-grid');
-    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    const allProjects = JSON.parse(localStorage.getItem('projects') || '[]');
     
-    console.log('📦 Loading from localStorage:', projects.length, 'projects found');
-    console.log('📦 localStorage projects:', projects);
+    console.log('📦 Loading from localStorage:', allProjects.length, 'projects found');
     
-    if (projects.length === 0) {
-        console.log('📦 No projects in localStorage, showing empty state');
+    // Enhanced filtering for localStorage - remove any suspicious projects
+    const validProjects = allProjects.filter(project => {
+        if (!project.title || !project.key) {
+            console.log('🚫 Filtering out project with missing title/key:', project);
+            return false;
+        }
+        
+        const titleLower = project.title.toLowerCase();
+        const keyLower = project.key.toLowerCase();
+        
+        // Filter out suspicious projects
+        if (titleLower.includes('document') ||
+            titleLower.includes('json') ||
+            keyLower.includes('document') ||
+            keyLower.includes('json') ||
+            project.key.endsWith('.json') ||
+            titleLower.includes('website-config') ||
+            titleLower.includes('website-assets') ||
+            ['website-assets', 'website-config', 'logo', 'banner'].includes(project.key)) {
+            
+            console.log('🚫 Filtering out suspicious localStorage project:', project.title, project.key);
+            return false;
+        }
+        
+        return true;
+    });
+    
+    console.log('📦 After filtering:', validProjects.length, 'valid projects');
+    
+    if (validProjects.length === 0) {
+        console.log('📦 No valid projects in localStorage, showing empty state');
         showEmptyState();
         return;
     }
     
-    portfolioGrid.innerHTML = projects.map(project => {
-        // Use the project data directly since admin panel already stores in correct format
+    // Update localStorage with filtered projects
+    if (validProjects.length !== allProjects.length) {
+        localStorage.setItem('projects', JSON.stringify(validProjects));
+        console.log('🧹 Updated localStorage with filtered projects');
+    }
+    
+    portfolioGrid.innerHTML = validProjects.map(project => {
         return createProjectCard(project);
     }).join('');
     
-    console.log('✅ Portfolio loaded from localStorage');
+    console.log('✅ Portfolio loaded from localStorage with', validProjects.length, 'valid projects');
     initializePortfolioInteractions();
 }
 
@@ -1898,10 +2038,10 @@ function loadDynamicContent() {
     
     // Optimized content loading with public URLs
     Promise.all([
-        // Load website content
-        supabase.storage.from(SUPABASE_CONFIG.bucket).download('website-content.json'),
-        // Load team information
-        supabase.storage.from(SUPABASE_CONFIG.bucket).download('team-info.json')
+        // Load website content from new location
+        supabase.storage.from(SUPABASE_CONFIG.bucket).download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`),
+        // Load team information from new location
+        supabase.storage.from(SUPABASE_CONFIG.bucket).download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
     ]).then(function([contentResult, teamResult]) {
         
         // Process website content
@@ -1975,12 +2115,20 @@ function updateHeroSection(content) {
 }
 
 function updateAssetsOptimized(content, supabase) {
-    // Update Banner with optimized public URL
+    // Update Banner with fallback to old location
     const heroBanner = document.querySelector('.hero-banner');
     if (heroBanner && content.bannerUrl) {
-        const bannerPublicUrl = supabase.storage
+        // Try new location first
+        let bannerPublicUrl = supabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .getPublicUrl('banner/' + content.bannerUrl);
+            .getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + content.bannerUrl);
+        
+        // If new location doesn't work, try old location
+        if (!bannerPublicUrl.data?.publicUrl) {
+            bannerPublicUrl = supabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl('banner/' + content.bannerUrl);
+        }
         
         if (bannerPublicUrl.data?.publicUrl) {
             heroBanner.src = bannerPublicUrl.data.publicUrl;
@@ -1989,12 +2137,20 @@ function updateAssetsOptimized(content, supabase) {
         }
     }
     
-    // Update Logo with optimized public URL
+    // Update Logo with fallback to old location
     const websiteLogo = document.querySelector('.website-logo, .nav-logo');
     if (websiteLogo && content.logoUrl) {
-        const logoPublicUrl = supabase.storage
+        // Try new location first
+        let logoPublicUrl = supabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .getPublicUrl('logo/' + content.logoUrl);
+            .getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + content.logoUrl);
+        
+        // If new location doesn't work, try old location
+        if (!logoPublicUrl.data?.publicUrl) {
+            logoPublicUrl = supabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .getPublicUrl('logo/' + content.logoUrl);
+        }
         
         if (logoPublicUrl.data?.publicUrl) {
             websiteLogo.src = logoPublicUrl.data.publicUrl;
@@ -2299,15 +2455,28 @@ function loadLogo() {
   
   const supabase = configSupabase;
   
-  supabase.storage
-    .from(SUPABASE_CONFIG.bucket)
-    .list('logo')
-    .then(function(result) {
-      if (result.data && result.data.length > 0) {
-        const logoFile = result.data[0].name;
-        const logoUrl = supabase.storage
-          .from(SUPABASE_CONFIG.bucket)
-          .getPublicUrl('logo/' + logoFile);
+  // Try new location first, then fallback to old location
+  Promise.all([
+    supabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+    supabase.storage.from(SUPABASE_CONFIG.bucket).list('logo') // Fallback to old location
+  ]).then(function([newLogoResult, oldLogoResult]) {
+    let logoResult = newLogoResult;
+    let logoPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/`;
+    
+    // If new location is empty, use old location
+    if (!logoResult.data || logoResult.data.length === 0) {
+      logoResult = oldLogoResult;
+      logoPath = 'logo/';
+      console.log('📁 Using logo from old location:', logoPath);
+    } else {
+      console.log('📁 Using logo from new location:', logoPath);
+    }
+    
+    if (logoResult.data && logoResult.data.length > 0) {
+      const logoFile = logoResult.data[0].name;
+      const logoUrl = supabase.storage
+        .from(SUPABASE_CONFIG.bucket)
+        .getPublicUrl(logoPath + logoFile);
         
         if (logoUrl.data && logoUrl.data.publicUrl) {
           const logoElement = document.querySelector('.website-logo, .nav-logo');
@@ -2338,29 +2507,55 @@ function loadAssetsDirectly() {
     
     const supabase = configSupabase;
     
-    // Optimized parallel loading of logo and banner
+    // Optimized parallel loading of logo and banner with fallback to old locations
     Promise.all([
-        supabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
-        supabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
-    ]).then(function([logoResult, bannerResult]) {
+        supabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+        supabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`),
+        supabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'), // Fallback
+        supabase.storage.from(SUPABASE_CONFIG.bucket).list('banner') // Fallback
+    ]).then(function([newLogoResult, newBannerResult, oldLogoResult, oldBannerResult]) {
+        
+        // Determine logo location and load
+        let logoResult = newLogoResult;
+        let logoPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/`;
+        
+        if (!logoResult.data || logoResult.data.length === 0) {
+            logoResult = oldLogoResult;
+            logoPath = 'logo/';
+            console.log('📁 Using logo from old location');
+        } else {
+            console.log('📁 Using logo from new location');
+        }
         
         // Process logo with optimized public URL
         if (logoResult.data && logoResult.data.length > 0) {
             const logoFile = logoResult.data[0].name;
             const logoPublicUrl = supabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .getPublicUrl('logo/' + logoFile);
+                .getPublicUrl(logoPath + logoFile);
             
             if (logoPublicUrl.data?.publicUrl) {
                 const logoElement = document.querySelector('.website-logo, .nav-logo');
                 if (logoElement) {
                     logoElement.src = logoPublicUrl.data.publicUrl;
                     logoElement.loading = 'eager'; // Prioritize logo loading
-                    console.log('✅ Logo loaded directly');
+                    console.log('✅ Logo loaded from:', logoPath);
                 }
             }
         } else {
-            console.log('ℹ️ No logo files found');
+            console.log('ℹ️ No logo files found in either location');
+        }
+        
+        // Determine banner location and load
+        let bannerResult = newBannerResult;
+        let bannerPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/`;
+        
+        if (!bannerResult.data || bannerResult.data.length === 0) {
+            bannerResult = oldBannerResult;
+            bannerPath = 'banner/';
+            console.log('📁 Using banner from old location');
+        } else {
+            console.log('📁 Using banner from new location');
         }
         
         // Process banner with optimized public URL
@@ -2368,18 +2563,18 @@ function loadAssetsDirectly() {
             const bannerFile = bannerResult.data[0].name;
             const bannerPublicUrl = supabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .getPublicUrl('banner/' + bannerFile);
+                .getPublicUrl(bannerPath + bannerFile);
             
             if (bannerPublicUrl.data?.publicUrl) {
                 const bannerElement = document.querySelector('.hero-banner');
                 if (bannerElement) {
                     bannerElement.src = bannerPublicUrl.data.publicUrl;
                     bannerElement.loading = 'eager'; // Prioritize banner loading
-                    console.log('✅ Banner loaded directly');
+                    console.log('✅ Banner loaded from:', bannerPath);
                 }
             }
         } else {
-            console.log('ℹ️ No banner files found');
+            console.log('ℹ️ No banner files found in either location');
         }
         
     }).catch(function(error) {

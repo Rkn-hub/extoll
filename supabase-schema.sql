@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS project_videos (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create storage bucket for structured file organization
+-- Create storage buckets for structured file organization
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('extoll-portfolio', 'extoll-portfolio', true)
 ON CONFLICT (id) DO NOTHING;
@@ -82,19 +82,19 @@ DROP POLICY IF EXISTS "Authenticated users can upload project files" ON storage.
 DROP POLICY IF EXISTS "Authenticated users can update project files" ON storage.objects;
 DROP POLICY IF EXISTS "Authenticated users can delete project files" ON storage.objects;
 
--- Recreate storage policies
--- Storage policies for public access to all project files
-CREATE POLICY "Public can view all project files" ON storage.objects
+-- Recreate storage policies for single portfolio bucket
+-- Storage policies for public access to all files in portfolio bucket
+CREATE POLICY "Public can view all portfolio files" ON storage.objects
     FOR SELECT USING (bucket_id = 'extoll-portfolio');
 
 -- Storage policies for authenticated users (admin) to manage files
-CREATE POLICY "Authenticated users can upload project files" ON storage.objects
+CREATE POLICY "Authenticated users can upload portfolio files" ON storage.objects
     FOR INSERT WITH CHECK (bucket_id = 'extoll-portfolio' AND auth.role() = 'authenticated');
 
-CREATE POLICY "Authenticated users can update project files" ON storage.objects
+CREATE POLICY "Authenticated users can update portfolio files" ON storage.objects
     FOR UPDATE USING (bucket_id = 'extoll-portfolio' AND auth.role() = 'authenticated');
 
-CREATE POLICY "Authenticated users can delete project files" ON storage.objects
+CREATE POLICY "Authenticated users can delete portfolio files" ON storage.objects
     FOR DELETE USING (bucket_id = 'extoll-portfolio' AND auth.role() = 'authenticated');
 
 -- Create updated_at trigger function

@@ -10,7 +10,9 @@
 <!-- Security Headers -->
 <script>
 // Basic security measures
-if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+if (window.location.protocol !== 'https:' && 
+    window.location.hostname !== 'localhost' && 
+    window.location.hostname !== '127.0.0.1') {
     window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 }
 
@@ -386,6 +388,7 @@ select:disabled {
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-2xl font-bold text-white">Existing Projects</h3>
                     <div class="flex gap-4">
+                        <button class="btn-secondary" onclick="syncProjects()">🔄 Sync Projects</button>
                         <select id="filterCategory" class="form-input" style="width: auto; min-width: 150px;">
                             <option value="">All Categories</option>
                             <option value="graphics">Graphics Design</option>
@@ -719,8 +722,8 @@ async function trySupabaseAuth() {
         if (authResult.success) {
             console.log('✅ Supabase authentication successful - metadata bucket access enabled');
             
-            // Test metadata bucket access
-            const bucketTest = await testMetadataBucketAccess();
+            // Test portfolio bucket access
+            const bucketTest = await testPortfolioBucketAccess();
             
             if (bucketTest.success) {
                 showNotification('Metadata bucket access enabled', 'success');
@@ -1110,25 +1113,25 @@ async function handleProjectSubmit(e) {
 
 async function loadProjects() {
     try {
-        // Try to load from Supabase metadata bucket first
+        // Debug: Log what we're trying to load
+        console.log('🔄 Loading projects...');
+        
+        // Try to load from Supabase database first
         const result = await getProjects();
         
         if (result.success && result.data.length > 0) {
             projects = result.data;
-            console.log('✅ Loaded projects from metadata bucket:', projects.length);
+            console.log('✅ Loaded projects:', projects.length);
+            console.log('📋 Project titles:', projects.map(p => p.title));
         } else {
-            // Fallback to localStorage
-            const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-            projects = existingProjects;
-            console.log('📦 Loaded projects from localStorage:', projects.length);
+            console.log('📭 No projects found');
+            projects = [];
         }
         
         displayProjects();
     } catch (error) {
         console.error('❌ Error loading projects:', error);
-        // Fallback to localStorage on error
-        const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-        projects = existingProjects;
+        projects = [];
         displayProjects();
     }
 }
@@ -1137,10 +1140,15 @@ function displayProjects() {
     const projectsList = document.getElementById('projectsList');
     const categoryFilter = document.getElementById('filterCategory').value;
     
+    // Debug: Log all projects and filter value
+    console.log('All projects:', projects);
+    console.log('Category filter value:', categoryFilter);
+    
     let filteredProjects = projects;
     
     if (categoryFilter) {
         filteredProjects = filteredProjects.filter(p => p.category === categoryFilter);
+        console.log('Filtered projects:', filteredProjects);
     }
     
     if (filteredProjects.length === 0) {
@@ -1181,6 +1189,120 @@ function displayProjects() {
 function refreshProjects() {
     loadProjects();
     showNotification('Projects refreshed', 'success');
+}
+
+async function syncProjects() {
+    try {
+        showNotification('Syncing projects from portfolio bucket...', 'success');
+        
+        // Get all project folders from portfolio bucket
+        const { data: folders, error: listError } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .list('', { limit: 100 });
+        
+        if (listError) {
+            throw new Error('Failed to list portfolio folders: ' + listError.message);
+        }
+        
+        // Filter out website-assets and get project folders
+        const projectFolders = folders.filter(folder => 
+            folder.name !== SUPABASE_CONFIG.websiteAssets.folder && 
+            folder.name !== '.emptyFolderPlaceholder'
+        );
+        
+        console.log('📁 Found project folders:', projectFolders.map(f => f.name));
+        
+        let syncedCount = 0;
+        let updatedCount = 0;
+        
+        for (const folder of projectFolders) {
+            try {
+                // Download project metadata from project folder
+                const metadataPath = `${folder.name}/${SUPABASE_CONFIG.projectStructure.metadata}`;
+                const { data: fileData, error: downloadError } = await configSupabase.storage
+                    .from(SUPABASE_CONFIG.bucket)
+                    .download(metadataPath);
+                
+                if (downloadError) {
+                    console.warn('⚠️ No metadata found for:', folder.name);
+                    continue;
+                }
+                
+                const text = await fileData.text();
+                const project = JSON.parse(text);
+                
+                console.log('📄 Processing project:', project.title, 'Key:', project.key);
+                
+                // Check if project exists in database
+                const { data: existingProject, error: selectError } = await configSupabase
+                    .from('projects')
+                    .select('*')
+                    .eq('key', project.key)
+                    .single();
+                
+                if (selectError && selectError.code !== 'PGRST116') {
+                    console.warn('⚠️ Error checking existing project:', selectError);
+                    continue;
+                }
+                
+                if (existingProject) {
+                    // Update existing project with latest metadata
+                    const { error: updateError } = await configSupabase
+                        .from('projects')
+                        .update({
+                            title: project.title,
+                            category: project.category,
+                            description: project.description,
+                            count: project.count || 1,
+                            thumbnail_url: project.thumbnail_url || null
+                        })
+                        .eq('key', project.key);
+                    
+                    if (!updateError) {
+                        console.log('✅ Updated project:', project.title);
+                        updatedCount++;
+                    } else {
+                        console.warn('⚠️ Failed to update project:', updateError);
+                    }
+                } else {
+                    // Insert new project
+                    const { error: insertError } = await configSupabase
+                        .from('projects')
+                        .insert([{
+                            title: project.title,
+                            key: project.key,
+                            category: project.category,
+                            description: project.description,
+                            count: project.count || 1,
+                            thumbnail_url: project.thumbnail_url || null
+                        }]);
+                    
+                    if (!insertError) {
+                        console.log('✅ Inserted new project:', project.title);
+                        syncedCount++;
+                    } else {
+                        console.warn('⚠️ Failed to insert project:', insertError);
+                    }
+                }
+            } catch (parseError) {
+                console.warn('⚠️ Failed to process project folder:', folder.name, parseError);
+            }
+        }
+        
+        const totalChanges = syncedCount + updatedCount;
+        if (totalChanges > 0) {
+            showNotification(`Sync complete! ${syncedCount} new, ${updatedCount} updated projects`, 'success');
+        } else {
+            showNotification('All projects are already in sync', 'success');
+        }
+        
+        // Refresh the display
+        loadProjects();
+        
+    } catch (error) {
+        console.error('❌ Sync error:', error);
+        showNotification('Sync failed: ' + error.message, 'error');
+    }
 }
 
 function openProjectManager(id) {
@@ -1251,12 +1373,12 @@ async function updateProject(id) {
                 showNotification('Project updated locally (cloud sync failed)', 'warning');
             }
         } else {
-            // Fallback: manually update metadata bucket
-            if (adminSupabase && SUPABASE_CONFIG.metadataBucket) {
-                const metadataFileName = `projects/${project.key}.json`;
+            // Fallback: manually update portfolio bucket
+            if (adminSupabase && SUPABASE_CONFIG.bucket) {
+                const metadataPath = `${project.key}/${SUPABASE_CONFIG.projectStructure.metadata}`;
                 const uploadResult = await adminSupabase.storage
-                    .from(SUPABASE_CONFIG.metadataBucket)
-                    .upload(metadataFileName, JSON.stringify(project, null, 2), {
+                    .from(SUPABASE_CONFIG.bucket)
+                    .upload(metadataPath, JSON.stringify(project, null, 2), {
                         contentType: 'application/json',
                         upsert: true
                     });
@@ -1553,7 +1675,7 @@ async function updateProjectFileCount(projectKey) {
     try {
         console.log('🔢 Updating file count for project:', projectKey);
         
-        // Get current file count from storage
+        // Get current file count from storage (excluding JSON files)
         const listResult = await adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .list(projectKey);
@@ -1563,8 +1685,17 @@ async function updateProjectFileCount(projectKey) {
             return;
         }
         
-        const fileCount = listResult.data ? listResult.data.length : 0;
-        console.log('📊 Current file count:', fileCount);
+        // Filter out JSON files, thumbnails, and system files when counting
+        const actualFiles = listResult.data ? listResult.data.filter(file => {
+            const fileName = file.name.toLowerCase();
+            return !fileName.endsWith('.json') &&
+                   !fileName.startsWith('thumb-') &&
+                   !fileName.startsWith('logo') &&
+                   !fileName.startsWith('banner');
+        }) : [];
+        
+        const fileCount = actualFiles.length;
+        console.log('📊 Actual project file count (excluding JSON/system files):', fileCount);
         
         // Find and update the project in the projects array
         const projectIndex = projects.findIndex(p => p.key === projectKey);
@@ -1575,13 +1706,13 @@ async function updateProjectFileCount(projectKey) {
             // Update localStorage
             localStorage.setItem('projects', JSON.stringify(projects));
             
-            // Update Supabase metadata bucket
+            // Update Supabase portfolio bucket
             try {
-                if (adminSupabase && SUPABASE_CONFIG.metadataBucket) {
-                    const metadataFileName = `projects/${projectKey}.json`;
+                if (adminSupabase && SUPABASE_CONFIG.bucket) {
+                    const metadataPath = `${projectKey}/${SUPABASE_CONFIG.projectStructure.metadata}`;
                     const uploadResult = await adminSupabase.storage
-                        .from(SUPABASE_CONFIG.metadataBucket)
-                        .upload(metadataFileName, JSON.stringify(projects[projectIndex], null, 2), {
+                        .from(SUPABASE_CONFIG.bucket)
+                        .upload(metadataPath, JSON.stringify(projects[projectIndex], null, 2), {
                             contentType: 'application/json',
                             upsert: true
                         });
@@ -1824,12 +1955,15 @@ function loadProjectFiles(projectKey) {
             projectFiles = result.data
                 .filter(function(file) {
                     const fileName = file.name.toLowerCase();
-                    // Filter out thumbnail files, logo files, and banner files
+                    // Filter out thumbnail files, logo files, banner files, and JSON files
                     return !fileName.startsWith('thumb-') &&
                            !fileName.startsWith('logo') &&
                            !fileName.startsWith('banner') &&
                            !fileName.includes('/logo/') &&
                            !fileName.includes('/banner/') &&
+                           !fileName.includes('website-assets/logo/') &&
+                           !fileName.includes('website-assets/banner/') &&
+                           !fileName.endsWith('.json') &&
                            fileName !== 'logo.png' &&
                            fileName !== 'banner.jpg' &&
                            fileName !== 'banner.png';
@@ -2239,12 +2373,14 @@ function loadSpecificAsset(assetType) {
         return;
     }
     
-    // Use the correct folder for each asset type
-    const folderName = assetType; // 'logo' or 'banner'
+    // Use the correct folder path for each asset type
+    const folderPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders[assetType]}`;
+    
+    console.log(`📁 Looking for ${assetType} in: ${folderPath}`);
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .list(folderName, {
+        .list(folderPath, {
             limit: 10
         })
         .then(function(result) {
@@ -2273,9 +2409,10 @@ function loadSpecificAsset(assetType) {
             if (assets.length > 0) {
                 // Get the first (and should be only) asset
                 const asset = assets[0];
+                const fullPath = `${folderPath}/${asset.name}`;
                 const publicUrlResult = adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
-                    .getPublicUrl(folderName + '/' + asset.name);
+                    .getPublicUrl(fullPath);
                 
                 if (publicUrlResult.data && publicUrlResult.data.publicUrl) {
                     previewElement.innerHTML = `
@@ -2283,7 +2420,7 @@ function loadSpecificAsset(assetType) {
                             <img src="${publicUrlResult.data.publicUrl}" alt="${assetType}" class="w-full h-32 object-cover rounded" 
                                  onerror="this.parentElement.innerHTML='<div class=\\'text-center text-red-400 py-8\\'>Failed to load ${assetType}</div>'">
                             <button class="absolute top-2 right-2 bg-red-600 text-white p-1 rounded text-xs hover:bg-red-700" 
-                                    onclick="deleteAsset('${folderName}/${asset.name}', '${assetType}')">Delete</button>
+                                    onclick="deleteAsset('${fullPath}', '${assetType}')">Delete</button>
                         </div>
                     `;
                     console.log(`✅ ${assetType} preview loaded:`, publicUrlResult.data.publicUrl);
@@ -2328,7 +2465,7 @@ function loadWebsiteContent() {
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json')
+        .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`)
         .then(function(result) {
             if (result.error) {
                 console.log('ℹ️ No saved website content found, using defaults');
@@ -2407,7 +2544,7 @@ function loadTeamInfo() {
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('team-info.json')
+        .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
         .then(function(result) {
             if (result.error) {
                 console.log('ℹ️ No saved team info found, using defaults');
@@ -2639,7 +2776,7 @@ function saveTeamInfo() {
         
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .upload('team-info.json', teamBlob, {
+            .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`, teamBlob, {
                 cacheControl: '3600',
                 upsert: true
             })
@@ -2918,9 +3055,18 @@ function handleLogoUpload(file) {
         return;
     }
     
+    // Check if user is authenticated
+    if (!currentUser) {
+        console.error('❌ User not authenticated');
+        showNotification('Error: Please log in first', 'error');
+        return;
+    }
+    
+    console.log('👤 Authenticated user:', currentUser.email);
+    
     // Sanitize filename for JSON safety
     const sanitizedFileName = sanitizeFilename(file.name);
-    const filePath = 'logo/' + sanitizedFileName;
+    const filePath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + sanitizedFileName;
     
     console.log('📤 Uploading to:', filePath, '(sanitized from:', file.name, ')');
     console.log('🔧 Upload configuration:', {
@@ -2934,13 +3080,13 @@ function handleLogoUpload(file) {
     // First, delete any existing logo files to keep only one
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .list('logo')
+        .list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`)
         .then(function(listResult) {
             console.log('📁 Logo folder list result:', listResult);
             if (listResult.data && listResult.data.length > 0) {
                 console.log('🗑️ Deleting existing logo files:', listResult.data);
                 // Delete existing logo files
-                const filesToDelete = listResult.data.map(file => 'logo/' + file.name);
+                const filesToDelete = listResult.data.map(file => `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + file.name);
                 return adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .remove(filesToDelete);
@@ -3061,9 +3207,18 @@ function handleBannerUpload(file) {
         return;
     }
     
+    // Check if user is authenticated
+    if (!currentUser) {
+        console.error('❌ User not authenticated');
+        showNotification('Error: Please log in first', 'error');
+        return;
+    }
+    
+    console.log('👤 Authenticated user:', currentUser.email);
+    
     // Sanitize filename for JSON safety
     const sanitizedFileName = sanitizeFilename(file.name);
-    const filePath = 'banner/' + sanitizedFileName;
+    const filePath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + sanitizedFileName;
     
     console.log('📤 Uploading to:', filePath, '(sanitized from:', file.name, ')');
     console.log('🔧 Upload configuration:', {
@@ -3077,11 +3232,11 @@ function handleBannerUpload(file) {
     // First, delete any existing banner files to keep only one
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .list('banner')
+        .list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
         .then(function(listResult) {
             if (listResult.data && listResult.data.length > 0) {
                 // Delete existing banner files
-                const filesToDelete = listResult.data.map(file => 'banner/' + file.name);
+                const filesToDelete = listResult.data.map(file => `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + file.name);
                 return adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .remove(filesToDelete);
@@ -3337,8 +3492,8 @@ function fixWebsiteContentUrls() {
     
     // Check for logo and banner files in their respective folders
     Promise.all([
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
     ])
     .then(function([logoResult, bannerResult]) {
         console.log('📁 Logo files:', logoResult);
@@ -3355,10 +3510,10 @@ function fixWebsiteContentUrls() {
             return;
         }
         
-        // Load existing website content
+        // Load existing website content from portfolio bucket
         return adminSupabase.storage
-            .from(SUPABASE_CONFIG.metadataBucket)
-            .download('website-content.json')
+            .from(SUPABASE_CONFIG.bucket)
+            .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`)
             .then(function(result) {
                 let content = {};
                 
@@ -3394,8 +3549,8 @@ function fixWebsiteContentUrls() {
                 const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
                 
                 return adminSupabase.storage
-                    .from(SUPABASE_CONFIG.metadataBucket)
-                    .upload('website-content.json', contentBlob, {
+                    .from(SUPABASE_CONFIG.bucket)
+                    .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`, contentBlob, {
                         cacheControl: '3600',
                         upsert: true
                     });
@@ -3427,8 +3582,8 @@ function testDirectAssetLoad() {
     
     // Check what files exist in logo and banner folders
     Promise.all([
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
     ])
     .then(function([logoResult, bannerResult]) {
         console.log('📁 Logo folder result:', logoResult);
@@ -3438,7 +3593,7 @@ function testDirectAssetLoad() {
             const logoFile = logoResult.data[0];
             const logoUrl = adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .getPublicUrl('logo/' + logoFile.name);
+                .getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + logoFile.name);
             
             console.log('📷 Logo URL:', logoUrl);
             
@@ -3462,7 +3617,7 @@ function testDirectAssetLoad() {
             const bannerFile = bannerResult.data[0];
             const bannerUrl = adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .getPublicUrl('banner/' + bannerFile.name);
+                .getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + bannerFile.name);
             
             console.log('🖼️ Banner URL:', bannerUrl);
             
@@ -3500,8 +3655,8 @@ function createSimpleWebsiteContent() {
     
     // Check for logo and banner files
     Promise.all([
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
     ])
     .then(function([logoResult, bannerResult]) {
         const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
@@ -3577,8 +3732,8 @@ function updateHomepageAssetsNow() {
     
     // Get logo and banner files
     Promise.all([
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('logo'),
-        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list('banner')
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
+        adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
     ])
     .then(function([logoResult, bannerResult]) {
         console.log('📁 Logo files:', logoResult);
@@ -3598,13 +3753,13 @@ function updateHomepageAssetsNow() {
         if (logoFile) {
             instructions += 'Logo update:\n';
             instructions += 'const logo = document.querySelector(".website-logo, .nav-logo");\n';
-            instructions += 'if (logo) logo.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl('logo/' + logoFile).data.publicUrl + '";\n\n';
+            instructions += 'if (logo) logo.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + logoFile).data.publicUrl + '";\n\n';
         }
         
         if (bannerFile) {
             instructions += 'Banner update:\n';
             instructions += 'const banner = document.querySelector(".hero-banner");\n';
-            instructions += 'if (banner) banner.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl('banner/' + bannerFile).data.publicUrl + '";\n\n';
+            instructions += 'if (banner) banner.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + bannerFile).data.publicUrl + '";\n\n';
         }
         
         // Show instructions in alert
@@ -3701,7 +3856,7 @@ function createAndTestContent() {
             }),
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .upload('team-info.json', teamBlob, {
+            .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`, teamBlob, {
                 cacheControl: '3600',
                 upsert: true
             })
@@ -3732,7 +3887,7 @@ function createAndTestContent() {
                     .download('website-content.json'),
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
-                    .download('team-info.json')
+                    .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
             ])
             .then(function(testResults) {
                 const [contentTest, teamTest] = testResults;
@@ -4199,7 +4354,7 @@ function debugContentLoading() {
             .download('website-content.json'),
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .download('team-info.json')
+            .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
     ])
     .then(function(results) {
         const [contentResult, teamResult] = results;
@@ -4280,20 +4435,14 @@ async function testSupabaseConnection() {
         } else {
             console.log('✅ Supabase connection successful');
             
-            // Check if required buckets exist
+            // Check if required bucket exists
             const portfolioBucket = publicBuckets.find(b => b.name === SUPABASE_CONFIG.bucket);
-            const metadataBucket = publicBuckets.find(b => b.name === SUPABASE_CONFIG.metadataBucket);
             
             console.log('📦 Bucket status:');
             console.log(`   ${SUPABASE_CONFIG.bucket}: ${portfolioBucket ? '✅ Found' : '❌ Missing'}`);
-            console.log(`   ${SUPABASE_CONFIG.metadataBucket}: ${metadataBucket ? '✅ Found' : '❌ Missing'}`);
             
             if (!portfolioBucket) {
                 console.error('💡 Create bucket:', SUPABASE_CONFIG.bucket, '(set to PUBLIC)');
-            }
-            
-            if (!metadataBucket) {
-                console.error('💡 Create bucket:', SUPABASE_CONFIG.metadataBucket, '(set to PRIVATE)');
             }
         }
     } catch (error) {
@@ -4304,3 +4453,22 @@ async function testSupabaseConnection() {
 
 </body>
 </html>
+
+<script>
+// Update admin panel to use new file paths
+function updateAdminPanelPaths() {
+    // Replace all instances of old paths with new ones
+    const oldWebsiteContentPath = 'website-content.json';
+    const newWebsiteContentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
+    
+    const oldTeamInfoPath = 'team-info.json';
+    const newTeamInfoPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`;
+    
+    console.log('✅ Admin panel updated to use new file paths');
+    console.log('📁 Website content:', newWebsiteContentPath);
+    console.log('👥 Team info:', newTeamInfoPath);
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', updateAdminPanelPaths);
+</script>
