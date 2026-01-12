@@ -502,16 +502,12 @@ async function loadProjectFilesFromStorage(projectKey, projectCategory) {
         
         // Create gallery
         if (projectFiles.length > 0) {
-            let imageIndex = 0; // Track image index separately
-            
+            // Generate gallery items with unified lightbox for all media
             galleryGrid.innerHTML = projectFiles.map((file, index) => {
                 if (file.type === 'image') {
-                    const currentImageIndex = imageIndex;
-                    imageIndex++; // Increment for next image
-                    
                     return `
-                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openLightbox(${currentImageIndex})">
-                            <img src="${file.url}" alt="Project Image ${currentImageIndex + 1}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openLightbox(${index})">
+                            <img src="${file.url}" alt="Project Image ${index + 1}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
                             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                                 <div class="text-white text-2xl">🔍</div>
                             </div>
@@ -519,11 +515,11 @@ async function loadProjectFilesFromStorage(projectKey, projectCategory) {
                     `;
                 } else if (file.type === 'video') {
                     return `
-                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openVideoModal('${file.url}')">
+                        <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openLightbox(${index})">
                             <video class="w-full h-full object-cover" preload="metadata">
                                 <source src="${file.url}" type="video/mp4">
                             </video>
-                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center group-hover:bg-black/30 transition-all duration-300">
                                 <div class="text-white text-4xl">▶️</div>
                             </div>
                         </div>
@@ -579,9 +575,12 @@ function getFileType(fileName) {
     }
 }
 
-function openLightbox(startIndex) {
-    const images = window.currentProjectImages || [];
-    if (images.length === 0) return;
+function openLightbox(startIndex, mediaType = 'image') {
+    // Get all media files (images and videos) for unified navigation
+    const allMediaFiles = window.currentProjectFiles ? 
+        window.currentProjectFiles.filter(f => f.type === 'image' || f.type === 'video') : [];
+    
+    if (allMediaFiles.length === 0) return;
     
     let currentIndex = startIndex;
     
@@ -591,11 +590,20 @@ function openLightbox(startIndex) {
     lightbox.id = 'lightbox-modal';
     
     function updateLightboxContent() {
-        const currentImage = images[currentIndex];
+        const currentFile = allMediaFiles[currentIndex];
+        const isVideo = currentFile.type === 'video';
+        
         lightbox.innerHTML = `
             <div class="relative max-w-6xl max-h-full flex items-center justify-center">
-                <!-- Main Image -->
-                <img src="${currentImage.url}" alt="Project Image" class="max-w-full max-h-full object-contain">
+                <!-- Main Media Content -->
+                ${isVideo ? `
+                    <video controls class="max-w-full max-h-full" autoplay>
+                        <source src="${currentFile.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                ` : `
+                    <img src="${currentFile.url}" alt="Project Image" class="max-w-full max-h-full object-contain">
+                `}
                 
                 <!-- Close Button -->
                 <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10">
@@ -603,23 +611,24 @@ function openLightbox(startIndex) {
                 </button>
                 
                 <!-- Previous Button -->
-                ${images.length > 1 ? `
-                    <button onclick="previousImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                ${allMediaFiles.length > 1 ? `
+                    <button onclick="previousMedia()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
                         ‹
                     </button>
                 ` : ''}
                 
                 <!-- Next Button -->
-                ${images.length > 1 ? `
-                    <button onclick="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === images.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                ${allMediaFiles.length > 1 ? `
+                    <button onclick="nextMedia()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === allMediaFiles.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}">
                         ›
                     </button>
                 ` : ''}
                 
-                <!-- Image Counter -->
-                ${images.length > 1 ? `
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/70 px-4 py-2 rounded-full text-sm">
-                        ${currentIndex + 1} / ${images.length}
+                <!-- Media Counter and Type Indicator -->
+                ${allMediaFiles.length > 1 ? `
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/70 px-4 py-2 rounded-full text-sm flex items-center gap-2">
+                        <span class="text-xs ${isVideo ? 'text-blue-400' : 'text-green-400'}">${isVideo ? '🎥' : '🖼️'}</span>
+                        ${currentIndex + 1} / ${allMediaFiles.length}
                     </div>
                 ` : ''}
             </div>
@@ -630,23 +639,30 @@ function openLightbox(startIndex) {
     window.closeLightbox = function() {
         lightbox.remove();
         delete window.closeLightbox;
+        delete window.previousMedia;
+        delete window.nextMedia;
+        // Legacy cleanup for backward compatibility
         delete window.previousImage;
         delete window.nextImage;
     };
     
-    window.previousImage = function() {
+    window.previousMedia = function() {
         if (currentIndex > 0) {
             currentIndex--;
             updateLightboxContent();
         }
     };
     
-    window.nextImage = function() {
-        if (currentIndex < images.length - 1) {
+    window.nextMedia = function() {
+        if (currentIndex < allMediaFiles.length - 1) {
             currentIndex++;
             updateLightboxContent();
         }
     };
+    
+    // Legacy function names for backward compatibility
+    window.previousImage = window.previousMedia;
+    window.nextImage = window.nextMedia;
     
     // Keyboard navigation
     function handleKeyPress(e) {
@@ -655,10 +671,10 @@ function openLightbox(startIndex) {
                 window.closeLightbox();
                 break;
             case 'ArrowLeft':
-                if (currentIndex > 0) window.previousImage();
+                if (currentIndex > 0) window.previousMedia();
                 break;
             case 'ArrowRight':
-                if (currentIndex < images.length - 1) window.nextImage();
+                if (currentIndex < allMediaFiles.length - 1) window.nextMedia();
                 break;
         }
     }
@@ -672,7 +688,7 @@ function openLightbox(startIndex) {
         originalClose();
     };
     
-    // Close on click outside
+    // Close on click outside (but not on video controls)
     lightbox.addEventListener('click', function(e) {
         if (e.target === lightbox) {
             window.closeLightbox();
@@ -681,41 +697,6 @@ function openLightbox(startIndex) {
     
     updateLightboxContent();
     document.body.appendChild(lightbox);
-}
-
-function openVideoModal(videoUrl) {
-    // Create video modal
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4';
-    modal.innerHTML = `
-        <div class="relative max-w-6xl max-h-full">
-            <video controls class="max-w-full max-h-full" autoplay>
-                <source src="${videoUrl}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <button onclick="this.parentElement.parentElement.remove()" class="absolute top-4 right-4 text-white text-3xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200">
-                ×
-            </button>
-        </div>
-    `;
-    
-    // Close on click outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.remove();
-        }
-    });
-    
-    // Close on Escape key
-    function handleEscape(e) {
-        if (e.key === 'Escape') {
-            modal.remove();
-            document.removeEventListener('keydown', handleEscape);
-        }
-    }
-    document.addEventListener('keydown', handleEscape);
-    
-    document.body.appendChild(modal);
 }
 
 // Helper function to get display names for categories
