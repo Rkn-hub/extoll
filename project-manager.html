@@ -76,6 +76,8 @@ body {
     transition: all 0.3s ease !important;
     backdrop-filter: blur(10px) !important;
     font-size: 16px !important;
+    text-align: left !important;
+    line-height: 1.5 !important;
 }
 
 .form-textarea {
@@ -91,6 +93,12 @@ body {
     backdrop-filter: blur(10px) !important;
     font-family: inherit !important;
     font-size: 16px !important;
+    line-height: 1.6 !important;
+    text-align: left !important;
+    vertical-align: top !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: pre-wrap !important;
 }
 
 .upload-area {
@@ -165,6 +173,27 @@ select:disabled {
     cursor: copy !important;
 }
 
+/* Text alignment and formatting improvements */
+.form-input:focus,
+.form-textarea:focus {
+    border-color: rgba(14, 165, 233, 0.8) !important;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1) !important;
+    outline: none !important;
+}
+
+/* Ensure proper text rendering */
+input, textarea, select {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Fix any potential text overflow issues */
+.glass-card {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -178,7 +207,6 @@ select:disabled {
     border-radius: 12px;
     overflow: hidden;
     background: rgba(15, 23, 42, 0.6);
-    group: hover;
 }
 
 .file-item img, .file-item video {
@@ -239,6 +267,56 @@ select:disabled {
     <!-- Project Manager -->
     <div id="projectManager" class="hidden">
         
+        <!-- Project Overview Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <!-- Project Overview Panel -->
+            <div class="lg:col-span-1">
+                <div class="glass-card p-6 rounded-xl sticky top-8">
+                    <h2 class="text-xl font-bold text-white mb-6">Project Overview</h2>
+                    
+                    <!-- Project Thumbnail -->
+                    <div id="overviewThumbnail" class="aspect-square bg-gray-800 rounded-lg mb-4 overflow-hidden">
+                        <span class="flex items-center justify-center h-full text-gray-400 text-sm">No thumbnail</span>
+                    </div>
+                    
+                    <!-- Project Details -->
+                    <div class="space-y-4">
+                        <div>
+                            <h3 id="overviewTitle" class="text-lg font-semibold text-white mb-1">Untitled Project</h3>
+                            <p id="overviewCategory" class="text-sm text-blue-400 capitalize">Category</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-300 mb-2">Description</h4>
+                            <div id="overviewDescription" class="text-sm text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
+                                No description available
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-700">
+                            <div>
+                                <h4 class="text-xs font-medium text-gray-400 mb-1">Files</h4>
+                                <p id="overviewCount" class="text-lg font-semibold text-white">0</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-medium text-gray-400 mb-1">Status</h4>
+                                <p class="text-sm text-green-400">Active</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xs font-medium text-gray-400 mb-2">Tags</h4>
+                            <div id="overviewTags" class="flex flex-wrap gap-1">
+                                <span class="text-xs text-gray-500">No tags</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project Edit Forms -->
+            <div class="lg:col-span-2">
+        
         <!-- Project Info Section -->
         <div class="glass-card p-8 rounded-xl mb-8">
             <h2 class="text-2xl font-bold text-white mb-6">Project Information</h2>
@@ -273,7 +351,7 @@ select:disabled {
             
             <div class="mt-6">
                 <label class="block text-lg font-medium text-gray-300 mb-3">Description</label>
-                <textarea id="projectDescription" class="form-textarea" placeholder="Enter project description"></textarea>
+                <textarea id="projectDescription" class="form-textarea" placeholder="Enter project description" style="text-align: left; line-height: 1.6; word-wrap: break-word;"></textarea>
             </div>
             
             <div class="mt-6">
@@ -378,6 +456,9 @@ select:disabled {
                     <p class="text-gray-400">This will permanently delete the project and all its files.</p>
                 </div>
                 <button onclick="deleteProject()" class="btn-danger">Delete Project</button>
+            </div>
+        </div>
+        
             </div>
         </div>
 
@@ -504,6 +585,49 @@ function populateProjectForm() {
             <img src="${currentProject.thumbnail_url}" alt="Thumbnail" class="w-full h-full object-cover rounded-lg">
         `;
     }
+    
+    // Update overview panel
+    updateProjectOverview();
+}
+
+function updateProjectOverview() {
+    if (!currentProject) return;
+    
+    // Update overview title
+    document.getElementById('overviewTitle').textContent = currentProject.title || 'Untitled Project';
+    
+    // Update overview category
+    document.getElementById('overviewCategory').textContent = currentProject.category || 'No category';
+    
+    // Update overview description with proper text alignment
+    const overviewDesc = document.getElementById('overviewDescription');
+    const description = currentProject.description || 'No description available';
+    overviewDesc.textContent = description;
+    
+    // Update overview count
+    document.getElementById('overviewCount').textContent = currentProject.count || '0';
+    
+    // Update overview thumbnail
+    const overviewThumb = document.getElementById('overviewThumbnail');
+    if (currentProject.thumbnail_url) {
+        overviewThumb.innerHTML = `
+            <img src="${currentProject.thumbnail_url}" alt="Thumbnail" class="w-full h-full object-cover rounded-lg">
+        `;
+    } else {
+        overviewThumb.innerHTML = `
+            <span class="flex items-center justify-center h-full text-gray-400 text-sm">No thumbnail</span>
+        `;
+    }
+    
+    // Update overview tags
+    const overviewTags = document.getElementById('overviewTags');
+    if (currentProject.tags && currentProject.tags.length > 0) {
+        overviewTags.innerHTML = currentProject.tags.map(tag => 
+            `<span class="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">${tag.trim()}</span>`
+        ).join('');
+    } else {
+        overviewTags.innerHTML = '<span class="text-xs text-gray-500">No tags</span>';
+    }
 }
 
 async function loadProjectFiles() {
@@ -564,8 +688,12 @@ async function loadProjectFiles() {
         console.log('✅ Loaded', projectFiles.length, 'files');
         displayFiles();
         
-        // Update count
+        // Update count in both form and overview
         document.getElementById('projectCount').value = projectFiles.length;
+        if (currentProject) {
+            currentProject.count = projectFiles.length;
+            updateProjectOverview();
+        }
         
     } catch (error) {
         console.error('❌ Error loading project files:', error);
@@ -645,12 +773,40 @@ function setupEventListeners() {
             .replace(/-+/g, '-')
             .trim();
         document.getElementById('projectKey').value = key;
+        
+        // Update overview in real-time
+        if (currentProject) {
+            currentProject.title = e.target.value;
+            updateProjectOverview();
+        }
+    });
+    
+    // Update overview when category changes
+    document.getElementById('projectCategory').addEventListener('change', function(e) {
+        if (currentProject) {
+            currentProject.category = e.target.value;
+            updateProjectOverview();
+        }
+    });
+    
+    // Update overview when tags change
+    document.getElementById('projectTags').addEventListener('input', function(e) {
+        if (currentProject) {
+            currentProject.tags = e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+            updateProjectOverview();
+        }
     });
     
     // Auto-save description changes
     let descriptionSaveTimeout;
     document.getElementById('projectDescription').addEventListener('input', function(e) {
         console.log('📝 Description changed:', e.target.value);
+        
+        // Update overview in real-time
+        if (currentProject) {
+            currentProject.description = e.target.value;
+            updateProjectOverview();
+        }
         
         // Clear previous timeout
         if (descriptionSaveTimeout) {
@@ -759,6 +915,9 @@ async function uploadFile(file, fileName, isThumbnail = false) {
             document.getElementById('currentThumbnail').innerHTML = `
                 <img src="${urlData.publicUrl}" alt="Thumbnail" class="w-full h-full object-cover rounded-lg">
             `;
+            
+            // Update overview thumbnail
+            updateProjectOverview();
         }
         
         showNotification('File uploaded successfully!', 'success');

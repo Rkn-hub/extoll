@@ -456,6 +456,16 @@ function loadDynamicAboutContent() {
                     console.log('✅ Updated about tagline');
                 }
                 
+                // Update about description in the main content
+                if (content.aboutDescription) {
+                    const aboutDescriptions = document.querySelectorAll('.glassmorphism p');
+                    if (aboutDescriptions.length > 0) {
+                        // Update the first paragraph with the admin description
+                        aboutDescriptions[0].textContent = content.aboutDescription;
+                        console.log('✅ Updated about description');
+                    }
+                }
+                
                 // Update footer tagline
                 const footerTagline = document.querySelector('.text-white.font-semibold');
                 if (footerTagline && content.aboutTagline) {

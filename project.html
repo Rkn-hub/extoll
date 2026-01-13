@@ -90,6 +90,25 @@
     cursor: not-allowed !important;
   }
   
+  /* Text alignment and formatting improvements */
+  #project-description {
+    text-align: left !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    line-height: 1.7 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Ensure proper text rendering for all text elements */
+  p, h1, h2, h3, h4, h5, h6 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
   .sparkle {
     position: absolute;
     width: 3px;
@@ -210,7 +229,7 @@ Back to Portfolio
 </section>
 
 <!-- Project Details -->
-<section class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4" id="project-details">
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4" id="project-details">
 <div class="glassmorphism-card p-6 rounded-xl text-center">
 <h3 class="text-white text-lg font-bold mb-2">Category</h3>
 <p class="text-gray-400" id="project-category">Loading...</p>
@@ -219,18 +238,16 @@ Back to Portfolio
 <h3 class="text-white text-lg font-bold mb-2">Items</h3>
 <p class="text-gray-400" id="project-count">Loading...</p>
 </div>
-<div class="glassmorphism-card p-6 rounded-xl text-center">
-<h3 class="text-white text-lg font-bold mb-2">Created</h3>
-<p class="text-gray-400" id="project-date">Loading...</p>
-</div>
 </section>
 
 <!-- Project Description -->
 <section class="px-4">
 <h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Overview</h2>
-<p class="text-gray-400 text-base sm:text-lg font-normal leading-relaxed" id="project-description">
+<div class="glassmorphism-card p-6 rounded-xl">
+<p class="text-gray-300 text-base sm:text-lg font-normal leading-relaxed text-left break-words whitespace-pre-wrap" id="project-description" style="word-wrap: break-word; overflow-wrap: break-word; text-align: left; line-height: 1.7;">
 Loading project description...
 </p>
+</div>
 </section>
 
 <!-- Call to Action -->
@@ -392,10 +409,11 @@ function loadProject(project) {
     // Update project details (count will be updated after loading files)
     document.getElementById('project-category').textContent = getCategoryDisplayName(project.category);
     document.getElementById('project-count').textContent = 'Loading...';
-    document.getElementById('project-date').textContent = new Date(project.created_at).toLocaleDateString();
     
-    // Update project description
-    document.getElementById('project-description').textContent = project.description;
+    // Update project description with proper formatting
+    const descriptionElement = document.getElementById('project-description');
+    const description = project.description || 'No description available for this project.';
+    descriptionElement.textContent = description;
     
     // Load actual project files from Supabase storage
     loadProjectFilesFromStorage(project.key, project.category);
