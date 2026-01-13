@@ -217,7 +217,7 @@ select:disabled {
             </div>
             <div class="flex items-center gap-4">
                 <span id="projectStatus" class="text-sm text-gray-400">Loading project...</span>
-                <button onclick="saveProject()" class="btn-primary">Save Changes</button>
+                <button id="saveButton" onclick="saveProject()" class="btn-primary">Save Changes</button>
             </div>
         </div>
     </div>
@@ -657,12 +657,19 @@ function setupEventListeners() {
             clearTimeout(descriptionSaveTimeout);
         }
         
+        // Show that changes are pending
+        const saveButton = document.getElementById('saveButton');
+        if (saveButton && saveButton.textContent === 'Save Changes') {
+            saveButton.textContent = 'Unsaved Changes';
+            saveButton.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
+        }
+        
         // Auto-save after 2 seconds of no typing
         descriptionSaveTimeout = setTimeout(() => {
             console.log('💾 Auto-saving description...');
             if (currentProject) {
                 currentProject.description = e.target.value;
-                saveProject();
+                saveProjectSilently(); // Use silent save for auto-save
             }
         }, 2000);
     });
@@ -672,7 +679,7 @@ function setupEventListeners() {
         console.log('📝 Description blur event, saving...');
         if (currentProject) {
             currentProject.description = e.target.value;
-            saveProject();
+            saveProjectSilently(); // Use silent save for blur
         }
     });
 }
@@ -798,8 +805,52 @@ function refreshFiles() {
     loadProjectFiles();
 }
 
+// Update save button state
+function updateSaveButton(state) {
+    const saveButton = document.getElementById('saveButton');
+    if (!saveButton) return;
+    
+    switch(state) {
+        case 'saving':
+            saveButton.textContent = 'Saving...';
+            saveButton.disabled = true;
+            saveButton.style.opacity = '0.7';
+            break;
+        case 'saved':
+            saveButton.textContent = '✓ Saved';
+            saveButton.disabled = false;
+            saveButton.style.opacity = '1';
+            saveButton.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            // Reset to normal after 3 seconds
+            setTimeout(() => {
+                updateSaveButton('normal');
+            }, 3000);
+            break;
+        case 'error':
+            saveButton.textContent = '✗ Error';
+            saveButton.disabled = false;
+            saveButton.style.opacity = '1';
+            saveButton.style.background = 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)';
+            // Reset to normal after 3 seconds
+            setTimeout(() => {
+                updateSaveButton('normal');
+            }, 3000);
+            break;
+        case 'normal':
+        default:
+            saveButton.textContent = 'Save Changes';
+            saveButton.disabled = false;
+            saveButton.style.opacity = '1';
+            saveButton.style.background = 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)';
+            break;
+    }
+}
+
 async function saveProject() {
     if (!currentProject) return;
+    
+    // Update button to saving state
+    updateSaveButton('saving');
     
     // Update project data
     currentProject.title = document.getElementById('projectTitle').value;
@@ -887,11 +938,97 @@ async function saveProject() {
             }
         }
         
+        // Update button to saved state
+        updateSaveButton('saved');
         showNotification('Project saved successfully! Description: ' + (currentProject.description ? 'Updated' : 'Empty'), 'success');
         
     } catch (error) {
         console.error('❌ Save error:', error);
+        // Update button to error state
+        updateSaveButton('error');
         showNotification('Save failed: ' + error.message, 'error');
+    }
+}
+
+// Silent save for auto-save functionality (doesn't show full button animation)
+async function saveProjectSilently() {
+    if (!currentProject) return;
+    
+    // Update project data
+    currentProject.title = document.getElementById('projectTitle').value;
+    currentProject.key = document.getElementById('projectKey').value;
+    currentProject.category = document.getElementById('projectCategory').value;
+    currentProject.description = document.getElementById('projectDescription').value;
+    currentProject.tags = document.getElementById('projectTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    currentProject.count = parseInt(document.getElementById('projectCount').value) || 0;
+    currentProject.updated_at = new Date().toISOString();
+    
+    console.log('💾 Silent saving project...');
+    
+    try {
+        // Update in localStorage
+        const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+        const projectIndex = projects.findIndex(p => p.id === currentProject.id);
+        if (projectIndex !== -1) {
+            projects[projectIndex] = currentProject;
+            localStorage.setItem('projects', JSON.stringify(projects));
+        }
+        
+        // Update in Supabase database table
+        if (adminSupabase) {
+            try {
+                const { data: dbData, error: dbError } = await adminSupabase
+                    .from('projects')
+                    .update({
+                        title: currentProject.title,
+                        category: currentProject.category,
+                        description: currentProject.description,
+                        count: currentProject.count || 1,
+                        thumbnail_url: currentProject.thumbnail_url || null,
+                        updated_at: currentProject.updated_at
+                    })
+                    .eq('key', currentProject.key)
+                    .select()
+                    .single();
+                
+                if (dbError) {
+                    // If update fails, try insert (project might not exist in DB)
+                    await adminSupabase
+                        .from('projects')
+                        .insert([{
+                            title: currentProject.title,
+                            key: currentProject.key,
+                            category: currentProject.category,
+                            description: currentProject.description,
+                            count: currentProject.count || 1,
+                            thumbnail_url: currentProject.thumbnail_url || null,
+                            created_at: currentProject.created_at || currentProject.updated_at,
+                            updated_at: currentProject.updated_at
+                        }]);
+                }
+            } catch (dbError) {
+                console.error('❌ Silent save database error:', dbError);
+            }
+        }
+        
+        // Update in Supabase metadata bucket if available
+        if (adminSupabase && SUPABASE_CONFIG.metadataBucket) {
+            const metadataFileName = `projects/${currentProject.key}.json`;
+            await adminSupabase.storage
+                .from(SUPABASE_CONFIG.metadataBucket)
+                .upload(metadataFileName, JSON.stringify(currentProject, null, 2), {
+                    contentType: 'application/json',
+                    upsert: true
+                });
+        }
+        
+        // Reset button to normal state for auto-save
+        updateSaveButton('normal');
+        console.log('✅ Silent save completed');
+        
+    } catch (error) {
+        console.error('❌ Silent save error:', error);
+        updateSaveButton('normal');
     }
 }
 
