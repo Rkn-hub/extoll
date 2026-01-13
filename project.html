@@ -9,10 +9,18 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
 <style>
+    #project-galley{
+        margin-bottom: 15%;   
+    }
+    #project-hero{
+        margin-bottom: 15%;   
+    }
   .glow-underline {
     position: relative;
     display: inline-block;
+    margin-bottom: 15%;
   }
+
   .glow-underline::after {
     content: '';
     position: absolute;
@@ -22,6 +30,7 @@
     height: 2px;
     background-color: #00aaff;
     box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff, 0 0 30px #00aaff;
+    
   }
   .glassmorphism-card {
     background: rgba(20, 29, 35, 0.5);
@@ -29,6 +38,7 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 170, 255, 0.2);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
   }
   
   .sparkle-container {
@@ -209,7 +219,7 @@ Back to Portfolio
 <!-- Project Title -->
 <section class="text-center px-4">
 <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tighter" id="project-title">
-<span class="glow-underline">Loading...</span>
+<span class="glow-underline" style="margin-bottom: 20%;">Loading...</span>
 </h1>
 </section>
 
@@ -229,7 +239,7 @@ Back to Portfolio
 </section>
 
 <!-- Project Details -->
-<section class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4" id="project-details">
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4" id="project-details" style="margin-top: 15%;">
 <div class="glassmorphism-card p-6 rounded-xl text-center">
 <h3 class="text-white text-lg font-bold mb-2">Category</h3>
 <p class="text-gray-400" id="project-category">Loading...</p>
@@ -241,7 +251,7 @@ Back to Portfolio
 </section>
 
 <!-- Project Description -->
-<section class="px-4">
+<section class="px-4" style="margin-top: 15%; margin-bottom: 15%;">
 <h2 class="text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6">Project Overview</h2>
 <div class="glassmorphism-card p-6 rounded-xl">
 <p class="text-gray-300 text-base sm:text-lg font-normal leading-relaxed text-left break-words whitespace-pre-wrap" id="project-description" style="word-wrap: break-word; overflow-wrap: break-word; text-align: left; line-height: 1.7;">
