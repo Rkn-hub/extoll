@@ -933,7 +933,7 @@ function testUpload() {
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .upload(filePath, selectedFile, {
-            cacheControl: '3600',
+            cacheControl: '0',
             upsert: true
         })
         .then(function(result) {
@@ -1032,7 +1032,7 @@ async function handleProjectSubmit(e) {
         const uploadResult = await adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(thumbnailPath, selectedThumbnail, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             });
         
@@ -1785,7 +1785,7 @@ function handleProjectImageUpload(files) {
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(filePath, file, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             })
             .then(function(result) {
@@ -1871,7 +1871,7 @@ function handleProjectVideoUpload(files) {
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(filePath, file, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             })
             .then(function(result) {
@@ -2783,7 +2783,7 @@ function saveTeamInfo() {
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`, teamBlob, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             })
             .then(function(result) {
@@ -2892,8 +2892,8 @@ function saveWebsiteContent() {
         
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .upload('website-content.json', contentBlob, {
-                cacheControl: '3600',
+            .upload('website-config/website-content.json', contentBlob, {
+                cacheControl: '0',  // No caching - always serve fresh content
                 upsert: true
             })
             .then(function(result) {
@@ -2972,7 +2972,7 @@ function deleteAsset(assetPath, assetType) {
             console.log('✅ Asset deleted successfully');
             showNotification(`${assetType} deleted successfully`, 'success');
             
-            // Clean up the website-content.json
+            // Clean up the website-config/website-content.json
             cleanupWebsiteContentAfterDelete(assetType);
             
             // Reload the specific asset to show empty state
@@ -2995,7 +2995,7 @@ function cleanupWebsiteContentAfterDelete(assetType) {
     // Load existing website content
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json')
+        .download('website-config/website-content.json')
         .then(function(result) {
             let content = {};
             
@@ -3031,8 +3031,8 @@ function cleanupWebsiteContentAfterDelete(assetType) {
             
             return adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .upload('website-content.json', contentBlob, {
-                    cacheControl: '3600',
+                .upload('website-config/website-content.json', contentBlob, {
+                    cacheControl: '0',
                     upsert: true
                 });
         })
@@ -3111,7 +3111,7 @@ function handleLogoUpload(file) {
             return adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .upload(filePath, file, {
-                    cacheControl: '3600',
+                    cacheControl: '0',
                     upsert: true
                 });
         })
@@ -3153,7 +3153,7 @@ function updateWebsiteContentWithLogo(logoFileName) {
     // Load existing website content
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json')
+        .download('website-config/website-content.json')
         .then(function(result) {
             let content = {};
             
@@ -3183,8 +3183,8 @@ function updateWebsiteContentWithLogo(logoFileName) {
             
             return adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .upload('website-content.json', contentBlob, {
-                    cacheControl: '3600',
+                .upload('website-config/website-content.json', contentBlob, {
+                    cacheControl: '0',
                     upsert: true
                 });
         })
@@ -3254,7 +3254,7 @@ function handleBannerUpload(file) {
             return adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .upload(filePath, file, {
-                    cacheControl: '3600',
+                    cacheControl: '0',
                     upsert: true
                 });
         })
@@ -3296,7 +3296,7 @@ function updateWebsiteContentWithBanner(bannerFileName) {
     // Load existing website content
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json')
+        .download('website-config/website-content.json')
         .then(function(result) {
             let content = {};
             
@@ -3326,8 +3326,8 @@ function updateWebsiteContentWithBanner(bannerFileName) {
             
             return adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
-                .upload('website-content.json', contentBlob, {
-                    cacheControl: '3600',
+                .upload('website-config/website-content.json', contentBlob, {
+                    cacheControl: '0',
                     upsert: true
                 });
         })
@@ -3359,17 +3359,17 @@ function testWebsiteContent() {
     // Load website content from Supabase
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json')
+        .download('website-config/website-content.json')
         .then(function(result) {
             if (result.error) {
-                console.error('❌ No website-content.json found:', result.error);
-                showNotification('No website-content.json file found in Supabase', 'error');
+                console.error('❌ No website-config/website-content.json found:', result.error);
+                showNotification('No website-config/website-content.json file found in Supabase', 'error');
                 return;
             }
             
             return result.data.text().then(function(jsonText) {
                 const content = JSON.parse(jsonText);
-                console.log('📄 Current website-content.json:', content);
+                console.log('📄 Current website-config/website-content.json:', content);
                 
                 // Show banner info specifically
                 if (content.bannerUrl) {
@@ -3447,7 +3447,7 @@ function testSupabaseUpload() {
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .upload(testPath, testFile, {
-            cacheControl: '3600',
+            cacheControl: '0',
             upsert: true
         })
         .then(function(result) {
@@ -3557,7 +3557,7 @@ function fixWebsiteContentUrls() {
                 return adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`, contentBlob, {
-                        cacheControl: '3600',
+                        cacheControl: '0',
                         upsert: true
                     });
             })
@@ -3703,8 +3703,8 @@ function createSimpleWebsiteContent() {
         
         return adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .upload('website-content.json', contentBlob, {
-                cacheControl: '3600',
+            .upload('website-config/website-content.json', contentBlob, {
+                cacheControl: '0',
                 upsert: true
             });
     })
@@ -3856,14 +3856,14 @@ function createAndTestContent() {
     Promise.all([
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .upload('website-content.json', contentBlob, {
-                cacheControl: '3600',
+            .upload('website-config/website-content.json', contentBlob, {
+                cacheControl: '0',
                 upsert: true
             }),
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`, teamBlob, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             })
     ])
@@ -3890,7 +3890,7 @@ function createAndTestContent() {
             Promise.all([
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
-                    .download('website-content.json'),
+                    .download('website-config/website-content.json'),
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
@@ -3947,7 +3947,7 @@ function handleGalleryImageUpload(files) {
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(filePath, file, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             })
             .then(function(result) {
@@ -4000,7 +4000,7 @@ function handleGalleryVideoUpload(files) {
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .upload(filePath, file, {
-                cacheControl: '3600',
+                cacheControl: '0',
                 upsert: true
             })
             .then(function(result) {
@@ -4302,8 +4302,8 @@ function testContactUpdate() {
     
     adminSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .upload('website-content.json', contentBlob, {
-            cacheControl: '3600',
+        .upload('website-config/website-content.json', contentBlob, {
+            cacheControl: '0',
             upsert: true
         })
         .then(function(result) {
@@ -4353,11 +4353,11 @@ function debugContentLoading() {
     
     showNotification('Checking content files...', 'info');
     
-    // Check both website-content.json and team-info.json
+    // Check both website-config/website-content.json and team-info.json
     Promise.all([
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
-            .download('website-content.json'),
+            .download('website-config/website-content.json'),
         adminSupabase.storage
             .from(SUPABASE_CONFIG.bucket)
             .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
