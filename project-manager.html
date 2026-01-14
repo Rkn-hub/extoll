@@ -507,6 +507,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
+    // Check if this is a new project creation
+    if (projectId === 'new') {
+        console.log('📝 Creating new project...');
+        setupNewProjectMode();
+        return;
+    }
+    
     // Initialize Supabase
     if (typeof window.supabase !== 'undefined') {
         const initResult = initializeSupabase();
@@ -519,6 +526,42 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProject(projectId);
     setupEventListeners();
 });
+
+function setupNewProjectMode() {
+    console.log('🆕 Setting up new project mode');
+    
+    // Initialize Supabase
+    if (typeof window.supabase !== 'undefined') {
+        const initResult = initializeSupabase();
+        if (initResult) {
+            adminSupabase = configSupabase;
+            console.log('✅ Supabase initialized');
+        }
+    }
+    
+    // Clear the form for new project
+    currentProject = null;
+    document.getElementById('projectTitle').value = '';
+    document.getElementById('projectKey').value = '';
+    document.getElementById('projectCategory').value = 'graphics';
+    document.getElementById('projectDescription').value = '';
+    document.getElementById('projectTags').value = '';
+    
+    // Update page title
+    document.querySelector('h1').textContent = 'Create New Project';
+    
+    // Change button text
+    const saveBtn = document.querySelector('.btn-primary');
+    if (saveBtn) {
+        saveBtn.textContent = 'Create Project';
+    }
+    
+    // Show the project manager form
+    showProjectManager();
+    setupEventListeners();
+    
+    console.log('✅ New project mode ready');
+}
 
 function showProjectNotFound() {
     document.getElementById('projectNotFound').classList.remove('hidden');
@@ -840,17 +883,57 @@ function setupEventListeners() {
     });
 }
 
-function handleThumbnailUpload(e) {
+async function handleThumbnailUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
+    
+    // Check if project exists, if not, try to save it first
+    if (!currentProject) {
+        const title = document.getElementById('projectTitle').value;
+        if (!title) {
+            showNotification('Please enter a project title first', 'warning');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+        
+        // Auto-save the project first (without redirect)
+        showNotification('Saving project before upload...', 'warning');
+        const saved = await saveProject(false);
+        
+        if (!saved || !currentProject) {
+            showNotification('Failed to save project. Please try again.', 'error');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+    }
     
     console.log('📷 Uploading thumbnail:', file.name);
     uploadFile(file, 'thumb-' + Date.now() + '.' + file.name.split('.').pop(), true);
 }
 
-function handleImageUpload(e) {
+async function handleImageUpload(e) {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+    
+    // Check if project exists, if not, try to save it first
+    if (!currentProject) {
+        const title = document.getElementById('projectTitle').value;
+        if (!title) {
+            showNotification('Please enter a project title first', 'warning');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+        
+        // Auto-save the project first (without redirect)
+        showNotification('Saving project before upload...', 'warning');
+        const saved = await saveProject(false);
+        
+        if (!saved || !currentProject) {
+            showNotification('Failed to save project. Please try again.', 'error');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+    }
     
     console.log('📷 Uploading', files.length, 'images');
     files.forEach((file, index) => {
@@ -859,9 +942,29 @@ function handleImageUpload(e) {
     });
 }
 
-function handleVideoUpload(e) {
+async function handleVideoUpload(e) {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+    
+    // Check if project exists, if not, try to save it first
+    if (!currentProject) {
+        const title = document.getElementById('projectTitle').value;
+        if (!title) {
+            showNotification('Please enter a project title first', 'warning');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+        
+        // Auto-save the project first (without redirect)
+        showNotification('Saving project before upload...', 'warning');
+        const saved = await saveProject(false);
+        
+        if (!saved || !currentProject) {
+            showNotification('Failed to save project. Please try again.', 'error');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+    }
     
     console.log('🎥 Uploading', files.length, 'videos');
     files.forEach((file, index) => {
@@ -871,8 +974,8 @@ function handleVideoUpload(e) {
 }
 
 async function uploadFile(file, fileName, isThumbnail = false) {
-    if (!adminSupabase || !currentProject.key) {
-        showNotification('Cannot upload: missing configuration', 'error');
+    if (!adminSupabase || !currentProject || !currentProject.key) {
+        showNotification('Please save the project first before uploading files', 'error');
         return;
     }
     
@@ -1005,53 +1108,76 @@ function updateSaveButton(state) {
     }
 }
 
-async function saveProject() {
-    if (!currentProject) return;
-    
+async function saveProject(shouldRedirect = true) {
     // Update button to saving state
     updateSaveButton('saving');
     
-    // Update project data
-    currentProject.title = document.getElementById('projectTitle').value;
-    currentProject.key = document.getElementById('projectKey').value;
-    currentProject.category = document.getElementById('projectCategory').value;
-    currentProject.description = document.getElementById('projectDescription').value;
-    currentProject.tags = document.getElementById('projectTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
-    currentProject.count = parseInt(document.getElementById('projectCount').value) || 0;
-    currentProject.updated_at = new Date().toISOString();
+    // Get form data
+    const title = document.getElementById('projectTitle').value;
+    const key = document.getElementById('projectKey').value;
+    const category = document.getElementById('projectCategory').value;
+    const description = document.getElementById('projectDescription').value;
+    const tags = document.getElementById('projectTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    const count = parseInt(document.getElementById('projectCount').value) || 0;
     
-    console.log('💾 Saving project with description:', currentProject.description);
+    // Validate required fields
+    if (!title || !key) {
+        showNotification('Please enter project title', 'error');
+        updateSaveButton('error');
+        return false;
+    }
+    
+    // Check if this is a new project
+    const isNewProject = !currentProject;
+    
+    if (isNewProject) {
+        // Create new project object
+        currentProject = {
+            id: Date.now().toString(),
+            title: title,
+            key: key,
+            category: category,
+            description: description,
+            tags: tags,
+            count: count,
+            thumbnail_url: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+        console.log('🆕 Creating new project:', currentProject);
+    } else {
+        // Update existing project
+        currentProject.title = title;
+        currentProject.key = key;
+        currentProject.category = category;
+        currentProject.description = description;
+        currentProject.tags = tags;
+        currentProject.count = count;
+        currentProject.updated_at = new Date().toISOString();
+        console.log('💾 Updating existing project:', currentProject);
+    }
     
     try {
-        // Update in localStorage
+        // Save to localStorage
         const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-        const projectIndex = projects.findIndex(p => p.id === currentProject.id);
-        if (projectIndex !== -1) {
-            projects[projectIndex] = currentProject;
-            localStorage.setItem('projects', JSON.stringify(projects));
-            console.log('✅ Updated localStorage');
+        
+        if (isNewProject) {
+            projects.push(currentProject);
+            console.log('✅ Added to localStorage');
+        } else {
+            const projectIndex = projects.findIndex(p => p.id === currentProject.id);
+            if (projectIndex !== -1) {
+                projects[projectIndex] = currentProject;
+                console.log('✅ Updated in localStorage');
+            }
         }
         
-        // Update in Supabase database table
+        localStorage.setItem('projects', JSON.stringify(projects));
+        
+        // Save to Supabase database table
         if (adminSupabase) {
             try {
-                const { data: dbData, error: dbError } = await adminSupabase
-                    .from('projects')
-                    .update({
-                        title: currentProject.title,
-                        category: currentProject.category,
-                        description: currentProject.description,
-                        count: currentProject.count || 1,
-                        thumbnail_url: currentProject.thumbnail_url || null,
-                        updated_at: currentProject.updated_at
-                    })
-                    .eq('key', currentProject.key)
-                    .select()
-                    .single();
-                
-                if (dbError) {
-                    console.warn('⚠️ Database update failed, trying insert:', dbError.message);
-                    // If update fails, try insert (project might not exist in DB)
+                if (isNewProject) {
                     const { data: insertData, error: insertError } = await adminSupabase
                         .from('projects')
                         .insert([{
@@ -1061,19 +1187,41 @@ async function saveProject() {
                             description: currentProject.description,
                             count: currentProject.count || 1,
                             thumbnail_url: currentProject.thumbnail_url || null,
-                            created_at: currentProject.created_at || currentProject.updated_at,
+                            created_at: currentProject.created_at,
                             updated_at: currentProject.updated_at
                         }])
                         .select()
                         .single();
                     
                     if (insertError) {
-                        console.error('❌ Database insert also failed:', insertError.message);
+                        console.error('❌ Database insert failed:', insertError.message);
                     } else {
                         console.log('✅ Project inserted into database:', insertData);
+                        // Update the project ID with the database ID
+                        if (insertData && insertData.id) {
+                            currentProject.id = insertData.id;
+                        }
                     }
                 } else {
-                    console.log('✅ Project updated in database:', dbData);
+                    const { data: dbData, error: dbError } = await adminSupabase
+                        .from('projects')
+                        .update({
+                            title: currentProject.title,
+                            category: currentProject.category,
+                            description: currentProject.description,
+                            count: currentProject.count || 1,
+                            thumbnail_url: currentProject.thumbnail_url || null,
+                            updated_at: currentProject.updated_at
+                        })
+                        .eq('key', currentProject.key)
+                        .select()
+                        .single();
+                    
+                    if (dbError) {
+                        console.warn('⚠️ Database update failed:', dbError.message);
+                    } else {
+                        console.log('✅ Project updated in database:', dbData);
+                    }
                 }
             } catch (dbError) {
                 console.error('❌ Database operation failed:', dbError);
@@ -1099,13 +1247,27 @@ async function saveProject() {
         
         // Update button to saved state
         updateSaveButton('saved');
-        showNotification('Project saved successfully! Description: ' + (currentProject.description ? 'Updated' : 'Empty'), 'success');
+        
+        if (isNewProject) {
+            showNotification('Project created successfully!', 'success');
+            // Only redirect if shouldRedirect is true (manual save, not auto-save before upload)
+            if (shouldRedirect) {
+                setTimeout(() => {
+                    window.location.href = `project-manager.html?id=${currentProject.id}`;
+                }, 1500);
+            }
+        } else {
+            showNotification('Project saved successfully!', 'success');
+        }
+        
+        return true;
         
     } catch (error) {
         console.error('❌ Save error:', error);
         // Update button to error state
         updateSaveButton('error');
         showNotification('Save failed: ' + error.message, 'error');
+        return false;
     }
 }
 
