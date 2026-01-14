@@ -1245,6 +1245,24 @@ async function saveProject(shouldRedirect = true) {
             }
         }
         
+        // IMPORTANT: Also save project.json in the main portfolio bucket for portfolio page
+        if (adminSupabase && SUPABASE_CONFIG.bucket) {
+            const projectJsonPath = `${currentProject.key}/project.json`;
+            const { error: projectJsonError } = await adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload(projectJsonPath, JSON.stringify(currentProject, null, 2), {
+                    contentType: 'application/json',
+                    upsert: true,
+                    cacheControl: '0'
+                });
+            
+            if (projectJsonError) {
+                console.error('❌ Failed to save project.json in portfolio bucket:', projectJsonError);
+            } else {
+                console.log('✅ Saved project.json in portfolio bucket for portfolio page');
+            }
+        }
+        
         // Update button to saved state
         updateSaveButton('saved');
         
@@ -1340,6 +1358,18 @@ async function saveProjectSilently() {
                 .upload(metadataFileName, JSON.stringify(currentProject, null, 2), {
                     contentType: 'application/json',
                     upsert: true
+                });
+        }
+        
+        // IMPORTANT: Also save project.json in the main portfolio bucket for portfolio page
+        if (adminSupabase && SUPABASE_CONFIG.bucket) {
+            const projectJsonPath = `${currentProject.key}/project.json`;
+            await adminSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .upload(projectJsonPath, JSON.stringify(currentProject, null, 2), {
+                    contentType: 'application/json',
+                    upsert: true,
+                    cacheControl: '0'
                 });
         }
         
