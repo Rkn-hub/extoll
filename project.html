@@ -404,10 +404,6 @@ function loadProject(project) {
         `;
     }
     
-    // Update project details (count will be updated after loading files)
-    document.getElementById('project-category').textContent = getCategoryDisplayName(project.category);
-    document.getElementById('project-count').textContent = 'Loading...';
-    
     // Update project description with proper formatting
     const descriptionElement = document.getElementById('project-description');
     const description = project.description || 'No description available for this project.';
@@ -444,14 +440,12 @@ async function loadProjectFilesFromStorage(projectKey, projectCategory) {
         if (error) {
             console.error('❌ Error loading project files:', error);
             showNoFilesMessage();
-            updateProjectCount(0, projectCategory);
             return;
         }
         
         if (!files || files.length === 0) {
             console.log('📁 No files found for project:', projectKey);
             showNoFilesMessage();
-            updateProjectCount(0, projectCategory);
             return;
         }
         
@@ -506,9 +500,6 @@ async function loadProjectFilesFromStorage(projectKey, projectCategory) {
             videos: videos.length
         });
         
-        // Update the project count display with actual file count
-        updateProjectCount(projectFiles.length, projectCategory);
-        
         // Store files globally for navigation
         window.currentProjectFiles = projectFiles;
         window.currentProjectImages = images; // Store only images for lightbox
@@ -555,7 +546,6 @@ async function loadProjectFilesFromStorage(projectKey, projectCategory) {
     } catch (error) {
         console.error('❌ Error loading project files:', error);
         showNoFilesMessage();
-        updateProjectCount(0, projectCategory);
     }
 }
 
