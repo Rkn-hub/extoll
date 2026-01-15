@@ -240,6 +240,9 @@
   [data-filter],
   [data-section],
   a[href],
+  #indexPhoneLink,
+  #indexEmailLink,
+  #indexWhatsappLink,
   .service-tile,
   .project-card,
   .contact-link {
@@ -279,163 +282,6 @@
     cursor: pointer !important;
   }
 
-  /* Cyber Card Styles - With Interactive 3D */
-  .cyber-container {
-    position: relative;
-    width: 190px;
-    height: 254px;
-    margin: 0 auto;
-    cursor: pointer;
-    perspective: 1000px;
-  }
-  
-  .cyber-card {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(45deg, #1a1a1a, #262626);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    transition: all 0.1s ease-out;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    transform-style: preserve-3d;
-  }
-  
-  .cyber-container:hover .cyber-card {
-    border-color: rgba(0, 170, 255, 0.5);
-    box-shadow: 0 0 30px rgba(0, 170, 255, 0.3);
-  }
-  
-  .cyber-card-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .cyber-card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
-  }
-  
-  .cyber-card-glare {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(125deg, 
-      rgba(255, 255, 255, 0) 0%, 
-      rgba(255, 255, 255, 0.1) 50%, 
-      rgba(255, 255, 255, 0) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-  
-  .cyber-container:hover .cyber-card-glare {
-    opacity: 1;
-  }
-  
-  .cyber-lines span {
-    position: absolute;
-    background: linear-gradient(90deg, transparent, rgba(0, 170, 255, 0.5), transparent);
-    height: 1px;
-    width: 100%;
-    animation: lineGrow 2s linear infinite;
-    pointer-events: none;
-  }
-  
-  .cyber-lines span:nth-child(1) {
-    top: 20%;
-    animation-delay: 0s;
-  }
-  
-  .cyber-lines span:nth-child(2) {
-    top: 50%;
-    animation-delay: 0.5s;
-  }
-  
-  .cyber-lines span:nth-child(3) {
-    top: 80%;
-    animation-delay: 1s;
-  }
-  
-  @keyframes lineGrow {
-    0%, 100% {
-      transform: scaleX(0);
-      opacity: 0;
-    }
-    50% {
-      transform: scaleX(1);
-      opacity: 1;
-    }
-  }
-  
-  .cyber-corner-elements span {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    border: 2px solid rgba(0, 170, 255, 0.3);
-    transition: all 0.3s ease;
-    pointer-events: none;
-  }
-  
-  .cyber-corner-elements span:nth-child(1) {
-    top: 10px;
-    left: 10px;
-    border-right: 0;
-    border-bottom: 0;
-  }
-  
-  .cyber-corner-elements span:nth-child(2) {
-    top: 10px;
-    right: 10px;
-    border-left: 0;
-    border-bottom: 0;
-  }
-  
-  .cyber-corner-elements span:nth-child(3) {
-    bottom: 10px;
-    left: 10px;
-    border-right: 0;
-    border-top: 0;
-  }
-  
-  .cyber-corner-elements span:nth-child(4) {
-    bottom: 10px;
-    right: 10px;
-    border-left: 0;
-    border-top: 0;
-  }
-  
-  .cyber-container:hover .cyber-corner-elements span {
-    border-color: rgba(0, 170, 255, 0.8);
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-  }
-  
-  /* Interactive 3D Hover Effects */
-  .cyber-container {
-    transform-style: preserve-3d;
-  }
-  
-  .cyber-card {
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
-  
-  /* Ensure clickable elements are accessible */
-  button, a, [onclick], .cursor-pointer, .portfolio-item {
-    position: relative;
-    z-index: 10;
-    pointer-events: auto !important;
-  }
-  
-  /* Fix any potential overlay issues */
-  .cyber-card-glare,
-  .cyber-lines span,
-  .cyber-corner-elements span {
-    pointer-events: none !important;
-  }
-  
   /* Sparkle Animation Background */
   .sparkle-container {
     position: fixed;
@@ -634,10 +480,9 @@
     </div>
   </div>
 </header>
-
 <!-- Home Section -->
-<section id="home" class="flex flex-1 justify-center px-4 py-8 sm:px-8 md:px-20 lg:px-40 mb-4">
-<div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 pt-20 sm:pt-24 lg:pt-32 pb-4 lg:pb-6">
+<section id="home" class="flex flex-1 justify-center px-4 py-4 sm:px-6 md:px-12 lg:px-20 mb-2">
+<div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 pt-12 sm:pt-16 lg:pt-20 pb-2 lg:pb-4">
 <div class="flex min-h-[40vh] flex-col items-center justify-center gap-6 bg-transparent text-center">
   <div class="flex flex-col gap-4 items-center text-center">
     <h1 class="text-white text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
@@ -848,13 +693,12 @@ Send Us a Message
 </div>
 </div>
 
-
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js?v=2024011101"></script>
 <script src="website-assets.js?v=2024011101"></script>
 
 <!-- OPTIMIZED ARCHITECTURE - Single Source of Truth -->
-<script src="index-optimized.js?v=2024011105"></script>
+<script src="index-optimized.js?v=2024011102"></script>
 
 </body>
 </html>

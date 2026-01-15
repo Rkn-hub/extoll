@@ -33,8 +33,6 @@ const CACHE = {
 /* ---------- CMS CONTENT (SAFE, ONCE) ---------- */
 async function loadWebsiteContentOnce() {
   try {
-    console.log('🔄 Loading website content from CMS...');
-    
     if (!initializeSupabase()) {
       console.warn('⚠️ Supabase not initialized, skipping CMS content load');
       return;
@@ -42,7 +40,6 @@ async function loadWebsiteContentOnce() {
     
     // Try new path first (website-config/website-content.json)
     let contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
-    console.log('📂 Trying new path:', contentPath);
     
     // Add cache-busting parameter to force fresh load
     const cacheBuster = `?t=${Date.now()}`;
@@ -53,17 +50,12 @@ async function loadWebsiteContentOnce() {
     
     // Fallback to old path (website-content.json) for backward compatibility
     if (error || !data) {
-      console.log('📂 Trying legacy path: website-content.json');
       const legacyResult = await configSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .download('website-content.json' + cacheBuster);
       
       data = legacyResult.data;
       error = legacyResult.error;
-      
-      if (legacyResult.data) {
-        console.log('✅ Loaded from legacy path');
-      }
     }
     
     if (error) {
@@ -77,13 +69,6 @@ async function loadWebsiteContentOnce() {
     }
     
     const content = JSON.parse(await data.text());
-    console.log('✅ CMS content loaded:', content);
-    console.log('📋 Content keys:', Object.keys(content));
-    console.log('📝 Hero Title from CMS:', content.heroTitle);
-    console.log('📝 Hero Subtitle from CMS:', content.heroSubtitle);
-    console.log('📝 Hero Description from CMS:', content.heroDescription);
-    console.log('🕐 Last updated:', content.updatedAt || 'No timestamp');
-    
     CACHE.websiteContent = content;
 
     /* Hero */
@@ -91,28 +76,20 @@ async function loadWebsiteContentOnce() {
     const heroSubtitle = DOM.heroSubtitle();
     const heroDescription = DOM.heroDescription();
     
-    console.log('🎯 DOM Elements found:');
-    console.log('  - Hero Title element:', heroTitle ? '✅' : '❌');
-    console.log('  - Hero Subtitle element:', heroSubtitle ? '✅' : '❌');
-    console.log('  - Hero Description element:', heroDescription ? '✅' : '❌');
-    
     if (content.heroTitle && heroTitle) {
       heroTitle.textContent = content.heroTitle;
-      console.log('📝 Hero title updated:', content.heroTitle);
     } else {
       console.warn('⚠️ Could not update hero title. Content:', content.heroTitle, 'Element:', heroTitle);
     }
     
     if (content.heroSubtitle && heroSubtitle) {
       heroSubtitle.textContent = content.heroSubtitle;
-      console.log('📝 Hero subtitle updated:', content.heroSubtitle);
     } else {
       console.warn('⚠️ Could not update hero subtitle. Content:', content.heroSubtitle, 'Element:', heroSubtitle);
     }
     
     if (content.heroDescription && heroDescription) {
       heroDescription.textContent = content.heroDescription;
-      console.log('📝 Hero description updated');
     } else {
       console.warn('⚠️ Could not update hero description. Content:', content.heroDescription, 'Element:', heroDescription);
     }
@@ -121,20 +98,15 @@ async function loadWebsiteContentOnce() {
     if (content.contactPhone && DOM.phoneText()) {
       DOM.phoneText().textContent = content.contactPhone;
       DOM.phoneLink().href = "tel:" + content.contactPhone.replace(/[^\d+]/g, "");
-      console.log('📞 Phone updated:', content.contactPhone, '→', DOM.phoneLink().href);
     }
     if (content.contactEmail && DOM.emailText()) {
       DOM.emailText().textContent = content.contactEmail;
       DOM.emailLink().href = "mailto:" + content.contactEmail;
-      console.log('📧 Email updated:', content.contactEmail);
     }
     if (content.whatsappNumber && DOM.whatsappText()) {
       DOM.whatsappText().textContent = content.whatsappNumber;
       DOM.whatsappLink().href = "https://wa.me/" + content.whatsappNumber.replace(/[^\d]/g, "");
-      console.log('💬 WhatsApp updated:', content.whatsappNumber, '→', DOM.whatsappLink().href);
     }
-    
-    console.log('✅ Website content loaded successfully');
   } catch (error) {
     console.error('❌ Failed to load website content:', error);
   }
@@ -352,38 +324,29 @@ function updateLogo(logoUrl) {
 /* ---------- BANNER LOADING ---------- */
 async function loadBanner() {
   try {
-    console.log('🖼️ Loading banner...');
-    
     // Check cache first
     if (CACHE.bannerUrl) {
-      console.log('📦 Using cached banner');
       updateBanner(CACHE.bannerUrl);
       return;
     }
 
     if (!initializeSupabase()) {
-      console.log('⚠️ Supabase not available, using fallback banner');
       updateBanner(getFallbackBanner());
       return;
     }
 
     // Try new location first
     const newPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`;
-    console.log('🔍 Trying new banner path:', newPath);
     let bannerUrl = await tryLoadBannerFromPath(newPath);
     
     // Fallback to old location
     if (!bannerUrl) {
-      console.log('🔍 Trying old banner path: banner');
       bannerUrl = await tryLoadBannerFromPath('banner');
     }
     
     // Use fallback if all fails
     if (!bannerUrl) {
-      console.log('⚠️ No banner found in Supabase, using fallback');
       bannerUrl = getFallbackBanner();
-    } else {
-      console.log('✅ Banner loaded from Supabase');
     }
     
     CACHE.bannerUrl = bannerUrl;
@@ -423,7 +386,6 @@ function updateBanner(bannerUrl) {
   const bannerElement = DOM.bannerElement();
   if (bannerElement && bannerUrl) {
     bannerElement.src = bannerUrl;
-    console.log('✅ Banner updated:', bannerUrl);
   } else {
     console.warn('❌ Banner element not found or no URL provided');
   }
