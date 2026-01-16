@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://extoll.co.in/sitemap.xml

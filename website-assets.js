@@ -8,7 +8,7 @@ const WEBSITE_ASSETS_CONFIG = {
         logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwZWE1ZTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkV4dG9sbDwvdGV4dD4KPHN2Zz4=',
         banner: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZGVmcz4KPGXYZ2lhbCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMEEwQTBEO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzFhMWEyZTtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTYyMTNlO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+Cjx0ZXh0IHg9Ijk2MCIgeT0iNTQwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZTVlN2ViIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Zb3VyIEJhbm5lciBIZXJlPC90ZXh0Pgo8L3N2Zz4='
     },
-    
+
     // Storage keys for localStorage fallback
     storageKeys: {
         logo: 'website_logo_url',
@@ -22,43 +22,43 @@ async function loadWebsiteAssetsForSite() {
         // Try to load from Supabase first
         if (typeof getWebsiteAssets === 'function') {
             const result = await getWebsiteAssets();
-            
+
             if (result.success) {
                 const assets = result.data;
-                
+
                 // Update logo
                 if (assets.logo && assets.logo.length > 0) {
                     const logoUrl = assets.logo[0].url; // Most recent
                     updateWebsiteLogo(logoUrl);
                     localStorage.setItem(WEBSITE_ASSETS_CONFIG.storageKeys.logo, logoUrl);
                 }
-                
+
                 // Update banner
                 if (assets.banner && assets.banner.length > 0) {
                     const bannerUrl = assets.banner[0].url; // Most recent
                     updateWebsiteBanner(bannerUrl);
                     localStorage.setItem(WEBSITE_ASSETS_CONFIG.storageKeys.banner, bannerUrl);
                 }
-                
+
                 console.log('✅ Website assets loaded from Supabase');
                 return;
             }
         }
-        
+
         // Fallback to localStorage
         const logoUrl = localStorage.getItem(WEBSITE_ASSETS_CONFIG.storageKeys.logo);
         const bannerUrl = localStorage.getItem(WEBSITE_ASSETS_CONFIG.storageKeys.banner);
-        
+
         if (logoUrl) {
             updateWebsiteLogo(logoUrl);
         }
-        
+
         if (bannerUrl) {
             updateWebsiteBanner(bannerUrl);
         }
-        
+
         console.log('✅ Website assets loaded from localStorage');
-        
+
     } catch (error) {
         console.error('❌ Failed to load website assets:', error);
         // Use defaults if everything fails
@@ -71,7 +71,7 @@ async function loadWebsiteAssetsForSite() {
 function updateWebsiteLogo(logoUrl) {
     // Update all logo elements on the page
     const logoElements = document.querySelectorAll('.website-logo, [data-logo], .logo');
-    
+
     logoElements.forEach(element => {
         if (element.tagName === 'IMG') {
             element.src = logoUrl;
@@ -81,10 +81,10 @@ function updateWebsiteLogo(logoUrl) {
             element.innerHTML = `<img src="${logoUrl}" alt="Extoll.Co Logo" class="h-full w-auto object-contain">`;
         }
     });
-    
+
     // Update favicon if logo is suitable
     updateFavicon(logoUrl);
-    
+
     console.log('✅ Website logo updated:', logoUrl);
 }
 
@@ -92,7 +92,7 @@ function updateWebsiteLogo(logoUrl) {
 function updateWebsiteBanner(bannerUrl) {
     // Update all banner elements on the page
     const bannerElements = document.querySelectorAll('.hero-banner, [data-banner], .banner-bg');
-    
+
     bannerElements.forEach(element => {
         if (element.tagName === 'IMG') {
             element.src = bannerUrl;
@@ -105,7 +105,7 @@ function updateWebsiteBanner(bannerUrl) {
             element.style.backgroundRepeat = 'no-repeat';
         }
     });
-    
+
     console.log('✅ Website banner updated:', bannerUrl);
 }
 
@@ -115,13 +115,13 @@ function updateFavicon(logoUrl) {
         // Only update if it's not a data URL (SVG default)
         if (!logoUrl.startsWith('data:')) {
             let favicon = document.querySelector('link[rel="icon"]');
-            
+
             if (!favicon) {
                 favicon = document.createElement('link');
                 favicon.rel = 'icon';
                 document.head.appendChild(favicon);
             }
-            
+
             favicon.href = logoUrl;
             console.log('✅ Favicon updated');
         }
@@ -131,16 +131,79 @@ function updateFavicon(logoUrl) {
 }
 
 // Initialize website assets when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Theme
+    initTheme();
+
     // Small delay to ensure other scripts are loaded
     setTimeout(() => {
         loadWebsiteAssetsForSite();
     }, 500);
 });
 
+// Theme Management
+const THEME_CONFIG = {
+    key: 'theme_preference',
+    darkClass: 'dark',
+    default: 'dark'
+};
+
+function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_CONFIG.key);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Default to dark if no preference or if system prefers dark
+    // But explicitly check if 'light' was saved
+    const shouldBeDark = savedTheme === 'dark' || (!savedTheme && true); // Default to dark for this specific site aesthetic
+
+    if (shouldBeDark) {
+        document.documentElement.classList.add(THEME_CONFIG.darkClass);
+    } else {
+        document.documentElement.classList.remove(THEME_CONFIG.darkClass);
+    }
+
+    updateThemeToggleIcons(shouldBeDark);
+}
+
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains(THEME_CONFIG.darkClass);
+
+    if (isDark) {
+        html.classList.remove(THEME_CONFIG.darkClass);
+        localStorage.setItem(THEME_CONFIG.key, 'light');
+        updateThemeToggleIcons(false);
+    } else {
+        html.classList.add(THEME_CONFIG.darkClass);
+        localStorage.setItem(THEME_CONFIG.key, 'dark');
+        updateThemeToggleIcons(true);
+    }
+}
+
+function updateThemeToggleIcons(isDark) {
+    const toggles = document.querySelectorAll('.theme-toggle');
+    toggles.forEach(toggle => {
+        // Simple icon swap logic - can be enhanced with animation
+        const sunIcon = toggle.querySelector('.icon-sun');
+        const moonIcon = toggle.querySelector('.icon-moon');
+
+        if (sunIcon && moonIcon) {
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+    });
+}
+
+
 // Export functions for use in admin panel
 if (typeof window !== 'undefined') {
     window.updateWebsiteLogo = updateWebsiteLogo;
     window.updateWebsiteBanner = updateWebsiteBanner;
     window.loadWebsiteAssetsForSite = loadWebsiteAssetsForSite;
+    window.toggleTheme = toggleTheme;
 }

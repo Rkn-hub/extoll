@@ -120,7 +120,8 @@
   </style>
 </head>
 
-<body class="bg-background-dark font-display text-gray-200">
+<body
+  class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 transition-colors duration-300">
 
   <!-- Page Transition Overlay -->
   <div class="page-transition" id="pageTransition"></div>
@@ -142,22 +143,23 @@
     <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
         <a href="index.html"
-          class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
+          class="flex items-center gap-4 text-white dark:text-white text-gray-900 hover:opacity-80 transition-opacity cursor-pointer">
           <img src="extoll.png" alt="Extoll.Co Logo - Professional design services"
             class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync" id="navLogo">
-          <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
+          <h2 class="text-white dark:text-white text-gray-900 text-lg font-bold leading-tight tracking-[-0.015em]">
+            Extoll.Co</h2>
         </a>
         <nav class="hidden md:flex flex-1 justify-end gap-8">
           <div class="flex items-center gap-9">
-            <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="index.html">Home</a>
-            <a class="text-white relative text-sm font-medium leading-normal" href="portfolio.html">
+            <a class="text-gray-900 dark:text-white relative text-sm font-medium leading-normal" href="portfolio.html">
               Portfolio
               <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
             </a>
-            <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="services.html">Services</a>
-            <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="about.html">About</a>
           </div>
           <a href="contact.html">
@@ -166,15 +168,42 @@
               <span class="truncate">Contact Me</span>
             </button>
           </a>
+          <!-- Theme Toggle Button -->
+          <button onclick="toggleTheme()"
+            class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
+            <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+              </path>
+            </svg>
+            <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
         </nav>
 
         <!-- Mobile Menu Button -->
-        <button class="md:hidden text-white p-2" id="mobile-menu-btn">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-        </button>
+        <div class="flex items-center gap-4 md:hidden">
+          <button onclick="toggleTheme()"
+            class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
+            <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707M12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+              </path>
+            </svg>
+            <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
+          <button class="text-gray-700 dark:text-white p-2" id="mobile-menu-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -199,10 +228,10 @@
       <!-- Portfolio Header -->
       <section class="text-center py-20 sm:py-28">
         <div class="flex flex-col gap-4 items-center">
-          <h1 class="text-white text-5xl md:text-6xl font-black leading-tight tracking-tighter">
+          <h1 class="text-gray-900 dark:text-white text-5xl md:text-6xl font-black leading-tight tracking-tighter">
             Our Portfolio
           </h1>
-          <p class="text-white/70 text-base md:text-lg font-normal leading-normal max-w-2xl">
+          <p class="text-gray-600 dark:text-white/70 text-base md:text-lg font-normal leading-normal max-w-2xl">
             Explore our complete collection of creative work across various design disciplines. From stunning graphics
             to innovative digital experiences.
           </p>
@@ -692,7 +721,7 @@
       const categoryDisplay = getCategoryDisplayName(project.category || 'graphics');
 
       return `
-        <div class="portfolio-item bg-card-dark rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-300 cursor-pointer group" 
+        <div class="portfolio-item bg-white dark:bg-card-dark rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 hover:border-primary/50 transition-all duration-300 cursor-pointer group shadow-sm dark:shadow-none" 
              data-category="${project.category || 'graphics'}" 
              data-project="${project.key}">
             <div class="relative overflow-hidden">
@@ -700,8 +729,8 @@
                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
             </div>
             <div class="p-6">
-                <h3 class="text-white text-lg font-bold mb-2 group-hover:text-primary transition-colors">${project.title}</h3>
-                <p class="text-gray-400 text-sm line-clamp-2">${project.description || 'Creative design project showcasing innovative solutions.'}</p>
+                <h3 class="text-gray-900 dark:text-white text-lg font-bold mb-2 group-hover:text-primary transition-colors">${project.title}</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">${project.description || 'Creative design project showcasing innovative solutions.'}</p>
             </div>
         </div>
     `;

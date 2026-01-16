@@ -194,9 +194,14 @@
     }
 
     .glassmorphism {
-      background: rgba(10, 10, 13, 0.5);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(209, 213, 219, 0.3);
+    }
+
+    .dark .glassmorphism {
+      background: rgba(10, 10, 13, 0.5);
       border: 1px solid rgba(49, 74, 88, 0.4);
     }
 
@@ -282,7 +287,8 @@
   </style>
 </head>
 
-<body class="font-display bg-background-light dark:bg-background-dark text-gray-300 antialiased">
+<body
+  class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-300 antialiased transition-colors duration-300">
   <!-- Dynamic Background Glow Effect -->
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
     <div
@@ -305,9 +311,9 @@
           </svg>
         </div>
       </div>
-      <h2 class="text-white text-2xl font-bold mb-3">Form Submitted Successfully!</h2>
-      <p class="text-gray-400 mb-6">Thank you for reaching out. We'll get back to you soon.</p>
-      <p class="text-white mb-6">Join our WhatsApp group for updates!</p>
+      <h2 class="text-gray-900 dark:text-white text-2xl font-bold mb-3">Form Submitted Successfully!</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Thank you for reaching out. We'll get back to you soon.</p>
+      <p class="text-gray-900 dark:text-white mb-6">Join our WhatsApp group for updates!</p>
       <button id="whatsappBtn"
         class="w-full flex cursor-pointer items-center justify-center gap-2 rounded-lg h-12 px-6 bg-[#25D366] text-white text-base font-bold shadow-lg hover:bg-[#20BA5A] transition-all hover:scale-[1.02] active:scale-[0.98] mb-3">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -326,86 +332,123 @@
         <div
           class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
           <a href="index.html"
-            class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer"
+            class="flex items-center gap-4 text-white dark:text-white text-gray-900 hover:opacity-80 transition-opacity cursor-pointer"
             onclick="smoothNavigate(event, 'index.html')">
             <img src="extoll.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" loading="eager"
               decoding="sync" id="navLogo">
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
+            <h2 class="text-white dark:text-white text-gray-900 text-lg font-bold leading-tight tracking-[-0.015em]">
+              Extoll.Co</h2>
           </a>
           <nav class="hidden md:flex flex-1 justify-end gap-8">
             <div class="flex items-center gap-9">
-              <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+              <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
                 href="index.html" onclick="smoothNavigate(event, 'index.html')">Home</a>
-              <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+              <a class="nav-link text-gray-600 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
                 href="portfolio.html">Portfolio</a>
-              <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+              <a class="nav-link text-gray-600 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
                 href="services.html" onclick="smoothNavigate(event, 'services.html')">Services</a>
-              <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+              <a class="nav-link text-gray-600 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
                 href="about.html" onclick="smoothNavigate(event, 'about.html')">About</a>
-              <a class="text-white relative text-sm font-medium leading-normal" href="contact.html">
+              <a class="text-gray-900 dark:text-white relative text-sm font-medium leading-normal" href="contact.html">
                 Contact
                 <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
               </a>
             </div>
+            <!-- Theme Toggle Button -->
+            <button onclick="toggleTheme()"
+              class="ml-4 theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
+              <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707M12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                </path>
+              </svg>
+              <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+
+            <!-- Mobile Menu is handled by JS which injects it, but better to have toggles there too -->
           </nav>
+
+          <!-- Mobile Menu Button Area (if any specific markup needed, but JS handles it usually. Adding toggle for mobile here if needed or it might be in mobile menu overlay)
+          Note: contact.html seems to rely on same mobile menu logic or layout-container.
+          -->
+          <div class="flex items-center gap-4 md:hidden">
+            <button onclick="toggleTheme()"
+              class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
+              <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707M12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                </path>
+              </svg>
+              <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
       <main class="flex flex-1 flex-col items-center justify-center py-16 sm:py-24">
         <div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div class="flex flex-col gap-8 text-center lg:text-left">
             <div class="flex flex-col gap-4">
-              <h1 class="text-white text-4xl sm:text-5xl font-black tracking-tighter">Let's Collaborate</h1>
-              <p class="text-gray-400 text-base font-normal leading-relaxed">
-                This site only features my work. <span class="text-white">Contact me directly</span> for freelance
+              <h1 class="text-gray-900 dark:text-white text-4xl sm:text-5xl font-black tracking-tighter">Let's
+                Collaborate</h1>
+              <p class="text-gray-600 dark:text-gray-400 text-base font-normal leading-relaxed">
+                This site only features my work. <span class="text-gray-900 dark:text-white">Contact me directly</span>
+                for freelance
                 projects. I'm excited to hear about your ideas and how we can bring them to life.
               </p>
             </div>
             <div class="border-t border-white/10 my-4 lg:my-0"></div>
             <div class="flex flex-col gap-5 contact-info" id="contactInfoSection">
-              <h3 id="contactSectionTitle" class="text-white text-lg font-bold">Or reach me directly</h3>
+              <h3 id="contactSectionTitle" class="text-gray-900 dark:text-white text-lg font-bold">Or reach me directly
+              </h3>
               <div class="flex flex-col sm:flex-row lg:flex-col gap-5 text-left">
                 <a id="phoneLink" class="flex items-center gap-4 group" href="tel:+919315158312">
                   <div
-                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
                     <span class="material-symbols-outlined text-primary text-2xl"
                       style="font-variation-settings: 'wght' 300;">call</span>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-400">Phone</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Phone</p>
                     <p id="phoneText"
-                      class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">
+                      class="text-base text-gray-900 dark:text-white font-medium group-hover:text-primary transition-colors duration-300">
                       +91 9315158312</p>
                   </div>
                 </a>
                 <a id="whatsappLink" class="flex items-center gap-4 group" href="https://wa.me/919315158312">
                   <div
-                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
                     <span class="material-symbols-outlined text-primary text-2xl"
                       style="font-variation-settings: 'wght' 300;">chat_bubble</span>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-400">WhatsApp</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">WhatsApp</p>
                     <p id="whatsappText"
-                      class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">
+                      class="text-base text-gray-900 dark:text-white font-medium group-hover:text-primary transition-colors duration-300">
                       +91 9315158312</p>
                   </div>
                 </a>
                 <a id="emailLink" class="flex items-center gap-4 group" href="mailto:extoll.co.in@gmail.com">
                   <div
-                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
                     <span class="material-symbols-outlined text-primary text-2xl"
                       style="font-variation-settings: 'wght' 300;">mail</span>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-400">Email</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Email</p>
                     <p id="emailText"
-                      class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">
+                      class="text-base text-gray-900 dark:text-white font-medium group-hover:text-primary transition-colors duration-300">
                       extoll.co.in@gmail.com</p>
                   </div>
                 </a>
                 <a id="instagramLink" class="flex items-center gap-4 group" href="https://instagram.com/extollco">
                   <div
-                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 group-hover:bg-primary/10 group-hover:border-primary/50 transition-colors duration-300">
                     <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
                       <path
                         d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44c0-.795-.645-1.44-1.441-1.44z">
@@ -413,9 +456,9 @@
                     </svg>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-400">Instagram</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Instagram</p>
                     <p id="instagramText"
-                      class="text-base text-white font-medium group-hover:text-primary transition-colors duration-300">
+                      class="text-base text-gray-900 dark:text-white font-medium group-hover:text-primary transition-colors duration-300">
                       @ExtollCo</p>
                   </div>
                 </a>
@@ -429,27 +472,27 @@
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_template" value="table">
                 <label class="flex flex-col">
-                  <p class="text-white text-sm font-medium pb-2">Full Name</p>
+                  <p class="text-gray-900 dark:text-white text-sm font-medium pb-2">Full Name</p>
                   <input name="name"
-                    class="form-input w-full rounded-lg border border-[#394c56] bg-[#0A0A0D]/50 h-12 px-4 text-base text-white placeholder:text-gray-500 transition-all duration-300"
+                    class="form-input w-full rounded-lg border border-gray-300 dark:border-[#394c56] bg-gray-50 dark:bg-[#0A0A0D]/50 h-12 px-4 text-base text-gray-900 dark:text-white placeholder:text-gray-500 transition-all duration-300"
                     placeholder="Enter your full name" type="text" required />
                 </label>
                 <label class="flex flex-col">
-                  <p class="text-white text-sm font-medium pb-2">Email Address</p>
+                  <p class="text-gray-900 dark:text-white text-sm font-medium pb-2">Email Address</p>
                   <input name="email"
-                    class="form-input w-full rounded-lg border border-[#394c56] bg-[#0A0A0D]/50 h-12 px-4 text-base text-white placeholder:text-gray-500 transition-all duration-300"
+                    class="form-input w-full rounded-lg border border-gray-300 dark:border-[#394c56] bg-gray-50 dark:bg-[#0A0A0D]/50 h-12 px-4 text-base text-gray-900 dark:text-white placeholder:text-gray-500 transition-all duration-300"
                     placeholder="Enter your email address" type="email" required />
                 </label>
                 <label class="flex flex-col">
-                  <p class="text-white text-sm font-medium pb-2">Phone Number</p>
+                  <p class="text-gray-900 dark:text-white text-sm font-medium pb-2">Phone Number</p>
                   <input name="phone"
-                    class="form-input w-full rounded-lg border border-[#394c56] bg-[#0A0A0D]/50 h-12 px-4 text-base text-white placeholder:text-gray-500 transition-all duration-300"
+                    class="form-input w-full rounded-lg border border-gray-300 dark:border-[#394c56] bg-gray-50 dark:bg-[#0A0A0D]/50 h-12 px-4 text-base text-gray-900 dark:text-white placeholder:text-gray-500 transition-all duration-300"
                     placeholder="Enter your phone number" type="tel" />
                 </label>
                 <label class="flex flex-col">
-                  <p class="text-white text-sm font-medium pb-2">Inquiry / Message</p>
+                  <p class="text-gray-900 dark:text-white text-sm font-medium pb-2">Inquiry / Message</p>
                   <textarea name="message"
-                    class="form-input w-full rounded-lg border border-[#394c56] bg-[#0A0A0D]/50 min-h-36 p-4 text-base text-white placeholder:text-gray-500 resize-none transition-all duration-300"
+                    class="form-input w-full rounded-lg border border-gray-300 dark:border-[#394c56] bg-gray-50 dark:bg-[#0A0A0D]/50 min-h-36 p-4 text-base text-gray-900 dark:text-white placeholder:text-gray-500 resize-none transition-all duration-300"
                     placeholder="Tell me about your project..." required></textarea>
                 </label>
                 <button type="submit"

@@ -20,6 +20,27 @@
   <meta name="twitter:description" content="Execution-first freelance collective powered by Startup Ops methodology." />
   <title>Extoll.Co - Crafting Digital Experiences That Stand Out</title>
 
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Extoll.co",
+    "url": "https://extoll.co.in",
+    "logo": "https://extoll.co.in/extoll.png",
+    "description": "Execution-first freelance collective specializing in Graphics Design, UI/UX Design, Product Design, 2D Animation, and Web Development.",
+    "sameAs": [
+      "https://instagram.com/extollco"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-9315158312",
+      "contactType": "customer service",
+      "availableLanguage": "English"
+    }
+  }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="extoll.png">
   <link rel="apple-touch-icon" href="extoll.png">
@@ -34,10 +55,17 @@
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
+    /* Glassmorphism - Light Mode Default */
     .glassmorphism {
-      background: rgba(20, 29, 36, 0.4);
+      background: rgba(255, 255, 255, 0.2);
       -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Glassmorphism - Dark Mode */
+    .dark .glassmorphism {
+      background: rgba(20, 29, 36, 0.4);
       border: 1px solid rgba(45, 60, 71, 0.5);
     }
 
@@ -79,13 +107,21 @@
       background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
     }
 
-    /* Glass card effects */
+    /* Glass card effects - Light Mode Default */
     .glass-card {
-      background: rgba(20, 26, 30, 0.5);
+      background: rgba(255, 255, 255, 0.7);
       -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(49, 62, 71, 0.4);
+      border: 1px solid rgba(209, 213, 219, 0.3);
       transition: all 0.3s ease-in-out;
+      color: #1f2937;
+    }
+
+    /* Glass card effects - Dark Mode */
+    .dark .glass-card {
+      background: rgba(20, 26, 30, 0.5);
+      border: 1px solid rgba(49, 62, 71, 0.4);
+      color: white;
     }
 
     .glass-card:hover {
@@ -341,7 +377,8 @@
   </script>
 </head>
 
-<body class="bg-background-dark font-display text-gray-200">
+<body
+  class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 transition-colors duration-300">
 
   <!-- Dynamic Background Glow Effect -->
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
@@ -361,29 +398,32 @@
     <div class="relative z-10 layout-container flex h-full grow flex-col">
 
       <!-- Fixed Navigation -->
-      <header class="fixed top-0 left-0 right-0 z-50 bg-background-dark/80 backdrop-blur-md">
+      <header
+        class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md transition-colors duration-300">
         <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div
             class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
             <a href="index.html"
-              class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
+              class="flex items-center gap-4 text-white dark:text-white text-gray-900 hover:opacity-80 transition-opacity cursor-pointer">
               <img src="extoll.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain" loading="eager"
                 decoding="sync">
-              <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
+              <h2 class="text-white dark:text-white text-gray-900 text-lg font-bold leading-tight tracking-[-0.015em]">
+                Extoll.Co</h2>
             </a>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex flex-1 justify-end gap-8">
               <div class="flex items-center gap-9">
-                <a class="nav-link text-white relative text-sm font-medium leading-normal" data-section="home">
+                <a class="nav-link text-gray-900 dark:text-white relative text-sm font-medium leading-normal"
+                  data-section="home">
                   Home
                   <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
                 </a>
-                <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+                <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
                   href="portfolio.html">Portfolio</a>
-                <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+                <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
                   href="services.html">Services</a>
-                <a class="nav-link text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+                <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
                   href="about.html">About</a>
               </div>
               <a href="contact.html">
@@ -392,16 +432,49 @@
                   <span class="truncate">Contact Me</span>
                 </button>
               </a>
+              <a href="contact.html">
+                <button
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+                  <span class="truncate">Contact Me</span>
+                </button>
+              </a>
+              <!-- Theme Toggle Button -->
+              <button onclick="toggleTheme()"
+                class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
+                <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                  </path>
+                </svg>
+                <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                </svg>
+              </button>
             </nav>
 
             <!-- Mobile Menu Button -->
-            <button id="mobileMenuBtn"
-              class="md:hidden flex items-center justify-center w-10 h-10 text-white hover:text-primary transition-colors">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                </path>
-              </svg>
-            </button>
+            <div class="flex items-center gap-4 md:hidden">
+              <button onclick="toggleTheme()"
+                class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
+                <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                  </path>
+                </svg>
+                <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                </svg>
+              </button>
+              <button id="mobileMenuBtn"
+                class="flex items-center justify-center w-10 h-10 text-gray-700 dark:text-white hover:text-primary transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                  </path>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -434,7 +507,7 @@
           <div class="flex min-h-[20vh] flex-col items-center justify-center gap-6 bg-transparent text-center">
             <div class="flex flex-col gap-4 items-center text-center">
               <h1
-                class="text-white text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+                class="text-gray-900 dark:text-white text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                 <!-- Dynamic Title Used -->
               </h1>
               <p class="text-primary text-lg sm:text-xl md:text-2xl font-medium tracking-wide mb-2">
@@ -461,7 +534,9 @@
             <div class="flex flex-col gap-6 py-6 md:py-8 lg:py-10">
               <div class="flex flex-wrap justify-between items-center gap-6 px-4">
                 <div class="flex flex-col gap-4">
-                  <p class="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Featured Work
+                  <p
+                    class="text-gray-900 dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
+                    Featured Work
                   </p>
                   <p class="text-neutral-400 text-base font-normal leading-normal max-w-lg">A selection of our best
                     creative work and professional projects.</p>
