@@ -623,8 +623,7 @@ async function getProjectsPublic() {
         console.log(`📁 Found ${projectFolders.length} project folders after enhanced filtering`);
         
         // Download and parse each project's metadata with validation
-        const projects = [];
-        for (const folder of projectFolders) {
+        const projectPromises = projectFolders.map(async (folder) => {
             try {
                 const { data: fileData, error: downloadError } = await configSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
@@ -642,18 +641,24 @@ async function getProjectsPublic() {
                         !project.key.toLowerCase().includes('json') &&
                         !project.key.endsWith('.json')) {
                         
-                        projects.push(project);
                         console.log('✅ Loaded valid project:', project.title);
+                        return project;
                     } else {
                         console.log('🚫 Skipping invalid/system project:', project.title || folder.name);
+                        return null;
                     }
                 } else {
                     console.log('⚠️ No project.json found in folder:', folder.name);
+                    return null;
                 }
             } catch (parseError) {
                 console.warn('⚠️ Failed to parse project in folder:', folder.name, parseError.message);
+                return null;
             }
-        }
+        });
+
+        const projectsResults = await Promise.all(projectPromises);
+        const projects = projectsResults.filter(p => p !== null);
         
         console.log(`✅ Loaded ${projects.length} valid projects from portfolio bucket`);
         return { success: true, data: projects };
