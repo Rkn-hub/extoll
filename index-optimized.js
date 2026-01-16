@@ -19,7 +19,7 @@ const DOM = {
   portfolioGrid: () => document.getElementById("portfolio-grid"),
   logoElement: () => document.querySelector(".website-logo"),
   bannerElement: () => document.querySelector(".hero-banner"),
-  sparkleContainer: () => document.getElementById("sparkleContainer")
+
 };
 
 /* ---------- DATA CACHE ---------- */
@@ -37,37 +37,37 @@ async function loadWebsiteContentOnce() {
       console.warn('⚠️ Supabase not initialized, skipping CMS content load');
       return;
     }
-    
+
     // Try new path first (website-config/website-content.json)
     let contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
-    
+
     // Add cache-busting parameter to force fresh load
     const cacheBuster = `?t=${Date.now()}`;
-    
+
     let { data, error } = await configSupabase.storage
       .from(SUPABASE_CONFIG.bucket)
       .download(contentPath + cacheBuster);
-    
+
     // Fallback to old path (website-content.json) for backward compatibility
     if (error || !data) {
       const legacyResult = await configSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .download('website-content.json' + cacheBuster);
-      
+
       data = legacyResult.data;
       error = legacyResult.error;
     }
-    
+
     if (error) {
       console.error('❌ Error downloading CMS content:', error);
       return;
     }
-    
+
     if (!data) {
       console.warn('⚠️ No CMS content data received');
       return;
     }
-    
+
     const content = JSON.parse(await data.text());
     CACHE.websiteContent = content;
 
@@ -75,19 +75,19 @@ async function loadWebsiteContentOnce() {
     const heroTitle = DOM.heroTitle();
     const heroSubtitle = DOM.heroSubtitle();
     const heroDescription = DOM.heroDescription();
-    
+
     if (content.heroTitle && heroTitle) {
       heroTitle.textContent = content.heroTitle;
     } else {
       console.warn('⚠️ Could not update hero title. Content:', content.heroTitle, 'Element:', heroTitle);
     }
-    
+
     if (content.heroSubtitle && heroSubtitle) {
       heroSubtitle.textContent = content.heroSubtitle;
     } else {
       console.warn('⚠️ Could not update hero subtitle. Content:', content.heroSubtitle, 'Element:', heroSubtitle);
     }
-    
+
     if (content.heroDescription && heroDescription) {
       heroDescription.textContent = content.heroDescription;
     } else {
@@ -116,7 +116,7 @@ async function loadWebsiteContentOnce() {
 async function loadFeaturedProjects() {
   const grid = DOM.portfolioGrid();
   if (!grid) return;
-  
+
   try {
     // Check cache first
     if (CACHE.projects) {
@@ -126,7 +126,7 @@ async function loadFeaturedProjects() {
 
     // Show loading state
     grid.innerHTML = '<div class="col-span-full text-center py-20"><div class="text-4xl mb-4">⏳</div><p class="text-gray-400">Loading featured projects...</p></div>';
-    
+
     // Try Supabase first
     if (initializeSupabase()) {
       const result = await getProjectsPublic();
@@ -137,7 +137,7 @@ async function loadFeaturedProjects() {
         return;
       }
     }
-    
+
     // Fallback to localStorage
     const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
     if (localProjects.length > 0) {
@@ -145,10 +145,10 @@ async function loadFeaturedProjects() {
       renderProjects(localProjects.slice(0, 6));
       return;
     }
-    
+
     // Show empty state
     showEmptyPortfolio();
-    
+
   } catch (error) {
     console.warn('Portfolio loading failed:', error);
     showEmptyPortfolio();
@@ -158,17 +158,17 @@ async function loadFeaturedProjects() {
 function renderProjects(projects) {
   const grid = DOM.portfolioGrid();
   if (!grid || !projects.length) return;
-  
+
   const fragment = document.createDocumentFragment();
-  
+
   projects.forEach(project => {
     const card = createProjectCard(project);
     fragment.appendChild(card);
   });
-  
+
   grid.innerHTML = '';
   grid.appendChild(fragment);
-  
+
   // Add click handlers
   grid.addEventListener('click', handleProjectClick);
 }
@@ -179,7 +179,7 @@ function createProjectCard(project) {
   card.setAttribute('data-category', project.category);
   card.setAttribute('data-project', project.key);
 
-  const thumbnailHtml = project.thumbnail_url 
+  const thumbnailHtml = project.thumbnail_url
     ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">`
     : createPlaceholderThumbnail(project);
 
@@ -202,9 +202,9 @@ function createPlaceholderThumbnail(project) {
   const categoryIcons = {
     'graphics': '🎨', 'ui': '📱', 'product': '💼', 'animation': '🎬', 'video': '🎥'
   };
-  
+
   const icon = categoryIcons[project.category] || '📁';
-  
+
   return `
     <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
@@ -241,7 +241,7 @@ function handleProjectClick(e) {
 function showEmptyPortfolio() {
   const grid = DOM.portfolioGrid();
   if (!grid) return;
-  
+
   grid.innerHTML = `
     <div class="col-span-full text-center py-20">
       <div class="glass-card p-12 rounded-xl max-w-md mx-auto">
@@ -270,20 +270,20 @@ async function loadLogo() {
     // Try new location first
     const newPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`;
     let logoUrl = await tryLoadLogoFromPath(newPath);
-    
+
     // Fallback to old location
     if (!logoUrl) {
       logoUrl = await tryLoadLogoFromPath('logo');
     }
-    
+
     // Use fallback if all fails
     if (!logoUrl) {
       logoUrl = getFallbackLogo();
     }
-    
+
     CACHE.logoUrl = logoUrl;
     updateLogo(logoUrl);
-    
+
   } catch (error) {
     console.warn('Logo loading failed:', error);
     updateLogo(getFallbackLogo());
@@ -295,13 +295,13 @@ async function tryLoadLogoFromPath(path) {
     const { data: files } = await configSupabase.storage
       .from(SUPABASE_CONFIG.bucket)
       .list(path);
-    
+
     if (files && files.length > 0) {
       const logoFile = files[0].name;
       const { data: urlData } = configSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .getPublicUrl(`${path}/${logoFile}`);
-      
+
       return urlData.publicUrl;
     }
   } catch (error) {
@@ -338,20 +338,20 @@ async function loadBanner() {
     // Try new location first
     const newPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`;
     let bannerUrl = await tryLoadBannerFromPath(newPath);
-    
+
     // Fallback to old location
     if (!bannerUrl) {
       bannerUrl = await tryLoadBannerFromPath('banner');
     }
-    
+
     // Use fallback if all fails
     if (!bannerUrl) {
       bannerUrl = getFallbackBanner();
     }
-    
+
     CACHE.bannerUrl = bannerUrl;
     updateBanner(bannerUrl);
-    
+
   } catch (error) {
     console.warn('❌ Banner loading failed:', error);
     updateBanner(getFallbackBanner());
@@ -363,13 +363,13 @@ async function tryLoadBannerFromPath(path) {
     const { data: files } = await configSupabase.storage
       .from(SUPABASE_CONFIG.bucket)
       .list(path);
-    
+
     if (files && files.length > 0) {
       const bannerFile = files[0].name;
       const { data: urlData } = configSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
         .getPublicUrl(`${path}/${bannerFile}`);
-      
+
       return urlData.publicUrl;
     }
   } catch (error) {
@@ -391,65 +391,7 @@ function updateBanner(bannerUrl) {
   }
 }
 
-/* ---------- SPARKLE EFFECTS ---------- */
-function initSparkleEffect() {
-  const container = DOM.sparkleContainer();
-  if (!container) return;
-  
-  const maxSparkles = 30;
-  let sparkleInterval;
-  
-  function createSparkle() {
-    const sparkle = document.createElement('div');
-    sparkle.className = Math.random() > 0.8 ? 'sparkle sparkle-pulse' : 'sparkle';
-    
-    sparkle.style.left = Math.random() * 100 + '%';
-    sparkle.style.animationDelay = (Math.random() * 20) + 's';
-    
-    const size = 2 + Math.random() * 2;
-    sparkle.style.width = size + 'px';
-    sparkle.style.height = size + 'px';
 
-    container.appendChild(sparkle);
-
-    setTimeout(() => {
-      if (sparkle.parentNode) {
-        sparkle.parentNode.removeChild(sparkle);
-      }
-    }, 22000);
-  }
-  
-  // Create initial sparkles
-  for (let i = 0; i < maxSparkles; i++) {
-    setTimeout(() => createSparkle(), Math.random() * 5000);
-  }
-  
-  // Continuous creation
-  sparkleInterval = setInterval(() => {
-    if (container.children.length < maxSparkles * 1.5) {
-      createSparkle();
-    }
-  }, 600);
-  
-  // Pause on visibility change
-  document.addEventListener('visibilitychange', () => {
-    const sparkles = container.querySelectorAll('.sparkle');
-    sparkles.forEach(sparkle => {
-      sparkle.style.animationPlayState = document.hidden ? 'paused' : 'running';
-    });
-  });
-  
-  // Store cleanup function
-  window.cleanupSparkles = () => {
-    if (sparkleInterval) {
-      clearInterval(sparkleInterval);
-      sparkleInterval = null;
-    }
-    if (container) {
-      container.innerHTML = '';
-    }
-  };
-}
 
 /* ---------- NAVIGATION ---------- */
 function initNavigation() {
@@ -497,16 +439,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadLogo(),
     loadBanner()
   ]);
-  
+
   // Initialize interactions
   initNavigation();
   initMobileMenu();
-  initSparkleEffect();
-  
+
+
   window.scrollTo(0, 0);
 });
 
 /* ---------- CLEANUP ---------- */
-window.addEventListener("beforeunload", () => {
-  window.cleanupSparkles?.();
-});
+

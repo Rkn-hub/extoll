@@ -41,6 +41,32 @@
       border: 1px solid rgba(45, 60, 71, 0.5);
     }
 
+    @keyframes float {
+      0% {
+        transform: translate(0px, 0px) scale(1);
+      }
+
+      33% {
+        transform: translate(30px, -50px) scale(1.1);
+      }
+
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+
+      100% {
+        transform: translate(0px, 0px) scale(1);
+      }
+    }
+
+    .animate-float {
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .animate-float-delay {
+      animation: float 15s infinite ease-in-out reverse;
+    }
+
     .neon-glow {
       box-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff, 0 0 15px #00aaff;
     }
@@ -69,8 +95,10 @@
     }
 
     /* Smooth scrolling */
+    /* Smooth scrolling and static behavior (no bounce) */
     html {
       scroll-behavior: smooth;
+      overscroll-behavior: none;
     }
 
     /* Section spacing */
@@ -292,138 +320,6 @@
     input[type="file"] {
       cursor: pointer !important;
     }
-
-    /* Sparkle Animation Background */
-    .sparkle-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .sparkle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background: radial-gradient(circle, rgba(0, 170, 255, 0.9) 0%, rgba(0, 170, 255, 0.5) 40%, transparent 100%);
-      border-radius: 50%;
-      animation: sparkleFloat 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-
-    .sparkle:nth-child(2n) {
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 40%, transparent 100%);
-      animation-duration: 15s;
-      animation-delay: -3s;
-      animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .sparkle:nth-child(3n) {
-      background: radial-gradient(circle, rgba(0, 170, 255, 0.7) 0%, rgba(112, 253, 255, 0.4) 40%, transparent 100%);
-      animation-duration: 18s;
-      animation-delay: -6s;
-      width: 2px;
-      height: 2px;
-      animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-
-    .sparkle:nth-child(4n) {
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 100%);
-      animation-duration: 20s;
-      animation-delay: -9s;
-      width: 4px;
-      height: 4px;
-      animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .sparkle:nth-child(5n) {
-      background: radial-gradient(circle, rgba(0, 170, 255, 0.8) 0%, rgba(0, 170, 255, 0.4) 40%, transparent 100%);
-      animation-duration: 14s;
-      animation-delay: -2s;
-      width: 2.5px;
-      height: 2.5px;
-      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    @keyframes sparkleFloat {
-      0% {
-        transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
-        opacity: 0;
-      }
-
-      5% {
-        opacity: 0.8;
-        transform: translateY(95vh) translateX(5px) rotate(18deg) scale(0.3);
-      }
-
-      15% {
-        opacity: 1;
-        transform: translateY(85vh) translateX(-8px) rotate(54deg) scale(0.7);
-      }
-
-      25% {
-        transform: translateY(75vh) translateX(12px) rotate(90deg) scale(1);
-      }
-
-      35% {
-        transform: translateY(65vh) translateX(-6px) rotate(126deg) scale(0.9);
-      }
-
-      45% {
-        transform: translateY(55vh) translateX(15px) rotate(162deg) scale(1.1);
-      }
-
-      55% {
-        transform: translateY(45vh) translateX(-10px) rotate(198deg) scale(0.8);
-        opacity: 1;
-      }
-
-      65% {
-        transform: translateY(35vh) translateX(8px) rotate(234deg) scale(1);
-      }
-
-      75% {
-        transform: translateY(25vh) translateX(-12px) rotate(270deg) scale(0.9);
-      }
-
-      85% {
-        transform: translateY(15vh) translateX(6px) rotate(306deg) scale(0.7);
-      }
-
-      95% {
-        opacity: 0.8;
-        transform: translateY(5vh) translateX(-3px) rotate(342deg) scale(0.4);
-      }
-
-      100% {
-        transform: translateY(-5vh) translateX(0px) rotate(360deg) scale(0);
-        opacity: 0;
-      }
-    }
-
-    /* Subtle pulse animation for extra sparkle */
-    .sparkle-pulse {
-      animation: sparkleFloat 12s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94), sparklePulse 3s infinite ease-in-out;
-    }
-
-    @keyframes sparklePulse {
-
-      0%,
-      100% {
-        box-shadow: 0 0 4px rgba(0, 170, 255, 0.2);
-        filter: brightness(1);
-      }
-
-      50% {
-        box-shadow: 0 0 12px rgba(0, 170, 255, 0.4), 0 0 20px rgba(0, 170, 255, 0.2);
-        filter: brightness(1.3);
-      }
-    }
   </style>
   <script id="tailwind-config">
     tailwind.config = {
@@ -446,8 +342,19 @@
 </head>
 
 <body class="bg-background-dark font-display text-gray-200">
+
+  <!-- Dynamic Background Glow Effect -->
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <div
+      class="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-[#00aaff]/20 rounded-full blur-[120px] animate-float opacity-70">
+    </div>
+    <div
+      class="absolute bottom-0 right-0 w-1/3 h-1/3 bg-[#70FDFF]/10 rounded-full blur-[150px] animate-float-delay opacity-60">
+    </div>
+  </div>
+
   <!-- Sparkle Background Effect -->
-  <div class="sparkle-container" id="sparkleContainer"></div>
+
 
   <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
     <div class="absolute inset-0 gradient-background z-0"></div>
@@ -528,15 +435,13 @@
             <div class="flex flex-col gap-4 items-center text-center">
               <h1
                 class="text-white text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                Crafting Digital Experiences That Stand Out
+                <!-- Dynamic Title Used -->
               </h1>
               <p class="text-primary text-lg sm:text-xl md:text-2xl font-medium tracking-wide mb-2">
-                Where ideas meet execution.
+                <!-- Dynamic Subtitle Used -->
               </p>
               <h2 class="text-gray-400 text-base font-normal leading-normal sm:text-lg max-w-4xl mx-auto">
-                Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and
-                create. No public posting, no external uploads. Just our team's best work. We started Extoll with one
-                purpose: to make it easier for clients to discover our talent and reach out directly for projects.
+                <!-- Dynamic Description Used -->
               </h2>
             </div>
 
@@ -768,6 +673,7 @@
 
   <!-- OPTIMIZED ARCHITECTURE - Single Source of Truth -->
   <script src="index-optimized.js?v=2024011102"></script>
+  <script src="particles.js"></script>
 
 </body>
 
