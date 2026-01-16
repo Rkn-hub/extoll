@@ -1,6 +1,5 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="dark" lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes"
@@ -10,7 +9,6 @@
     <link rel="apple-touch-icon" href="extoll.png">
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <meta name="referrer" content="no-referrer">
-
     <!-- Security Headers -->
     <script>
         // Basic security measures
@@ -19,12 +17,10 @@
             window.location.hostname !== '127.0.0.1') {
             window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
         }
-
         // Disable right-click context menu
         document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
         });
-
         // Disable F12, Ctrl+Shift+I, Ctrl+U
         document.addEventListener('keydown', function (e) {
             if (e.key === 'F12' ||
@@ -34,16 +30,16 @@
             }
         });
     </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
+    <script>
+    // Theme logic moved to head
+  </script>
     <style>
         html {
             font-size: 18px;
         }
-
         body {
             background: linear-gradient(135deg, #0A0A0D 0%, #1a1a2e 50%, #16213e 100%);
             color: #e5e7eb;
@@ -53,33 +49,26 @@
             overscroll-behavior: none;
             scroll-behavior: smooth;
         }
-
         @keyframes float {
             0% {
                 transform: translate(0px, 0px) scale(1);
             }
-
             33% {
                 transform: translate(30px, -50px) scale(1.1);
             }
-
             66% {
                 transform: translate(-20px, 20px) scale(0.9);
             }
-
             100% {
                 transform: translate(0px, 0px) scale(1);
             }
         }
-
         .animate-float {
             animation: float 20s infinite ease-in-out;
         }
-
         .animate-float-delay {
             animation: float 15s infinite ease-in-out reverse;
         }
-
         .glass-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
@@ -87,7 +76,6 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
             color: white;
@@ -101,7 +89,6 @@
             font-size: 18px;
             min-height: 64px;
         }
-
         .btn-secondary {
             background: rgba(14, 165, 233, 0.1);
             color: #0ea5e9;
@@ -115,7 +102,6 @@
             font-size: 16px;
             min-height: 56px;
         }
-
         .form-input {
             background: rgba(15, 23, 42, 0.9) !important;
             border: 2px solid rgba(51, 65, 85, 0.6) !important;
@@ -128,7 +114,6 @@
             font-size: 18px !important;
             min-height: 64px !important;
         }
-
         .form-textarea {
             background: rgba(15, 23, 42, 0.9) !important;
             border: 2px solid rgba(51, 65, 85, 0.6) !important;
@@ -143,7 +128,6 @@
             font-family: inherit !important;
             font-size: 16px !important;
         }
-
         .upload-area {
             border: 3px dashed rgba(14, 165, 233, 0.4);
             background: rgba(14, 165, 233, 0.05);
@@ -154,20 +138,17 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
         }
-
         .upload-area:hover {
             border-color: #0ea5e9;
             background: rgba(14, 165, 233, 0.1);
             box-shadow: 0 8px 25px rgba(14, 165, 233, 0.15);
             transform: translateY(-2px);
         }
-
         .upload-area.dragover {
             border-color: #0ea5e9;
             background: rgba(14, 165, 233, 0.2);
             transform: scale(1.02);
         }
-
         .tab-button {
             padding: 18px 36px;
             background: rgba(15, 23, 42, 0.6);
@@ -180,13 +161,11 @@
             margin-right: 4px;
             font-size: 16px;
         }
-
         .tab-button.active {
             color: #0ea5e9;
             background: rgba(14, 165, 233, 0.1);
             border-bottom: 3px solid #0ea5e9;
         }
-
         .notification {
             position: fixed;
             top: 24px;
@@ -201,19 +180,15 @@
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-
         .notification.show {
             transform: translateX(0);
         }
-
         .notification.success {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
-
         .notification.error {
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         }
-
         /* Cursor styles for all interactive elements */
         button,
         .cursor-pointer,
@@ -230,25 +205,21 @@
         .asset-item {
             cursor: pointer !important;
         }
-
         /* Ensure disabled buttons show not-allowed cursor */
         button:disabled,
         input:disabled,
         select:disabled {
             cursor: not-allowed !important;
         }
-
         /* Specific cursor for drag and drop areas */
         .upload-area.dragover {
             cursor: copy !important;
         }
-
         .hidden {
             display: none;
         }
     </style>
 </head>
-
 <body>
     <!-- Dynamic Background Glow Effect -->
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
@@ -259,7 +230,6 @@
             class="absolute bottom-0 right-0 w-1/3 h-1/3 bg-[#70FDFF]/10 rounded-full blur-[150px] animate-float-delay opacity-60">
         </div>
     </div>
-
     <!-- Login Screen -->
     <div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
         <div class="glass-card p-8 rounded-xl w-full max-w-sm">
@@ -267,25 +237,21 @@
                 <h1 class="text-3xl font-bold text-white mb-2">Admin Panel</h1>
                 <p class="text-gray-400 text-base">Extoll.Co Project Management</p>
             </div>
-
             <form id="loginForm" class="space-y-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
                     <input type="text" id="username" class="form-input text-base py-3 px-4" placeholder="Enter username"
                         required>
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
                     <input type="password" id="password" class="form-input text-base py-3 px-4"
                         placeholder="Enter password" required>
                 </div>
-
                 <button type="submit" class="btn-primary w-full text-base py-3 min-h-[48px]">Login</button>
             </form>
         </div>
     </div>
-
     <!-- Admin Dashboard -->
     <div id="adminDashboard" class="hidden min-h-screen">
         <!-- Header -->
@@ -297,7 +263,6 @@
                 </div>
             </div>
         </header>
-
         <!-- Navigation Tabs -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="border-b border-gray-800">
@@ -307,11 +272,9 @@
                 </nav>
             </div>
         </div>
-
         <!-- Projects Tab -->
         <div id="projectsTab" class="tab-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h2 class="text-4xl font-bold text-white mb-12">Project Management</h2>
-
             <div class="glass-card p-10 rounded-xl space-y-8">
                 <!-- Add New Project Button -->
                 <div class="border-b border-gray-700 pb-8">
@@ -331,13 +294,12 @@
                         </a>
                     </div>
                 </div>
-
                 <!-- Existing Projects -->
                 <div>
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-white">Existing Projects</h3>
                         <div class="flex gap-4">
-                            <button class="btn-secondary" onclick="syncProjects()">🔄 Sync Projects</button>
+                            <button class="btn-secondary" onclick="syncProjects()">ðŸ”„ Sync Projects</button>
                             <select id="filterCategory" class="form-input" style="width: auto; min-width: 150px;">
                                 <option value="">All Categories</option>
                                 <option value="graphics">Graphics Design</option>
@@ -354,18 +316,14 @@
                 </div>
             </div>
         </div>
-
         <!-- Assets Tab -->
         <div id="assetsTab" class="tab-content hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <h2 class="text-4xl font-bold text-white mb-12">Website Assets</h2>
-
             <div class="glass-card p-10 rounded-xl space-y-8">
                 <!-- Logo and Banner Upload Section Removed -->
-
                 <!-- Website Content Settings -->
                 <div class="border-t border-gray-700 pt-8">
                     <h3 class="text-2xl font-bold text-white mb-6">Website Content</h3>
-
                     <!-- Main Hero Section -->
                     <div class="mb-8">
                         <h4 class="text-lg font-semibold text-white mb-4">Hero Section</h4>
@@ -383,18 +341,17 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
                                 <textarea id="heroDescription" class="form-textarea" rows="3"
-                                    placeholder="Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create..."></textarea>
+                                    placeholder="Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create..."></textarea>
                             </div>
                         </div>
                     </div>
-
                     <!-- About Section -->
                     <div class="mb-8">
                         <div class="flex justify-between items-center mb-4">
                             <h4 class="text-lg font-semibold text-white">About Section</h4>
                             <div
                                 class="text-xs text-blue-400 bg-blue-600/10 px-3 py-1 rounded-full border border-blue-600/30">
-                                📄 Updates about.html page
+                                ðŸ“„ Updates about.html page
                             </div>
                         </div>
                         <div class="grid grid-cols-1 gap-4">
@@ -411,12 +368,11 @@
                                 <label class="block text-sm font-medium text-gray-300 mb-2">About Description</label>
                                 <textarea id="aboutDescription" class="form-textarea" rows="4"
                                     placeholder="Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises..."></textarea>
-                                <p class="text-xs text-gray-400 mt-1">💡 This content appears on the dedicated About
+                                <p class="text-xs text-gray-400 mt-1">ðŸ’¡ This content appears on the dedicated About
                                     page (about.html)</p>
                             </div>
                         </div>
                     </div>
-
                     <!-- Services Section -->
                     <div class="mb-8">
                         <h4 class="text-lg font-semibold text-white mb-4">Services Section</h4>
@@ -432,7 +388,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Contact Information -->
                     <div class="mb-8">
                         <h4 class="text-lg font-semibold text-white mb-4">Contact Information</h4>
@@ -466,7 +421,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Portfolio Section -->
                     <div class="mb-8">
                         <h4 class="text-lg font-semibold text-white mb-4">Portfolio Section</h4>
@@ -483,48 +437,39 @@
                             </div>
                         </div>
                     </div>
-
                     <button class="btn-primary mt-6" onclick="saveWebsiteContent()" id="saveContentBtn">Save All
                         Content</button>
                 </div>
-
                 <!-- Team Management -->
                 <div class="border-t border-gray-700 pt-8">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-white">Team & Capabilities</h3>
                         <button class="btn-secondary" onclick="addTeamMember()">+ Add Member</button>
                     </div>
-
                     <!-- Team Section Title -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-300 mb-2">Section Title</label>
                         <input type="text" id="teamSectionTitle" class="form-input"
                             placeholder="Our Team & Capabilities">
                     </div>
-
                     <!-- Dynamic Team Members Container -->
                     <div id="teamMembersContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Team members will be dynamically added here -->
                     </div>
-
                     <button class="btn-primary mt-6" onclick="saveTeamInfo()" id="saveTeamBtn">Save Team
                         Information</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Notification -->
     <div id="notification" class="notification">
         <span id="notificationText"></span>
     </div>
-
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
-
     <script>
         // Configuration is now loaded from supabase-config.js
-
         let currentUser = null;
         let adminSupabase = null;
         let selectedFile = null;
@@ -535,47 +480,37 @@
         let selectedFiles = [];
         let websiteSettings = {};
         let socialLinks = {};
-
         // Notification function
         function showNotification(message, type) {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notificationText');
-
             if (notification && notificationText) {
                 notificationText.textContent = message;
                 notification.className = 'notification ' + type;
                 notification.classList.add('show');
-
                 setTimeout(function () {
                     notification.classList.remove('show');
                 }, 3000);
             }
         }
-
         // Login handler
         async function handleLogin(e) {
             e.preventDefault();
-
-            console.log('🔐 Login attempt started');
-
+            console.log('ðŸ” Login attempt started');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
-
             if (!usernameInput || !passwordInput) {
-                console.error('❌ Input elements not found');
+                console.error('âŒ Input elements not found');
                 showNotification('Form elements not found', 'error');
                 return;
             }
-
             const username = usernameInput.value.trim();
             const password = passwordInput.value.trim();
-
             console.log('Username:', username);
             console.log('Password length:', password.length);
-
             // Initialize Supabase if not already done
             if (!adminSupabase) {
-                console.log('🔧 Initializing Supabase for authentication...');
+                console.log('ðŸ”§ Initializing Supabase for authentication...');
                 const initResult = initializeSupabase();
                 if (initResult) {
                     adminSupabase = configSupabase;
@@ -584,20 +519,16 @@
                     return;
                 }
             }
-
             try {
                 // Try Supabase Authentication first
-                console.log('🔍 Attempting Supabase authentication...');
-
+                console.log('ðŸ” Attempting Supabase authentication...');
                 const { data, error } = await adminSupabase.auth.signInWithPassword({
                     email: username,
                     password: password
                 });
-
                 if (error) throw error;
-
                 if (data.user) {
-                    console.log('✅ Login successful via Supabase Authentication');
+                    console.log('âœ… Login successful via Supabase Authentication');
                     currentUser = {
                         email: data.user.email,
                         id: data.user.id,
@@ -608,27 +539,23 @@
                     loadProjects();
                     return;
                 }
-
             } catch (supabaseError) {
-                console.log('⚠️ Supabase authentication failed:', supabaseError.message);
-
+                console.log('âš ï¸ Supabase authentication failed:', supabaseError.message);
                 // Fallback to config credentials if Supabase auth fails
                 if ((username === 'admin' || username === SUPABASE_CONFIG.adminEmail) &&
                     (password === 'extoll2024' || password === SUPABASE_CONFIG.adminPassword)) {
-                    console.log('✅ Login successful via config credentials');
+                    console.log('âœ… Login successful via config credentials');
                     currentUser = { email: username, id: 'admin', role: 'admin' };
                     showDashboard();
                     showNotification('Login successful!', 'success');
                     loadProjects();
-
                     // Try to authenticate with Supabase for metadata access
                     trySupabaseAuth();
                     return;
                 }
-
                 // Show appropriate error message
                 if (supabaseError.message.includes('Invalid login credentials')) {
-                    showNotification('Invalid credentials. Add users in Supabase Authentication → Users', 'error');
+                    showNotification('Invalid credentials. Add users in Supabase Authentication â†’ Users', 'error');
                 } else if (supabaseError.message.includes('Email not confirmed')) {
                     showNotification('Email not confirmed. Check user settings in Supabase Dashboard', 'error');
                 } else {
@@ -636,102 +563,85 @@
                 }
             }
         }
-
         // Remove the separate tryDirectSupabaseAuth function as it's now integrated above
-
         // Try Supabase authentication for metadata bucket access
         async function trySupabaseAuth() {
             try {
-                console.log('🔐 Attempting Supabase authentication for metadata access...');
-
+                console.log('ðŸ” Attempting Supabase authentication for metadata access...');
                 // Ensure we're using the same client as the config functions
                 if (!configSupabase) {
-                    console.log('🔧 Initializing shared Supabase client...');
+                    console.log('ðŸ”§ Initializing shared Supabase client...');
                     const initResult = initializeSupabase();
                     if (!initResult) {
                         throw new Error('Failed to initialize Supabase client');
                     }
                     adminSupabase = configSupabase; // Sync the clients
                 }
-
                 // Use the signInAdmin function from config
                 const authResult = await signInAdmin();
-
                 if (authResult.success) {
-                    console.log('✅ Supabase authentication successful - metadata bucket access enabled');
-
+                    console.log('âœ… Supabase authentication successful - metadata bucket access enabled');
                     // Test portfolio bucket access
                     const bucketTest = await testPortfolioBucketAccess();
-
                     if (bucketTest.success) {
                         showNotification('Metadata bucket access enabled', 'success');
                     } else {
                         showNotification('Authentication successful but bucket access failed', 'warning');
-                        console.error('🚫 Bucket access issue:', bucketTest.error);
+                        console.error('ðŸš« Bucket access issue:', bucketTest.error);
                     }
                 } else {
-                    console.log('❌ Supabase authentication failed:', authResult.error);
+                    console.log('âŒ Supabase authentication failed:', authResult.error);
                     showNotification('Authentication failed - using local storage only', 'warning');
-                    console.log('📝 Note: Projects will be stored locally only');
-
+                    console.log('ðŸ“ Note: Projects will be stored locally only');
                     // Show specific error guidance
                     if (authResult.error.includes('Invalid login credentials')) {
-                        console.error('💡 Create admin user: Supabase Dashboard → Authentication → Users → Add user');
+                        console.error('ðŸ’¡ Create admin user: Supabase Dashboard â†’ Authentication â†’ Users â†’ Add user');
                         console.error('   Email: admin@extoll.co, Password: extoll2024');
                     }
                 }
             } catch (error) {
-                console.error('❌ Supabase auth error:', error);
+                console.error('âŒ Supabase auth error:', error);
                 showNotification('Authentication error - using local storage only', 'warning');
             }
         }
-
         // Show dashboard
         function showDashboard() {
-            console.log('🎯 Showing dashboard...');
-
+            console.log('ðŸŽ¯ Showing dashboard...');
             const loginScreen = document.getElementById('loginScreen');
             const adminDashboard = document.getElementById('adminDashboard');
-
             if (loginScreen && adminDashboard) {
                 loginScreen.classList.add('hidden');
                 adminDashboard.classList.remove('hidden');
-                console.log('✅ Dashboard shown successfully');
+                console.log('âœ… Dashboard shown successfully');
             } else {
-                console.error('❌ Dashboard elements not found');
+                console.error('âŒ Dashboard elements not found');
             }
         }
-
         // Logout handler
         function handleLogout() {
-            console.log('🚪 Logging out');
+            console.log('ðŸšª Logging out');
             currentUser = null;
             showLogin();
             showNotification('Logged out', 'success');
         }
-
         // Check authentication state on page load
         async function checkAuthenticationState() {
-            console.log('🔍 Checking authentication state...');
-
+            console.log('ðŸ” Checking authentication state...');
             try {
                 if (!adminSupabase) {
-                    console.log('❌ Supabase not initialized, showing login');
+                    console.log('âŒ Supabase not initialized, showing login');
                     showLogin();
                     return;
                 }
-
                 // Check if user is already authenticated
                 const { data: { user }, error } = await adminSupabase.auth.getUser();
-
                 if (error) {
-                    console.log('❌ Auth check error:', error.message);
+                    console.log('âŒ Auth check error:', error.message);
                     showLogin();
                     return;
                 }
-
                 if (user) {
-                    console.log('✅ User already authenticated:', user.email);
+                    console.log('âœ… User already authenticated:', user.email);
                     currentUser = {
                         email: user.email,
                         authenticated: true,
@@ -740,72 +650,59 @@
                     showDashboard();
                     showNotification('Welcome back, ' + user.email, 'success');
                 } else {
-                    console.log('ℹ️ No authenticated user found, showing login');
+                    console.log('â„¹ï¸ No authenticated user found, showing login');
                     showLogin();
                 }
-
             } catch (error) {
-                console.error('❌ Authentication check failed:', error);
+                console.error('âŒ Authentication check failed:', error);
                 showLogin();
             }
         }
-
         // Show dashboard
         function showDashboard() {
             const loginScreen = document.getElementById('loginScreen');
             const adminDashboard = document.getElementById('adminDashboard');
-
             if (loginScreen && adminDashboard) {
                 loginScreen.classList.add('hidden');
                 adminDashboard.classList.remove('hidden');
-
                 // Load initial data
                 loadProjects();
                 loadWebsiteContent();
                 loadTeamInfo();
-
-                console.log('✅ Dashboard shown');
+                console.log('âœ… Dashboard shown');
             }
         }
-
         // Show login
         function showLogin() {
             const loginScreen = document.getElementById('loginScreen');
             const adminDashboard = document.getElementById('adminDashboard');
-
             if (loginScreen && adminDashboard) {
                 loginScreen.classList.remove('hidden');
                 adminDashboard.classList.add('hidden');
             }
         }
-
         // Tab switching
         function switchTab(tabName) {
             // Update tab buttons
             document.querySelectorAll('.tab-button').forEach(function (button) {
                 button.classList.remove('active');
             });
-
             const activeTab = document.querySelector('[data-tab="' + tabName + '"]');
             if (activeTab) {
                 activeTab.classList.add('active');
             }
-
             // Update tab content
             document.querySelectorAll('.tab-content').forEach(function (content) {
                 content.classList.add('hidden');
             });
-
             const targetTab = {
                 'projects': 'projectsTab',
                 'assets': 'assetsTab'
             };
-
             const targetElement = document.getElementById(targetTab[tabName]);
             if (targetElement) {
                 targetElement.classList.remove('hidden');
             }
-
             // Load data when switching to specific tabs
             if (tabName === 'projects') {
                 loadProjects();
@@ -813,12 +710,10 @@
                 loadWebsiteAssets();
             }
         }
-
         // File upload functions
         function handleFileSelect(file) {
             selectedFile = file;
             const preview = document.getElementById('testPreview');
-
             if (preview) {
                 preview.innerHTML = '<div class="bg-gray-800 p-4 rounded-lg">' +
                     '<p class="text-white"><strong>Selected:</strong> ' + file.name + '</p>' +
@@ -826,10 +721,8 @@
                     '<p class="text-gray-400"><strong>Type:</strong> ' + file.type + '</p>' +
                     '</div>';
             }
-
-            logMessage('📁 File selected: ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+            logMessage('ðŸ“ File selected: ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
         }
-
         function logMessage(message) {
             const log = document.getElementById('uploadLog');
             if (log) {
@@ -839,29 +732,23 @@
             }
             console.log(message);
         }
-
         // Test upload function
         function testUpload() {
             if (!selectedFile) {
                 showNotification('Please select a file first', 'error');
                 return;
             }
-
             if (!adminSupabase) {
                 showNotification('Supabase not initialized', 'error');
                 return;
             }
-
-            logMessage('🚀 Starting upload test...');
-
+            logMessage('ðŸš€ Starting upload test...');
             // Test upload with project folder structure
             const timestamp = Date.now();
             const extension = selectedFile.name.split('.').pop();
             const fileName = 'test-' + timestamp + '.' + extension;
             const filePath = 'test-project/' + fileName; // Project folder structure
-
-            logMessage('📤 Uploading to: ' + filePath);
-
+            logMessage('ðŸ“¤ Uploading to: ' + filePath);
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .upload(filePath, selectedFile, {
@@ -872,26 +759,21 @@
                     if (result.error) {
                         throw result.error;
                     }
-
-                    logMessage('✅ File uploaded successfully: ' + result.data.path);
-
+                    logMessage('âœ… File uploaded successfully: ' + result.data.path);
                     // Get public URL
                     const publicUrlResult = adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .getPublicUrl(filePath);
-
                     const publicUrl = publicUrlResult.data.publicUrl;
-                    logMessage('🔗 Public URL: ' + publicUrl);
-
+                    logMessage('ðŸ”— Public URL: ' + publicUrl);
                     showNotification('Upload successful!', 'success');
                 })
                 .catch(function (error) {
-                    logMessage('❌ Upload failed: ' + error.message);
+                    logMessage('âŒ Upload failed: ' + error.message);
                     showNotification('Upload failed: ' + error.message, 'error');
                     console.error('Upload error:', error);
                 });
         }
-
         // Project functions
         function generateProjectKey(title) {
             return title.toLowerCase()
@@ -900,23 +782,20 @@
                 .replace(/-+/g, '-')
                 .trim();
         }
-
         function handleThumbnailSelect(file) {
             selectedThumbnail = file;
             const preview = document.getElementById('thumbnailPreview');
-
             if (file.type.startsWith('image/') && preview) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     preview.innerHTML = '<div style="display: inline-block; position: relative;">' +
                         '<img src="' + e.target.result + '" alt="Thumbnail preview" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">' +
-                        '<button onclick="removeThumbnail()" style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">×</button>' +
+                        '<button onclick="removeThumbnail()" style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">Ã—</button>' +
                         '</div>';
                 };
                 reader.readAsDataURL(file);
             }
         }
-
         function removeThumbnail() {
             selectedThumbnail = null;
             const preview = document.getElementById('thumbnailPreview');
@@ -924,22 +803,18 @@
             if (preview) preview.innerHTML = '';
             if (input) input.value = '';
         }
-
         async function handleProjectSubmit(e) {
             e.preventDefault();
-
             // Change button to saving state
             const submitBtn = document.getElementById('projectSubmitBtn');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Creating...';
             submitBtn.disabled = true;
-
             const title = document.getElementById('projectTitle').value;
             const key = document.getElementById('projectKey').value;
             const description = document.getElementById('projectDescription').value;
             const category = document.getElementById('projectCategory').value;
             const tags = document.getElementById('projectTags').value;
-
             if (!selectedThumbnail) {
                 showNotification('Please select a thumbnail image', 'error');
                 // Reset button
@@ -947,7 +822,6 @@
                 submitBtn.disabled = false;
                 return;
             }
-
             if (!adminSupabase) {
                 showNotification('Supabase not initialized', 'error');
                 // Reset button
@@ -955,29 +829,23 @@
                 submitBtn.disabled = false;
                 return;
             }
-
             try {
                 // Upload thumbnail with project folder structure
                 const thumbnailFileName = 'thumb-' + Date.now() + '.' + selectedThumbnail.name.split('.').pop();
                 const thumbnailPath = key + '/' + thumbnailFileName;
-
                 const uploadResult = await adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(thumbnailPath, selectedThumbnail, {
                         cacheControl: '0',
                         upsert: true
                     });
-
                 if (uploadResult.error) {
                     throw uploadResult.error;
                 }
-
                 const publicUrlResult = adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .getPublicUrl(thumbnailPath);
-
                 const thumbnailUrl = publicUrlResult.data.publicUrl;
-
                 // Create project object
                 const projectData = {
                     title: title,
@@ -987,58 +855,48 @@
                     count: 1, // Default count, will be updated when files are uploaded
                     thumbnail_url: thumbnailUrl
                 };
-
                 // Store in Supabase metadata bucket
                 try {
                     const result = await createProject(projectData);
-
                     if (result.success) {
-                        console.log('✅ Project stored in metadata bucket');
+                        console.log('âœ… Project stored in metadata bucket');
                         // Also store in localStorage as backup
                         const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
                         existingProjects.push(result.data);
                         localStorage.setItem('projects', JSON.stringify(existingProjects));
-
                         showNotification('Project created successfully!', 'success');
                     } else {
-                        console.log('❌ Metadata bucket failed, storing in localStorage only:', result.error);
+                        console.log('âŒ Metadata bucket failed, storing in localStorage only:', result.error);
                         // Store in localStorage as fallback
                         const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
                         projectData.id = Date.now().toString();
                         projectData.created_at = new Date().toISOString();
                         existingProjects.push(projectData);
                         localStorage.setItem('projects', JSON.stringify(existingProjects));
-
                         showNotification('Project created (local storage only)', 'warning');
                     }
                 } catch (error) {
-                    console.error('❌ Error creating project:', error);
+                    console.error('âŒ Error creating project:', error);
                     // Store in localStorage as fallback
                     const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
                     projectData.id = Date.now().toString();
                     projectData.created_at = new Date().toISOString();
                     existingProjects.push(projectData);
                     localStorage.setItem('projects', JSON.stringify(existingProjects));
-
                     showNotification('Project created (local storage only)', 'warning');
                 }
-
                 // Reset form
                 document.getElementById('projectForm').reset();
                 removeThumbnail();
-
                 // Refresh projects list
                 loadProjects();
-
                 // Change button to success state
-                submitBtn.textContent = '✅ Created';
+                submitBtn.textContent = 'âœ… Created';
                 submitBtn.disabled = false;
-
                 // Reset button after 3 seconds
                 setTimeout(function () {
                     submitBtn.textContent = 'Create Project';
                 }, 3000);
-
                 console.log('Project created:', projectData);
             } catch (error) {
                 showNotification('Project creation failed: ' + error.message, 'error');
@@ -1048,52 +906,42 @@
                 submitBtn.disabled = false;
             }
         }
-
         async function loadProjects() {
             try {
                 // Debug: Log what we're trying to load
-                console.log('🔄 Loading projects...');
-
+                console.log('ðŸ”„ Loading projects...');
                 // Try to load from Supabase database first
                 const result = await getProjects();
-
                 if (result.success && result.data.length > 0) {
                     projects = result.data;
-                    console.log('✅ Loaded projects:', projects.length);
-                    console.log('📋 Project titles:', projects.map(p => p.title));
+                    console.log('âœ… Loaded projects:', projects.length);
+                    console.log('ðŸ“‹ Project titles:', projects.map(p => p.title));
                 } else {
-                    console.log('📭 No projects found');
+                    console.log('ðŸ“­ No projects found');
                     projects = [];
                 }
-
                 displayProjects();
             } catch (error) {
-                console.error('❌ Error loading projects:', error);
+                console.error('âŒ Error loading projects:', error);
                 projects = [];
                 displayProjects();
             }
         }
-
         function displayProjects() {
             const projectsList = document.getElementById('projectsList');
             const categoryFilter = document.getElementById('filterCategory').value;
-
             // Debug: Log all projects and filter value
             console.log('All projects:', projects);
             console.log('Category filter value:', categoryFilter);
-
             let filteredProjects = projects;
-
             if (categoryFilter) {
                 filteredProjects = filteredProjects.filter(p => p.category === categoryFilter);
                 console.log('Filtered projects:', filteredProjects);
             }
-
             if (filteredProjects.length === 0) {
                 projectsList.innerHTML = '<p class="text-gray-400">No projects found matching the current filters.</p>';
                 return;
             }
-
             projectsList.innerHTML = filteredProjects.map(project => `
         <div class="bg-gray-800/50 p-6 rounded-lg cursor-pointer hover:bg-gray-800/70 transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="openProjectManager('${project.id}')">
             <div class="flex items-start justify-between">
@@ -1121,38 +969,28 @@
         </div>
     `).join('');
         }
-
-
-
         function refreshProjects() {
             loadProjects();
             showNotification('Projects refreshed', 'success');
         }
-
         async function syncProjects() {
             try {
                 showNotification('Syncing projects from portfolio bucket...', 'success');
-
                 // Get all project folders from portfolio bucket
                 const { data: folders, error: listError } = await configSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .list('', { limit: 100 });
-
                 if (listError) {
                     throw new Error('Failed to list portfolio folders: ' + listError.message);
                 }
-
                 // Filter out website-assets and get project folders
                 const projectFolders = folders.filter(folder =>
                     folder.name !== SUPABASE_CONFIG.websiteAssets.folder &&
                     folder.name !== '.emptyFolderPlaceholder'
                 );
-
-                console.log('📁 Found project folders:', projectFolders.map(f => f.name));
-
+                console.log('ðŸ“ Found project folders:', projectFolders.map(f => f.name));
                 let syncedCount = 0;
                 let updatedCount = 0;
-
                 for (const folder of projectFolders) {
                     try {
                         // Download project metadata from project folder
@@ -1160,29 +998,23 @@
                         const { data: fileData, error: downloadError } = await configSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
                             .download(metadataPath);
-
                         if (downloadError) {
-                            console.warn('⚠️ No metadata found for:', folder.name);
+                            console.warn('âš ï¸ No metadata found for:', folder.name);
                             continue;
                         }
-
                         const text = await fileData.text();
                         const project = JSON.parse(text);
-
-                        console.log('📄 Processing project:', project.title, 'Key:', project.key);
-
+                        console.log('ðŸ“„ Processing project:', project.title, 'Key:', project.key);
                         // Check if project exists in database
                         const { data: existingProject, error: selectError } = await configSupabase
                             .from('projects')
                             .select('*')
                             .eq('key', project.key)
                             .single();
-
                         if (selectError && selectError.code !== 'PGRST116') {
-                            console.warn('⚠️ Error checking existing project:', selectError);
+                            console.warn('âš ï¸ Error checking existing project:', selectError);
                             continue;
                         }
-
                         if (existingProject) {
                             // Update existing project with latest metadata
                             const { error: updateError } = await configSupabase
@@ -1195,12 +1027,11 @@
                                     thumbnail_url: project.thumbnail_url || null
                                 })
                                 .eq('key', project.key);
-
                             if (!updateError) {
-                                console.log('✅ Updated project:', project.title);
+                                console.log('âœ… Updated project:', project.title);
                                 updatedCount++;
                             } else {
-                                console.warn('⚠️ Failed to update project:', updateError);
+                                console.warn('âš ï¸ Failed to update project:', updateError);
                             }
                         } else {
                             // Insert new project
@@ -1214,51 +1045,43 @@
                                     count: project.count || 1,
                                     thumbnail_url: project.thumbnail_url || null
                                 }]);
-
                             if (!insertError) {
-                                console.log('✅ Inserted new project:', project.title);
+                                console.log('âœ… Inserted new project:', project.title);
                                 syncedCount++;
                             } else {
-                                console.warn('⚠️ Failed to insert project:', insertError);
+                                console.warn('âš ï¸ Failed to insert project:', insertError);
                             }
                         }
                     } catch (parseError) {
-                        console.warn('⚠️ Failed to process project folder:', folder.name, parseError);
+                        console.warn('âš ï¸ Failed to process project folder:', folder.name, parseError);
                     }
                 }
-
                 const totalChanges = syncedCount + updatedCount;
                 if (totalChanges > 0) {
                     showNotification(`Sync complete! ${syncedCount} new, ${updatedCount} updated projects`, 'success');
                 } else {
                     showNotification('All projects are already in sync', 'success');
                 }
-
                 // Refresh the display
                 loadProjects();
-
             } catch (error) {
-                console.error('❌ Sync error:', error);
+                console.error('âŒ Sync error:', error);
                 showNotification('Sync failed: ' + error.message, 'error');
             }
         }
-
         function openProjectManager(id) {
             // Redirect to project manager in same tab
             window.location.href = `project-manager.html?id=${id}`;
         }
-
         function editProject(id) {
             const project = projects.find(p => p.id === id);
             if (!project) return;
-
             // Fill form with project data
             document.getElementById('projectTitle').value = project.title;
             document.getElementById('projectKey').value = project.key;
             document.getElementById('projectDescription').value = project.description;
             document.getElementById('projectCategory').value = project.category;
             document.getElementById('projectTags').value = project.tags ? project.tags.join(', ') : '';
-
             // Show thumbnail if exists
             if (project.thumbnail_url) {
                 const preview = document.getElementById('thumbnailPreview');
@@ -1269,10 +1092,8 @@
             </div>
         `;
             }
-
             // Load project files for image management
             loadProjectFiles(project.key);
-
             // Change form button to update
             const submitBtn = document.querySelector('#projectForm button[type="submit"]');
             submitBtn.textContent = 'Update Project';
@@ -1280,34 +1101,28 @@
                 e.preventDefault();
                 updateProject(id);
             };
-
             showNotification('Project loaded for editing', 'success');
         }
-
         async function updateProject(id) {
             const project = projects.find(p => p.id === id);
             if (!project) return;
-
             // Update project data
             project.title = document.getElementById('projectTitle').value;
             project.description = document.getElementById('projectDescription').value;
             project.category = document.getElementById('projectCategory').value;
             project.tags = document.getElementById('projectTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
             project.updated_at = new Date().toISOString();
-
             try {
                 // Update in Supabase metadata bucket first using the config function
-                console.log('🔄 Updating project in metadata bucket:', project.key);
-
+                console.log('ðŸ”„ Updating project in metadata bucket:', project.key);
                 // Use the updateProject function from supabase-config.js
                 if (typeof window.updateProject === 'function') {
                     const result = await window.updateProject(project.key, project);
-
                     if (result.success) {
-                        console.log('✅ Project updated in metadata bucket');
+                        console.log('âœ… Project updated in metadata bucket');
                         showNotification('Project updated successfully!', 'success');
                     } else {
-                        console.log('❌ Metadata bucket update failed:', result.error);
+                        console.log('âŒ Metadata bucket update failed:', result.error);
                         showNotification('Project updated locally (cloud sync failed)', 'warning');
                     }
                 } else {
@@ -1320,12 +1135,11 @@
                                 contentType: 'application/json',
                                 upsert: true
                             });
-
                         if (uploadResult.error) {
-                            console.error('❌ Metadata update failed:', uploadResult.error);
+                            console.error('âŒ Metadata update failed:', uploadResult.error);
                             showNotification('Project updated locally (cloud sync failed)', 'warning');
                         } else {
-                            console.log('✅ Project metadata updated successfully');
+                            console.log('âœ… Project metadata updated successfully');
                             showNotification('Project updated successfully!', 'success');
                         }
                     } else {
@@ -1333,33 +1147,26 @@
                     }
                 }
             } catch (error) {
-                console.error('❌ Error updating project metadata:', error);
+                console.error('âŒ Error updating project metadata:', error);
                 showNotification('Project updated locally (cloud sync failed)', 'warning');
             }
-
             // Update in localStorage as backup
             localStorage.setItem('projects', JSON.stringify(projects));
-
             // Reset form
             document.getElementById('projectForm').reset();
             removeThumbnail();
-
             // Reset button
             const submitBtn = document.querySelector('#projectForm button[type="submit"]');
             submitBtn.textContent = 'Create Project';
             submitBtn.onclick = null;
-
             // Clear current editing project
             currentEditingProject = null;
-
             // Refresh projects list
             loadProjects();
         }
-
         function duplicateProject(id) {
             const project = projects.find(p => p.id === id);
             if (!project) return;
-
             const newProject = {
                 ...project,
                 id: Date.now().toString(),
@@ -1367,96 +1174,77 @@
                 key: project.key + '-copy',
                 created_at: new Date().toISOString()
             };
-
             projects.push(newProject);
             localStorage.setItem('projects', JSON.stringify(projects));
-
             showNotification('Project duplicated successfully!', 'success');
             loadProjects();
         }
-
         async function deleteProject(id) {
             if (!confirm('Are you sure you want to delete this project? This will also delete all associated files.')) return;
-
             const projectIndex = projects.findIndex(p => p.id === id);
             if (projectIndex === -1) {
                 showNotification('Project not found', 'error');
                 return;
             }
-
             const project = projects[projectIndex];
-            console.log('🗑️ Deleting project:', project.title, '(ID:', id, ')');
-
+            console.log('ðŸ—‘ï¸ Deleting project:', project.title, '(ID:', id, ')');
             try {
                 // Delete from metadata bucket using the config function
                 if (project.key) {
-                    console.log('🗑️ Deleting from metadata bucket...');
+                    console.log('ðŸ—‘ï¸ Deleting from metadata bucket...');
                     const metadataResult = await deleteProjectMetadata(project.key);
-
                     if (metadataResult.success) {
-                        console.log('✅ Project metadata deleted from bucket');
+                        console.log('âœ… Project metadata deleted from bucket');
                     } else {
-                        console.error('❌ Failed to delete metadata:', metadataResult.error);
+                        console.error('âŒ Failed to delete metadata:', metadataResult.error);
                     }
                 }
-
                 // Delete project files from public storage bucket
                 if (adminSupabase && project.key) {
-                    console.log('🗑️ Deleting project files and folder...');
-
+                    console.log('ðŸ—‘ï¸ Deleting project files and folder...');
                     const listResult = await adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .list(project.key);
-
                     if (listResult.error) {
-                        console.error('❌ Error listing project files:', listResult.error);
+                        console.error('âŒ Error listing project files:', listResult.error);
                     } else if (listResult.data && listResult.data.length > 0) {
                         const filesToDelete = listResult.data.map(file => project.key + '/' + file.name);
-                        console.log('🗑️ Deleting', filesToDelete.length, 'project files:', filesToDelete);
-
+                        console.log('ðŸ—‘ï¸ Deleting', filesToDelete.length, 'project files:', filesToDelete);
                         const deleteResult = await adminSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
                             .remove(filesToDelete);
-
                         if (deleteResult.error) {
-                            console.error('❌ Error deleting project files:', deleteResult.error);
+                            console.error('âŒ Error deleting project files:', deleteResult.error);
                             showNotification('Error deleting some project files', 'warning');
                         } else {
-                            console.log('✅ Project files deleted from storage');
-
+                            console.log('âœ… Project files deleted from storage');
                             // Verify deletion by listing again
                             const verifyResult = await adminSupabase.storage
                                 .from(SUPABASE_CONFIG.bucket)
                                 .list(project.key);
-
                             if (verifyResult.data && verifyResult.data.length > 0) {
-                                console.warn('⚠️ Some files may still remain:', verifyResult.data.length);
-
+                                console.warn('âš ï¸ Some files may still remain:', verifyResult.data.length);
                                 // Try to delete remaining files
                                 const remainingFiles = verifyResult.data.map(file => project.key + '/' + file.name);
-                                console.log('🗑️ Attempting to delete remaining files:', remainingFiles);
-
+                                console.log('ðŸ—‘ï¸ Attempting to delete remaining files:', remainingFiles);
                                 const finalDeleteResult = await adminSupabase.storage
                                     .from(SUPABASE_CONFIG.bucket)
                                     .remove(remainingFiles);
-
                                 if (finalDeleteResult.error) {
-                                    console.error('❌ Error deleting remaining files:', finalDeleteResult.error);
+                                    console.error('âŒ Error deleting remaining files:', finalDeleteResult.error);
                                 } else {
-                                    console.log('✅ Remaining files deleted');
+                                    console.log('âœ… Remaining files deleted');
                                 }
                             } else {
-                                console.log('✅ Project folder is now empty');
+                                console.log('âœ… Project folder is now empty');
                             }
                         }
                     } else {
-                        console.log('📁 No project files found to delete');
+                        console.log('ðŸ“ No project files found to delete');
                     }
-
                     // Additional cleanup: Try to delete any hidden or system files
                     try {
-                        console.log('🧹 Performing additional cleanup for folder:', project.key);
-
+                        console.log('ðŸ§¹ Performing additional cleanup for folder:', project.key);
                         // List with different parameters to catch any remaining files
                         const deepListResult = await adminSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
@@ -1464,56 +1252,46 @@
                                 limit: 1000,
                                 offset: 0
                             });
-
                         if (deepListResult.data && deepListResult.data.length > 0) {
-                            console.log('🔍 Found additional files during deep scan:', deepListResult.data.length);
+                            console.log('ðŸ” Found additional files during deep scan:', deepListResult.data.length);
                             const additionalFiles = deepListResult.data.map(file => project.key + '/' + file.name);
-
                             const cleanupResult = await adminSupabase.storage
                                 .from(SUPABASE_CONFIG.bucket)
                                 .remove(additionalFiles);
-
                             if (cleanupResult.error) {
-                                console.error('❌ Error during additional cleanup:', cleanupResult.error);
+                                console.error('âŒ Error during additional cleanup:', cleanupResult.error);
                             } else {
-                                console.log('✅ Additional cleanup completed');
+                                console.log('âœ… Additional cleanup completed');
                             }
                         }
                     } catch (cleanupError) {
-                        console.warn('⚠️ Additional cleanup failed:', cleanupError.message);
+                        console.warn('âš ï¸ Additional cleanup failed:', cleanupError.message);
                     }
                 }
-
                 // Remove from local projects array and localStorage
                 projects.splice(projectIndex, 1);
                 localStorage.setItem('projects', JSON.stringify(projects));
-
                 // Delete from Supabase database table
                 if (adminSupabase) {
-                    console.log('🗑️ Deleting from database table...');
+                    console.log('ðŸ—‘ï¸ Deleting from database table...');
                     const { error: dbDeleteError } = await adminSupabase
                         .from('projects')
                         .delete()
                         .eq('key', project.key);
-
                     if (dbDeleteError) {
-                        console.error('❌ Failed to delete from database:', dbDeleteError);
+                        console.error('âŒ Failed to delete from database:', dbDeleteError);
                     } else {
-                        console.log('✅ Project deleted from database');
+                        console.log('âœ… Project deleted from database');
                     }
                 }
-
-                console.log('✅ Project removed from local storage');
+                console.log('âœ… Project removed from local storage');
                 showNotification('Project deleted successfully!', 'success');
                 loadProjects();
-
             } catch (error) {
-                console.error('❌ Error during project deletion:', error);
-
+                console.error('âŒ Error during project deletion:', error);
                 // Still remove from local storage even if cloud deletion fails
                 projects.splice(projectIndex, 1);
                 localStorage.setItem('projects', JSON.stringify(projects));
-
                 // Try to delete from database even if other operations failed
                 if (adminSupabase && project.key) {
                     try {
@@ -1521,29 +1299,24 @@
                             .from('projects')
                             .delete()
                             .eq('key', project.key);
-
                         if (dbDeleteError) {
-                            console.error('❌ Failed to delete from database:', dbDeleteError);
+                            console.error('âŒ Failed to delete from database:', dbDeleteError);
                         } else {
-                            console.log('✅ Project deleted from database');
+                            console.log('âœ… Project deleted from database');
                         }
                     } catch (dbError) {
-                        console.error('❌ Database deletion error:', dbError);
+                        console.error('âŒ Database deletion error:', dbError);
                     }
                 }
-
                 showNotification('Project deleted locally (cloud deletion may have failed)', 'warning');
                 loadProjects();
             }
         }
-
         function manageProjectFiles(id) {
             const project = projects.find(p => p.id === id);
             if (!project) return;
-
             // Load project for editing and show image management
             editProject(id);
-
             // Scroll to the image management section
             setTimeout(function () {
                 const imageSection = document.getElementById('projectGallery');
@@ -1554,75 +1327,66 @@
                 }
             }, 100);
         }
-
         // Refresh project files manually
         function refreshProjectFiles() {
             if (currentEditingProject && currentEditingProject.key) {
-                console.log('🔄 Manually refreshing project files for:', currentEditingProject.key);
+                console.log('ðŸ”„ Manually refreshing project files for:', currentEditingProject.key);
                 loadProjectFiles(currentEditingProject.key);
             } else {
                 // Try to get project key from the form
                 const projectKey = document.getElementById('projectKey').value;
                 if (projectKey) {
-                    console.log('🔄 Refreshing files using form project key:', projectKey);
+                    console.log('ðŸ”„ Refreshing files using form project key:', projectKey);
                     loadProjectFiles(projectKey);
                 } else {
                     showNotification('No project selected for file refresh', 'warning');
                 }
             }
         }
-
         // Force load project files with multiple fallback methods
         function forceLoadProjectFiles() {
-            console.log('🚀 Force loading project files...');
-
+            console.log('ðŸš€ Force loading project files...');
             // Method 1: Try currentEditingProject
             if (currentEditingProject && currentEditingProject.key) {
-                console.log('📁 Method 1: Using currentEditingProject key:', currentEditingProject.key);
+                console.log('ðŸ“ Method 1: Using currentEditingProject key:', currentEditingProject.key);
                 loadProjectFiles(currentEditingProject.key);
                 return;
             }
-
             // Method 2: Try form project key
             const projectKey = document.getElementById('projectKey').value;
             if (projectKey) {
-                console.log('📁 Method 2: Using form project key:', projectKey);
+                console.log('ðŸ“ Method 2: Using form project key:', projectKey);
                 loadProjectFiles(projectKey);
                 return;
             }
-
             // Method 3: Try to find project from projects array using form title
             const projectTitle = document.getElementById('projectTitle').value;
             if (projectTitle && projects.length > 0) {
                 const foundProject = projects.find(p => p.title === projectTitle);
                 if (foundProject) {
-                    console.log('📁 Method 3: Found project by title:', foundProject.key);
+                    console.log('ðŸ“ Method 3: Found project by title:', foundProject.key);
                     currentEditingProject = foundProject;
                     loadProjectFiles(foundProject.key);
                     return;
                 }
             }
-
             // Method 4: Show all available projects for manual selection
-            console.log('📁 Method 4: Showing available projects for manual selection');
+            console.log('ðŸ“ Method 4: Showing available projects for manual selection');
             if (projects.length > 0) {
                 const projectKeys = projects.map(p => `${p.title} (${p.key})`).join('\n');
                 const selectedKey = prompt(`No project key found. Available projects:\n\n${projectKeys}\n\nEnter project key manually:`);
-
                 if (selectedKey) {
-                    console.log('📁 Manual project key entered:', selectedKey);
+                    console.log('ðŸ“ Manual project key entered:', selectedKey);
                     loadProjectFiles(selectedKey);
                     return;
                 }
             }
-
             showNotification('Could not determine project key. Please edit a project first.', 'error');
-            console.error('❌ All methods failed to find project key');
+            console.error('âŒ All methods failed to find project key');
         }
-
         // Debug function to check current state
         function debugProjectFiles() {
-            console.log('🔍 DEBUG: Current project files state');
+            console.log('ðŸ” DEBUG: Current project files state');
             console.log('currentEditingProject:', currentEditingProject);
             console.log('projects array:', projects);
             console.log('projectFiles array:', projectFiles);
@@ -1630,32 +1394,26 @@
             console.log('Form project title:', document.getElementById('projectTitle')?.value);
             console.log('adminSupabase:', !!adminSupabase);
             console.log('SUPABASE_CONFIG.bucket:', SUPABASE_CONFIG?.bucket);
-
             // Make this function available globally for console access
             window.debugProjectFiles = debugProjectFiles;
             window.forceLoadProjectFiles = forceLoadProjectFiles;
             window.loadProjectFiles = loadProjectFiles;
         }
-
         // Project Image Management Functions
         let currentEditingProject = null;
         let projectFiles = [];
-
         // Update project file count after uploads
         async function updateProjectFileCount(projectKey) {
             try {
-                console.log('🔢 Updating file count for project:', projectKey);
-
+                console.log('ðŸ”¢ Updating file count for project:', projectKey);
                 // Get current file count from storage (excluding JSON files)
                 const listResult = await adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .list(projectKey);
-
                 if (listResult.error) {
-                    console.error('❌ Error getting file count:', listResult.error);
+                    console.error('âŒ Error getting file count:', listResult.error);
                     return;
                 }
-
                 // Filter out JSON files, thumbnails, and system files when counting
                 const actualFiles = listResult.data ? listResult.data.filter(file => {
                     const fileName = file.name.toLowerCase();
@@ -1664,19 +1422,15 @@
                         !fileName.startsWith('logo') &&
                         !fileName.startsWith('banner');
                 }) : [];
-
                 const fileCount = actualFiles.length;
-                console.log('📊 Actual project file count (excluding JSON/system files):', fileCount);
-
+                console.log('ðŸ“Š Actual project file count (excluding JSON/system files):', fileCount);
                 // Find and update the project in the projects array
                 const projectIndex = projects.findIndex(p => p.key === projectKey);
                 if (projectIndex !== -1) {
                     projects[projectIndex].count = fileCount;
                     projects[projectIndex].updated_at = new Date().toISOString();
-
                     // Update localStorage
                     localStorage.setItem('projects', JSON.stringify(projects));
-
                     // Update Supabase portfolio bucket
                     try {
                         if (adminSupabase && SUPABASE_CONFIG.bucket) {
@@ -1687,58 +1441,46 @@
                                     contentType: 'application/json',
                                     upsert: true
                                 });
-
                             if (uploadResult.error) {
-                                console.error('❌ Metadata update failed:', uploadResult.error);
+                                console.error('âŒ Metadata update failed:', uploadResult.error);
                             } else {
-                                console.log('✅ Project count updated in metadata bucket');
+                                console.log('âœ… Project count updated in metadata bucket');
                             }
                         }
                     } catch (error) {
-                        console.error('❌ Error updating metadata:', error);
+                        console.error('âŒ Error updating metadata:', error);
                     }
-
                     // Refresh the projects display
                     displayProjects();
-
-                    console.log('✅ Project file count updated:', fileCount);
+                    console.log('âœ… Project file count updated:', fileCount);
                 } else {
-                    console.warn('⚠️ Project not found in projects array:', projectKey);
+                    console.warn('âš ï¸ Project not found in projects array:', projectKey);
                 }
             } catch (error) {
-                console.error('❌ Error updating project file count:', error);
+                console.error('âŒ Error updating project file count:', error);
             }
         }
-
         function handleProjectImageUpload(files) {
             // Check if we have a project to upload to
             const projectKey = currentEditingProject ? currentEditingProject.key : document.getElementById('projectKey').value;
-
             if (!projectKey) {
                 showNotification('Please enter a project title first to generate a project key', 'error');
                 return;
             }
-
             if (!adminSupabase) {
                 showNotification('Supabase not initialized. Please check your connection.', 'error');
                 return;
             }
-
-            console.log('📤 Uploading images to project:', projectKey);
-
+            console.log('ðŸ“¤ Uploading images to project:', projectKey);
             const progressList = document.getElementById('projectUploadProgressList');
             const progressSection = document.getElementById('projectUploadProgress');
             progressSection.classList.remove('hidden');
-
             let uploadedCount = 0;
             const totalFiles = files.length;
-
             Array.from(files).forEach(function (file, index) {
                 const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 const filePath = projectKey + '/' + fileName;
-
-                console.log('📤 Uploading file:', fileName, 'to path:', filePath);
-
+                console.log('ðŸ“¤ Uploading file:', fileName, 'to path:', filePath);
                 const progressItem = document.createElement('div');
                 progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
                 progressItem.innerHTML = `
@@ -1746,7 +1488,6 @@
             <span class="text-gray-400">Uploading...</span>
         `;
                 progressList.appendChild(progressItem);
-
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(filePath, file, {
@@ -1755,27 +1496,23 @@
                     })
                     .then(function (result) {
                         if (result.error) {
-                            console.error('❌ Upload failed:', result.error);
+                            console.error('âŒ Upload failed:', result.error);
                             progressItem.innerHTML = `
                         <span class="text-white">${file.name}</span>
                         <span class="text-red-400">Failed: ${result.error.message}</span>
                     `;
                             return;
                         }
-
-                        console.log('✅ Upload successful:', result.data.path);
+                        console.log('âœ… Upload successful:', result.data.path);
                         progressItem.innerHTML = `
                     <span class="text-white">${file.name}</span>
-                    <span class="text-green-400">✓ Uploaded</span>
+                    <span class="text-green-400">âœ“ Uploaded</span>
                 `;
-
                         uploadedCount++;
-
                         // Update project count when all files are uploaded
                         if (uploadedCount === totalFiles) {
                             updateProjectFileCount(projectKey);
                         }
-
                         // Refresh gallery after upload if we're editing
                         if (currentEditingProject) {
                             setTimeout(function () {
@@ -1787,7 +1524,7 @@
                         }
                     })
                     .catch(function (error) {
-                        console.error('❌ Upload error:', error);
+                        console.error('âŒ Upload error:', error);
                         progressItem.innerHTML = `
                     <span class="text-white">${file.name}</span>
                     <span class="text-red-400">Error: ${error.message}</span>
@@ -1795,36 +1532,27 @@
                     });
             });
         }
-
         function handleProjectVideoUpload(files) {
             // Check if we have a project to upload to
             const projectKey = currentEditingProject ? currentEditingProject.key : document.getElementById('projectKey').value;
-
             if (!projectKey) {
                 showNotification('Please enter a project title first to generate a project key', 'error');
                 return;
             }
-
             if (!adminSupabase) {
                 showNotification('Supabase not initialized. Please check your connection.', 'error');
                 return;
             }
-
-            console.log('📤 Uploading videos to project:', projectKey);
-
+            console.log('ðŸ“¤ Uploading videos to project:', projectKey);
             const progressList = document.getElementById('projectUploadProgressList');
             const progressSection = document.getElementById('projectUploadProgress');
             progressSection.classList.remove('hidden');
-
             let uploadedCount = 0;
             const totalFiles = files.length;
-
             Array.from(files).forEach(function (file, index) {
                 const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 const filePath = projectKey + '/' + fileName;
-
-                console.log('📤 Uploading video:', fileName, 'to path:', filePath);
-
+                console.log('ðŸ“¤ Uploading video:', fileName, 'to path:', filePath);
                 const progressItem = document.createElement('div');
                 progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
                 progressItem.innerHTML = `
@@ -1832,7 +1560,6 @@
             <span class="text-gray-400">Uploading...</span>
         `;
                 progressList.appendChild(progressItem);
-
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(filePath, file, {
@@ -1841,27 +1568,23 @@
                     })
                     .then(function (result) {
                         if (result.error) {
-                            console.error('❌ Video upload failed:', result.error);
+                            console.error('âŒ Video upload failed:', result.error);
                             progressItem.innerHTML = `
                         <span class="text-white">${file.name}</span>
                         <span class="text-red-400">Failed: ${result.error.message}</span>
                     `;
                             return;
                         }
-
-                        console.log('✅ Video upload successful:', result.data.path);
+                        console.log('âœ… Video upload successful:', result.data.path);
                         progressItem.innerHTML = `
                     <span class="text-white">${file.name}</span>
-                    <span class="text-green-400">✓ Uploaded</span>
+                    <span class="text-green-400">âœ“ Uploaded</span>
                 `;
-
                         uploadedCount++;
-
                         // Update project count when all files are uploaded
                         if (uploadedCount === totalFiles) {
                             updateProjectFileCount(projectKey);
                         }
-
                         // Refresh gallery after upload if we're editing
                         if (currentEditingProject) {
                             setTimeout(function () {
@@ -1873,7 +1596,7 @@
                         }
                     })
                     .catch(function (error) {
-                        console.error('❌ Video upload error:', error);
+                        console.error('âŒ Video upload error:', error);
                         progressItem.innerHTML = `
                     <span class="text-white">${file.name}</span>
                     <span class="text-red-400">Error: ${error.message}</span>
@@ -1881,22 +1604,18 @@
                     });
             });
         }
-
         function loadProjectFiles(projectKey) {
             if (!adminSupabase || !projectKey) {
-                console.error('❌ Cannot load project files: adminSupabase or projectKey missing');
+                console.error('âŒ Cannot load project files: adminSupabase or projectKey missing');
                 return;
             }
-
-            console.log('🔍 Loading project files for:', projectKey);
+            console.log('ðŸ” Loading project files for:', projectKey);
             currentEditingProject = projects.find(p => p.key === projectKey);
-
             // Show loading state
             const grid = document.getElementById('projectGalleryGrid');
             if (grid) {
                 grid.innerHTML = '<div class="text-center text-gray-400 text-sm py-8 col-span-full">Loading project files...</div>';
             }
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .list(projectKey, {
@@ -1905,24 +1624,21 @@
                 })
                 .then(function (result) {
                     if (result.error) {
-                        console.error('❌ Error loading project files:', result.error);
+                        console.error('âŒ Error loading project files:', result.error);
                         if (grid) {
                             grid.innerHTML = '<div class="text-center text-red-400 text-sm py-8 col-span-full">Error loading files: ' + result.error.message + '</div>';
                         }
                         return;
                     }
-
-                    console.log('📁 Raw files from storage:', result.data);
-
+                    console.log('ðŸ“ Raw files from storage:', result.data);
                     if (!result.data || result.data.length === 0) {
-                        console.log('📁 No files found for project:', projectKey);
+                        console.log('ðŸ“ No files found for project:', projectKey);
                         projectFiles = [];
                         if (grid) {
                             grid.innerHTML = '<div class="text-center text-gray-400 text-sm py-8 col-span-full">No files uploaded yet. Create the project first, then upload images and videos.</div>';
                         }
                         return;
                     }
-
                     projectFiles = result.data
                         .filter(function (file) {
                             const fileName = file.name.toLowerCase();
@@ -1943,7 +1659,6 @@
                             const publicUrlResult = adminSupabase.storage
                                 .from(SUPABASE_CONFIG.bucket)
                                 .getPublicUrl(projectKey + '/' + file.name);
-
                             const fileData = {
                                 name: file.name,
                                 path: projectKey + '/' + file.name,
@@ -1952,44 +1667,35 @@
                                 created_at: file.created_at,
                                 type: getFileType(file.name)
                             };
-
-                            console.log('📄 Processed file:', fileData);
+                            console.log('ðŸ“„ Processed file:', fileData);
                             return fileData;
                         });
-
-                    console.log('✅ Loaded', projectFiles.length, 'project files');
+                    console.log('âœ… Loaded', projectFiles.length, 'project files');
                     displayProjectGallery();
                 })
                 .catch(function (error) {
-                    console.error('❌ Error loading project files:', error);
+                    console.error('âŒ Error loading project files:', error);
                     if (grid) {
                         grid.innerHTML = '<div class="text-center text-red-400 text-sm py-8 col-span-full">Error loading files: ' + error.message + '</div>';
                     }
                 });
         }
-
         function displayProjectGallery() {
             const grid = document.getElementById('projectGalleryGrid');
             const filter = document.getElementById('projectGalleryFilter').value;
-
             if (!grid) {
-                console.error('❌ Project gallery grid element not found');
+                console.error('âŒ Project gallery grid element not found');
                 return;
             }
-
-            console.log('🎨 Displaying project gallery with', projectFiles.length, 'files');
-
+            console.log('ðŸŽ¨ Displaying project gallery with', projectFiles.length, 'files');
             let filteredFiles = projectFiles;
-
             // Apply filter
             if (filter === 'images') {
                 filteredFiles = filteredFiles.filter(f => f.type === 'image');
             } else if (filter === 'videos') {
                 filteredFiles = filteredFiles.filter(f => f.type === 'video');
             }
-
-            console.log('🔍 After filtering:', filteredFiles.length, 'files (filter:', filter, ')');
-
+            console.log('ðŸ” After filtering:', filteredFiles.length, 'files (filter:', filter, ')');
             if (filteredFiles.length === 0) {
                 const message = projectFiles.length === 0
                     ? 'No files uploaded yet. Upload some images or videos above.'
@@ -1997,12 +1703,11 @@
                 grid.innerHTML = `<div class="text-center text-gray-400 text-sm py-8 col-span-full">${message}</div>`;
                 return;
             }
-
             grid.innerHTML = filteredFiles.map(function (file, index) {
                 return `
             <div class="relative group cursor-pointer bg-gray-800 rounded-lg overflow-hidden aspect-square">
                 ${file.type === 'image' ?
-                        `<img src="${file.url}" alt="${file.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-gray-700\\'>❌ Failed to load</div>'">` :
+                        `<img src="${file.url}" alt="${file.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center bg-gray-700\\'>âŒ Failed to load</div>'">` :
                         file.type === 'video' ?
                             `<video class="w-full h-full object-cover" preload="metadata">
                         <source src="${file.url}" type="video/mp4">
@@ -2032,36 +1737,28 @@
             </div>
         `;
             }).join('');
-
-            console.log('✅ Gallery displayed with', filteredFiles.length, 'files');
+            console.log('âœ… Gallery displayed with', filteredFiles.length, 'files');
         }
-
         function filterProjectGallery() {
             displayProjectGallery();
         }
-
         function deleteProjectFile(filePath) {
             if (!confirm('Are you sure you want to delete this file?')) return;
-
-            console.log('🗑️ Deleting file:', filePath);
-
+            console.log('ðŸ—‘ï¸ Deleting file:', filePath);
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .remove([filePath])
                 .then(function (result) {
                     if (result.error) {
-                        console.error('❌ Error deleting file:', result.error);
+                        console.error('âŒ Error deleting file:', result.error);
                         showNotification('Error deleting file: ' + result.error.message, 'error');
                         return;
                     }
-
-                    console.log('✅ File deleted successfully:', filePath);
+                    console.log('âœ… File deleted successfully:', filePath);
                     showNotification('File deleted successfully', 'success');
-
                     if (currentEditingProject) {
                         // Reload project files to refresh the gallery
                         loadProjectFiles(currentEditingProject.key);
-
                         // Update project file count
                         setTimeout(function () {
                             updateProjectFileCount(currentEditingProject.key);
@@ -2069,18 +1766,15 @@
                     }
                 })
                 .catch(function (error) {
-                    console.error('❌ Error deleting file:', error);
+                    console.error('âŒ Error deleting file:', error);
                     showNotification('Error deleting file: ' + error.message, 'error');
                 });
         }
-
         // Gallery Management Functions
         function refreshProjectSelector() {
             const selector = document.getElementById('projectSelector');
             const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-
             selector.innerHTML = '<option value="">Select a project...</option>';
-
             existingProjects.forEach(function (project) {
                 const option = document.createElement('option');
                 option.value = project.id;
@@ -2088,32 +1782,25 @@
                 selector.appendChild(option);
             });
         }
-
         function loadProjectGallery() {
             const projectId = document.getElementById('projectSelector').value;
             const uploadSection = document.getElementById('galleryUploadSection');
             const displaySection = document.getElementById('galleryDisplay');
-
             if (!projectId) {
                 uploadSection.classList.add('hidden');
                 displaySection.classList.add('hidden');
                 return;
             }
-
             const project = projects.find(p => p.id === projectId);
             if (!project) return;
-
             currentProject = project;
             uploadSection.classList.remove('hidden');
             displaySection.classList.remove('hidden');
-
             // Load existing files from storage
             loadProjectFiles(project.key);
         }
-
         function loadProjectFiles(projectKey) {
             if (!adminSupabase) return;
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .list(projectKey, {
@@ -2125,12 +1812,10 @@
                         console.error('Error loading project files:', result.error);
                         return;
                     }
-
                     galleryFiles = result.data.map(function (file) {
                         const publicUrlResult = adminSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
                             .getPublicUrl(projectKey + '/' + file.name);
-
                         return {
                             name: file.name,
                             path: projectKey + '/' + file.name,
@@ -2140,38 +1825,31 @@
                             type: getFileType(file.name)
                         };
                     });
-
                     displayGallery();
                 })
                 .catch(function (error) {
                     console.error('Error loading project files:', error);
                 });
         }
-
         function getFileType(filename) {
             const ext = filename.split('.').pop().toLowerCase();
             const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
             const videoExts = ['mp4', 'webm', 'mov', 'avi', 'mkv'];
-
             if (imageExts.includes(ext)) return 'image';
             if (videoExts.includes(ext)) return 'video';
             return 'other';
         }
-
         function displayGallery() {
             const grid = document.getElementById('galleryGrid');
             const filter = document.getElementById('galleryFilter').value;
             const sortBy = document.getElementById('gallerySortBy').value;
-
             let filteredFiles = galleryFiles;
-
             // Apply filter
             if (filter === 'images') {
                 filteredFiles = filteredFiles.filter(f => f.type === 'image');
             } else if (filter === 'videos') {
                 filteredFiles = filteredFiles.filter(f => f.type === 'video');
             }
-
             // Apply sorting
             filteredFiles.sort(function (a, b) {
                 switch (sortBy) {
@@ -2187,7 +1865,6 @@
                         return 0;
                 }
             });
-
             grid.innerHTML = filteredFiles.map(function (file, index) {
                 const isSelected = selectedFiles.includes(file.path);
                 return `
@@ -2222,14 +1899,12 @@
                     <p class="truncate">${file.name}</p>
                     <p>${formatFileSize(file.size)}</p>
                 </div>
-                ${isSelected ? '<div class="absolute top-2 left-2 bg-blue-500 text-white p-1 rounded-full text-xs">✓</div>' : ''}
+                ${isSelected ? '<div class="absolute top-2 left-2 bg-blue-500 text-white p-1 rounded-full text-xs">âœ“</div>' : ''}
             </div>
         `;
             }).join('');
-
             updateBulkActions();
         }
-
         function toggleFileSelection(filePath) {
             const index = selectedFiles.indexOf(filePath);
             if (index === -1) {
@@ -2239,33 +1914,26 @@
             }
             displayGallery();
         }
-
         function selectAllFiles() {
             selectedFiles = galleryFiles.map(f => f.path);
             displayGallery();
         }
-
         function deselectAllFiles() {
             selectedFiles = [];
             displayGallery();
         }
-
         function updateBulkActions() {
             const bulkActions = document.getElementById('bulkActions');
             const selectedCount = document.getElementById('selectedCount');
-
             selectedCount.textContent = selectedFiles.length;
-
             if (selectedFiles.length > 0) {
                 bulkActions.classList.remove('hidden');
             } else {
                 bulkActions.classList.add('hidden');
             }
         }
-
         function deleteFile(filePath) {
             if (!confirm('Are you sure you want to delete this file?')) return;
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .remove([filePath])
@@ -2274,7 +1942,6 @@
                         showNotification('Error deleting file: ' + result.error.message, 'error');
                         return;
                     }
-
                     showNotification('File deleted successfully', 'success');
                     loadProjectFiles(currentProject.key);
                 })
@@ -2282,12 +1949,9 @@
                     showNotification('Error deleting file: ' + error.message, 'error');
                 });
         }
-
         function deleteSelectedFiles() {
             if (selectedFiles.length === 0) return;
-
             if (!confirm(`Are you sure you want to delete ${selectedFiles.length} selected files?`)) return;
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .remove(selectedFiles)
@@ -2296,7 +1960,6 @@
                         showNotification('Error deleting files: ' + result.error.message, 'error');
                         return;
                     }
-
                     showNotification(`${selectedFiles.length} files deleted successfully`, 'success');
                     selectedFiles = [];
                     loadProjectFiles(currentProject.key);
@@ -2305,15 +1968,12 @@
                     showNotification('Error deleting files: ' + error.message, 'error');
                 });
         }
-
         function filterGallery() {
             displayGallery();
         }
-
         function sortGallery() {
             displayGallery();
         }
-
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -2321,57 +1981,43 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
-
         // Website Assets Management Functions
         function loadWebsiteAssets() {
             // Load existing assets from storage
             if (!adminSupabase) return;
-
-
-
             // Load website content and team info
             loadWebsiteContent();
             loadTeamInfo();
         }
-
-
-
         function loadWebsiteContent() {
-            console.log('📥 Loading website content from Supabase...');
-
+            console.log('ðŸ“¥ Loading website content from Supabase...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 return;
             }
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`)
                 .then(function (result) {
                     if (result.error) {
-                        console.log('ℹ️ No saved website content found, using defaults');
+                        console.log('â„¹ï¸ No saved website content found, using defaults');
                         loadDefaultWebsiteContent();
                         return;
                     }
-
                     result.data.text().then(function (jsonText) {
                         const content = JSON.parse(jsonText);
-                        console.log('📥 Loaded website content from Supabase:', content);
-
+                        console.log('ðŸ“¥ Loaded website content from Supabase:', content);
                         // Hero Section
                         document.getElementById('heroTitle').value = content.heroTitle || 'Crafting Digital Experiences That Stand Out';
                         document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Where ideas meet execution.';
-                        document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
-
+                        document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
                         // About Section
                         document.getElementById('aboutTitle').value = content.aboutTitle || 'About Extoll';
                         document.getElementById('aboutTagline').value = content.aboutTagline || 'Execution-first freelance collective. Powered by Startup Ops.';
                         document.getElementById('aboutDescription').value = content.aboutDescription || 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
-
                         // Services Section
                         document.getElementById('servicesTitle').value = content.servicesTitle || 'Services';
                         document.getElementById('servicesDescription').value = content.servicesDescription || 'Professional design and creative services tailored to bring your vision to life';
-
                         // Contact Information
                         document.getElementById('contactTitle').value = content.contactTitle || 'Or reach me directly';
                         document.getElementById('contactPhone').value = content.contactPhone || '+91 9316158312';
@@ -2379,27 +2025,23 @@
                         document.getElementById('contactEmail').value = content.contactEmail || 'extoll.co.in@gmail.com';
                         document.getElementById('instagramHandle').value = content.instagramHandle || '@ExtollCo';
                         document.getElementById('instagramUrl').value = content.instagramUrl || 'https://instagram.com/extollco';
-
                         // Portfolio Section
                         document.getElementById('portfolioTitle').value = content.portfolioTitle || 'Portfolio';
                         document.getElementById('portfolioDescription').value = content.portfolioDescription || 'Showcase of our creative work and professional projects across various design disciplines.';
-
-                        console.log('✅ Website content loaded successfully');
+                        console.log('âœ… Website content loaded successfully');
                     });
                 })
                 .catch(function (error) {
-                    console.error('❌ Error loading website content:', error);
+                    console.error('âŒ Error loading website content:', error);
                     loadDefaultWebsiteContent();
                 });
         }
-
         function loadDefaultWebsiteContent() {
-            console.log('📝 Loading default website content...');
-
+            console.log('ðŸ“ Loading default website content...');
             // Set default values
             document.getElementById('heroTitle').value = 'Crafting Digital Experiences That Stand Out';
             document.getElementById('heroSubtitle').value = 'Where ideas meet execution.';
-            document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+            document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
             document.getElementById('aboutTitle').value = 'About Extoll';
             document.getElementById('aboutTagline').value = 'Execution-first freelance collective. Powered by Startup Ops.';
             document.getElementById('aboutDescription').value = 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
@@ -2414,31 +2056,25 @@
             document.getElementById('portfolioTitle').value = 'Portfolio';
             document.getElementById('portfolioDescription').value = 'Showcase of our creative work and professional projects across various design disciplines.';
         }
-
         function loadTeamInfo() {
-            console.log('👥 Loading team information from Supabase...');
-
+            console.log('ðŸ‘¥ Loading team information from Supabase...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 return;
             }
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`)
                 .then(function (result) {
                     if (result.error) {
-                        console.log('ℹ️ No saved team info found, using defaults');
+                        console.log('â„¹ï¸ No saved team info found, using defaults');
                         loadDefaultTeamInfo();
                         return;
                     }
-
                     result.data.text().then(function (jsonText) {
                         const team = JSON.parse(jsonText);
-                        console.log('👥 Loaded team info from Supabase:', team);
-
+                        console.log('ðŸ‘¥ Loaded team info from Supabase:', team);
                         document.getElementById('teamSectionTitle').value = team.sectionTitle || 'Our Team & Capabilities';
-
                         // Load dynamic team members
                         if (team.members && Array.isArray(team.members)) {
                             loadDynamicTeamMembers(team.members);
@@ -2452,22 +2088,18 @@
                             ];
                             loadDynamicTeamMembers(members);
                         }
-
-                        console.log('✅ Team information loaded successfully');
+                        console.log('âœ… Team information loaded successfully');
                     });
                 })
                 .catch(function (error) {
-                    console.error('❌ Error loading team information:', error);
+                    console.error('âŒ Error loading team information:', error);
                     loadDefaultTeamInfo();
                 });
         }
-
         function loadDefaultTeamInfo() {
-            console.log('👥 Loading default team information...');
-
+            console.log('ðŸ‘¥ Loading default team information...');
             // Set default values
             document.getElementById('teamSectionTitle').value = 'Our Team & Capabilities';
-
             // Load default team members
             const defaultMembers = [
                 { name: 'Ritesh', role: 'Leads Graphic Design, 3D Modeling, UI/UX Design, Web Development, and App Development, focusing on building visually strong and technically sound products.' },
@@ -2475,39 +2107,31 @@
                 { name: 'Yuvraj Gupta', role: 'Manages promotions, client coordination, and social media operations, ensuring smooth communication and strong brand presence across platforms.' },
                 { name: 'Arpit', role: 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.' }
             ];
-
             loadDynamicTeamMembers(defaultMembers);
         }
-
         function loadDynamicTeamMembers(members) {
-            console.log('👥 Loading dynamic team members:', members);
-
+            console.log('ðŸ‘¥ Loading dynamic team members:', members);
             const container = document.getElementById('teamMembersContainer');
             if (!container) {
-                console.error('❌ Team members container not found');
+                console.error('âŒ Team members container not found');
                 return;
             }
-
             // Clear existing content
             container.innerHTML = '';
-
             // Add each team member
             members.forEach(function (member, index) {
                 addTeamMemberToDOM(member.name, member.role, index);
             });
         }
-
         function addTeamMemberToDOM(name, role, index) {
             const container = document.getElementById('teamMembersContainer');
             if (!container) {
-                console.error('❌ Team members container not found');
+                console.error('âŒ Team members container not found');
                 return;
             }
-
             const memberDiv = document.createElement('div');
             memberDiv.className = 'bg-gray-800/50 p-6 rounded-lg';
             memberDiv.setAttribute('data-member-index', index);
-
             memberDiv.innerHTML = `
         <div class="flex justify-between items-start mb-4">
             <h4 class="text-lg font-semibold text-white">Team Member ${index + 1}</h4>
@@ -2526,63 +2150,49 @@
             </div>
         </div>
     `;
-
             container.appendChild(memberDiv);
         }
-
         function addTeamMember() {
-            console.log('➕ Adding new team member');
-
+            console.log('âž• Adding new team member');
             const container = document.getElementById('teamMembersContainer');
             if (!container) {
-                console.error('❌ Team members container not found');
+                console.error('âŒ Team members container not found');
                 return;
             }
-
             // Get current number of team members
             const currentMembers = container.querySelectorAll('[data-member-index]');
             const newIndex = currentMembers.length;
-
             // Add new team member to DOM
             addTeamMemberToDOM('', '', newIndex);
-
             showNotification('New team member added', 'success');
         }
-
         function removeTeamMember(index) {
-            console.log('➖ Removing team member at index:', index);
-
+            console.log('âž– Removing team member at index:', index);
             const container = document.getElementById('teamMembersContainer');
             if (!container) {
-                console.error('❌ Team members container not found');
+                console.error('âŒ Team members container not found');
                 return;
             }
-
             const memberDiv = container.querySelector(`[data-member-index="${index}"]`);
             if (memberDiv) {
                 memberDiv.remove();
-
                 // Re-index remaining members
                 const remainingMembers = container.querySelectorAll('[data-member-index]');
                 remainingMembers.forEach(function (member, newIndex) {
                     member.setAttribute('data-member-index', newIndex);
-
                     // Update the header
                     const header = member.querySelector('h4');
                     if (header) {
                         header.textContent = `Team Member ${newIndex + 1}`;
                     }
-
                     // Update the remove button
                     const removeBtn = member.querySelector('button[onclick*="removeTeamMember"]');
                     if (removeBtn) {
                         removeBtn.setAttribute('onclick', `removeTeamMember(${newIndex})`);
                     }
-
                     // Update input IDs
                     const nameInput = member.querySelector('input[type="text"]');
                     const roleTextarea = member.querySelector('textarea');
-
                     if (nameInput) {
                         nameInput.id = `teamMember${newIndex}Name`;
                     }
@@ -2590,51 +2200,42 @@
                         roleTextarea.id = `teamMember${newIndex}Role`;
                     }
                 });
-
                 showNotification('Team member removed', 'success');
             } else {
-                console.error('❌ Team member not found at index:', index);
+                console.error('âŒ Team member not found at index:', index);
             }
         }
-
         function saveTeamInfo() {
-            console.log('👥 Saving team information to Supabase...');
-
+            console.log('ðŸ‘¥ Saving team information to Supabase...');
             // Change button to saving state
             const saveBtn = document.getElementById('saveTeamBtn');
             const originalText = saveBtn.textContent;
             saveBtn.textContent = 'Saving...';
             saveBtn.disabled = true;
-
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 // Reset button
                 saveBtn.textContent = originalText;
                 saveBtn.disabled = false;
                 return;
             }
-
             try {
                 const container = document.getElementById('teamMembersContainer');
                 if (!container) {
-                    console.error('❌ Team members container not found');
+                    console.error('âŒ Team members container not found');
                     showNotification('Error: Team members container not found', 'error');
                     return;
                 }
-
                 // Collect all team members
                 const memberElements = container.querySelectorAll('[data-member-index]');
                 const members = [];
-
                 memberElements.forEach(function (memberElement, index) {
                     const nameInput = memberElement.querySelector(`#teamMember${index}Name`);
                     const roleTextarea = memberElement.querySelector(`#teamMember${index}Role`);
-
                     if (nameInput && roleTextarea) {
                         const name = nameInput.value.trim();
                         const role = roleTextarea.value.trim();
-
                         if (name || role) { // Only save if there's content
                             members.push({
                                 name: name,
@@ -2643,18 +2244,14 @@
                         }
                     }
                 });
-
                 const team = {
                     sectionTitle: document.getElementById('teamSectionTitle').value,
                     members: members,
                     updatedAt: new Date().toISOString()
                 };
-
-                console.log('👥 Team data to save to Supabase:', team);
-
+                console.log('ðŸ‘¥ Team data to save to Supabase:', team);
                 // Save as JSON file to Supabase storage
                 const teamBlob = new Blob([JSON.stringify(team, null, 2)], { type: 'application/json' });
-
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`, teamBlob, {
@@ -2662,10 +2259,9 @@
                         upsert: true
                     })
                     .then(function (result) {
-                        console.log('👥 Supabase save result:', result);
-
+                        console.log('ðŸ‘¥ Supabase save result:', result);
                         if (result.error) {
-                            console.error('❌ Save error:', result.error);
+                            console.error('âŒ Save error:', result.error);
                             showNotification('Error saving team information: ' + result.error.message, 'error');
                             // Reset button on error
                             const saveBtn = document.getElementById('saveTeamBtn');
@@ -2673,31 +2269,27 @@
                             saveBtn.disabled = false;
                             return;
                         }
-
-                        console.log('✅ Team information saved to Supabase successfully');
+                        console.log('âœ… Team information saved to Supabase successfully');
                         showNotification('Team information saved successfully!', 'success');
-
                         // Change button to saved state
                         const saveBtn = document.getElementById('saveTeamBtn');
-                        saveBtn.textContent = '✅ Saved';
+                        saveBtn.textContent = 'âœ… Saved';
                         saveBtn.disabled = false;
-
                         // Reset button after 3 seconds
                         setTimeout(function () {
                             saveBtn.textContent = 'Save Team Information';
                         }, 3000);
                     })
                     .catch(function (error) {
-                        console.error('❌ Save catch error:', error);
+                        console.error('âŒ Save catch error:', error);
                         showNotification('Error saving team information: ' + error.message, 'error');
                         // Reset button on error
                         const saveBtn = document.getElementById('saveTeamBtn');
                         saveBtn.textContent = 'Save Team Information';
                         saveBtn.disabled = false;
                     });
-
             } catch (error) {
-                console.error('❌ Error preparing team information:', error);
+                console.error('âŒ Error preparing team information:', error);
                 showNotification('Error saving team information: ' + error.message, 'error');
                 // Reset button on error
                 const saveBtn = document.getElementById('saveTeamBtn');
@@ -2705,41 +2297,34 @@
                 saveBtn.disabled = false;
             }
         }
-
         function saveWebsiteContent() {
-            console.log('💾 Saving website content to Supabase...');
-
+            console.log('ðŸ’¾ Saving website content to Supabase...');
             // Change button to saving state
             const saveBtn = document.getElementById('saveContentBtn');
             const originalText = saveBtn.textContent;
             saveBtn.textContent = 'Saving...';
             saveBtn.disabled = true;
-
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 // Reset button
                 saveBtn.textContent = originalText;
                 saveBtn.disabled = false;
                 return;
             }
-
             try {
                 const content = {
                     // Hero Section
                     heroTitle: document.getElementById('heroTitle').value,
                     heroSubtitle: document.getElementById('heroSubtitle').value,
                     heroDescription: document.getElementById('heroDescription').value,
-
                     // About Section
                     aboutTitle: document.getElementById('aboutTitle').value,
                     aboutTagline: document.getElementById('aboutTagline').value,
                     aboutDescription: document.getElementById('aboutDescription').value,
-
                     // Services Section
                     servicesTitle: document.getElementById('servicesTitle').value,
                     servicesDescription: document.getElementById('servicesDescription').value,
-
                     // Contact Information
                     contactTitle: document.getElementById('contactTitle').value,
                     contactPhone: document.getElementById('contactPhone').value,
@@ -2747,24 +2332,18 @@
                     contactEmail: document.getElementById('contactEmail').value,
                     instagramHandle: document.getElementById('instagramHandle').value,
                     instagramUrl: document.getElementById('instagramUrl').value,
-
                     // Portfolio Section
                     portfolioTitle: document.getElementById('portfolioTitle').value,
                     portfolioDescription: document.getElementById('portfolioDescription').value,
-
                     // Logo and Banner URLs (preserve existing if not changed)
                     logoUrl: window.currentLogoUrl || null,
                     bannerUrl: window.currentBannerUrl || null,
-
                     // Metadata
                     updatedAt: new Date().toISOString()
                 };
-
-                console.log('💾 Content to save to Supabase:', content);
-
+                console.log('ðŸ’¾ Content to save to Supabase:', content);
                 // Save as JSON file to Supabase storage (use main bucket since metadata bucket might not exist)
                 const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
-
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload('website-config/website-content.json', contentBlob, {
@@ -2772,10 +2351,9 @@
                         upsert: true
                     })
                     .then(function (result) {
-                        console.log('💾 Supabase save result:', result);
-
+                        console.log('ðŸ’¾ Supabase save result:', result);
                         if (result.error) {
-                            console.error('❌ Save error:', result.error);
+                            console.error('âŒ Save error:', result.error);
                             showNotification('Error saving website content: ' + result.error.message, 'error');
                             // Reset button on error
                             const saveBtn = document.getElementById('saveContentBtn');
@@ -2783,31 +2361,27 @@
                             saveBtn.disabled = false;
                             return;
                         }
-
-                        console.log('✅ Website content saved to Supabase successfully');
+                        console.log('âœ… Website content saved to Supabase successfully');
                         showNotification('All website content saved successfully!', 'success');
-
                         // Change button to saved state
                         const saveBtn = document.getElementById('saveContentBtn');
-                        saveBtn.textContent = '✅ Saved';
+                        saveBtn.textContent = 'âœ… Saved';
                         saveBtn.disabled = false;
-
                         // Reset button after 3 seconds
                         setTimeout(function () {
                             saveBtn.textContent = 'Save All Content';
                         }, 3000);
                     })
                     .catch(function (error) {
-                        console.error('❌ Save catch error:', error);
+                        console.error('âŒ Save catch error:', error);
                         showNotification('Error saving website content: ' + error.message, 'error');
                         // Reset button on error
                         const saveBtn = document.getElementById('saveContentBtn');
                         saveBtn.textContent = 'Save All Content';
                         saveBtn.disabled = false;
                     });
-
             } catch (error) {
-                console.error('❌ Error preparing website content:', error);
+                console.error('âŒ Error preparing website content:', error);
                 showNotification('Error saving website content: ' + error.message, 'error');
                 // Reset button on error
                 const saveBtn = document.getElementById('saveContentBtn');
@@ -2815,63 +2389,50 @@
                 saveBtn.disabled = false;
             }
         }
-
-
-
-
-
         function testWebsiteContent() {
-            console.log('🧪 Testing website content from Supabase...');
-
+            console.log('ðŸ§ª Testing website content from Supabase...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 return;
             }
-
             // Load website content from Supabase
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .download('website-config/website-content.json')
                 .then(function (result) {
                     if (result.error) {
-                        console.error('❌ No website-config/website-content.json found:', result.error);
+                        console.error('âŒ No website-config/website-content.json found:', result.error);
                         showNotification('No website-config/website-content.json file found in Supabase', 'error');
                         return;
                     }
-
                     return result.data.text().then(function (jsonText) {
                         const content = JSON.parse(jsonText);
-                        console.log('📄 Current website-config/website-content.json:', content);
-
+                        console.log('ðŸ“„ Current website-config/website-content.json:', content);
                         // Show banner info specifically
                         if (content.bannerUrl) {
-                            console.log('✅ Banner URL found:', content.bannerUrl);
+                            console.log('âœ… Banner URL found:', content.bannerUrl);
                             showNotification(`Banner URL found: ${content.bannerUrl}`, 'success');
                         } else {
-                            console.log('❌ No banner URL in website content');
+                            console.log('âŒ No banner URL in website content');
                             showNotification('No banner URL found in website content', 'error');
                         }
-
                         // Show full content in alert for easy viewing
                         alert('Website Content:\n\n' + JSON.stringify(content, null, 2));
                     });
                 })
                 .catch(function (error) {
-                    console.error('❌ Error testing website content:', error);
+                    console.error('âŒ Error testing website content:', error);
                     showNotification('Error loading website content: ' + error.message, 'error');
                 });
         }
-
         // Filename sanitization function for JSON safety
         function sanitizeFilename(filename) {
-            console.log('🧹 Sanitizing filename:', filename);
-
+            console.log('ðŸ§¹ Sanitizing filename:', filename);
             // Get file extension
             const lastDotIndex = filename.lastIndexOf('.');
             const name = lastDotIndex > 0 ? filename.substring(0, lastDotIndex) : filename;
             const extension = lastDotIndex > 0 ? filename.substring(lastDotIndex) : '';
-
             // Sanitize the name part
             let sanitized = name
                 // Replace problematic characters with safe alternatives
@@ -2883,40 +2444,32 @@
                 .replace(/-{2,}/g, '-') // Replace multiple dashes with single
                 .replace(/^[._-]+|[._-]+$/g, '') // Remove leading/trailing dots, underscores, dashes
                 .substring(0, 100); // Limit length to 100 characters
-
             // Ensure we have a valid name
             if (!sanitized) {
                 sanitized = 'file_' + Date.now();
             }
-
             const result = sanitized + extension.toLowerCase();
-            console.log('✅ Sanitized filename:', filename, '→', result);
-
+            console.log('âœ… Sanitized filename:', filename, 'â†’', result);
             return result;
         }
-
         function testSupabaseUpload() {
-            console.log('🧪 Testing Supabase upload functionality...');
-
+            console.log('ðŸ§ª Testing Supabase upload functionality...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 return;
             }
-
             // Create a simple test file
             const testContent = 'This is a test file created at ' + new Date().toISOString();
             const testFile = new Blob([testContent], { type: 'text/plain' });
             const testPath = 'test-upload.txt';
-
-            console.log('📤 Testing upload to:', testPath);
-            console.log('🔧 Test configuration:', {
+            console.log('ðŸ“¤ Testing upload to:', testPath);
+            console.log('ðŸ”§ Test configuration:', {
                 bucket: SUPABASE_CONFIG.bucket,
                 adminSupabase: !!adminSupabase,
                 fileSize: testFile.size,
                 fileType: testFile.type
             });
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .upload(testPath, testFile, {
@@ -2924,12 +2477,10 @@
                     upsert: true
                 })
                 .then(function (result) {
-                    console.log('📤 Test upload result:', result);
-
+                    console.log('ðŸ“¤ Test upload result:', result);
                     if (result.error) {
-                        console.error('❌ Test upload error:', result.error);
+                        console.error('âŒ Test upload error:', result.error);
                         showNotification('Test upload failed: ' + result.error.message, 'error');
-
                         // Check specific error types
                         if (result.error.message.includes('not found')) {
                             showNotification('Bucket not found. Check if extoll-portfolio bucket exists.', 'error');
@@ -2940,69 +2491,58 @@
                         }
                         return;
                     }
-
-                    console.log('✅ Test upload successful!');
+                    console.log('âœ… Test upload successful!');
                     showNotification('Test upload successful! Upload functionality is working.', 'success');
-
                     // Clean up test file
                     adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .remove([testPath])
                         .then(function (deleteResult) {
-                            console.log('🗑️ Test file cleanup:', deleteResult);
+                            console.log('ðŸ—‘ï¸ Test file cleanup:', deleteResult);
                         });
                 })
                 .catch(function (error) {
-                    console.error('❌ Test upload catch error:', error);
+                    console.error('âŒ Test upload catch error:', error);
                     showNotification('Test upload failed: ' + error.message, 'error');
                 });
         }
-
         function fixWebsiteContentUrls() {
-            console.log('🔧 Fixing website content URLs...');
-
+            console.log('ðŸ”§ Fixing website content URLs...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 return;
             }
-
             showNotification('Checking for logo and banner files...', 'info');
-
             // Check for logo and banner files in their respective folders
             Promise.all([
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
             ])
                 .then(function ([logoResult, bannerResult]) {
-                    console.log('📁 Logo files:', logoResult);
-                    console.log('📁 Banner files:', bannerResult);
-
+                    console.log('ðŸ“ Logo files:', logoResult);
+                    console.log('ðŸ“ Banner files:', bannerResult);
                     const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
                     const bannerFile = bannerResult.data && bannerResult.data.length > 0 ? bannerResult.data[0].name : null;
-
-                    console.log('📷 Found logo:', logoFile);
-                    console.log('🖼️ Found banner:', bannerFile);
-
+                    console.log('ðŸ“· Found logo:', logoFile);
+                    console.log('ðŸ–¼ï¸ Found banner:', bannerFile);
                     if (!logoFile && !bannerFile) {
                         showNotification('No logo or banner files found in storage', 'warning');
                         return;
                     }
-
                     // Load existing website content from portfolio bucket
                     return adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .download(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`)
                         .then(function (result) {
                             let content = {};
-
                             if (!result.error && result.data) {
                                 return result.data.text().then(function (jsonText) {
                                     content = JSON.parse(jsonText);
                                     return content;
                                 });
                             } else {
-                                console.log('ℹ️ No existing website content, creating new');
+                                console.log('â„¹ï¸ No existing website content, creating new');
                                 return content;
                             }
                         })
@@ -3011,22 +2551,17 @@
                             if (logoFile) {
                                 content.logoUrl = logoFile;
                                 window.currentLogoUrl = logoFile;
-                                console.log('✅ Added logoUrl:', logoFile);
+                                console.log('âœ… Added logoUrl:', logoFile);
                             }
-
                             if (bannerFile) {
                                 content.bannerUrl = bannerFile;
                                 window.currentBannerUrl = bannerFile;
-                                console.log('✅ Added bannerUrl:', bannerFile);
+                                console.log('âœ… Added bannerUrl:', bannerFile);
                             }
-
                             content.updatedAt = new Date().toISOString();
-
-                            console.log('💾 Saving fixed website content:', content);
-
+                            console.log('ðŸ’¾ Saving fixed website content:', content);
                             // Save updated content
                             const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
-
                             return adminSupabase.storage
                                 .from(SUPABASE_CONFIG.bucket)
                                 .upload(`${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`, contentBlob, {
@@ -3036,102 +2571,88 @@
                         })
                         .then(function (result) {
                             if (result.error) {
-                                console.error('❌ Error saving fixed content:', result.error);
+                                console.error('âŒ Error saving fixed content:', result.error);
                                 showNotification('Error saving fixed content: ' + result.error.message, 'error');
                                 return;
                             }
-
-                            console.log('✅ Website content fixed successfully');
+                            console.log('âœ… Website content fixed successfully');
                             showNotification('Logo and banner URLs added to website content! Refresh homepage to see changes.', 'success');
                         });
                 })
                 .catch(function (error) {
-                    console.error('❌ Error fixing website content:', error);
+                    console.error('âŒ Error fixing website content:', error);
                     showNotification('Error fixing website content: ' + error.message, 'error');
                 });
         }
-
         function testDirectAssetLoad() {
-            console.log('🧪 Testing direct asset loading...');
-
+            console.log('ðŸ§ª Testing direct asset loading...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 return;
             }
-
             // Check what files exist in logo and banner folders
             Promise.all([
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
             ])
                 .then(function ([logoResult, bannerResult]) {
-                    console.log('📁 Logo folder result:', logoResult);
-                    console.log('📁 Banner folder result:', bannerResult);
-
+                    console.log('ðŸ“ Logo folder result:', logoResult);
+                    console.log('ðŸ“ Banner folder result:', bannerResult);
                     if (logoResult.data && logoResult.data.length > 0) {
                         const logoFile = logoResult.data[0];
                         const logoUrl = adminSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
                             .getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + logoFile.name);
-
-                        console.log('📷 Logo URL:', logoUrl);
-
+                        console.log('ðŸ“· Logo URL:', logoUrl);
                         // Test if we can load the logo
                         const testImg = new Image();
                         testImg.onload = function () {
-                            console.log('✅ Logo loads successfully:', logoUrl.data.publicUrl);
+                            console.log('âœ… Logo loads successfully:', logoUrl.data.publicUrl);
                             showNotification('Logo file loads successfully: ' + logoFile.name, 'success');
                         };
                         testImg.onerror = function () {
-                            console.error('❌ Logo failed to load:', logoUrl.data.publicUrl);
+                            console.error('âŒ Logo failed to load:', logoUrl.data.publicUrl);
                             showNotification('Logo file failed to load: ' + logoFile.name, 'error');
                         };
                         testImg.src = logoUrl.data.publicUrl;
                     } else {
-                        console.log('ℹ️ No logo files found');
+                        console.log('â„¹ï¸ No logo files found');
                         showNotification('No logo files found in storage', 'warning');
                     }
-
                     if (bannerResult.data && bannerResult.data.length > 0) {
                         const bannerFile = bannerResult.data[0];
                         const bannerUrl = adminSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
                             .getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + bannerFile.name);
-
-                        console.log('🖼️ Banner URL:', bannerUrl);
-
+                        console.log('ðŸ–¼ï¸ Banner URL:', bannerUrl);
                         // Test if we can load the banner
                         const testImg = new Image();
                         testImg.onload = function () {
-                            console.log('✅ Banner loads successfully:', bannerUrl.data.publicUrl);
+                            console.log('âœ… Banner loads successfully:', bannerUrl.data.publicUrl);
                             showNotification('Banner file loads successfully: ' + bannerFile.name, 'success');
                         };
                         testImg.onerror = function () {
-                            console.error('❌ Banner failed to load:', bannerUrl.data.publicUrl);
+                            console.error('âŒ Banner failed to load:', bannerUrl.data.publicUrl);
                             showNotification('Banner file failed to load: ' + bannerFile.name, 'error');
                         };
                         testImg.src = bannerUrl.data.publicUrl;
                     } else {
-                        console.log('ℹ️ No banner files found');
+                        console.log('â„¹ï¸ No banner files found');
                         showNotification('No banner files found in storage', 'warning');
                     }
                 })
                 .catch(function (error) {
-                    console.error('❌ Error testing direct asset load:', error);
+                    console.error('âŒ Error testing direct asset load:', error);
                     showNotification('Error testing assets: ' + error.message, 'error');
                 });
         }
-
         function createSimpleWebsiteContent() {
-            console.log('🔧 Creating simple website content with logo/banner URLs...');
-
+            console.log('ðŸ”§ Creating simple website content with logo/banner URLs...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 return;
             }
-
             showNotification('Creating website content file...', 'info');
-
             // Check for logo and banner files
             Promise.all([
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
@@ -3140,40 +2661,33 @@
                 .then(function ([logoResult, bannerResult]) {
                     const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
                     const bannerFile = bannerResult.data && bannerResult.data.length > 0 ? bannerResult.data[0].name : null;
-
-                    console.log('📷 Found logo:', logoFile);
-                    console.log('🖼️ Found banner:', bannerFile);
-
+                    console.log('ðŸ“· Found logo:', logoFile);
+                    console.log('ðŸ–¼ï¸ Found banner:', bannerFile);
                     // Create simple website content
                     const content = {
                         heroTitle: "Crafting Digital Experiences That Stand Out",
                         heroSubtitle: "Where ideas meet execution.",
-                        heroDescription: "Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team's best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.",
+                        heroDescription: "Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team's best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.",
                         aboutTitle: "About Extoll",
                         aboutTagline: "Execution-first freelance collective. Powered by Startup Ops.",
                         portfolioTitle: "Portfolio",
                         portfolioDescription: "Showcase of our creative work and professional projects across various design disciplines.",
                         updatedAt: new Date().toISOString()
                     };
-
                     // Add logo and banner URLs if files exist
                     if (logoFile) {
                         content.logoUrl = logoFile;
                         window.currentLogoUrl = logoFile;
-                        console.log('✅ Added logoUrl:', logoFile);
+                        console.log('âœ… Added logoUrl:', logoFile);
                     }
-
                     if (bannerFile) {
                         content.bannerUrl = bannerFile;
                         window.currentBannerUrl = bannerFile;
-                        console.log('✅ Added bannerUrl:', bannerFile);
+                        console.log('âœ… Added bannerUrl:', bannerFile);
                     }
-
-                    console.log('💾 Creating website content:', content);
-
+                    console.log('ðŸ’¾ Creating website content:', content);
                     // Save to main bucket (since metadata bucket might not exist)
                     const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
-
                     return adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .upload('website-config/website-content.json', contentBlob, {
@@ -3182,89 +2696,73 @@
                         });
                 })
                 .then(function (result) {
-                    console.log('💾 Save result:', result);
-
+                    console.log('ðŸ’¾ Save result:', result);
                     if (result.error) {
-                        console.error('❌ Error saving to main bucket:', result.error);
+                        console.error('âŒ Error saving to main bucket:', result.error);
                         showNotification('Error creating website content: ' + result.error.message, 'error');
                         return;
                     }
-
-                    console.log('✅ Website content created successfully in main bucket');
+                    console.log('âœ… Website content created successfully in main bucket');
                     showNotification('Website content created! Now update homepage to load from main bucket.', 'success');
                 })
                 .catch(function (error) {
-                    console.error('❌ Error creating website content:', error);
+                    console.error('âŒ Error creating website content:', error);
                     showNotification('Error creating website content: ' + error.message, 'error');
                 });
         }
-
         function updateHomepageAssetsNow() {
-            console.log('🚀 Updating homepage assets directly...');
-
+            console.log('ðŸš€ Updating homepage assets directly...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 return;
             }
-
             showNotification('Scanning for logo and banner files...', 'info');
-
             // Get logo and banner files
             Promise.all([
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
                 adminSupabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`)
             ])
                 .then(function ([logoResult, bannerResult]) {
-                    console.log('📁 Logo files:', logoResult);
-                    console.log('📁 Banner files:', bannerResult);
-
+                    console.log('ðŸ“ Logo files:', logoResult);
+                    console.log('ðŸ“ Banner files:', bannerResult);
                     const logoFile = logoResult.data && logoResult.data.length > 0 ? logoResult.data[0].name : null;
                     const bannerFile = bannerResult.data && bannerResult.data.length > 0 ? bannerResult.data[0].name : null;
-
                     if (!logoFile && !bannerFile) {
                         showNotification('No logo or banner files found. Please upload them first.', 'warning');
                         return;
                     }
-
                     // Create simple update instructions
                     let instructions = 'Go to homepage, open console (F12), and run:\n\n';
-
                     if (logoFile) {
                         instructions += 'Logo update:\n';
                         instructions += 'const logo = document.querySelector(".website-logo, .nav-logo");\n';
                         instructions += 'if (logo) logo.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}/` + logoFile).data.publicUrl + '";\n\n';
                     }
-
                     if (bannerFile) {
                         instructions += 'Banner update:\n';
                         instructions += 'const banner = document.querySelector(".hero-banner");\n';
                         instructions += 'if (banner) banner.src = "' + adminSupabase.storage.from(SUPABASE_CONFIG.bucket).getPublicUrl(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}/` + bannerFile).data.publicUrl + '";\n\n';
                     }
-
                     // Show instructions in alert
                     alert('Copy and run this in homepage console:\n\n' + instructions);
-
                     showNotification('Instructions shown! Copy the code and run it on homepage.', 'success');
                 })
                 .catch(function (error) {
-                    console.error('❌ Error updating homepage assets:', error);
+                    console.error('âŒ Error updating homepage assets:', error);
                     showNotification('Error: ' + error.message, 'error');
                 });
         }
-
         function createAndTestContent() {
-            console.log('🧪 Creating and testing website content...');
-
+            console.log('ðŸ§ª Creating and testing website content...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 return;
             }
-
             // Get current form values
             const content = {
                 heroTitle: document.getElementById('heroTitle')?.value || "Crafting Digital Experiences That Stand Out",
                 heroSubtitle: document.getElementById('heroSubtitle')?.value || "Where ideas meet execution.",
-                heroDescription: document.getElementById('heroDescription')?.value || "Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create.",
+                heroDescription: document.getElementById('heroDescription')?.value || "Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create.",
                 aboutTitle: document.getElementById('aboutTitle')?.value || "About Extoll",
                 aboutTagline: document.getElementById('aboutTagline')?.value || "Execution-first freelance collective. Powered by Startup Ops.",
                 aboutDescription: document.getElementById('aboutDescription')?.value || "Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.",
@@ -3280,28 +2778,23 @@
                 portfolioDescription: document.getElementById('portfolioDescription')?.value || "Showcase of our creative work and professional projects across various design disciplines.",
                 updatedAt: new Date().toISOString()
             };
-
             // Get team info
             const container = document.getElementById('teamMembersContainer');
             let teamMembers = [];
-
             if (container) {
                 const memberElements = container.querySelectorAll('[data-member-index]');
                 memberElements.forEach(function (memberElement, index) {
                     const nameInput = memberElement.querySelector(`#teamMember${index}Name`);
                     const roleTextarea = memberElement.querySelector(`#teamMember${index}Role`);
-
                     if (nameInput && roleTextarea) {
                         const name = nameInput.value.trim();
                         const role = roleTextarea.value.trim();
-
                         if (name || role) {
                             teamMembers.push({ name: name, role: role });
                         }
                     }
                 });
             }
-
             // Default team members if none found
             if (teamMembers.length === 0) {
                 teamMembers = [
@@ -3311,21 +2804,17 @@
                     { name: 'Arpit', role: 'Handles Web Development, Client Management, and Social Media Operations, bridging technical execution with client requirements and ongoing support.' }
                 ];
             }
-
             const teamInfo = {
                 sectionTitle: document.getElementById('teamSectionTitle')?.value || 'Our Team & Capabilities',
                 members: teamMembers,
                 updatedAt: new Date().toISOString()
             };
-
-            console.log('💾 Content to save:', content);
-            console.log('👥 Team info to save:', teamInfo);
+            console.log('ðŸ’¾ Content to save:', content);
+            console.log('ðŸ‘¥ Team info to save:', teamInfo);
             showNotification('Creating website content and team info files...', 'info');
-
             // Save both files to main bucket
             const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
             const teamBlob = new Blob([JSON.stringify(teamInfo, null, 2)], { type: 'application/json' });
-
             Promise.all([
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
@@ -3342,22 +2831,18 @@
             ])
                 .then(function (results) {
                     const [contentResult, teamResult] = results;
-
                     if (contentResult.error) {
-                        console.error('❌ Content upload error:', contentResult.error);
+                        console.error('âŒ Content upload error:', contentResult.error);
                         showNotification('Error uploading website content: ' + contentResult.error.message, 'error');
                         return;
                     }
-
                     if (teamResult.error) {
-                        console.error('❌ Team upload error:', teamResult.error);
+                        console.error('âŒ Team upload error:', teamResult.error);
                         showNotification('Error uploading team info: ' + teamResult.error.message, 'error');
                         return;
                     }
-
-                    console.log('✅ Both content files created successfully');
+                    console.log('âœ… Both content files created successfully');
                     showNotification('Website content and team info created! Refresh homepage, about page, and contact page to see updates.', 'success');
-
                     // Test loading content back
                     setTimeout(function () {
                         Promise.all([
@@ -3370,7 +2855,6 @@
                         ])
                             .then(function (testResults) {
                                 const [contentTest, teamTest] = testResults;
-
                                 if (contentTest.data && teamTest.data) {
                                     Promise.all([
                                         contentTest.data.text(),
@@ -3380,9 +2864,8 @@
                                             const [contentText, teamText] = texts;
                                             const loadedContent = JSON.parse(contentText);
                                             const loadedTeam = JSON.parse(teamText);
-
-                                            console.log('✅ Content verified:', loadedContent);
-                                            console.log('✅ Team info verified:', loadedTeam);
+                                            console.log('âœ… Content verified:', loadedContent);
+                                            console.log('âœ… Team info verified:', loadedTeam);
                                             showNotification('All content verified! Pages should now update with new content.', 'success');
                                         });
                                 }
@@ -3390,25 +2873,19 @@
                     }, 1000);
                 })
                 .catch(function (error) {
-                    console.error('❌ Error creating content:', error);
+                    console.error('âŒ Error creating content:', error);
                     showNotification('Error: ' + error.message, 'error');
                 });
         }
-
-
-
         // File Upload Functions for Gallery
         function handleGalleryImageUpload(files) {
             if (!currentProject || !adminSupabase) return;
-
             const progressList = document.getElementById('uploadProgressList');
             const progressSection = document.getElementById('uploadProgress');
             progressSection.classList.remove('hidden');
-
             Array.from(files).forEach(function (file, index) {
                 const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 const filePath = currentProject.key + '/' + fileName;
-
                 const progressItem = document.createElement('div');
                 progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
                 progressItem.innerHTML = `
@@ -3416,7 +2893,6 @@
             <span class="text-gray-400">Uploading...</span>
         `;
                 progressList.appendChild(progressItem);
-
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(filePath, file, {
@@ -3431,12 +2907,10 @@
                     `;
                             return;
                         }
-
                         progressItem.innerHTML = `
                     <span class="text-white">${file.name}</span>
-                    <span class="text-green-400">✓ Uploaded</span>
+                    <span class="text-green-400">âœ“ Uploaded</span>
                 `;
-
                         // Refresh gallery after upload
                         setTimeout(function () {
                             loadProjectFiles(currentProject.key);
@@ -3450,18 +2924,14 @@
                     });
             });
         }
-
         function handleGalleryVideoUpload(files) {
             if (!currentProject || !adminSupabase) return;
-
             const progressList = document.getElementById('uploadProgressList');
             const progressSection = document.getElementById('uploadProgress');
             progressSection.classList.remove('hidden');
-
             Array.from(files).forEach(function (file, index) {
                 const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 const filePath = currentProject.key + '/' + fileName;
-
                 const progressItem = document.createElement('div');
                 progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
                 progressItem.innerHTML = `
@@ -3469,7 +2939,6 @@
             <span class="text-gray-400">Uploading...</span>
         `;
                 progressList.appendChild(progressItem);
-
                 adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
                     .upload(filePath, file, {
@@ -3484,12 +2953,10 @@
                     `;
                             return;
                         }
-
                         progressItem.innerHTML = `
                     <span class="text-white">${file.name}</span>
-                    <span class="text-green-400">✓ Uploaded</span>
+                    <span class="text-green-400">âœ“ Uploaded</span>
                 `;
-
                         // Refresh gallery after upload
                         setTimeout(function () {
                             loadProjectFiles(currentProject.key);
@@ -3503,7 +2970,6 @@
                     });
             });
         }
-
         // Setup event listeners
         function setupEventListeners() {
             // Tab navigation
@@ -3513,25 +2979,20 @@
                     switchTab(tab);
                 });
             });
-
             // File upload area
             const uploadArea = document.getElementById('testUpload');
             const fileInput = document.getElementById('testFileInput');
-
             if (uploadArea && fileInput) {
                 uploadArea.addEventListener('click', function () {
                     fileInput.click();
                 });
-
                 uploadArea.addEventListener('dragover', function (e) {
                     e.preventDefault();
                     uploadArea.classList.add('dragover');
                 });
-
                 uploadArea.addEventListener('dragleave', function () {
                     uploadArea.classList.remove('dragover');
                 });
-
                 uploadArea.addEventListener('drop', function (e) {
                     e.preventDefault();
                     uploadArea.classList.remove('dragover');
@@ -3540,155 +3001,128 @@
                         handleFileSelect(files[0]);
                     }
                 });
-
                 fileInput.addEventListener('change', function (e) {
                     if (e.target.files.length > 0) {
                         handleFileSelect(e.target.files[0]);
                     }
                 });
             }
-
             // Project form
             const projectForm = document.getElementById('projectForm');
             const titleInput = document.getElementById('projectTitle');
             const keyInput = document.getElementById('projectKey');
             const thumbnailArea = document.getElementById('thumbnailUpload');
             const thumbnailInput = document.getElementById('thumbnailInput');
-
             if (titleInput && keyInput) {
                 titleInput.addEventListener('input', function (e) {
                     const key = generateProjectKey(e.target.value);
                     keyInput.value = key;
                 });
             }
-
             if (thumbnailArea && thumbnailInput) {
                 thumbnailArea.addEventListener('click', function () {
                     thumbnailInput.click();
                 });
-
                 thumbnailInput.addEventListener('change', function (e) {
                     if (e.target.files.length > 0) {
                         handleThumbnailSelect(e.target.files[0]);
                     }
                 });
             }
-
             if (projectForm) {
                 projectForm.addEventListener('submit', handleProjectSubmit);
             }
-
             // Project upload areas
             const projectImageArea = document.getElementById('projectImageUpload');
             const projectImageInput = document.getElementById('projectImageInput');
             const projectVideoArea = document.getElementById('projectVideoUpload');
             const projectVideoInput = document.getElementById('projectVideoInput');
-
             if (projectImageArea && projectImageInput) {
-                console.log('✅ Project image upload area found, attaching event listeners');
-
+                console.log('âœ… Project image upload area found, attaching event listeners');
                 projectImageArea.addEventListener('click', function () {
-                    console.log('📷 Project image upload area clicked');
+                    console.log('ðŸ“· Project image upload area clicked');
                     projectImageInput.click();
                 });
-
                 projectImageInput.addEventListener('change', function (e) {
-                    console.log('📷 Project image files selected:', e.target.files.length);
+                    console.log('ðŸ“· Project image files selected:', e.target.files.length);
                     if (e.target.files.length > 0) {
                         handleProjectImageUpload(e.target.files);
                     }
                 });
             } else {
-                console.error('❌ Project image upload elements not found:', {
+                console.error('âŒ Project image upload elements not found:', {
                     area: !!projectImageArea,
                     input: !!projectImageInput
                 });
             }
-
             if (projectVideoArea && projectVideoInput) {
-                console.log('✅ Project video upload area found, attaching event listeners');
-
+                console.log('âœ… Project video upload area found, attaching event listeners');
                 projectVideoArea.addEventListener('click', function () {
-                    console.log('🎥 Project video upload area clicked');
+                    console.log('ðŸŽ¥ Project video upload area clicked');
                     projectVideoInput.click();
                 });
-
                 projectVideoInput.addEventListener('change', function (e) {
-                    console.log('🎥 Project video files selected:', e.target.files.length);
+                    console.log('ðŸŽ¥ Project video files selected:', e.target.files.length);
                     if (e.target.files.length > 0) {
                         handleProjectVideoUpload(e.target.files);
                     }
                 });
             } else {
-                console.error('❌ Project video upload elements not found:', {
+                console.error('âŒ Project video upload elements not found:', {
                     area: !!projectVideoArea,
                     input: !!projectVideoInput
                 });
             }
-
             // Filter change listeners
             const filterCategory = document.getElementById('filterCategory');
-
             if (filterCategory) {
                 filterCategory.addEventListener('change', displayProjects);
             }
-
-
         }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('🚀 Admin panel initializing...');
-
+            console.log('ðŸš€ Admin panel initializing...');
             // Initialize Supabase using the config file functions
             if (typeof window.supabase !== 'undefined') {
                 // Initialize the shared Supabase client from config
                 const initResult = initializeSupabase();
                 if (initResult) {
                     adminSupabase = configSupabase; // Use the same client as the config functions
-                    console.log('✅ Supabase initialized using shared client');
-
+                    console.log('âœ… Supabase initialized using shared client');
                     // Test Supabase connection
                     testSupabaseConnection();
                 } else {
-                    console.error('❌ Failed to initialize Supabase from config');
+                    console.error('âŒ Failed to initialize Supabase from config');
                 }
             } else {
-                console.warn('⚠️ Supabase not loaded');
+                console.warn('âš ï¸ Supabase not loaded');
             }
-
             // Setup event listeners
             const loginForm = document.getElementById('loginForm');
             if (loginForm) {
                 loginForm.addEventListener('submit', handleLogin);
-                console.log('✅ Login form event listener attached');
+                console.log('âœ… Login form event listener attached');
             }
-
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', handleLogout);
             }
-
             setupEventListeners();
-
             // Initialize debug functions
             debugProjectFiles();
-
             // Check if user is already authenticated instead of always showing login
             checkAuthenticationState();
-
             // Monitor authentication state changes
             if (adminSupabase) {
                 adminSupabase.auth.onAuthStateChange((event, session) => {
-                    console.log('🔄 Auth state changed:', event, session?.user?.email);
-
+                    console.log('ðŸ”„ Auth state changed:', event, session?.user?.email);
                     if (event === 'SIGNED_OUT' || !session) {
-                        console.log('🚪 User signed out or session expired');
+                        console.log('ðŸšª User signed out or session expired');
                         currentUser = null;
                         showLogin();
                         showNotification('Session expired. Please login again.', 'warning');
                     } else if (event === 'SIGNED_IN' && session?.user) {
-                        console.log('✅ User signed in:', session.user.email);
+                        console.log('âœ… User signed in:', session.user.email);
                         currentUser = {
                             email: session.user.email,
                             authenticated: true,
@@ -3698,19 +3132,15 @@
                     }
                 });
             }
-
-            console.log('✅ Admin panel initialized successfully');
+            console.log('âœ… Admin panel initialized successfully');
         });
-
         function testContactUpdate() {
-            console.log('📞 Testing contact update functionality...');
-
+            console.log('ðŸ“ž Testing contact update functionality...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 return;
             }
-
             // Get current contact values from form
             const testContent = {
                 contactTitle: document.getElementById('contactTitle')?.value || 'Test Contact Title - Updated ' + new Date().toLocaleTimeString(),
@@ -3721,13 +3151,10 @@
                 instagramUrl: document.getElementById('instagramUrl')?.value || 'https://instagram.com/testextoll',
                 updatedAt: new Date().toISOString()
             };
-
-            console.log('📞 Test contact data:', testContent);
+            console.log('ðŸ“ž Test contact data:', testContent);
             showNotification('Creating test contact content...', 'info');
-
             // Save test content
             const contentBlob = new Blob([JSON.stringify(testContent, null, 2)], { type: 'application/json' });
-
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .upload('website-config/website-content.json', contentBlob, {
@@ -3736,51 +3163,42 @@
                 })
                 .then(function (result) {
                     if (result.error) {
-                        console.error('❌ Error saving test contact content:', result.error);
+                        console.error('âŒ Error saving test contact content:', result.error);
                         showNotification('Error saving test content: ' + result.error.message, 'error');
                         return;
                     }
-
-                    console.log('✅ Test contact content saved successfully');
+                    console.log('âœ… Test contact content saved successfully');
                     showNotification('Test contact content saved! Now open contact.html page to see updates.', 'success');
-
                     // Also show the test data
                     const testInfo = `Test Contact Data Saved:
-            
 Contact Title: ${testContent.contactTitle}
 Phone: ${testContent.contactPhone}
 WhatsApp: ${testContent.whatsappNumber}
 Email: ${testContent.contactEmail}
 Instagram Handle: ${testContent.instagramHandle}
 Instagram URL: ${testContent.instagramUrl}
-
 Instructions:
 1. Open contact.html page in browser
 2. Check browser console for loading messages
 3. Verify contact details are updated
 4. If not working, try refreshing the page
 5. Use browser dev tools to debug`;
-
                     alert(testInfo);
-                    console.log('📞 Test contact info:', testInfo);
+                    console.log('ðŸ“ž Test contact info:', testInfo);
                 })
                 .catch(function (error) {
-                    console.error('❌ Error creating test contact content:', error);
+                    console.error('âŒ Error creating test contact content:', error);
                     showNotification('Error: ' + error.message, 'error');
                 });
         }
-
         function debugContentLoading() {
-            console.log('🔍 Debugging content loading...');
-
+            console.log('ðŸ” Debugging content loading...');
             if (!adminSupabase) {
-                console.error('❌ Supabase not initialized');
+                console.error('âŒ Supabase not initialized');
                 showNotification('Error: Supabase not connected', 'error');
                 return;
             }
-
             showNotification('Checking content files...', 'info');
-
             // Check both website-config/website-content.json and team-info.json
             Promise.all([
                 adminSupabase.storage
@@ -3792,33 +3210,28 @@ Instructions:
             ])
                 .then(function (results) {
                     const [contentResult, teamResult] = results;
-
-                    console.log('📄 Website content result:', contentResult);
-                    console.log('👥 Team info result:', teamResult);
-
+                    console.log('ðŸ“„ Website content result:', contentResult);
+                    console.log('ðŸ‘¥ Team info result:', teamResult);
                     let debugInfo = 'Content Debug Results:\n\n';
-
                     if (contentResult.error) {
-                        debugInfo += '❌ Website Content: ' + contentResult.error.message + '\n';
+                        debugInfo += 'âŒ Website Content: ' + contentResult.error.message + '\n';
                     } else {
                         contentResult.data.text().then(function (contentText) {
                             const content = JSON.parse(contentText);
-                            debugInfo += '✅ Website Content Found:\n';
+                            debugInfo += 'âœ… Website Content Found:\n';
                             debugInfo += '  - Hero Title: ' + (content.heroTitle || 'Not set') + '\n';
                             debugInfo += '  - Contact Email: ' + (content.contactEmail || 'Not set') + '\n';
                             debugInfo += '  - Contact Phone: ' + (content.contactPhone || 'Not set') + '\n';
                             debugInfo += '  - Instagram Handle: ' + (content.instagramHandle || 'Not set') + '\n';
                             debugInfo += '  - Updated At: ' + (content.updatedAt || 'Not set') + '\n\n';
-
                             if (teamResult.error) {
-                                debugInfo += '❌ Team Info: ' + teamResult.error.message + '\n';
+                                debugInfo += 'âŒ Team Info: ' + teamResult.error.message + '\n';
                                 alert(debugInfo);
                             } else {
                                 teamResult.data.text().then(function (teamText) {
                                     const team = JSON.parse(teamText);
-                                    debugInfo += '✅ Team Info Found:\n';
+                                    debugInfo += 'âœ… Team Info Found:\n';
                                     debugInfo += '  - Section Title: ' + (team.sectionTitle || 'Not set') + '\n';
-
                                     if (team.members && Array.isArray(team.members)) {
                                         debugInfo += '  - Team Members (' + team.members.length + '):\n';
                                         team.members.forEach(function (member, index) {
@@ -3829,16 +3242,14 @@ Instructions:
                                     } else {
                                         debugInfo += '  - No team members found\n';
                                     }
-
                                     debugInfo += '  - Updated At: ' + (team.updatedAt || 'Not set') + '\n\n';
                                     debugInfo += 'Instructions:\n';
                                     debugInfo += '1. Save content using "Save All Content" button\n';
                                     debugInfo += '2. Save team info using "Save Team Information" button\n';
                                     debugInfo += '3. Refresh homepage, about page, and contact page\n';
                                     debugInfo += '4. Check browser console for loading errors\n';
-
                                     alert(debugInfo);
-                                    console.log('📋 Debug Info:', debugInfo);
+                                    console.log('ðŸ“‹ Debug Info:', debugInfo);
                                     showNotification('Debug complete - check console and alert for details', 'success');
                                 });
                             }
@@ -3846,64 +3257,52 @@ Instructions:
                     }
                 })
                 .catch(function (error) {
-                    console.error('❌ Debug error:', error);
+                    console.error('âŒ Debug error:', error);
                     showNotification('Debug failed: ' + error.message, 'error');
                 });
         }
-
         // Test Supabase connection and configuration
         async function testSupabaseConnection() {
             try {
-                console.log('🧪 Testing Supabase connection...');
-
+                console.log('ðŸ§ª Testing Supabase connection...');
                 // Test basic connection
                 if (!adminSupabase) {
                     throw new Error('Supabase client not initialized');
                 }
-
                 // Test if we can access the public bucket
                 const { data: publicBuckets, error: publicError } = await adminSupabase.storage.listBuckets();
-
                 if (publicError) {
-                    console.warn('⚠️ Could not list buckets:', publicError.message);
+                    console.warn('âš ï¸ Could not list buckets:', publicError.message);
                 } else {
-                    console.log('✅ Supabase connection successful');
-
+                    console.log('âœ… Supabase connection successful');
                     // Check if required bucket exists
                     const portfolioBucket = publicBuckets.find(b => b.name === SUPABASE_CONFIG.bucket);
-
-                    console.log('📦 Bucket status:');
-                    console.log(`   ${SUPABASE_CONFIG.bucket}: ${portfolioBucket ? '✅ Found' : '❌ Missing'}`);
-
+                    console.log('ðŸ“¦ Bucket status:');
+                    console.log(`   ${SUPABASE_CONFIG.bucket}: ${portfolioBucket ? 'âœ… Found' : 'âŒ Missing'}`);
                     if (!portfolioBucket) {
-                        console.error('💡 Create bucket:', SUPABASE_CONFIG.bucket, '(set to PUBLIC)');
+                        console.error('ðŸ’¡ Create bucket:', SUPABASE_CONFIG.bucket, '(set to PUBLIC)');
                     }
                 }
             } catch (error) {
-                console.error('❌ Supabase connection test failed:', error.message);
+                console.error('âŒ Supabase connection test failed:', error.message);
             }
         }
     </script>
-
 </body>
-
 </html>
-
 <script>
     // Update admin panel to use new file paths
     function updateAdminPanelPaths() {
         // Replace all instances of old paths with new ones
         const oldWebsiteContentPath = 'website-content.json';
         const newWebsiteContentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
-
         const oldTeamInfoPath = 'team-info.json';
         const newTeamInfoPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`;
-
-        console.log('✅ Admin panel updated to use new file paths');
-        console.log('📁 Website content:', newWebsiteContentPath);
-        console.log('👥 Team info:', newTeamInfoPath);
+        console.log('âœ… Admin panel updated to use new file paths');
+        console.log('ðŸ“ Website content:', newWebsiteContentPath);
+        console.log('ðŸ‘¥ Team info:', newTeamInfoPath);
     }
-
     // Call on page load
     document.addEventListener('DOMContentLoaded', updateAdminPanelPaths);
 </script>
+

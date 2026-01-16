@@ -1,6 +1,5 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="dark" lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
@@ -10,7 +9,6 @@
         content="ui design, ux design, user interface, user experience, web design, app design, prototyping, wireframing" />
     <meta name="author" content="Extoll.Co" />
     <title>UI/UX Design Services | Extoll</title>
-
     <!-- Organization Schema -->
     <script type="application/ld+json">
   {
@@ -31,17 +29,17 @@
     }
   }
   </script>
-
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="extoll.png">
     <link rel="apple-touch-icon" href="extoll.png">
-
     <!-- Resource hints for better performance -->
     <link rel="dns-prefetch" href="//lnxvkbsbwymmzkyuixgd.supabase.co">
     <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
-
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+    // Theme logic moved to head
+  </script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
@@ -54,51 +52,40 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-
         /* Glassmorphism - Dark Mode */
         .dark .glassmorphism {
             background: rgba(20, 29, 36, 0.4);
             border: 1px solid rgba(45, 60, 71, 0.5);
         }
-
         @keyframes float {
             0% {
                 transform: translate(0px, 0px) scale(1);
             }
-
             33% {
                 transform: translate(30px, -50px) scale(1.1);
             }
-
             66% {
                 transform: translate(-20px, 20px) scale(0.9);
             }
-
             100% {
                 transform: translate(0px, 0px) scale(1);
             }
         }
-
         .animate-float {
             animation: float 20s infinite ease-in-out;
         }
-
         .animate-float-delay {
             animation: float 15s infinite ease-in-out reverse;
         }
-
         .neon-glow {
             box-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff, 0 0 15px #00aaff;
         }
-
         .neon-glow-subtle {
             box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
         }
-
         .gradient-background {
             background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
         }
-
         /* Glass card effects */
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
@@ -107,34 +94,31 @@
             border: 1px solid rgba(209, 213, 219, 0.3);
             transition: all 0.3s ease-in-out;
             color: #1f2937;
-        }
-
+        }        /* Glass card effects - Dark Mode */
         .dark .glass-card {
-            background: rgba(20, 26, 30, 0.5);
-            border: 1px solid rgba(49, 62, 71, 0.4);
-            color: white;
+            background: rgba(20, 29, 36, 0.4) !important;
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(112, 253, 255, 0.1) !important;
+            box-shadow: none;
+            color: white !important;
         }
-
         .glass-card:hover {
             border-color: rgba(0, 168, 255, 0.5);
             box-shadow: 0 0 20px rgba(0, 168, 255, 0.15), 0 0 40px rgba(0, 168, 255, 0.1);
             transform: translateY(-4px);
         }
-
         html {
             scroll-behavior: smooth;
             overscroll-behavior: none;
         }
-
         .section {
             padding: 20px 0;
         }
-
         .nav-active {
             color: white !important;
             position: relative;
         }
-
         .nav-active::after {
             content: '';
             position: absolute;
@@ -145,12 +129,10 @@
             background: #00aaff;
             border-radius: 1px;
         }
-
         .nav-link {
             position: relative;
             transition: all 0.2s ease;
         }
-
         .nav-link::after {
             content: '';
             position: absolute;
@@ -162,26 +144,21 @@
             border-radius: 1px;
             transition: width 0.3s ease;
         }
-
         .nav-link:hover::after {
             width: 100%;
         }
-
         .nav-logo {
             opacity: 1;
             transition: opacity 0.2s ease;
         }
-
         /* Mobile styles */
         .mobile-nav-link {
             position: relative;
         }
-
         .mobile-nav-link.active {
             color: white !important;
             background: rgba(0, 170, 255, 0.1);
         }
-
         .mobile-nav-link.active::before {
             content: '';
             position: absolute;
@@ -194,80 +171,65 @@
             border-radius: 2px;
             box-shadow: 0 0 8px rgba(0, 170, 255, 0.6);
         }
-
         #mobileMenu {
             transition: all 0.3s ease-in-out;
             max-height: 0;
             overflow: hidden;
         }
-
         #mobileMenu.show {
             max-height: 400px;
         }
-
         /* Responsive text */
         @media (max-width: 640px) {
             html {
                 font-size: 16px;
             }
         }
-
         @media (min-width: 641px) and (max-width: 1024px) {
             html {
                 font-size: 17px;
             }
         }
-
         @media (min-width: 1025px) {
             html {
                 font-size: 18px;
             }
         }
-
         @media (max-width: 1024px) {
             .mobile-nav-link {
                 min-height: 48px;
                 display: flex;
                 align-items: center;
             }
-
             button {
                 min-height: 44px;
             }
-
             .section {
                 padding: 16px 0;
             }
-
             .glass-card {
                 margin: 0 8px;
             }
-
             .project-grid {
                 gap: 16px;
             }
         }
-
         @media (min-width: 641px) and (max-width: 1024px) {
             .section {
                 padding: 18px 0;
             }
         }
-
         @media (min-width: 1025px) {
             .section {
                 padding: 20px 0;
             }
-
             .nav-link:hover {
                 transform: translateY(-1px);
             }
-
             .glass-card:hover {
                 transform: translateY(-6px);
             }
         }
-
         /* Cursors */
         button,
         .cursor-pointer,
@@ -284,7 +246,13 @@
         a[href] {
             cursor: pointer !important;
         }
-    </style>
+        :root {
+      --colors-primary: #5C5C99;
+    }
+    .dark {
+      --colors-primary: #00aaff;
+    }
+  </style>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -304,10 +272,8 @@
         }
     </script>
 </head>
-
 <body
     class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 transition-colors duration-300">
-
     <!-- Header -->
     <header
         class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md transition-colors duration-300">
@@ -318,7 +284,6 @@
                     <img src="extoll.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
                     <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
                 </a>
-
                 <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
                     <a class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
                         href="index.html">Home</a>
@@ -328,32 +293,16 @@
                         href="services.html">Services</a>
                     <a class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
                         href="contact.html">Contact</a>
-
                     <!-- Theme Toggle -->
-                    <button onclick="toggleTheme()"
-                        class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
-                        <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707M12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                            </path>
-                        </svg>
-                        <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                            </path>
-                        </svg>
-                    </button>
                 </nav>
             </div>
         </div>
     </header>
-
     <!-- Main Content -->
     <main class="pt-32 pb-20 px-4">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">UI/UX Design Services for
                 Digital Products</h1>
-
             <div class="glassmorphism p-8 rounded-xl">
                 <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
                     Great design is not just about looks; it's about how it works. We create intuitive, user-centric
@@ -372,8 +321,7 @@
             </div>
         </div>
     </main>
-
     <script src="website-assets.js"></script>
 </body>
-
 </html>
+

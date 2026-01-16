@@ -10,7 +10,7 @@
         maxSize: 6,             // Larger (was 4)
         minDuration: 8000,      // Faster (was 10000)
         maxDuration: 18000,     // Faster (was 20000)
-        color: 'rgba(0, 170, 255, 0.8)' // High opacity (was 0.6)
+        color: 'rgba(92, 92, 153, 0.9)' // High intensity purple
     };
 
     // Inject CSS
@@ -25,6 +25,12 @@
         pointer-events: none;
         z-index: 50; /* Ensure visibility on top of content */
         overflow: hidden;
+        display: none; /* Hidden in Light Mode */
+      }
+
+      /* Only show in Dark Mode */
+      html.dark #firefly-container {
+        display: block;
       }
 
       .firefly {

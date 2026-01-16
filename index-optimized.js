@@ -189,9 +189,9 @@ function createProjectCard(project) {
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
     </div>
     <div class="p-5 flex flex-col gap-1">
-      <p class="text-white text-lg font-bold leading-tight">${project.title}</p>
-      <p class="text-neutral-400 text-sm">${getCategoryDisplayName(project.category)} • ${project.count || 0} ${getFileTypeLabel(project.category)}</p>
-      <p class="text-neutral-500 text-xs mt-2">${project.description}</p>
+      <p class="text-white dark:text-white text-lg font-bold leading-tight">${project.title}</p>
+      <p class="text-white/80 dark:text-neutral-400 text-sm">${getCategoryDisplayName(project.category)} • ${project.count || 0} ${getFileTypeLabel(project.category)}</p>
+      <p class="text-white/70 dark:text-neutral-500 text-xs mt-2">${project.description}</p>
     </div>
   `;
 
@@ -246,8 +246,8 @@ function showEmptyPortfolio() {
     <div class="col-span-full text-center py-20">
       <div class="glass-card p-12 rounded-xl max-w-md mx-auto">
         <div class="text-6xl mb-6">🎨</div>
-        <h3 class="text-2xl font-bold text-white mb-4">No Projects Yet</h3>
-        <p class="text-gray-400 mb-6">Check back soon for our latest creative work and projects.</p>
+        <h3 class="text-2xl font-bold text-navy dark:text-white mb-4">No Projects Yet</h3>
+        <p class="text-purple dark:text-gray-400 mb-6">Check back soon for our latest creative work and projects.</p>
       </div>
     </div>
   `;

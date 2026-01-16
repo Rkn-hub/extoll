@@ -1,30 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="dark" lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Project Details - Extoll.Co</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
+    <script>
+    // Theme logic moved to head
+  </script>
     <style>
         #project-galley {
             margin-bottom: 15%;
         }
-
         #project-hero {
             margin-bottom: 15%;
         }
-
         .glow-underline {
             position: relative;
             display: inline-block;
             margin-bottom: 15%;
         }
-
         .glow-underline::after {
             content: '';
             position: absolute;
@@ -34,9 +31,7 @@
             height: 2px;
             background-color: #00aaff;
             box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff, 0 0 30px #00aaff;
-
         }
-
         .glassmorphism-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
@@ -44,13 +39,11 @@
             border: 1px solid rgba(209, 213, 219, 0.3);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
         }
-
         .dark .glassmorphism-card {
             background: rgba(20, 29, 35, 0.5);
             border: 1px solid rgba(0, 170, 255, 0.2);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-
         .sparkle-container {
             position: fixed;
             top: 0;
@@ -61,24 +54,20 @@
             z-index: 1;
             overflow: hidden;
         }
-
         /* Navigation logo preload */
         .nav-logo {
             opacity: 1;
             transition: opacity 0.2s ease;
         }
-
         /* Smooth navigation transitions */
         .nav-link {
             transition: all 0.2s ease;
             position: relative;
         }
-
         .nav-link:hover {
             color: #00aaff;
             transform: translateY(-1px);
         }
-
         /* Add subtle underline effect on hover */
         .nav-link::after {
             content: '';
@@ -90,11 +79,9 @@
             background: #00aaff;
             transition: width 0.2s ease;
         }
-
         .nav-link:hover::after {
             width: 100%;
         }
-
         /* Cursor styles for all interactive elements */
         button,
         .cursor-pointer,
@@ -104,12 +91,10 @@
         a[href] {
             cursor: pointer !important;
         }
-
         /* Ensure disabled buttons show not-allowed cursor */
         button:disabled {
             cursor: not-allowed !important;
         }
-
         /* Text alignment and formatting improvements */
         #project-description {
             text-align: left !important;
@@ -121,7 +106,6 @@
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
-
         /* Ensure proper text rendering for all text elements */
         p,
         h1,
@@ -134,7 +118,6 @@
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
-
         .sparkle {
             position: absolute;
             width: 3px;
@@ -145,25 +128,21 @@
             opacity: 0;
             will-change: transform, opacity;
         }
-
         @keyframes sparkleFloat {
             0% {
                 transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
                 opacity: 0;
             }
-
             50% {
                 transform: translateY(50vh) translateX(10px) rotate(180deg) scale(1);
                 opacity: 1;
             }
-
             100% {
                 transform: translateY(-5vh) translateX(0px) rotate(360deg) scale(0);
                 opacity: 0;
             }
         }
     </style>
-
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -183,27 +162,24 @@
         }
     </script>
 </head>
-
 <body
     class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-300 transition-colors duration-300">
     <!-- Sparkle Background Effect -->
     <div class="sparkle-container" id="sparkleContainer"></div>
-
     <div class="relative flex min-h-screen w-full flex-col">
         <div class="layout-container flex h-full grow flex-col">
             <div class="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
-
                     <!-- Header -->
                     <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
                         <div
                             class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
                             <a href="index.html"
-                                class="flex items-center gap-4 text-white dark:text-white text-gray-900 hover:opacity-80 transition-opacity cursor-pointer">
+                                class="flex items-center gap-4 text-gray-900 dark:text-white hover:opacity-80 transition-opacity cursor-pointer">
                                 <img src="extoll.png" alt="Extoll.Co Logo" class="nav-logo h-8 w-8 object-contain"
                                     id="navLogo">
                                 <h2
-                                    class="text-white dark:text-white text-gray-900 text-lg font-bold leading-tight tracking-[-0.015em]">
+                                    class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
                                     Extoll.Co
                                 </h2>
                             </a>
@@ -224,53 +200,19 @@
                                         <span class="truncate">Contact Me</span>
                                     </button>
                                 </a>
-                                <!-- Theme Toggle Button -->
-                                <button onclick="toggleTheme()"
-                                    class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
-                                    <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707M12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                                        </path>
-                                    </svg>
-                                    <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                                        </path>
-                                    </svg>
-                                </button>
                             </nav>
-
                             <!-- Mobile Menu Button Area -->
                             <div class="flex items-center gap-4 md:hidden">
-                                <button onclick="toggleTheme()"
-                                    class="theme-toggle flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-gray-300 dark:hover:bg-white/20 transition-all">
-                                    <svg class="w-5 h-5 icon-sun hidden" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707M12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                                        </path>
-                                    </svg>
-                                    <svg class="w-5 h-5 icon-moon" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                                        </path>
-                                    </svg>
-                                </button>
                             </div>
                         </div>
                     </header>
-
                     <!-- Main Content -->
                     <main class="flex-1 py-16 sm:py-20 md:py-24">
                         <div class="flex flex-col gap-16 sm:gap-20 md:gap-24">
-
                             <!-- Project Not Found Message (Hidden by default) -->
                             <div id="project-not-found" class="hidden text-center px-4 py-20">
                                 <div class="glassmorphism-card p-12 rounded-xl max-w-md mx-auto">
-                                    <div class="text-6xl mb-6">🔍</div>
+                                    <div class="text-6xl mb-6">ðŸ”</div>
                                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Project Not Found
                                     </h1>
                                     <p class="text-gray-600 dark:text-gray-400 mb-6">The project you're looking for
@@ -282,10 +224,8 @@
                                     </a>
                                 </div>
                             </div>
-
                             <!-- Project Content (Hidden by default, shown when project loads) -->
                             <div id="project-content" class="hidden">
-
                                 <!-- Project Title -->
                                 <section class="text-center px-4">
                                     <h1 class="text-gray-900 dark:text-white text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tighter"
@@ -293,7 +233,6 @@
                                         <span class="glow-underline" style="margin-bottom: 20%;">Loading...</span>
                                     </h1>
                                 </section>
-
                                 <!-- Project Hero Image -->
                                 <section class="px-4">
                                     <div class="w-5/6 max-w-5xl mx-auto bg-center bg-no-repeat bg-contain flex flex-col justify-end overflow-hidden rounded-xl min-h-[350px] md:min-h-[420px] lg:min-h-[500px] shadow-[0_10px_40px_rgba(0,170,255,0.1)]"
@@ -301,7 +240,6 @@
                                         <!-- Hero image will be set via JavaScript -->
                                     </div>
                                 </section>
-
                                 <!-- Project Gallery -->
                                 <section class="px-4" id="project-gallery">
                                     <h2
@@ -311,7 +249,6 @@
                                         <!-- Gallery images will be populated by JavaScript -->
                                     </div>
                                 </section>
-
                                 <!-- Project Description -->
                                 <section class="px-4" style="margin-top: 15%; margin-bottom: 15%;">
                                     <h2
@@ -325,7 +262,6 @@
                                         </p>
                                     </div>
                                 </section>
-
                                 <!-- Call to Action -->
                                 <section
                                     class="bg-gradient-to-t from-primary/20 to-transparent p-10 sm:p-12 md:p-16 rounded-xl text-center flex flex-col items-center gap-6 border border-primary/20">
@@ -343,7 +279,6 @@
                                         </button>
                                     </a>
                                 </section>
-
                             </div> <!-- End project-content -->
                         </div>
                     </main>
@@ -351,49 +286,38 @@
             </div>
         </div>
     </div>
-
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="website-assets.js"></script>
     <script>
         console.log('Project page script loaded successfully');
-
         document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM loaded, starting project page initialization...');
-
             // Load logo
             // loadLogo();
-
             // Initialize Supabase
             if (!initializeSupabase()) {
                 console.error('Failed to initialize Supabase, falling back to localStorage');
                 loadFromLocalStorage();
                 return;
             }
-
             // Get project parameter from URL
             const urlParams = new URLSearchParams(window.location.search);
             const projectKey = urlParams.get('project');
-
             console.log('Project key from URL:', projectKey);
             console.log('Full URL:', window.location.href);
-
             if (!projectKey) {
                 console.log('No project key in URL');
                 showProjectNotFound();
                 return;
             }
-
             // Load project from Supabase
             loadProjectFromSupabase(projectKey);
-
             // Initialize sparkle effect
             initializeSparkleEffect();
         });
-
         async function loadProjectFromSupabase(projectKey) {
             const result = await getProjectByKey(projectKey);
-
             if (result.success) {
                 console.log('Found project:', result.data);
                 loadProject(result.data);
@@ -402,28 +326,23 @@
                 loadFromLocalStorage(projectKey);
             }
         }
-
         function loadFromLocalStorage(projectKey) {
             // Fallback to localStorage
             const projects = JSON.parse(localStorage.getItem('projects') || '[]');
             console.log('Loaded projects from localStorage:', projects);
             console.log('Number of projects:', projects.length);
-
             // Debug: Show all project keys
             projects.forEach(p => {
                 console.log('Available project key:', p.key, 'Title:', p.title);
             });
-
             // Find the specific project
             const project = projects.find(p => p.key === projectKey);
-
             if (!project) {
                 console.log('Project not found with key:', projectKey);
                 console.log('Available keys:', projects.map(p => p.key));
                 showProjectNotFound();
                 return;
             }
-
             // Convert localStorage format to Supabase format
             const supabaseProject = {
                 id: project.id,
@@ -437,29 +356,22 @@
                 project_images: project.images || [],
                 project_videos: project.videos || []
             };
-
             console.log('Found project:', supabaseProject);
             loadProject(supabaseProject);
         }
-
         function showProjectNotFound() {
             document.getElementById('project-not-found').classList.remove('hidden');
             document.getElementById('project-content').classList.add('hidden');
         }
-
         function loadProject(project) {
             console.log('Loading project:', project.title);
-
             // Show project content
             document.getElementById('project-content').classList.remove('hidden');
             document.getElementById('project-not-found').classList.add('hidden');
-
             // Update page title
             document.title = `${project.title} - Extoll.Co`;
-
             // Update project title
             document.getElementById('project-title').innerHTML = `<span class="glow-underline">${project.title}</span>`;
-
             // Update hero image
             const heroElement = document.getElementById('project-hero');
             if (project.thumbnail_url) {
@@ -469,14 +381,13 @@
             } else {
                 // Create a gradient background with category icon
                 const categoryIcons = {
-                    'graphics': '🎨',
-                    'ui': '📱',
-                    'product': '💼',
-                    'animation': '🎬',
-                    'video': '🎥'
+                    'graphics': 'ðŸŽ¨',
+                    'ui': 'ðŸ“±',
+                    'product': 'ðŸ’¼',
+                    'animation': 'ðŸŽ¬',
+                    'video': 'ðŸŽ¥'
                 };
-
-                const icon = categoryIcons[project.category] || '📁';
+                const icon = categoryIcons[project.category] || 'ðŸ“';
                 heroElement.innerHTML = `
             <div class="w-full h-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
                 <div class="text-center">
@@ -486,32 +397,26 @@
             </div>
         `;
             }
-
             // Update project description with proper formatting
             const descriptionElement = document.getElementById('project-description');
             const description = project.description || 'No description available for this project.';
             descriptionElement.textContent = description;
-
             // Load actual project files from Supabase storage
             loadProjectFilesFromStorage(project.key, project.category);
         }
-
         // Load actual project files from Supabase storage
         async function loadProjectFilesFromStorage(projectKey, projectCategory) {
             const galleryGrid = document.getElementById('gallery-grid');
-
             // Show loading state
             galleryGrid.innerHTML = `
         <div class="col-span-full glassmorphism-card p-12 rounded-xl text-center">
-            <div class="text-4xl mb-4">⏳</div>
+            <div class="text-4xl mb-4">â³</div>
             <h3 class="text-white text-xl font-bold mb-2">Loading Project Files...</h3>
             <p class="text-gray-400">Fetching images and videos from storage...</p>
         </div>
     `;
-
             try {
-                console.log('🔍 Loading files for project:', projectKey);
-
+                console.log('ðŸ” Loading files for project:', projectKey);
                 // List files in the project folder
                 const { data: files, error } = await configSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
@@ -519,21 +424,17 @@
                         limit: 1000,
                         sortBy: { column: 'created_at', order: 'desc' }
                     });
-
                 if (error) {
-                    console.error('❌ Error loading project files:', error);
+                    console.error('âŒ Error loading project files:', error);
                     showNoFilesMessage();
                     return;
                 }
-
                 if (!files || files.length === 0) {
-                    console.log('📁 No files found for project:', projectKey);
+                    console.log('ðŸ“ No files found for project:', projectKey);
                     showNoFilesMessage();
                     return;
                 }
-
-                console.log('✅ Found', files.length, 'files for project:', projectKey);
-
+                console.log('âœ… Found', files.length, 'files for project:', projectKey);
                 // Filter out logo, banner, thumbnail files, and JSON files
                 const filteredFiles = files.filter(file => {
                     const fileName = file.name.toLowerCase();
@@ -549,20 +450,17 @@
                         fileName !== 'banner.png' &&
                         fileName !== 'project.json';
                 });
-
-                console.log('🔍 Filtered files:', {
+                console.log('ðŸ” Filtered files:', {
                     original: files.length,
                     filtered: filteredFiles.length,
                     excluded: files.length - filteredFiles.length
                 });
-
                 // Process filtered files and get public URLs
                 const projectFiles = filteredFiles.map(file => {
                     const filePath = `${projectKey}/${file.name}`;
                     const { data: urlData } = configSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .getPublicUrl(filePath);
-
                     return {
                         name: file.name,
                         path: filePath,
@@ -572,21 +470,17 @@
                         created_at: file.created_at
                     };
                 });
-
                 // Separate images and videos
                 const images = projectFiles.filter(f => f.type === 'image');
                 const videos = projectFiles.filter(f => f.type === 'video');
-
-                console.log('📊 File breakdown:', {
+                console.log('ðŸ“Š File breakdown:', {
                     total: projectFiles.length,
                     images: images.length,
                     videos: videos.length
                 });
-
                 // Store files globally for navigation
                 window.currentProjectFiles = projectFiles;
                 window.currentProjectImages = images; // Store only images for lightbox
-
                 // Create gallery
                 if (projectFiles.length > 0) {
                     // Generate gallery items with unified lightbox for all media
@@ -596,7 +490,7 @@
                         <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openLightbox(${index})">
                             <img src="${file.url}" alt="Project Image ${index + 1}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
                             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                <div class="text-white text-2xl">🔍</div>
+                                <div class="text-white text-2xl">ðŸ”</div>
                             </div>
                         </div>
                     `;
@@ -607,7 +501,7 @@
                                 <source src="${file.url}" type="video/mp4">
                             </video>
                             <div class="absolute inset-0 bg-black/50 flex items-center justify-center group-hover:bg-black/30 transition-all duration-300">
-                                <div class="text-white text-4xl">▶️</div>
+                                <div class="text-white text-4xl">â–¶ï¸</div>
                             </div>
                         </div>
                     `;
@@ -615,7 +509,7 @@
                             return `
                         <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square flex items-center justify-center bg-gray-800">
                             <div class="text-center">
-                                <div class="text-4xl mb-2">📄</div>
+                                <div class="text-4xl mb-2">ðŸ“„</div>
                                 <p class="text-white text-sm">Document</p>
                             </div>
                         </div>
@@ -625,33 +519,28 @@
                 } else {
                     showNoFilesMessage();
                 }
-
             } catch (error) {
-                console.error('❌ Error loading project files:', error);
+                console.error('âŒ Error loading project files:', error);
                 showNoFilesMessage();
             }
         }
-
         function updateProjectCount(count, category) {
             const countElement = document.getElementById('project-count');
             const fileType = (category === 'animation' || category === 'video') ? 'Files' : 'Images';
             countElement.textContent = `${count} ${fileType}`;
         }
-
         function showNoFilesMessage() {
             const galleryGrid = document.getElementById('gallery-grid');
             galleryGrid.innerHTML = `
         <div class="col-span-full glassmorphism-card p-12 rounded-xl text-center">
-            <div class="text-4xl mb-4">📷</div>
-            <h3 class="text-white text-xl font-bold mb-2">No Files Yet</h3>
-            <p class="text-gray-400">Project files will appear here when uploaded through the admin panel.</p>
+            <div class="text-4xl mb-4">ðŸ“·</div>
+            <h3 class="text-gray-900 dark:text-white text-xl font-bold mb-2">No Files Yet</h3>
+            <p class="text-gray-600 dark:text-gray-400">Project files will appear here when uploaded through the admin panel.</p>
         </div>
     `;
         }
-
         function getFileType(fileName) {
             const extension = fileName.split('.').pop().toLowerCase();
-
             if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(extension)) {
                 return 'image';
             } else if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(extension)) {
@@ -660,25 +549,19 @@
                 return 'other';
             }
         }
-
         function openLightbox(startIndex, mediaType = 'image') {
             // Get all media files (images and videos) for unified navigation
             const allMediaFiles = window.currentProjectFiles ?
                 window.currentProjectFiles.filter(f => f.type === 'image' || f.type === 'video') : [];
-
             if (allMediaFiles.length === 0) return;
-
             let currentIndex = startIndex;
-
             // Create lightbox modal
             const lightbox = document.createElement('div');
             lightbox.className = 'fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4';
             lightbox.id = 'lightbox-modal';
-
             function updateLightboxContent() {
                 const currentFile = allMediaFiles[currentIndex];
                 const isVideo = currentFile.type === 'video';
-
                 lightbox.innerHTML = `
             <div class="relative max-w-6xl max-h-full flex items-center justify-center">
                 <!-- Main Media Content -->
@@ -690,37 +573,32 @@
                 ` : `
                     <img src="${currentFile.url}" alt="Project Image" class="max-w-full max-h-full object-contain">
                 `}
-                
                 <!-- Close Button -->
                 <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10">
-                    ×
+                    Ã—
                 </button>
-                
                 <!-- Previous Button -->
                 ${allMediaFiles.length > 1 ? `
                     <button onclick="previousMedia()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
-                        ‹
+                        â€¹
                     </button>
                 ` : ''}
-                
                 <!-- Next Button -->
                 ${allMediaFiles.length > 1 ? `
                     <button onclick="nextMedia()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === allMediaFiles.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}">
-                        ›
+                        â€º
                     </button>
                 ` : ''}
-                
                 <!-- Media Counter and Type Indicator -->
                 ${allMediaFiles.length > 1 ? `
                     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/70 px-4 py-2 rounded-full text-sm flex items-center gap-2">
-                        <span class="text-xs ${isVideo ? 'text-blue-400' : 'text-green-400'}">${isVideo ? '🎥' : '🖼️'}</span>
+                        <span class="text-xs ${isVideo ? 'text-blue-400' : 'text-green-400'}">${isVideo ? 'ðŸŽ¥' : 'ðŸ–¼ï¸'}</span>
                         ${currentIndex + 1} / ${allMediaFiles.length}
                     </div>
                 ` : ''}
             </div>
         `;
             }
-
             // Global functions for navigation
             window.closeLightbox = function () {
                 lightbox.remove();
@@ -731,25 +609,21 @@
                 delete window.previousImage;
                 delete window.nextImage;
             };
-
             window.previousMedia = function () {
                 if (currentIndex > 0) {
                     currentIndex--;
                     updateLightboxContent();
                 }
             };
-
             window.nextMedia = function () {
                 if (currentIndex < allMediaFiles.length - 1) {
                     currentIndex++;
                     updateLightboxContent();
                 }
             };
-
             // Legacy function names for backward compatibility
             window.previousImage = window.previousMedia;
             window.nextImage = window.nextMedia;
-
             // Keyboard navigation
             function handleKeyPress(e) {
                 switch (e.key) {
@@ -764,27 +638,22 @@
                         break;
                 }
             }
-
             document.addEventListener('keydown', handleKeyPress);
-
             // Remove keyboard listener when lightbox closes
             const originalClose = window.closeLightbox;
             window.closeLightbox = function () {
                 document.removeEventListener('keydown', handleKeyPress);
                 originalClose();
             };
-
             // Close on click outside (but not on video controls)
             lightbox.addEventListener('click', function (e) {
                 if (e.target === lightbox) {
                     window.closeLightbox();
                 }
             });
-
             updateLightboxContent();
             document.body.appendChild(lightbox);
         }
-
         // Helper function to get display names for categories
         function getCategoryDisplayName(category) {
             const categoryMap = {
@@ -796,26 +665,19 @@
             };
             return categoryMap[category] || category;
         }
-
         // Sparkle Background Effect
         function initializeSparkleEffect() {
             const sparkleContainer = document.getElementById('sparkleContainer');
             if (!sparkleContainer) return;
-
             const numberOfSparkles = 20;
-
             function createSparkle() {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
-
                 // Random horizontal position
                 sparkle.style.left = Math.random() * 100 + '%';
-
                 // Random animation delay
                 sparkle.style.animationDelay = (Math.random() * 12) + 's';
-
                 sparkleContainer.appendChild(sparkle);
-
                 // Remove sparkle after animation completes
                 setTimeout(() => {
                     if (sparkle.parentNode) {
@@ -823,12 +685,10 @@
                     }
                 }, 12000);
             }
-
             // Create initial sparkles
             for (let i = 0; i < numberOfSparkles; i++) {
                 setTimeout(() => createSparkle(), Math.random() * 5000);
             }
-
             // Continuously create new sparkles
             setInterval(() => {
                 if (sparkleContainer.children.length < numberOfSparkles * 1.5) {
@@ -836,15 +696,12 @@
                 }
             }, 800);
         }
-
         // Load logo from Supabase with fallback to old location
         function loadLogo() {
             if (!initializeSupabase()) {
                 return;
             }
-
             const supabase = configSupabase;
-
             // Try new location first, then fallback to old location
             Promise.all([
                 supabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
@@ -852,37 +709,33 @@
             ]).then(function ([newLogoResult, oldLogoResult]) {
                 let logoResult = newLogoResult;
                 let logoPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`;
-
                 // If new location fails or is empty, use old location
                 if (newLogoResult.error || !newLogoResult.data || newLogoResult.data.length === 0) {
-                    console.log('📁 Logo not found in new location, trying old location...');
+                    console.log('ðŸ“ Logo not found in new location, trying old location...');
                     logoResult = oldLogoResult;
                     logoPath = 'logo';
                 }
-
                 if (logoResult.data && logoResult.data.length > 0) {
                     const logoFile = logoResult.data[0].name;
                     const logoUrl = supabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .getPublicUrl(`${logoPath}/${logoFile}`);
-
                     if (logoUrl.data && logoUrl.data.publicUrl) {
                         const logoElement = document.getElementById('navLogo');
                         if (logoElement) {
                             logoElement.src = logoUrl.data.publicUrl;
-                            console.log('✅ Logo loaded from:', logoPath);
+                            console.log('âœ… Logo loaded from:', logoPath);
                         }
                     }
                 } else {
-                    console.log('⚠️ No logo found in either location');
+                    console.log('âš ï¸ No logo found in either location');
                 }
             })
                 .catch(function (error) {
-                    console.error('❌ Error loading logo:', error);
+                    console.error('âŒ Error loading logo:', error);
                 });
         }
     </script>
-
 </body>
-
 </html>
+
