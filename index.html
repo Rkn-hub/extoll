@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
@@ -46,8 +47,21 @@
   <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-    // Theme logic moved to head
+  <!-- Theme Initialization -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // Default to dark logic: if 'dark' or (no preference AND prefersDark or no preference at all - defaulting to dark for this site)
+      // Mirroring the logic in website-assets.js: default is true (dark) unless explicitly light
+      const shouldBeDark = savedTheme === 'dark' || (!savedTheme && true);
+
+      if (shouldBeDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
   </script>
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -60,40 +74,51 @@
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
+
     /* Glassmorphism - Dark Mode */
     .dark .glassmorphism {
       background: rgba(20, 29, 36, 0.4);
       border: 1px solid rgba(45, 60, 71, 0.5);
     }
+
     @keyframes float {
       0% {
         transform: translate(0px, 0px) scale(1);
       }
+
       33% {
         transform: translate(30px, -50px) scale(1.1);
       }
+
       66% {
         transform: translate(-20px, 20px) scale(0.9);
       }
+
       100% {
         transform: translate(0px, 0px) scale(1);
       }
     }
+
     .animate-float {
       animation: float 20s infinite ease-in-out;
     }
+
     .animate-float-delay {
       animation: float 15s infinite ease-in-out reverse;
     }
+
     .neon-glow {
       box-shadow: 0 0 5px var(--colors-primary), 0 0 10px var(--colors-primary), 0 0 15px var(--colors-primary);
     }
+
     .neon-glow-subtle {
       box-shadow: 0 0 8px rgba(var(--colors-primary-rgb), 0.3);
     }
+
     .gradient-background {
       background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
     }
+
     /* Glass card effects - Light Mode Default */
     .glass-card {
       background: rgba(41, 41, 102, 0.85);
@@ -105,6 +130,7 @@
       color: #ffffff !important;
       -webkit-
     }
+
     /* Glass card effects - Dark Mode */
     .dark .glass-card {
       background: rgba(20, 29, 36, 0.4) !important;
@@ -115,6 +141,7 @@
       color: white !important;
       position: relative;
     }
+
     .nav-active::after {
       content: '';
       position: absolute;
@@ -125,11 +152,13 @@
       background: var(--colors-primary);
       border-radius: 1px;
     }
+
     /* Smooth transition for navigation links */
     .nav-link {
       position: relative;
       transition: all 0.2s ease;
     }
+
     .nav-link::after {
       content: '';
       position: absolute;
@@ -141,22 +170,27 @@
       border-radius: 1px;
       transition: width 0.3s ease;
     }
+
     .nav-link:hover::after {
       width: 100%;
     }
+
     /* Navigation logo preload */
     .nav-logo {
       opacity: 1;
       transition: opacity 0.2s ease;
     }
+
     /* Mobile Navigation Styles */
     .mobile-nav-link {
       position: relative;
     }
+
     .mobile-nav-link.active {
       color: white !important;
       background: rgba(var(--colors-primary-rgb), 0.1);
     }
+
     .mobile-nav-link.active::before {
       content: '';
       position: absolute;
@@ -169,31 +203,37 @@
       border-radius: 2px;
       box-shadow: 0 0 8px rgba(var(--colors-primary-rgb), 0.6);
     }
+
     /* Mobile Menu Animation */
     #mobileMenu {
       transition: all 0.3s ease-in-out;
       max-height: 0;
       overflow: hidden;
     }
+
     #mobileMenu.show {
       max-height: 400px;
     }
+
     /* Responsive Typography */
     @media (max-width: 640px) {
       html {
         font-size: 16px;
       }
     }
+
     @media (min-width: 641px) and (max-width: 1024px) {
       html {
         font-size: 17px;
       }
     }
+
     @media (min-width: 1025px) {
       html {
         font-size: 18px;
       }
     }
+
     /* Enhanced Mobile Touch Targets */
     @media (max-width: 1024px) {
       .mobile-nav-link {
@@ -201,49 +241,60 @@
         display: flex;
         align-items: center;
       }
+
       button {
         min-height: 44px;
       }
+
       /* Better mobile spacing */
       .section {
         padding: 16px 0;
       }
+
       /* Improved mobile cards */
       .glass-card {
         margin: 0 8px;
       }
+
       /* Better mobile project grid */
       .project-grid {
         gap: 16px;
       }
     }
+
     /* Tablet optimizations */
     @media (min-width: 641px) and (max-width: 1024px) {
       .section {
         padding: 18px 0;
       }
     }
+
     /* Desktop optimizations */
     @media (min-width: 1025px) {
       .section {
         padding: 20px 0;
       }
+
       /* Enhanced hover effects for desktop */
       .nav-link:hover {
         transform: translateY(-1px);
       }
+
       .glass-card:hover {
         transform: translateY(-6px);
       }
     }
+
     /* High DPI displays */
     @media (-webkit-min-device-pixel-ratio: 2),
     (min-resolution: 192dpi) {
+
       .nav-link::after,
       .nav-active::after {
         height: 2px;
       }
     }
+
     /* Cursor styles for all interactive elements */
     button,
     .cursor-pointer,
@@ -266,6 +317,7 @@
     .contact-link {
       cursor: pointer !important;
     }
+
     /* Contact information links - ensure clickability */
     #indexPhoneLink,
     #indexEmailLink,
@@ -276,31 +328,85 @@
       z-index: 100 !important;
       position: relative !important;
     }
+
     /* Ensure disabled buttons show not-allowed cursor */
     button:disabled,
     .cursor-pointer:disabled {
       cursor: not-allowed !important;
     }
+
     /* Specific cursors for different interaction types */
     .upload-area {
       cursor: pointer !important;
     }
+
     .upload-area.dragover {
       cursor: copy !important;
     }
+
     /* Form elements */
     input[type="submit"],
     input[type="button"],
     input[type="file"] {
       cursor: pointer !important;
     }
+
     :root {
       --colors-primary: #5C5C99;
       --colors-primary-rgb: 92, 92, 153;
     }
+
     .dark {
       --colors-primary: #00aaff;
       --colors-primary-rgb: 0, 170, 255;
+    }
+
+    /* Force white text inside glass cards for Light Mode */
+    .glass-card .text-gray-600,
+    .glass-card .text-gray-700,
+    .glass-card .text-gray-800,
+    .glass-card .text-gray-900,
+    .glass-card .text-black,
+    .glassmorphism .text-gray-600,
+    .glassmorphism .text-gray-700,
+    .glassmorphism .text-gray-800,
+    .glassmorphism .text-gray-900,
+    .glassmorphism .text-black {
+      color: white !important;
+    }
+
+    /* Ensure muted text is slightly transparent white instead of gray */
+    .glass-card .text-gray-500,
+    .glassmorphism .text-gray-500 {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+    /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+    .glass-card .bg-gray-100 .text-gray-600,
+    .glass-card .bg-gray-100 .text-gray-700,
+    .glass-card .bg-gray-100 .text-gray-800,
+    .glass-card .bg-gray-100 .text-gray-900,
+    .glass-card .bg-gray-100 .text-black,
+    .glassmorphism .bg-gray-100 .text-gray-600,
+    .glassmorphism .bg-gray-100 .text-gray-700,
+    .glassmorphism .bg-gray-100 .text-gray-800,
+    .glassmorphism .bg-gray-100 .text-gray-900,
+    .glassmorphism .bg-gray-100 .text-black,
+    .glass-card .bg-white .text-gray-600,
+    .glassmorphism .bg-white .text-gray-900 {
+      color: #1f2937 !important;
+      /* Force Dark Gray for contrast on light background */
+    }
+
+    /* FIX: Protect Dark Mode text in those same inner cards */
+    /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+    .dark .glassmorphism .bg-gray-100 .text-gray-600,
+    .dark .glassmorphism .bg-gray-100 .text-gray-700,
+    .dark .glassmorphism .bg-gray-100 .text-gray-800,
+    .dark .glassmorphism .bg-gray-100 .text-gray-900,
+    .dark .glassmorphism .bg-gray-100 .text-black {
+      color: rgba(255, 255, 255, 0.9) !important;
     }
   </style>
   <script id="tailwind-config">
@@ -328,6 +434,7 @@
     }
   </script>
 </head>
+
 <body
   class="bg-background-light dark:bg-background-dark font-display text-navy dark:text-gray-200 transition-colors duration-300">
   <!-- Dynamic Background Glow Effect -->
@@ -522,7 +629,7 @@
                 class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                 data-service="graphics">
                 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-primary text-2xl">ðŸŽ¨</span>
+                  <span class="text-primary text-2xl">🎨</span>
                 </div>
                 <h3 class="text-white dark:text-white text-xl font-bold mb-3">Graphics Design</h3>
                 <p class="text-white/90 dark:text-neutral-400 text-sm">Creative visual design solutions for brands and
@@ -532,7 +639,7 @@
                 class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                 data-service="ui">
                 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-primary text-2xl">ðŸ“±</span>
+                  <span class="text-primary text-2xl">📱</span>
                 </div>
                 <h3 class="text-white dark:text-white text-xl font-bold mb-3">UI/UX Design</h3>
                 <p class="text-white/90 dark:text-neutral-400 text-sm">User interface and user experience design
@@ -542,7 +649,7 @@
                 class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                 data-service="product">
                 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-primary text-2xl">ðŸ’¼</span>
+                  <span class="text-primary text-2xl">💼</span>
                 </div>
                 <h3 class="text-white dark:text-white text-xl font-bold mb-3">Product Design</h3>
                 <p class="text-white/90 text-sm">Innovative product design and development solutions</p>
@@ -551,7 +658,7 @@
                 class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                 data-service="video">
                 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-primary text-2xl">ðŸŽ¬</span>
+                  <span class="text-primary text-2xl">🎬</span>
                 </div>
                 <h3 class="text-white dark:text-white text-xl font-bold mb-3">Video Editing</h3>
                 <p class="text-white/90 text-sm">Professional video editing and production services</p>
@@ -560,7 +667,7 @@
                 class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                 data-service="3d">
                 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-primary text-2xl">ðŸŽ¯</span>
+                  <span class="text-primary text-2xl">🎯</span>
                 </div>
                 <h3 class="text-white dark:text-white text-xl font-bold mb-3">3D Modeling</h3>
                 <p class="text-white/90 text-sm">Three-dimensional modeling and visualization services</p>
@@ -569,7 +676,7 @@
                 class="glass-card p-8 rounded-xl text-center cursor-pointer hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                 data-service="animation">
                 <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span class="text-primary text-2xl">âœ¨</span>
+                  <span class="text-primary text-2xl">✨</span>
                 </div>
                 <h3 class="text-white dark:text-white text-xl font-bold mb-3">2D Animation</h3>
                 <p class="text-white/90 text-sm">Two-dimensional animation and motion design services</p>
@@ -689,26 +796,10 @@
   <script src="website-assets.js?v=2024011101"></script>
   <!-- OPTIMIZED ARCHITECTURE - Single Source of Truth -->
   <script src="index-optimized.js?v=2024011102"></script>
-  <!-- Theme Toggle Function -->
   <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.contains('dark');
-      if (isDark) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      // Update icon visibility
-      document.querySelectorAll('.icon-sun').forEach(el => el.classList.toggle('hidden'));
-      document.querySelectorAll('.icon-moon').forEach(el => el.classList.toggle('hidden'));
-    }
-    // Initialize theme on page load
-    // Theme logic moved to head
+    // Theme toggle function is now handled by website-assets.js
   </script>
   <script src="particles.js"></script>
 </body>
-</html>
 
+</html>

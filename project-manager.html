@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes"
@@ -10,13 +11,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Initialization -->
     <script>
-    // Theme logic moved to head
-  </script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <style>
         html {
             font-size: 18px;
         }
+
         body {
             background: linear-gradient(135deg, #0A0A0D 0%, #1a1a2e 50%, #16213e 100%);
             color: #e5e7eb;
@@ -25,6 +37,7 @@
             zoom: 1.1;
             transform-origin: top left;
         }
+
         .glass-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
@@ -32,6 +45,7 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
+
         .btn-primary {
             background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
             color: white;
@@ -44,6 +58,7 @@
             box-shadow: 0 4px 15px rgba(14, 165, 233, 0.25);
             font-size: 16px;
         }
+
         .btn-secondary {
             background: rgba(14, 165, 233, 0.1);
             color: #0ea5e9;
@@ -56,6 +71,7 @@
             backdrop-filter: blur(10px);
             font-size: 14px;
         }
+
         .btn-danger {
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             color: white;
@@ -67,6 +83,7 @@
             transition: all 0.3s ease;
             font-size: 14px;
         }
+
         .form-input {
             background: rgba(15, 23, 42, 0.9) !important;
             border: 2px solid rgba(51, 65, 85, 0.6) !important;
@@ -80,6 +97,7 @@
             text-align: left !important;
             line-height: 1.5 !important;
         }
+
         .form-textarea {
             background: rgba(15, 23, 42, 0.9) !important;
             border: 2px solid rgba(51, 65, 85, 0.6) !important;
@@ -100,6 +118,7 @@
             overflow-wrap: break-word !important;
             white-space: pre-wrap !important;
         }
+
         .upload-area {
             border: 3px dashed rgba(14, 165, 233, 0.4);
             background: rgba(14, 165, 233, 0.05);
@@ -110,17 +129,20 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
         }
+
         .upload-area:hover {
             border-color: #0ea5e9;
             background: rgba(14, 165, 233, 0.1);
             box-shadow: 0 8px 25px rgba(14, 165, 233, 0.15);
             transform: translateY(-2px);
         }
+
         .upload-area.dragover {
             border-color: #0ea5e9;
             background: rgba(14, 165, 233, 0.2);
             transform: scale(1.02);
         }
+
         .notification {
             position: fixed;
             top: 24px;
@@ -135,18 +157,23 @@
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
+
         .notification.show {
             transform: translateX(0);
         }
+
         .notification.success {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
+
         .notification.error {
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         }
+
         .notification.warning {
             background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
         }
+
         /* Cursor styles for all interactive elements */
         button,
         .cursor-pointer,
@@ -162,16 +189,19 @@
         a[href] {
             cursor: pointer !important;
         }
+
         /* Ensure disabled buttons show not-allowed cursor */
         button:disabled,
         input:disabled,
         select:disabled {
             cursor: not-allowed !important;
         }
+
         /* Specific cursor for drag and drop areas */
         .upload-area.dragover {
             cursor: copy !important;
         }
+
         /* Text alignment and formatting improvements */
         .form-input:focus,
         .form-textarea:focus {
@@ -179,6 +209,7 @@
             box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1) !important;
             outline: none !important;
         }
+
         /* Ensure proper text rendering */
         input,
         textarea,
@@ -187,17 +218,20 @@
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
+
         /* Fix any potential text overflow issues */
         .glass-card {
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 16px;
             margin-top: 20px;
         }
+
         .file-item {
             position: relative;
             aspect-ratio: 1;
@@ -205,12 +239,14 @@
             overflow: hidden;
             background: rgba(15, 23, 42, 0.6);
         }
+
         .file-item img,
         .file-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .file-overlay {
             position: absolute;
             inset: 0;
@@ -221,14 +257,65 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .file-item:hover .file-overlay {
             opacity: 1;
         }
+
         .hidden {
             display: none;
         }
+
+        /* Force white text inside glass cards for Light Mode */
+        .glass-card .text-gray-600,
+        .glass-card .text-gray-700,
+        .glass-card .text-gray-800,
+        .glass-card .text-gray-900,
+        .glass-card .text-black,
+        .glassmorphism .text-gray-600,
+        .glassmorphism .text-gray-700,
+        .glassmorphism .text-gray-800,
+        .glassmorphism .text-gray-900,
+        .glassmorphism .text-black {
+            color: white !important;
+        }
+
+        /* Ensure muted text is slightly transparent white instead of gray */
+        .glass-card .text-gray-500,
+        .glassmorphism .text-gray-500 {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+        /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+        .glass-card .bg-gray-100 .text-gray-600,
+        .glass-card .bg-gray-100 .text-gray-700,
+        .glass-card .bg-gray-100 .text-gray-800,
+        .glass-card .bg-gray-100 .text-gray-900,
+        .glass-card .bg-gray-100 .text-black,
+        .glassmorphism .bg-gray-100 .text-gray-600,
+        .glassmorphism .bg-gray-100 .text-gray-700,
+        .glassmorphism .bg-gray-100 .text-gray-800,
+        .glassmorphism .bg-gray-100 .text-gray-900,
+        .glassmorphism .bg-gray-100 .text-black,
+        .glass-card .bg-white .text-gray-600,
+        .glassmorphism .bg-white .text-gray-900 {
+            color: #1f2937 !important;
+            /* Force Dark Gray for contrast on light background */
+        }
+
+        /* FIX: Protect Dark Mode text in those same inner cards */
+        /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+        .dark .glassmorphism .bg-gray-100 .text-gray-600,
+        .dark .glassmorphism .bg-gray-100 .text-gray-700,
+        .dark .glassmorphism .bg-gray-100 .text-gray-800,
+        .dark .glassmorphism .bg-gray-100 .text-gray-900,
+        .dark .glassmorphism .bg-gray-100 .text-black {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="bg-black/50 backdrop-blur-md border-b border-gray-800">
@@ -478,14 +565,14 @@
         }
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('ðŸš€ Project Manager initializing...');
+            console.log('🚀 Project Manager initializing...');
             if (!projectId) {
                 showProjectNotFound();
                 return;
             }
             // Check if this is a new project creation
             if (projectId === 'new') {
-                console.log('ðŸ“ Creating new project...');
+                console.log('📂 Creating new project...');
                 setupNewProjectMode();
                 return;
             }
@@ -494,20 +581,20 @@
                 const initResult = initializeSupabase();
                 if (initResult) {
                     adminSupabase = configSupabase;
-                    console.log('âœ… Supabase initialized');
+                    console.log('✅ Supabase initialized');
                 }
             }
             loadProject(projectId);
             setupEventListeners();
         });
         function setupNewProjectMode() {
-            console.log('ðŸ†• Setting up new project mode');
+            console.log('🆕 Setting up new project mode');
             // Initialize Supabase
             if (typeof window.supabase !== 'undefined') {
                 const initResult = initializeSupabase();
                 if (initResult) {
                     adminSupabase = configSupabase;
-                    console.log('âœ… Supabase initialized');
+                    console.log('✅ Supabase initialized');
                 }
             }
             // Clear the form for new project
@@ -527,7 +614,7 @@
             // Show the project manager form
             showProjectManager();
             setupEventListeners();
-            console.log('âœ… New project mode ready');
+            console.log('✅ New project mode ready');
         }
         function showProjectNotFound() {
             document.getElementById('projectNotFound').classList.remove('hidden');
@@ -546,12 +633,12 @@
                     showProjectNotFound();
                     return;
                 }
-                console.log('âœ… Project loaded:', currentProject.title);
+                console.log('✅ Project loaded:', currentProject.title);
                 populateProjectForm();
                 showProjectManager();
                 loadProjectFiles();
             } catch (error) {
-                console.error('âŒ Error loading project:', error);
+                console.error('❌ Error loading project:', error);
                 showProjectNotFound();
             }
         }
@@ -562,15 +649,15 @@
             // Enhanced description handling with debugging
             const descriptionElement = document.getElementById('projectDescription');
             const description = currentProject.description || '';
-            console.log('ðŸ“ Loading description:', description);
-            console.log('ðŸ“ Description element:', descriptionElement);
+            console.log('📂 Loading description:', description);
+            console.log('📂 Description element:', descriptionElement);
             if (descriptionElement) {
                 descriptionElement.value = description;
-                console.log('ðŸ“ Set description value to:', descriptionElement.value);
+                console.log('📂 Set description value to:', descriptionElement.value);
                 // Force update the textarea
                 descriptionElement.dispatchEvent(new Event('input', { bubbles: true }));
             } else {
-                console.error('âŒ Description textarea element not found!');
+                console.error('❌ Description textarea element not found!');
             }
             document.getElementById('projectTags').value = currentProject.tags ? currentProject.tags.join(', ') : '';
             document.getElementById('projectCount').value = currentProject.count || '0';
@@ -620,10 +707,10 @@
         }
         async function loadProjectFiles() {
             if (!adminSupabase || !currentProject.key) {
-                console.log('âŒ Cannot load files: missing Supabase or project key');
+                console.log('❌ Cannot load files: missing Supabase or project key');
                 return;
             }
-            console.log('ðŸ” Loading files for project:', currentProject.key);
+            console.log('🔍 Loading files for project:', currentProject.key);
             try {
                 const { data: files, error } = await adminSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
@@ -632,7 +719,7 @@
                         sortBy: { column: 'created_at', order: 'desc' }
                     });
                 if (error) {
-                    console.error('âŒ Error loading files:', error);
+                    console.error('❌ Error loading files:', error);
                     return;
                 }
                 if (!files || files.length === 0) {
@@ -666,7 +753,7 @@
                         fileName !== 'banner.jpg' &&
                         fileName !== 'banner.png';
                 }); // Filter out thumbnail, logo, and banner files from gallery
-                console.log('âœ… Loaded', projectFiles.length, 'files');
+                console.log('✅ Loaded', projectFiles.length, 'files');
                 displayFiles();
                 // Update count in both form and overview
                 document.getElementById('projectCount').value = projectFiles.length;
@@ -675,7 +762,7 @@
                     updateProjectOverview();
                 }
             } catch (error) {
-                console.error('âŒ Error loading project files:', error);
+                console.error('❌ Error loading project files:', error);
             }
         }
         function displayFiles() {
@@ -698,7 +785,7 @@
                     file.type === 'video' ?
                         `<video src="${file.url}" preload="metadata"></video>` :
                         `<div class="w-full h-full flex items-center justify-center bg-gray-700">
-                    <span class="text-4xl">ðŸ“„</span>
+                    <span class="text-4xl">📄</span>
                 </div>`
                 }
             <div class="file-overlay">
@@ -763,7 +850,7 @@
             // Auto-save description changes
             let descriptionSaveTimeout;
             document.getElementById('projectDescription').addEventListener('input', function (e) {
-                console.log('ðŸ“ Description changed:', e.target.value);
+                console.log('📂 Description changed:', e.target.value);
                 // Update overview in real-time
                 if (currentProject) {
                     currentProject.description = e.target.value;
@@ -781,7 +868,7 @@
                 }
                 // Auto-save after 2 seconds of no typing
                 descriptionSaveTimeout = setTimeout(() => {
-                    console.log('ðŸ’¾ Auto-saving description...');
+                    console.log('💾 Auto-saving description...');
                     if (currentProject) {
                         currentProject.description = e.target.value;
                         saveProjectSilently(); // Use silent save for auto-save
@@ -790,7 +877,7 @@
             });
             // Also save on blur (when user clicks away)
             document.getElementById('projectDescription').addEventListener('blur', function (e) {
-                console.log('ðŸ“ Description blur event, saving...');
+                console.log('📂 Description blur event, saving...');
                 if (currentProject) {
                     currentProject.description = e.target.value;
                     saveProjectSilently(); // Use silent save for blur
@@ -817,7 +904,7 @@
                     return;
                 }
             }
-            console.log('ðŸ“· Uploading thumbnail:', file.name);
+            console.log('📷 Uploading thumbnail:', file.name);
             uploadFile(file, 'thumb-' + Date.now() + '.' + file.name.split('.').pop(), true);
         }
         async function handleImageUpload(e) {
@@ -840,7 +927,7 @@
                     return;
                 }
             }
-            console.log('ðŸ“· Uploading', files.length, 'images');
+            console.log('📷 Uploading', files.length, 'images');
             files.forEach((file, index) => {
                 const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 uploadFile(file, fileName);
@@ -866,7 +953,7 @@
                     return;
                 }
             }
-            console.log('ðŸŽ¥ Uploading', files.length, 'videos');
+            console.log('🎥 Uploading', files.length, 'videos');
             files.forEach((file, index) => {
                 const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 uploadFile(file, fileName);
@@ -1017,7 +1104,7 @@
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 };
-                console.log('ðŸ†• Creating new project:', currentProject);
+                console.log('🆕 Creating new project:', currentProject);
             } else {
                 // Update existing project
                 currentProject.title = title;
@@ -1027,7 +1114,7 @@
                 currentProject.tags = tags;
                 currentProject.count = count;
                 currentProject.updated_at = new Date().toISOString();
-                console.log('ðŸ’¾ Updating existing project:', currentProject);
+                console.log('💾 Updating existing project:', currentProject);
             }
             try {
                 // Save to localStorage
@@ -1158,7 +1245,7 @@
             currentProject.tags = document.getElementById('projectTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
             currentProject.count = parseInt(document.getElementById('projectCount').value) || 0;
             currentProject.updated_at = new Date().toISOString();
-            console.log('ðŸ’¾ Silent saving project...');
+            console.log('💾 Silent saving project...');
             try {
                 // Update in localStorage
                 const projects = JSON.parse(localStorage.getItem('projects') || '[]');
@@ -1270,7 +1357,7 @@
         }
     </script>
 </body>
+
 </html>
 </content>
 </invoke>
-

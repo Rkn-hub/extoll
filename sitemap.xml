@@ -3,78 +3,91 @@
 
 <url>
   <loc>https://extoll.co.in/</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>weekly</changefreq>
   <priority>1.0</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/about.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/services.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/portfolio.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/contact.html</loc>
-  <changefreq>yearly</changefreq>
-  <priority>0.5</priority>
+  <lastmod>2026-01-17</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/website-development.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/app-development.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/ui-ux-design.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/freelance-services.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/2d-animation.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/3d-modeling.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/video-editing.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
 
 <url>
   <loc>https://extoll.co.in/graphic-design.html</loc>
+  <lastmod>2026-01-17</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>

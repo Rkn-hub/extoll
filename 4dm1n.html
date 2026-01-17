@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes"
@@ -33,13 +34,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Initialization -->
     <script>
-    // Theme logic moved to head
-  </script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <style>
         html {
             font-size: 18px;
         }
+
         body {
             background: linear-gradient(135deg, #0A0A0D 0%, #1a1a2e 50%, #16213e 100%);
             color: #e5e7eb;
@@ -49,26 +61,33 @@
             overscroll-behavior: none;
             scroll-behavior: smooth;
         }
+
         @keyframes float {
             0% {
                 transform: translate(0px, 0px) scale(1);
             }
+
             33% {
                 transform: translate(30px, -50px) scale(1.1);
             }
+
             66% {
                 transform: translate(-20px, 20px) scale(0.9);
             }
+
             100% {
                 transform: translate(0px, 0px) scale(1);
             }
         }
+
         .animate-float {
             animation: float 20s infinite ease-in-out;
         }
+
         .animate-float-delay {
             animation: float 15s infinite ease-in-out reverse;
         }
+
         .glass-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
@@ -76,6 +95,7 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
+
         .btn-primary {
             background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
             color: white;
@@ -89,6 +109,7 @@
             font-size: 18px;
             min-height: 64px;
         }
+
         .btn-secondary {
             background: rgba(14, 165, 233, 0.1);
             color: #0ea5e9;
@@ -102,6 +123,7 @@
             font-size: 16px;
             min-height: 56px;
         }
+
         .form-input {
             background: rgba(15, 23, 42, 0.9) !important;
             border: 2px solid rgba(51, 65, 85, 0.6) !important;
@@ -114,6 +136,7 @@
             font-size: 18px !important;
             min-height: 64px !important;
         }
+
         .form-textarea {
             background: rgba(15, 23, 42, 0.9) !important;
             border: 2px solid rgba(51, 65, 85, 0.6) !important;
@@ -128,6 +151,7 @@
             font-family: inherit !important;
             font-size: 16px !important;
         }
+
         .upload-area {
             border: 3px dashed rgba(14, 165, 233, 0.4);
             background: rgba(14, 165, 233, 0.05);
@@ -138,17 +162,20 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
         }
+
         .upload-area:hover {
             border-color: #0ea5e9;
             background: rgba(14, 165, 233, 0.1);
             box-shadow: 0 8px 25px rgba(14, 165, 233, 0.15);
             transform: translateY(-2px);
         }
+
         .upload-area.dragover {
             border-color: #0ea5e9;
             background: rgba(14, 165, 233, 0.2);
             transform: scale(1.02);
         }
+
         .tab-button {
             padding: 18px 36px;
             background: rgba(15, 23, 42, 0.6);
@@ -161,11 +188,13 @@
             margin-right: 4px;
             font-size: 16px;
         }
+
         .tab-button.active {
             color: #0ea5e9;
             background: rgba(14, 165, 233, 0.1);
             border-bottom: 3px solid #0ea5e9;
         }
+
         .notification {
             position: fixed;
             top: 24px;
@@ -180,15 +209,19 @@
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
+
         .notification.show {
             transform: translateX(0);
         }
+
         .notification.success {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
+
         .notification.error {
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         }
+
         /* Cursor styles for all interactive elements */
         button,
         .cursor-pointer,
@@ -205,21 +238,73 @@
         .asset-item {
             cursor: pointer !important;
         }
+
         /* Ensure disabled buttons show not-allowed cursor */
         button:disabled,
         input:disabled,
         select:disabled {
             cursor: not-allowed !important;
         }
+
         /* Specific cursor for drag and drop areas */
         .upload-area.dragover {
             cursor: copy !important;
         }
+
         .hidden {
             display: none;
         }
+
+        /* Force white text inside glass cards for Light Mode */
+        .glass-card .text-gray-600,
+        .glass-card .text-gray-700,
+        .glass-card .text-gray-800,
+        .glass-card .text-gray-900,
+        .glass-card .text-black,
+        .glassmorphism .text-gray-600,
+        .glassmorphism .text-gray-700,
+        .glassmorphism .text-gray-800,
+        .glassmorphism .text-gray-900,
+        .glassmorphism .text-black {
+            color: white !important;
+        }
+
+        /* Ensure muted text is slightly transparent white instead of gray */
+        .glass-card .text-gray-500,
+        .glassmorphism .text-gray-500 {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+        /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+        .glass-card .bg-gray-100 .text-gray-600,
+        .glass-card .bg-gray-100 .text-gray-700,
+        .glass-card .bg-gray-100 .text-gray-800,
+        .glass-card .bg-gray-100 .text-gray-900,
+        .glass-card .bg-gray-100 .text-black,
+        .glassmorphism .bg-gray-100 .text-gray-600,
+        .glassmorphism .bg-gray-100 .text-gray-700,
+        .glassmorphism .bg-gray-100 .text-gray-800,
+        .glassmorphism .bg-gray-100 .text-gray-900,
+        .glassmorphism .bg-gray-100 .text-black,
+        .glass-card .bg-white .text-gray-600,
+        .glassmorphism .bg-white .text-gray-900 {
+            color: #1f2937 !important;
+            /* Force Dark Gray for contrast on light background */
+        }
+
+        /* FIX: Protect Dark Mode text in those same inner cards */
+        /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+        .dark .glassmorphism .bg-gray-100 .text-gray-600,
+        .dark .glassmorphism .bg-gray-100 .text-gray-700,
+        .dark .glassmorphism .bg-gray-100 .text-gray-800,
+        .dark .glassmorphism .bg-gray-100 .text-gray-900,
+        .dark .glassmorphism .bg-gray-100 .text-black {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
     </style>
 </head>
+
 <body>
     <!-- Dynamic Background Glow Effect -->
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
@@ -299,7 +384,7 @@
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-white">Existing Projects</h3>
                         <div class="flex gap-4">
-                            <button class="btn-secondary" onclick="syncProjects()">ðŸ”„ Sync Projects</button>
+                            <button class="btn-secondary" onclick="syncProjects()">🔄 Sync Projects</button>
                             <select id="filterCategory" class="form-input" style="width: auto; min-width: 150px;">
                                 <option value="">All Categories</option>
                                 <option value="graphics">Graphics Design</option>
@@ -351,7 +436,7 @@
                             <h4 class="text-lg font-semibold text-white">About Section</h4>
                             <div
                                 class="text-xs text-blue-400 bg-blue-600/10 px-3 py-1 rounded-full border border-blue-600/30">
-                                ðŸ“„ Updates about.html page
+                                📄 Updates about.html page
                             </div>
                         </div>
                         <div class="grid grid-cols-1 gap-4">
@@ -368,7 +453,7 @@
                                 <label class="block text-sm font-medium text-gray-300 mb-2">About Description</label>
                                 <textarea id="aboutDescription" class="form-textarea" rows="4"
                                     placeholder="Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises..."></textarea>
-                                <p class="text-xs text-gray-400 mt-1">ðŸ’¡ This content appears on the dedicated About
+                                <p class="text-xs text-gray-400 mt-1">💡 This content appears on the dedicated About
                                     page (about.html)</p>
                             </div>
                         </div>
@@ -496,11 +581,11 @@
         // Login handler
         async function handleLogin(e) {
             e.preventDefault();
-            console.log('ðŸ” Login attempt started');
+            console.log('🔍 Login attempt started');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
             if (!usernameInput || !passwordInput) {
-                console.error('âŒ Input elements not found');
+                console.error('❌ Input elements not found');
                 showNotification('Form elements not found', 'error');
                 return;
             }
@@ -510,7 +595,7 @@
             console.log('Password length:', password.length);
             // Initialize Supabase if not already done
             if (!adminSupabase) {
-                console.log('ðŸ”§ Initializing Supabase for authentication...');
+                console.log('🔧 Initializing Supabase for authentication...');
                 const initResult = initializeSupabase();
                 if (initResult) {
                     adminSupabase = configSupabase;
@@ -521,14 +606,14 @@
             }
             try {
                 // Try Supabase Authentication first
-                console.log('ðŸ” Attempting Supabase authentication...');
+                console.log('🔍 Attempting Supabase authentication...');
                 const { data, error } = await adminSupabase.auth.signInWithPassword({
                     email: username,
                     password: password
                 });
                 if (error) throw error;
                 if (data.user) {
-                    console.log('âœ… Login successful via Supabase Authentication');
+                    console.log('✅ Login successful via Supabase Authentication');
                     currentUser = {
                         email: data.user.email,
                         id: data.user.id,
@@ -540,11 +625,11 @@
                     return;
                 }
             } catch (supabaseError) {
-                console.log('âš ï¸ Supabase authentication failed:', supabaseError.message);
+                console.log('⚠️ Supabase authentication failed:', supabaseError.message);
                 // Fallback to config credentials if Supabase auth fails
                 if ((username === 'admin' || username === SUPABASE_CONFIG.adminEmail) &&
                     (password === 'extoll2024' || password === SUPABASE_CONFIG.adminPassword)) {
-                    console.log('âœ… Login successful via config credentials');
+                    console.log('✅ Login successful via config credentials');
                     currentUser = { email: username, id: 'admin', role: 'admin' };
                     showDashboard();
                     showNotification('Login successful!', 'success');
@@ -555,7 +640,7 @@
                 }
                 // Show appropriate error message
                 if (supabaseError.message.includes('Invalid login credentials')) {
-                    showNotification('Invalid credentials. Add users in Supabase Authentication â†’ Users', 'error');
+                    showNotification('Invalid credentials. Add users in Supabase Authentication → Users', 'error');
                 } else if (supabaseError.message.includes('Email not confirmed')) {
                     showNotification('Email not confirmed. Check user settings in Supabase Dashboard', 'error');
                 } else {
@@ -567,10 +652,10 @@
         // Try Supabase authentication for metadata bucket access
         async function trySupabaseAuth() {
             try {
-                console.log('ðŸ” Attempting Supabase authentication for metadata access...');
+                console.log('🔎 Attempting Supabase authentication for metadata access...');
                 // Ensure we're using the same client as the config functions
                 if (!configSupabase) {
-                    console.log('ðŸ”§ Initializing shared Supabase client...');
+                    console.log('⚙️ Initializing shared Supabase client...');
                     const initResult = initializeSupabase();
                     if (!initResult) {
                         throw new Error('Failed to initialize Supabase client');
@@ -580,68 +665,68 @@
                 // Use the signInAdmin function from config
                 const authResult = await signInAdmin();
                 if (authResult.success) {
-                    console.log('âœ… Supabase authentication successful - metadata bucket access enabled');
+                    console.log('✅ Supabase authentication successful - metadata bucket access enabled');
                     // Test portfolio bucket access
                     const bucketTest = await testPortfolioBucketAccess();
                     if (bucketTest.success) {
                         showNotification('Metadata bucket access enabled', 'success');
                     } else {
                         showNotification('Authentication successful but bucket access failed', 'warning');
-                        console.error('ðŸš« Bucket access issue:', bucketTest.error);
+                        console.error('🚫 Bucket access issue:', bucketTest.error);
                     }
                 } else {
-                    console.log('âŒ Supabase authentication failed:', authResult.error);
+                    console.log('❌ Supabase authentication failed:', authResult.error);
                     showNotification('Authentication failed - using local storage only', 'warning');
-                    console.log('ðŸ“ Note: Projects will be stored locally only');
+                    console.log('📂 Note: Projects will be stored locally only');
                     // Show specific error guidance
                     if (authResult.error.includes('Invalid login credentials')) {
-                        console.error('ðŸ’¡ Create admin user: Supabase Dashboard â†’ Authentication â†’ Users â†’ Add user');
+                        console.error('💡 Create admin user: Supabase Dashboard → Authentication → Users → Add user');
                         console.error('   Email: admin@extoll.co, Password: extoll2024');
                     }
                 }
             } catch (error) {
-                console.error('âŒ Supabase auth error:', error);
+                console.error('❌ Supabase auth error:', error);
                 showNotification('Authentication error - using local storage only', 'warning');
             }
         }
         // Show dashboard
         function showDashboard() {
-            console.log('ðŸŽ¯ Showing dashboard...');
+            console.log('🎯 Showing dashboard...');
             const loginScreen = document.getElementById('loginScreen');
             const adminDashboard = document.getElementById('adminDashboard');
             if (loginScreen && adminDashboard) {
                 loginScreen.classList.add('hidden');
                 adminDashboard.classList.remove('hidden');
-                console.log('âœ… Dashboard shown successfully');
+                console.log('✅ Dashboard shown successfully');
             } else {
-                console.error('âŒ Dashboard elements not found');
+                console.error('❌ Dashboard elements not found');
             }
         }
         // Logout handler
         function handleLogout() {
-            console.log('ðŸšª Logging out');
+            console.log('🚪 Logging out');
             currentUser = null;
             showLogin();
             showNotification('Logged out', 'success');
         }
         // Check authentication state on page load
         async function checkAuthenticationState() {
-            console.log('ðŸ” Checking authentication state...');
+            console.log('🔍 Checking authentication state...');
             try {
                 if (!adminSupabase) {
-                    console.log('âŒ Supabase not initialized, showing login');
+                    console.log('❌ Supabase not initialized, showing login');
                     showLogin();
                     return;
                 }
                 // Check if user is already authenticated
                 const { data: { user }, error } = await adminSupabase.auth.getUser();
                 if (error) {
-                    console.log('âŒ Auth check error:', error.message);
+                    console.log('❌ Auth check error:', error.message);
                     showLogin();
                     return;
                 }
                 if (user) {
-                    console.log('âœ… User already authenticated:', user.email);
+                    console.log('✅ User already authenticated:', user.email);
                     currentUser = {
                         email: user.email,
                         authenticated: true,
@@ -650,11 +735,11 @@
                     showDashboard();
                     showNotification('Welcome back, ' + user.email, 'success');
                 } else {
-                    console.log('â„¹ï¸ No authenticated user found, showing login');
+                    console.log('ℹ️ No authenticated user found, showing login');
                     showLogin();
                 }
             } catch (error) {
-                console.error('âŒ Authentication check failed:', error);
+                console.error('❌ Authentication check failed:', error);
                 showLogin();
             }
         }
@@ -669,7 +754,7 @@
                 loadProjects();
                 loadWebsiteContent();
                 loadTeamInfo();
-                console.log('âœ… Dashboard shown');
+                console.log('✅ Dashboard shown');
             }
         }
         // Show login
@@ -721,7 +806,7 @@
                     '<p class="text-gray-400"><strong>Type:</strong> ' + file.type + '</p>' +
                     '</div>';
             }
-            logMessage('ðŸ“ File selected: ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
+            logMessage('📄 File selected: ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)');
         }
         function logMessage(message) {
             const log = document.getElementById('uploadLog');
@@ -742,13 +827,13 @@
                 showNotification('Supabase not initialized', 'error');
                 return;
             }
-            logMessage('ðŸš€ Starting upload test...');
+            logMessage('🚀 Starting upload test...');
             // Test upload with project folder structure
             const timestamp = Date.now();
             const extension = selectedFile.name.split('.').pop();
             const fileName = 'test-' + timestamp + '.' + extension;
             const filePath = 'test-project/' + fileName; // Project folder structure
-            logMessage('ðŸ“¤ Uploading to: ' + filePath);
+            logMessage('📤 Uploading to: ' + filePath);
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .upload(filePath, selectedFile, {
@@ -759,17 +844,17 @@
                     if (result.error) {
                         throw result.error;
                     }
-                    logMessage('âœ… File uploaded successfully: ' + result.data.path);
+                    logMessage('✅ File uploaded successfully: ' + result.data.path);
                     // Get public URL
                     const publicUrlResult = adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .getPublicUrl(filePath);
                     const publicUrl = publicUrlResult.data.publicUrl;
-                    logMessage('ðŸ”— Public URL: ' + publicUrl);
+                    logMessage('🔗 Public URL: ' + publicUrl);
                     showNotification('Upload successful!', 'success');
                 })
                 .catch(function (error) {
-                    logMessage('âŒ Upload failed: ' + error.message);
+                    logMessage('❌ Upload failed: ' + error.message);
                     showNotification('Upload failed: ' + error.message, 'error');
                     console.error('Upload error:', error);
                 });
@@ -859,14 +944,14 @@
                 try {
                     const result = await createProject(projectData);
                     if (result.success) {
-                        console.log('âœ… Project stored in metadata bucket');
+                        console.log('✅ Project stored in metadata bucket');
                         // Also store in localStorage as backup
                         const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
                         existingProjects.push(result.data);
                         localStorage.setItem('projects', JSON.stringify(existingProjects));
                         showNotification('Project created successfully!', 'success');
                     } else {
-                        console.log('âŒ Metadata bucket failed, storing in localStorage only:', result.error);
+                        console.log('❌ Metadata bucket failed, storing in localStorage only:', result.error);
                         // Store in localStorage as fallback
                         const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
                         projectData.id = Date.now().toString();
@@ -876,7 +961,7 @@
                         showNotification('Project created (local storage only)', 'warning');
                     }
                 } catch (error) {
-                    console.error('âŒ Error creating project:', error);
+                    console.error('❌ Error creating project:', error);
                     // Store in localStorage as fallback
                     const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
                     projectData.id = Date.now().toString();
@@ -891,7 +976,7 @@
                 // Refresh projects list
                 loadProjects();
                 // Change button to success state
-                submitBtn.textContent = 'âœ… Created';
+                submitBtn.textContent = '✅ Created';
                 submitBtn.disabled = false;
                 // Reset button after 3 seconds
                 setTimeout(function () {
@@ -909,20 +994,20 @@
         async function loadProjects() {
             try {
                 // Debug: Log what we're trying to load
-                console.log('ðŸ”„ Loading projects...');
+                console.log('🔄 Loading projects...');
                 // Try to load from Supabase database first
                 const result = await getProjects();
                 if (result.success && result.data.length > 0) {
                     projects = result.data;
-                    console.log('âœ… Loaded projects:', projects.length);
-                    console.log('ðŸ“‹ Project titles:', projects.map(p => p.title));
+                    console.log('✅ Loaded projects:', projects.length);
+                    console.log('📝 Project titles:', projects.map(p => p.title));
                 } else {
-                    console.log('ðŸ“­ No projects found');
+                    console.log('📄 No projects found');
                     projects = [];
                 }
                 displayProjects();
             } catch (error) {
-                console.error('âŒ Error loading projects:', error);
+                console.error('❌ Error loading projects:', error);
                 projects = [];
                 displayProjects();
             }
@@ -988,7 +1073,7 @@
                     folder.name !== SUPABASE_CONFIG.websiteAssets.folder &&
                     folder.name !== '.emptyFolderPlaceholder'
                 );
-                console.log('ðŸ“ Found project folders:', projectFolders.map(f => f.name));
+                console.log('📂 Found project folders:', projectFolders.map(f => f.name));
                 let syncedCount = 0;
                 let updatedCount = 0;
                 for (const folder of projectFolders) {
@@ -1004,7 +1089,7 @@
                         }
                         const text = await fileData.text();
                         const project = JSON.parse(text);
-                        console.log('ðŸ“„ Processing project:', project.title, 'Key:', project.key);
+                        console.log('📄 Processing project:', project.title, 'Key:', project.key);
                         // Check if project exists in database
                         const { data: existingProject, error: selectError } = await configSupabase
                             .from('projects')
@@ -1114,7 +1199,7 @@
             project.updated_at = new Date().toISOString();
             try {
                 // Update in Supabase metadata bucket first using the config function
-                console.log('ðŸ”„ Updating project in metadata bucket:', project.key);
+                console.log('🔄 Updating project in metadata bucket:', project.key);
                 // Use the updateProject function from supabase-config.js
                 if (typeof window.updateProject === 'function') {
                     const result = await window.updateProject(project.key, project);
@@ -1187,11 +1272,11 @@
                 return;
             }
             const project = projects[projectIndex];
-            console.log('ðŸ—‘ï¸ Deleting project:', project.title, '(ID:', id, ')');
+            console.log('🗑️ Deleting project:', project.title, '(ID:', id, ')');
             try {
                 // Delete from metadata bucket using the config function
                 if (project.key) {
-                    console.log('ðŸ—‘ï¸ Deleting from metadata bucket...');
+                    console.log('🗑️ Deleting from metadata bucket...');
                     const metadataResult = await deleteProjectMetadata(project.key);
                     if (metadataResult.success) {
                         console.log('âœ… Project metadata deleted from bucket');
@@ -1201,7 +1286,7 @@
                 }
                 // Delete project files from public storage bucket
                 if (adminSupabase && project.key) {
-                    console.log('ðŸ—‘ï¸ Deleting project files and folder...');
+                    console.log('🗑️ Deleting project files and folder...');
                     const listResult = await adminSupabase.storage
                         .from(SUPABASE_CONFIG.bucket)
                         .list(project.key);
@@ -1209,7 +1294,7 @@
                         console.error('âŒ Error listing project files:', listResult.error);
                     } else if (listResult.data && listResult.data.length > 0) {
                         const filesToDelete = listResult.data.map(file => project.key + '/' + file.name);
-                        console.log('ðŸ—‘ï¸ Deleting', filesToDelete.length, 'project files:', filesToDelete);
+                        console.log('🗑️ Deleting', filesToDelete.length, 'project files:', filesToDelete);
                         const deleteResult = await adminSupabase.storage
                             .from(SUPABASE_CONFIG.bucket)
                             .remove(filesToDelete);
@@ -1226,7 +1311,7 @@
                                 console.warn('âš ï¸ Some files may still remain:', verifyResult.data.length);
                                 // Try to delete remaining files
                                 const remainingFiles = verifyResult.data.map(file => project.key + '/' + file.name);
-                                console.log('ðŸ—‘ï¸ Attempting to delete remaining files:', remainingFiles);
+                                console.log('🗑️ Attempting to delete remaining files:', remainingFiles);
                                 const finalDeleteResult = await adminSupabase.storage
                                     .from(SUPABASE_CONFIG.bucket)
                                     .remove(remainingFiles);
@@ -1273,7 +1358,7 @@
                 localStorage.setItem('projects', JSON.stringify(projects));
                 // Delete from Supabase database table
                 if (adminSupabase) {
-                    console.log('ðŸ—‘ï¸ Deleting from database table...');
+                    console.log('🗑️ Deleting from database table...');
                     const { error: dbDeleteError } = await adminSupabase
                         .from('projects')
                         .delete()
@@ -1330,13 +1415,13 @@
         // Refresh project files manually
         function refreshProjectFiles() {
             if (currentEditingProject && currentEditingProject.key) {
-                console.log('ðŸ”„ Manually refreshing project files for:', currentEditingProject.key);
+                console.log('🔄 Manually refreshing project files for:', currentEditingProject.key);
                 loadProjectFiles(currentEditingProject.key);
             } else {
                 // Try to get project key from the form
                 const projectKey = document.getElementById('projectKey').value;
                 if (projectKey) {
-                    console.log('ðŸ”„ Refreshing files using form project key:', projectKey);
+                    console.log('🔄 Refreshing files using form project key:', projectKey);
                     loadProjectFiles(projectKey);
                 } else {
                     showNotification('No project selected for file refresh', 'warning');
@@ -1345,7 +1430,7 @@
         }
         // Force load project files with multiple fallback methods
         function forceLoadProjectFiles() {
-            console.log('ðŸš€ Force loading project files...');
+            console.log('🚀 Force loading project files...');
             // Method 1: Try currentEditingProject
             if (currentEditingProject && currentEditingProject.key) {
                 console.log('ðŸ“ Method 1: Using currentEditingProject key:', currentEditingProject.key);
@@ -1471,7 +1556,7 @@
                 showNotification('Supabase not initialized. Please check your connection.', 'error');
                 return;
             }
-            console.log('ðŸ“¤ Uploading images to project:', projectKey);
+            console.log('📤 Uploading images to project:', projectKey);
             const progressList = document.getElementById('projectUploadProgressList');
             const progressSection = document.getElementById('projectUploadProgress');
             progressSection.classList.remove('hidden');
@@ -1480,7 +1565,7 @@
             Array.from(files).forEach(function (file, index) {
                 const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 const filePath = projectKey + '/' + fileName;
-                console.log('ðŸ“¤ Uploading file:', fileName, 'to path:', filePath);
+                console.log('📤 Uploading file:', fileName, 'to path:', filePath);
                 const progressItem = document.createElement('div');
                 progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
                 progressItem.innerHTML = `
@@ -1543,7 +1628,7 @@
                 showNotification('Supabase not initialized. Please check your connection.', 'error');
                 return;
             }
-            console.log('ðŸ“¤ Uploading videos to project:', projectKey);
+            console.log('📤 Uploading videos to project:', projectKey);
             const progressList = document.getElementById('projectUploadProgressList');
             const progressSection = document.getElementById('projectUploadProgress');
             progressSection.classList.remove('hidden');
@@ -1552,7 +1637,7 @@
             Array.from(files).forEach(function (file, index) {
                 const fileName = 'vid-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
                 const filePath = projectKey + '/' + fileName;
-                console.log('ðŸ“¤ Uploading video:', fileName, 'to path:', filePath);
+                console.log('📤 Uploading video:', fileName, 'to path:', filePath);
                 const progressItem = document.createElement('div');
                 progressItem.className = 'flex justify-between items-center p-2 bg-gray-700 rounded';
                 progressItem.innerHTML = `
@@ -1744,7 +1829,7 @@
         }
         function deleteProjectFile(filePath) {
             if (!confirm('Are you sure you want to delete this file?')) return;
-            console.log('ðŸ—‘ï¸ Deleting file:', filePath);
+            console.log('🗑️ Deleting file:', filePath);
             adminSupabase.storage
                 .from(SUPABASE_CONFIG.bucket)
                 .remove([filePath])
@@ -2057,7 +2142,7 @@
             document.getElementById('portfolioDescription').value = 'Showcase of our creative work and professional projects across various design disciplines.';
         }
         function loadTeamInfo() {
-            console.log('ðŸ‘¥ Loading team information from Supabase...');
+            console.log('👥 Loading team information from Supabase...');
             if (!adminSupabase) {
                 console.error('âŒ Supabase not initialized');
                 return;
@@ -2073,7 +2158,7 @@
                     }
                     result.data.text().then(function (jsonText) {
                         const team = JSON.parse(jsonText);
-                        console.log('ðŸ‘¥ Loaded team info from Supabase:', team);
+                        console.log('👥 Loaded team info from Supabase:', team);
                         document.getElementById('teamSectionTitle').value = team.sectionTitle || 'Our Team & Capabilities';
                         // Load dynamic team members
                         if (team.members && Array.isArray(team.members)) {
@@ -2097,7 +2182,7 @@
                 });
         }
         function loadDefaultTeamInfo() {
-            console.log('ðŸ‘¥ Loading default team information...');
+            console.log('👥 Loading default team information...');
             // Set default values
             document.getElementById('teamSectionTitle').value = 'Our Team & Capabilities';
             // Load default team members
@@ -2110,7 +2195,7 @@
             loadDynamicTeamMembers(defaultMembers);
         }
         function loadDynamicTeamMembers(members) {
-            console.log('ðŸ‘¥ Loading dynamic team members:', members);
+            console.log('👥 Loading dynamic team members:', members);
             const container = document.getElementById('teamMembersContainer');
             if (!container) {
                 console.error('âŒ Team members container not found');
@@ -2206,7 +2291,7 @@
             }
         }
         function saveTeamInfo() {
-            console.log('ðŸ‘¥ Saving team information to Supabase...');
+            console.log('👥 Saving team information to Supabase...');
             // Change button to saving state
             const saveBtn = document.getElementById('saveTeamBtn');
             const originalText = saveBtn.textContent;
@@ -2249,7 +2334,7 @@
                     members: members,
                     updatedAt: new Date().toISOString()
                 };
-                console.log('ðŸ‘¥ Team data to save to Supabase:', team);
+                console.log('👥 Team data to save to Supabase:', team);
                 // Save as JSON file to Supabase storage
                 const teamBlob = new Blob([JSON.stringify(team, null, 2)], { type: 'application/json' });
                 adminSupabase.storage
@@ -2259,7 +2344,7 @@
                         upsert: true
                     })
                     .then(function (result) {
-                        console.log('ðŸ‘¥ Supabase save result:', result);
+                        console.log('👥 Supabase save result:', result);
                         if (result.error) {
                             console.error('âŒ Save error:', result.error);
                             showNotification('Error saving team information: ' + result.error.message, 'error');
@@ -2298,7 +2383,7 @@
             }
         }
         function saveWebsiteContent() {
-            console.log('ðŸ’¾ Saving website content to Supabase...');
+            console.log('💾 Saving website content to Supabase...');
             // Change button to saving state
             const saveBtn = document.getElementById('saveContentBtn');
             const originalText = saveBtn.textContent;
@@ -2341,7 +2426,7 @@
                     // Metadata
                     updatedAt: new Date().toISOString()
                 };
-                console.log('ðŸ’¾ Content to save to Supabase:', content);
+                console.log('💾 Content to save to Supabase:', content);
                 // Save as JSON file to Supabase storage (use main bucket since metadata bucket might not exist)
                 const contentBlob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
                 adminSupabase.storage
@@ -2351,7 +2436,7 @@
                         upsert: true
                     })
                     .then(function (result) {
-                        console.log('ðŸ’¾ Supabase save result:', result);
+                        console.log('💾 Supabase save result:', result);
                         if (result.error) {
                             console.error('âŒ Save error:', result.error);
                             showNotification('Error saving website content: ' + result.error.message, 'error');
@@ -3289,6 +3374,7 @@ Instructions:
         }
     </script>
 </body>
+
 </html>
 <script>
     // Update admin panel to use new file paths
@@ -3305,4 +3391,3 @@ Instructions:
     // Call on page load
     document.addEventListener('DOMContentLoaded', updateAdminPanelPaths);
 </script>
-

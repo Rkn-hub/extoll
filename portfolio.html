@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +10,79 @@
       overscroll-behavior: none;
       scroll-behavior: smooth;
     }
+
     @keyframes float {
       0% {
         transform: translate(0px, 0px) scale(1);
       }
+
       33% {
         transform: translate(30px, -50px) scale(1.1);
       }
+
       66% {
         transform: translate(-20px, 20px) scale(0.9);
       }
+
       100% {
         transform: translate(0px, 0px) scale(1);
       }
     }
+
     .animate-float {
       animation: float 20s infinite ease-in-out;
     }
+
     .animate-float-delay {
       animation: float 15s infinite ease-in-out reverse;
+    }
+
+    /* Force white text inside glass cards for Light Mode */
+    .glass-card .text-gray-600,
+    .glass-card .text-gray-700,
+    .glass-card .text-gray-800,
+    .glass-card .text-gray-900,
+    .glass-card .text-black,
+    .glassmorphism .text-gray-600,
+    .glassmorphism .text-gray-700,
+    .glassmorphism .text-gray-800,
+    .glassmorphism .text-gray-900,
+    .glassmorphism .text-black {
+      color: white !important;
+    }
+
+    /* Ensure muted text is slightly transparent white instead of gray */
+    .glass-card .text-gray-500,
+    .glassmorphism .text-gray-500 {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+    /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+    .glass-card .bg-gray-100 .text-gray-600,
+    .glass-card .bg-gray-100 .text-gray-700,
+    .glass-card .bg-gray-100 .text-gray-800,
+    .glass-card .bg-gray-100 .text-gray-900,
+    .glass-card .bg-gray-100 .text-black,
+    .glassmorphism .bg-gray-100 .text-gray-600,
+    .glassmorphism .bg-gray-100 .text-gray-700,
+    .glassmorphism .bg-gray-100 .text-gray-800,
+    .glassmorphism .bg-gray-100 .text-gray-900,
+    .glassmorphism .bg-gray-100 .text-black,
+    .glass-card .bg-white .text-gray-600,
+    .glassmorphism .bg-white .text-gray-900 {
+      color: #1f2937 !important;
+      /* Force Dark Gray for contrast on light background */
+    }
+
+    /* FIX: Protect Dark Mode text in those same inner cards */
+    /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+    .dark .glassmorphism .bg-gray-100 .text-gray-600,
+    .dark .glassmorphism .bg-gray-100 .text-gray-700,
+    .dark .glassmorphism .bg-gray-100 .text-gray-800,
+    .dark .glassmorphism .bg-gray-100 .text-gray-900,
+    .dark .glassmorphism .bg-gray-100 .text-black {
+      color: rgba(255, 255, 255, 0.9) !important;
     }
   </style>
   <meta name="description"
@@ -42,7 +97,10 @@
     (function () {
       const savedTheme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      // Default to dark logic
+      const shouldBeDark = savedTheme === 'dark' || (!savedTheme && true);
+
+      if (shouldBeDark) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
@@ -100,6 +158,7 @@
       transition: all 0.3s ease-in-out;
       color: #ffffff !important;
     }
+
     /* Glass card effects - Dark Mode */
     .dark .glass-card,
     .dark .glassmorphism {
@@ -110,6 +169,7 @@
       box-shadow: none;
       color: white !important;
     }
+
     /* Sparkle Animation Background */
     /* Page transition overlay */
     .page-transition {
@@ -124,20 +184,72 @@
       visibility: hidden;
       transition: all 0.5s ease-in-out;
     }
+
     .page-transition.active {
       opacity: 1;
       visibility: visible;
     }
+
     :root {
       --colors-primary: #5C5C99;
       --colors-primary-rgb: 92, 92, 153;
     }
+
     .dark {
       --colors-primary: #00aaff;
       --colors-primary-rgb: 0, 170, 255;
     }
+
+    /* Force white text inside glass cards for Light Mode */
+    .glass-card .text-gray-600,
+    .glass-card .text-gray-700,
+    .glass-card .text-gray-800,
+    .glass-card .text-gray-900,
+    .glass-card .text-black,
+    .glassmorphism .text-gray-600,
+    .glassmorphism .text-gray-700,
+    .glassmorphism .text-gray-800,
+    .glassmorphism .text-gray-900,
+    .glassmorphism .text-black {
+      color: white !important;
+    }
+
+    /* Ensure muted text is slightly transparent white instead of gray */
+    .glass-card .text-gray-500,
+    .glassmorphism .text-gray-500 {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+    /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+    .glass-card .bg-gray-100 .text-gray-600,
+    .glass-card .bg-gray-100 .text-gray-700,
+    .glass-card .bg-gray-100 .text-gray-800,
+    .glass-card .bg-gray-100 .text-gray-900,
+    .glass-card .bg-gray-100 .text-black,
+    .glassmorphism .bg-gray-100 .text-gray-600,
+    .glassmorphism .bg-gray-100 .text-gray-700,
+    .glassmorphism .bg-gray-100 .text-gray-800,
+    .glassmorphism .bg-gray-100 .text-gray-900,
+    .glassmorphism .bg-gray-100 .text-black,
+    .glass-card .bg-white .text-gray-600,
+    .glassmorphism .bg-white .text-gray-900 {
+      color: #1f2937 !important;
+      /* Force Dark Gray for contrast on light background */
+    }
+
+    /* FIX: Protect Dark Mode text in those same inner cards */
+    /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+    .dark .glassmorphism .bg-gray-100 .text-gray-600,
+    .dark .glassmorphism .bg-gray-100 .text-gray-700,
+    .dark .glassmorphism .bg-gray-100 .text-gray-800,
+    .dark .glassmorphism .bg-gray-100 .text-gray-900,
+    .dark .glassmorphism .bg-gray-100 .text-black {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
   </style>
 </head>
+
 <body
   class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 transition-colors duration-300">
   <!-- Page Transition Overlay -->
@@ -154,25 +266,26 @@
   <div class="relative w-full min-h-screen flex flex-col items-center overflow-x-hidden">
     <!-- TopNavBar -->
     <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-      <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+      <div
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3 bg-[#292966]/90 dark:bg-background-dark/80 backdrop-blur-md rounded-xl transition-colors duration-300">
         <a href="index.html"
-          class="flex items-center gap-4 text-navy dark:text-white hover:opacity-80 transition-opacity cursor-pointer">
+          class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer">
           <img src="extoll.png" alt="Extoll.Co Logo - Professional design services"
             class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync" id="navLogo">
-          <h2 class="text-navy dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+          <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
             Extoll.Co</h2>
         </a>
         <nav class="hidden md:flex flex-1 justify-end gap-8">
           <div class="flex items-center gap-9">
-            <a class="nav-link text-navy/70 dark:text-white/70 hover:text-navy dark:hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-white/70 dark:text-white/70 hover:text-white dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="index.html">Home</a>
-            <a class="text-navy dark:text-white relative text-sm font-medium leading-normal" href="portfolio.html">
+            <a class="text-white relative text-sm font-medium leading-normal" href="portfolio.html">
               Portfolio
               <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
             </a>
-            <a class="nav-link text-navy/70 dark:text-white/70 hover:text-navy dark:hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-white/70 dark:text-white/70 hover:text-white dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="services.html">Services</a>
-            <a class="nav-link text-navy/70 dark:text-white/70 hover:text-navy dark:hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-white/70 dark:text-white/70 hover:text-white dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="about.html">About</a>
           </div>
           <a href="contact.html">
@@ -263,7 +376,8 @@
               </div>
             </div>
             <!-- Portfolio Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10 px-4 py-8"
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10 px-4 py-8 min-h-[400px]"
               id="portfolio-grid">
               <!-- Projects will be dynamically loaded -->
             </div>
@@ -276,7 +390,7 @@
             </div>
             <!-- Empty State -->
             <div class="hidden flex-col items-center justify-center py-16 text-center" id="empty-state">
-              <div class="text-6xl mb-4">ðŸŽ¨</div>
+              <div class="text-6xl mb-4">🎨</div>
               <h3 class="text-2xl font-bold text-white mb-4">No Projects Found</h3>
               <p class="text-gray-400 mb-6">We're working on adding more amazing projects to our portfolio.</p>
             </div>
@@ -298,18 +412,19 @@
     let currentFilter = 'all';
     // Load all projects on page load
     document.addEventListener('DOMContentLoaded', function () {
-      console.log('ðŸš€ Portfolio page loaded, initializing...');
+      console.log('🚀 Portfolio page loaded, initializing...');
       loadAllProjects();
       setupMobileMenu();
       // loadLogo();
       // Debug: Check if elements exist
-      console.log('ðŸ“‹ Debug - Portfolio grid element:', document.getElementById('portfolio-grid'));
+      console.log('📋 Debug -', document.getElementById('portfolio-grid'));
       console.log('ðŸ“‹ Debug - Header element:', document.querySelector('header'));
       console.log('ðŸ“‹ Debug - Mobile menu button:', document.getElementById('mobile-menu-btn'));
     });
     // Load all projects from Supabase
     async function loadAllProjects() {
-      console.log('ðŸ”„ Loading all projects for portfolio page...');
+      console.log('🔄 Loading all projects for portfolio page...');
+      showLoadingState(); // Show skeletons immediately
       // Initialize Supabase
       if (!initializeSupabase()) {
         console.error('Failed to initialize Supabase, falling back to localStorage');
@@ -319,7 +434,7 @@
       try {
         // Try public metadata bucket first
         const result = await getProjectsPublic();
-        console.log('ðŸ“Š getProjectsPublic result:', result);
+        console.log('📊 getProjectsPublic result:', result);
         if (result.success && result.data && result.data.length > 0) {
           allProjects = result.data;
           console.log('âœ… Successfully loaded', allProjects.length, 'projects from public metadata bucket');
@@ -357,7 +472,7 @@
       console.log('ðŸ“¦ Loaded', allProjects.length, 'projects from localStorage');
       if (allProjects.length === 0) {
         // Show some sample projects if nothing is available
-        console.log('ðŸ“¦ No projects found, showing sample projects');
+        console.log('📦 No projects found, showing sample projects');
         allProjects = [
           {
             id: 'sample-1',
@@ -385,6 +500,33 @@
       displayProjects();
       setupFilters();
     }
+
+    // Show skeleton loading state
+    function showLoadingState() {
+      const portfolioGrid = document.getElementById('portfolio-grid');
+      const emptyState = document.getElementById('empty-state');
+      if (!portfolioGrid) return;
+
+      emptyState.classList.add('hidden');
+      emptyState.classList.remove('flex');
+
+      //Create 8 skeleton cards
+      const skeletonHtml = Array(8).fill(0).map(() => `
+        <div class="glass-card rounded-xl overflow-hidden">
+          <div class="w-full h-48 bg-gray-200 dark:bg-white/5 animate-pulse"></div>
+          <div class="p-6 space-y-4">
+            <div class="h-6 bg-gray-200 dark:bg-white/5 rounded w-3/4 animate-pulse"></div>
+            <div class="space-y-2">
+              <div class="h-4 bg-gray-200 dark:bg-white/5 rounded w-full animate-pulse"></div>
+              <div class="h-4 bg-gray-200 dark:bg-white/5 rounded w-2/3 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      portfolioGrid.innerHTML = skeletonHtml;
+    }
+
     // Display projects with pagination
     function displayProjects() {
       const portfolioGrid = document.getElementById('portfolio-grid');
@@ -460,7 +602,7 @@
       console.log('ðŸ“± Setting up mobile menu...', { mobileMenuBtn, mobileMenu });
       if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', function () {
-          console.log('ðŸ“± Mobile menu button clicked');
+          console.log('📱 Mobile menu button clicked');
           mobileMenu.classList.toggle('hidden');
         });
         // Close mobile menu when clicking outside
@@ -492,7 +634,7 @@
         let logoPath = storagePathStart;
         // If new location fails or is empty, use old location
         if (newLogoResult.error || !newLogoResult.data || newLogoResult.data.length === 0) {
-          console.log('ðŸ“ Logo not found in new location, trying old location...');
+          console.log('📂 Logo not found in new location, trying old location...');
           logoResult = oldLogoResult;
           logoPath = 'logo';
         }
@@ -507,20 +649,20 @@
             logoElements.forEach(logoElement => {
               logoElement.src = logoUrl.data.publicUrl;
             });
-            console.log('âœ… Logo loaded successfully from:', logoPath);
+            console.log('✅ Logo loaded successfully from:', logoPath);
           }
         } else {
-          console.log('âš ï¸ No logo found in either location');
+          console.log('⚠️ No logo found in either location');
         }
       })
         .catch(function (error) {
-          console.error('âŒ Error loading logo:', error);
+          console.error('❌ Error loading logo:', error);
         });
     }
     // Load projects directly from public portfolio bucket
     async function loadProjectsFromPublicBucket() {
       try {
-        console.log('ðŸ” Scanning public portfolio bucket for projects...');
+        console.log('🔍 Scanning public portfolio bucket for projects...');
         const supabase = configSupabase;
         // List all folders in the main portfolio bucket (each folder is a project)
         const { data: folders, error: listError } = await supabase.storage
@@ -530,14 +672,14 @@
             sortBy: { column: 'created_at', order: 'desc' }
           });
         if (listError) {
-          console.error('âŒ Failed to list portfolio bucket:', listError.message);
+          console.error('❌ Failed to list portfolio bucket:', listError.message);
           return { success: false, error: listError.message };
         }
         if (!folders || folders.length === 0) {
-          console.log('ðŸ“ No folders found in portfolio bucket');
+          console.log('📂 No folders found in portfolio bucket');
           return { success: true, data: [] };
         }
-        console.log('ðŸ“‚ Found', folders.length, 'items in portfolio bucket');
+        console.log('📂 Found', folders.length, 'items in portfolio bucket');
         // Filter out non-project folders (like website-assets, logo, banner)
         const projectFolders = folders.filter(folder =>
           folder.name &&
@@ -547,7 +689,7 @@
           folder.name !== 'logo' &&
           folder.name !== 'banner'
         );
-        console.log('ðŸŽ¯ Found', projectFolders.length, 'potential project folders');
+        console.log('🎯 Found', projectFolders.length, 'potential project folders');
         // For each project folder, try to get project info in parallel
         const projectPromises = projectFolders.map(async (folder) => {
           try {
@@ -585,21 +727,21 @@
                 thumbnail_url: thumbnailUrl,
                 created_at: folder.created_at || new Date().toISOString()
               };
-              console.log('âœ… Added project:', project.title, `(${project.count} files)`);
+              console.log('✅ Added project:', project.title, `(${project.count} files)`);
               return project;
             }
             return null;
           } catch (projectError) {
-            console.warn('âš ï¸ Failed to process project folder:', folder.name, projectError.message);
+            console.warn('⚠️ Failed to process project folder:', folder.name, projectError.message);
             return null;
           }
         });
         const projectsResults = await Promise.all(projectPromises);
         const projects = projectsResults.filter(p => p !== null);
-        console.log(`ðŸŽ‰ Successfully loaded ${projects.length} projects from public bucket`);
+        console.log(`🎉 Successfully loaded ${projects.length} projects from public bucket`);
         return { success: true, data: projects };
       } catch (error) {
-        console.error('âŒ Public bucket loading failed:', error.message);
+        console.error('❌ Public bucket loading failed:', error.message);
         return { success: false, error: error.message };
       }
     }
@@ -608,7 +750,11 @@
       // Create thumbnail HTML
       let thumbnailHtml;
       if (project.thumbnail_url) {
-        thumbnailHtml = `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-48 object-cover rounded-lg">`;
+        thumbnailHtml = `
+          <div class="w-full h-48 bg-gray-200 dark:bg-white/5">
+            <img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-48 object-cover rounded-lg" loading="lazy">
+          </div>
+        `;
       } else {
         // Default thumbnail with project initial
         const initial = project.title ? project.title.charAt(0).toUpperCase() : 'P';
@@ -667,21 +813,9 @@
   </script>
   <!-- Theme Toggle Function -->
   <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.contains('dark');
-      if (isDark) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      document.querySelectorAll('.icon-sun').forEach(el => el.classList.toggle('hidden'));
-      document.querySelectorAll('.icon-moon').forEach(el => el.classList.toggle('hidden'));
-    }
-    // Theme logic moved to head
+    // Theme toggle function is now handled by website-assets.js
   </script>
   <script src="particles.js"></script>
 </body>
+
 </html>

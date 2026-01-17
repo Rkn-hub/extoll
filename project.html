@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -7,21 +8,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Initialization -->
     <script>
-    // Theme logic moved to head
-  </script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <style>
         #project-galley {
             margin-bottom: 15%;
         }
+
         #project-hero {
             margin-bottom: 15%;
         }
+
         .glow-underline {
             position: relative;
             display: inline-block;
             margin-bottom: 15%;
         }
+
         .glow-underline::after {
             content: '';
             position: absolute;
@@ -32,6 +46,7 @@
             background-color: #00aaff;
             box-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff, 0 0 30px #00aaff;
         }
+
         .glassmorphism-card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
@@ -39,11 +54,13 @@
             border: 1px solid rgba(209, 213, 219, 0.3);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
         }
+
         .dark .glassmorphism-card {
             background: rgba(20, 29, 35, 0.5);
             border: 1px solid rgba(0, 170, 255, 0.2);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
+
         .sparkle-container {
             position: fixed;
             top: 0;
@@ -54,20 +71,24 @@
             z-index: 1;
             overflow: hidden;
         }
+
         /* Navigation logo preload */
         .nav-logo {
             opacity: 1;
             transition: opacity 0.2s ease;
         }
+
         /* Smooth navigation transitions */
         .nav-link {
             transition: all 0.2s ease;
             position: relative;
         }
+
         .nav-link:hover {
             color: #00aaff;
             transform: translateY(-1px);
         }
+
         /* Add subtle underline effect on hover */
         .nav-link::after {
             content: '';
@@ -79,9 +100,11 @@
             background: #00aaff;
             transition: width 0.2s ease;
         }
+
         .nav-link:hover::after {
             width: 100%;
         }
+
         /* Cursor styles for all interactive elements */
         button,
         .cursor-pointer,
@@ -91,10 +114,12 @@
         a[href] {
             cursor: pointer !important;
         }
+
         /* Ensure disabled buttons show not-allowed cursor */
         button:disabled {
             cursor: not-allowed !important;
         }
+
         /* Text alignment and formatting improvements */
         #project-description {
             text-align: left !important;
@@ -106,6 +131,7 @@
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
+
         /* Ensure proper text rendering for all text elements */
         p,
         h1,
@@ -118,6 +144,7 @@
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
+
         .sparkle {
             position: absolute;
             width: 3px;
@@ -128,19 +155,70 @@
             opacity: 0;
             will-change: transform, opacity;
         }
+
         @keyframes sparkleFloat {
             0% {
                 transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
                 opacity: 0;
             }
+
             50% {
                 transform: translateY(50vh) translateX(10px) rotate(180deg) scale(1);
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(-5vh) translateX(0px) rotate(360deg) scale(0);
                 opacity: 0;
             }
+        }
+
+        /* Force white text inside glass cards for Light Mode */
+        .glass-card .text-gray-600,
+        .glass-card .text-gray-700,
+        .glass-card .text-gray-800,
+        .glass-card .text-gray-900,
+        .glass-card .text-black,
+        .glassmorphism .text-gray-600,
+        .glassmorphism .text-gray-700,
+        .glassmorphism .text-gray-800,
+        .glassmorphism .text-gray-900,
+        .glassmorphism .text-black {
+            color: white !important;
+        }
+
+        /* Ensure muted text is slightly transparent white instead of gray */
+        .glass-card .text-gray-500,
+        .glassmorphism .text-gray-500 {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+        /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+        .glass-card .bg-gray-100 .text-gray-600,
+        .glass-card .bg-gray-100 .text-gray-700,
+        .glass-card .bg-gray-100 .text-gray-800,
+        .glass-card .bg-gray-100 .text-gray-900,
+        .glass-card .bg-gray-100 .text-black,
+        .glassmorphism .bg-gray-100 .text-gray-600,
+        .glassmorphism .bg-gray-100 .text-gray-700,
+        .glassmorphism .bg-gray-100 .text-gray-800,
+        .glassmorphism .bg-gray-100 .text-gray-900,
+        .glassmorphism .bg-gray-100 .text-black,
+        .glass-card .bg-white .text-gray-600,
+        .glassmorphism .bg-white .text-gray-900 {
+            color: #1f2937 !important;
+            /* Force Dark Gray for contrast on light background */
+        }
+
+        /* FIX: Protect Dark Mode text in those same inner cards */
+        /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+        .dark .glassmorphism .bg-gray-100 .text-gray-600,
+        .dark .glassmorphism .bg-gray-100 .text-gray-700,
+        .dark .glassmorphism .bg-gray-100 .text-gray-800,
+        .dark .glassmorphism .bg-gray-100 .text-gray-900,
+        .dark .glassmorphism .bg-gray-100 .text-black {
+            color: rgba(255, 255, 255, 0.9) !important;
         }
     </style>
     <script id="tailwind-config">
@@ -162,6 +240,7 @@
         }
     </script>
 </head>
+
 <body
     class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-300 transition-colors duration-300">
     <!-- Sparkle Background Effect -->
@@ -203,6 +282,14 @@
                             </nav>
                             <!-- Mobile Menu Button Area -->
                             <div class="flex items-center gap-4 md:hidden">
+                                <button class="text-gray-700 dark:text-white p-2" id="mobile-menu-btn"
+                                    onclick="document.getElementById('mobileMenu').classList.toggle('show')">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </header>
@@ -212,7 +299,7 @@
                             <!-- Project Not Found Message (Hidden by default) -->
                             <div id="project-not-found" class="hidden text-center px-4 py-20">
                                 <div class="glassmorphism-card p-12 rounded-xl max-w-md mx-auto">
-                                    <div class="text-6xl mb-6">ðŸ”</div>
+                                    <div class="text-6xl mb-6">🔍</div>
                                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Project Not Found
                                     </h1>
                                     <p class="text-gray-600 dark:text-gray-400 mb-6">The project you're looking for
@@ -274,9 +361,11 @@
                                     </p>
                                     <a href="contact.html">
                                         <button
-                                            class="flex min-w-[180px] mt-4 max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-8 bg-primary text-white text-base font-bold leading-normal tracking-wide hover:bg-primary/90 transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,170,255,0.6)]">
-                                            <span class="truncate">Get in Touch</span>
-                                        </button>
+                                            class="mt-8 flex items-center justify-center rounded-lg hover:opacity-90 transition-opacity mx-auto bg-[#5C5C99] dark:bg-[#00aaff]"
+                                            style="color: #ffffff !important; opacity: 1 !important; z-index: 99 !important; visibility: visible !important; border-radius: 8px !important; padding: 12px 32px !important; display: inline-flex !important; border: 1px solid rgba(255,255,255,0.1) !important; cursor: pointer !important; min-width: 140px !important;"><span
+                                                class="truncate"
+                                                style="font-weight: 700 !important; font-size: 16px !important;">Get in
+                                                Touch</span></button>
                                     </a>
                                 </section>
                             </div> <!-- End project-content -->
@@ -381,13 +470,13 @@
             } else {
                 // Create a gradient background with category icon
                 const categoryIcons = {
-                    'graphics': 'ðŸŽ¨',
-                    'ui': 'ðŸ“±',
-                    'product': 'ðŸ’¼',
-                    'animation': 'ðŸŽ¬',
-                    'video': 'ðŸŽ¥'
+                    'graphics': '🎨',
+                    'ui': '📱',
+                    'product': '💼',
+                    'animation': '🎬',
+                    'video': '🎥'
                 };
-                const icon = categoryIcons[project.category] || 'ðŸ“';
+                const icon = categoryIcons[project.category] || '📁';
                 heroElement.innerHTML = `
             <div class="w-full h-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center">
                 <div class="text-center">
@@ -410,13 +499,13 @@
             // Show loading state
             galleryGrid.innerHTML = `
         <div class="col-span-full glassmorphism-card p-12 rounded-xl text-center">
-            <div class="text-4xl mb-4">â³</div>
+            <div class="text-4xl mb-4">⏳</div>
             <h3 class="text-white text-xl font-bold mb-2">Loading Project Files...</h3>
             <p class="text-gray-400">Fetching images and videos from storage...</p>
         </div>
     `;
             try {
-                console.log('ðŸ” Loading files for project:', projectKey);
+                console.log('🔍 Loading files for project:', projectKey);
                 // List files in the project folder
                 const { data: files, error } = await configSupabase.storage
                     .from(SUPABASE_CONFIG.bucket)
@@ -425,16 +514,16 @@
                         sortBy: { column: 'created_at', order: 'desc' }
                     });
                 if (error) {
-                    console.error('âŒ Error loading project files:', error);
+                    console.error('❌ Error loading project files:', error);
                     showNoFilesMessage();
                     return;
                 }
                 if (!files || files.length === 0) {
-                    console.log('ðŸ“ No files found for project:', projectKey);
+                    console.log('🔍 No files found for project:', projectKey);
                     showNoFilesMessage();
                     return;
                 }
-                console.log('âœ… Found', files.length, 'files for project:', projectKey);
+                console.log('✅ Found', files.length, 'files for project:', projectKey);
                 // Filter out logo, banner, thumbnail files, and JSON files
                 const filteredFiles = files.filter(file => {
                     const fileName = file.name.toLowerCase();
@@ -450,7 +539,7 @@
                         fileName !== 'banner.png' &&
                         fileName !== 'project.json';
                 });
-                console.log('ðŸ” Filtered files:', {
+                console.log('🔍 Filtered files:', {
                     original: files.length,
                     filtered: filteredFiles.length,
                     excluded: files.length - filteredFiles.length
@@ -473,7 +562,7 @@
                 // Separate images and videos
                 const images = projectFiles.filter(f => f.type === 'image');
                 const videos = projectFiles.filter(f => f.type === 'video');
-                console.log('ðŸ“Š File breakdown:', {
+                console.log('📊 File breakdown:', {
                     total: projectFiles.length,
                     images: images.length,
                     videos: videos.length
@@ -490,7 +579,7 @@
                         <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer" onclick="openLightbox(${index})">
                             <img src="${file.url}" alt="Project Image ${index + 1}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
                             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                <div class="text-white text-2xl">ðŸ”</div>
+                                <div class="text-white text-2xl">🔍</div>
                             </div>
                         </div>
                     `;
@@ -501,7 +590,7 @@
                                 <source src="${file.url}" type="video/mp4">
                             </video>
                             <div class="absolute inset-0 bg-black/50 flex items-center justify-center group-hover:bg-black/30 transition-all duration-300">
-                                <div class="text-white text-4xl">â–¶ï¸</div>
+                                <div class="text-white text-4xl">▶️</div>
                             </div>
                         </div>
                     `;
@@ -509,7 +598,7 @@
                             return `
                         <div class="glassmorphism-card rounded-xl overflow-hidden aspect-square flex items-center justify-center bg-gray-800">
                             <div class="text-center">
-                                <div class="text-4xl mb-2">ðŸ“„</div>
+                                <div class="text-4xl mb-2">📄</div>
                                 <p class="text-white text-sm">Document</p>
                             </div>
                         </div>
@@ -520,7 +609,7 @@
                     showNoFilesMessage();
                 }
             } catch (error) {
-                console.error('âŒ Error loading project files:', error);
+                console.error('❌ Error loading project files:', error);
                 showNoFilesMessage();
             }
         }
@@ -533,7 +622,7 @@
             const galleryGrid = document.getElementById('gallery-grid');
             galleryGrid.innerHTML = `
         <div class="col-span-full glassmorphism-card p-12 rounded-xl text-center">
-            <div class="text-4xl mb-4">ðŸ“·</div>
+            <div class="text-4xl mb-4">📷</div>
             <h3 class="text-gray-900 dark:text-white text-xl font-bold mb-2">No Files Yet</h3>
             <p class="text-gray-600 dark:text-gray-400">Project files will appear here when uploaded through the admin panel.</p>
         </div>
@@ -575,24 +664,24 @@
                 `}
                 <!-- Close Button -->
                 <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10">
-                    Ã—
+                    ×
                 </button>
                 <!-- Previous Button -->
                 ${allMediaFiles.length > 1 ? `
                     <button onclick="previousMedia()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
-                        â€¹
+                        ‹
                     </button>
                 ` : ''}
                 <!-- Next Button -->
                 ${allMediaFiles.length > 1 ? `
                     <button onclick="nextMedia()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/70 rounded-full w-12 h-12 flex items-center justify-center hover:bg-black/90 transition-all duration-200 z-10 ${currentIndex === allMediaFiles.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}">
-                        â€º
+                        ›
                     </button>
                 ` : ''}
                 <!-- Media Counter and Type Indicator -->
                 ${allMediaFiles.length > 1 ? `
                     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/70 px-4 py-2 rounded-full text-sm flex items-center gap-2">
-                        <span class="text-xs ${isVideo ? 'text-blue-400' : 'text-green-400'}">${isVideo ? 'ðŸŽ¥' : 'ðŸ–¼ï¸'}</span>
+                        <span class="text-xs ${isVideo ? 'text-blue-400' : 'text-green-400'}">${isVideo ? '🎥' : '🖼️'}</span>
                         ${currentIndex + 1} / ${allMediaFiles.length}
                     </div>
                 ` : ''}
@@ -711,7 +800,7 @@
                 let logoPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`;
                 // If new location fails or is empty, use old location
                 if (newLogoResult.error || !newLogoResult.data || newLogoResult.data.length === 0) {
-                    console.log('ðŸ“ Logo not found in new location, trying old location...');
+                    console.log('📂 Logo not found in new location, trying old location...');
                     logoResult = oldLogoResult;
                     logoPath = 'logo';
                 }
@@ -724,18 +813,18 @@
                         const logoElement = document.getElementById('navLogo');
                         if (logoElement) {
                             logoElement.src = logoUrl.data.publicUrl;
-                            console.log('âœ… Logo loaded from:', logoPath);
+                            console.log('✅ Logo loaded from:', logoPath);
                         }
                     }
                 } else {
-                    console.log('âš ï¸ No logo found in either location');
+                    console.log('⚠️ No logo found in either location');
                 }
             })
                 .catch(function (error) {
-                    console.error('âŒ Error loading logo:', error);
+                    console.error('❌ Error loading logo:', error);
                 });
         }
     </script>
 </body>
-</html>
 
+</html>

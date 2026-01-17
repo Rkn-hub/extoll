@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -28,8 +29,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-    // Theme logic moved to head
+  <!-- Theme Initialization -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // Default to dark logic
+      const shouldBeDark = savedTheme === 'dark' || (!savedTheme && true);
+
+      if (shouldBeDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
   </script>
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -71,34 +84,43 @@
       scroll-behavior: smooth;
       overscroll-behavior: none;
     }
+
     :root {
       --colors-primary: #5C5C99;
       --colors-primary-rgb: 92, 92, 153;
     }
+
     .dark {
       --colors-primary: #00aaff;
       --colors-primary-rgb: 0, 170, 255;
     }
+
     @keyframes float {
       0% {
         transform: translate(0px, 0px) scale(1);
       }
+
       33% {
         transform: translate(30px, -50px) scale(1.1);
       }
+
       66% {
         transform: translate(-20px, 20px) scale(0.9);
       }
+
       100% {
         transform: translate(0px, 0px) scale(1);
       }
     }
+
     .animate-float {
       animation: float 20s infinite ease-in-out;
     }
+
     .animate-float-delay {
       animation: float 15s infinite ease-in-out reverse;
     }
+
     /* Page transition styles */
     .page-transition {
       position: fixed;
@@ -113,33 +135,40 @@
       transition: all 0.3s ease;
       pointer-events: none;
     }
+
     .page-transition.active {
       opacity: 1;
       visibility: visible;
       pointer-events: all;
     }
+
     /* Prevent flash of content */
     body {
       opacity: 0;
       transition: opacity 0.3s ease;
     }
+
     body.loaded {
       opacity: 1;
     }
+
     /* Navigation logo preload */
     .nav-logo {
       opacity: 1;
       transition: opacity 0.2s ease;
     }
+
     /* Smooth navigation transitions */
     .nav-link {
       transition: all 0.2s ease;
       position: relative;
     }
+
     .nav-link:hover {
       color: #5C5C99;
       transform: translateY(-1px);
     }
+
     /* Glass card effects - Light Mode */
     .glass-card,
     .glassmorphism {
@@ -152,6 +181,7 @@
       color: #ffffff !important;
       -webkit-
     }
+
     /* Glass card effects - Dark Mode */
     .dark .glass-card,
     .dark .glassmorphism {
@@ -162,14 +192,17 @@
       box-shadow: none;
       color: white !important;
     }
+
     .dark .glass-card h2,
     .dark .glassmorphism h2 {
       color: white !important;
     }
+
     .dark .glass-card p,
     .dark .glassmorphism p {
       color: rgba(255, 255, 255, 0.7) !important;
     }
+
     /* Add subtle underline effect on hover */
     .nav-link::after {
       content: '';
@@ -181,9 +214,11 @@
       background: #00aaff;
       transition: width 0.2s ease;
     }
+
     .nav-link:hover::after {
       width: 100%;
     }
+
     /* Cursor styles for all interactive elements */
     button,
     .cursor-pointer,
@@ -195,10 +230,12 @@
     a[href] {
       cursor: pointer !important;
     }
+
     /* Ensure disabled buttons show not-allowed cursor */
     button:disabled {
       cursor: not-allowed !important;
     }
+
     .material-symbols-outlined {
       font-variation-settings:
         'FILL' 0,
@@ -206,18 +243,63 @@
         'GRAD' 0,
         'opsz' 24
     }
-    .glassmorphism {
-      background-color: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(theme('backdropBlur.glass'));
-      -webkit-backdrop-filter: blur(theme('backdropBlur.glass'));
-      border: 1px solid rgba(209, 213, 219, 0.3);
-    }
+
+    /* Conflicting white-glass removed to fix contrast */
     .dark .glassmorphism {
       background-color: theme('colors.charcoal');
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
+
+    /* Force white text inside glass cards for Light Mode */
+    .glass-card .text-gray-600,
+    .glass-card .text-gray-700,
+    .glass-card .text-gray-800,
+    .glass-card .text-gray-900,
+    .glass-card .text-black,
+    .glassmorphism .text-gray-600,
+    .glassmorphism .text-gray-700,
+    .glassmorphism .text-gray-800,
+    .glassmorphism .text-gray-900,
+    .glassmorphism .text-black {
+      color: white !important;
+    }
+
+    /* Ensure muted text is slightly transparent white instead of gray */
+    .glass-card .text-gray-500,
+    .glassmorphism .text-gray-500 {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+    /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+    .glass-card .bg-gray-100 .text-gray-600,
+    .glass-card .bg-gray-100 .text-gray-700,
+    .glass-card .bg-gray-100 .text-gray-800,
+    .glass-card .bg-gray-100 .text-gray-900,
+    .glass-card .bg-gray-100 .text-black,
+    .glassmorphism .bg-gray-100 .text-gray-600,
+    .glassmorphism .bg-gray-100 .text-gray-700,
+    .glassmorphism .bg-gray-100 .text-gray-800,
+    .glassmorphism .bg-gray-100 .text-gray-900,
+    .glassmorphism .bg-gray-100 .text-black,
+    .glass-card .bg-white .text-gray-600,
+    .glassmorphism .bg-white .text-gray-900 {
+      color: #1f2937 !important;
+      /* Force Dark Gray for contrast on light background */
+    }
+
+    /* FIX: Protect Dark Mode text in those same inner cards */
+    /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+    .dark .glassmorphism .bg-gray-100 .text-gray-600,
+    .dark .glassmorphism .bg-gray-100 .text-gray-700,
+    .dark .glassmorphism .bg-gray-100 .text-gray-800,
+    .dark .glassmorphism .bg-gray-100 .text-gray-900,
+    .dark .glassmorphism .bg-gray-100 .text-black {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
   </style>
 </head>
+
 <body
   class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300">
   <!-- Dynamic Background Glow Effect -->
@@ -234,26 +316,27 @@
   <div class="relative w-full min-h-screen flex flex-col items-center overflow-x-hidden">
     <!-- TopNavBar -->
     <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-      <div class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3">
+      <div
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-3 bg-[#292966]/90 dark:bg-background-dark/80 backdrop-blur-md rounded-xl transition-colors duration-300">
         <a href="index.html"
-          class="flex items-center gap-4 text-gray-900 dark:text-white hover:opacity-80 transition-opacity cursor-pointer"
+          class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity cursor-pointer"
           onclick="smoothNavigate(event, 'index.html')">
           <img src="extoll.png" alt="Extoll.Co Logo - Professional design services"
             class="nav-logo h-8 w-8 object-contain" loading="eager" decoding="sync" id="navLogo">
-          <h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+          <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
             Extoll.Co</h2>
         </a>
         <nav class="hidden md:flex flex-1 justify-end gap-8">
           <div class="flex items-center gap-9">
-            <a class="nav-link text-gray-600 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-white/90 dark:text-white/70 hover:text-primary dark:hover:text-white transition-colors text-sm font-medium leading-normal"
               href="index.html" onclick="smoothNavigate(event, 'index.html')">Home</a>
-            <a class="nav-link text-gray-600 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-white/90 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
               href="portfolio.html">Portfolio</a>
-            <a class="text-gray-900 dark:text-white relative text-sm font-medium leading-normal" href="services.html">
+            <a class="text-white relative text-sm font-medium leading-normal" href="services.html">
               Services
               <span class="absolute bottom-[-8px] left-0 w-full h-0.5 bg-primary"></span>
             </a>
-            <a class="nav-link text-gray-600 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
+            <a class="nav-link text-white/90 dark:text-white/70 hover:text-white transition-colors text-sm font-medium leading-normal"
               href="about.html" onclick="smoothNavigate(event, 'about.html')">About</a>
           </div>
           <a href="contact.html" onclick="smoothNavigate(event, 'contact.html')">
@@ -265,6 +348,13 @@
         </nav>
         <!-- Mobile Menu Button -->
         <div class="flex items-center gap-4 md:hidden">
+          <button class="text-gray-700 dark:text-white p-2" id="mobile-menu-btn"
+            onclick="document.getElementById('mobileMenu').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
         </div>
       </div>
     </header>
@@ -400,9 +490,10 @@
           </div>
           <a href="contact.html">
             <button
-              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:shadow-glow transition-shadow">
-              <span class="truncate">Get in Touch</span>
-            </button>
+              class="mt-8 flex items-center justify-center rounded-lg hover:opacity-90 transition-opacity mx-auto bg-[#5C5C99] dark:bg-[#00aaff]"
+              style="color: #ffffff !important; opacity: 1 !important; z-index: 99 !important; visibility: visible !important; border-radius: 8px !important; padding: 12px 32px !important; display: inline-flex !important; border: 1px solid rgba(255,255,255,0.1) !important; cursor: pointer !important; min-width: 140px !important;"><span
+                class="truncate" style="font-weight: 700 !important; font-size: 16px !important;">Get in
+                Touch</span></button>
           </a>
         </div>
       </section>
@@ -418,7 +509,7 @@
           <a class="text-gray-600 dark:text-white/60 hover:text-primary dark:hover:text-white transition-colors text-sm font-normal leading-normal"
             href="services.html">Services</a>
         </div>
-        <p class="text-gray-500 dark:text-white/50 text-sm font-normal leading-normal">Â© 2024 Extoll.Co. All Rights
+        <p class="text-gray-500 dark:text-white/50 text-sm font-normal leading-normal">© 2024 Extoll.Co. All Rights
           Reserved.</p>
       </div>
     </footer>
@@ -446,42 +537,9 @@
           window.location.href = 'index.html#work';
         });
       });
-      // Initialize sparkle effect
-      initializeSparkleEffect();
     });
-    // Sparkle Background Effect
-    function initializeSparkleEffect() {
-      const sparkleContainer = document.getElementById('sparkleContainer');
-      if (!sparkleContainer) return;
-      const numberOfSparkles = 25;
-      function createSparkle() {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = Math.random() * 100 + '%';
-        sparkle.style.animationDelay = (Math.random() * 18) + 's';
-        const sizeVariations = [2, 2.5, 3, 3.5];
-        const size = sizeVariations[Math.floor(Math.random() * sizeVariations.length)];
-        sparkle.style.width = size + 'px';
-        sparkle.style.height = size + 'px';
-        if (Math.random() > 0.7) {
-          sparkle.style.filter = 'blur(0.5px)';
-        }
-        sparkleContainer.appendChild(sparkle);
-        setTimeout(() => {
-          if (sparkle.parentNode) {
-            sparkle.parentNode.removeChild(sparkle);
-          }
-        }, 20000);
-      }
-      for (let i = 0; i < numberOfSparkles; i++) {
-        setTimeout(() => createSparkle(), Math.random() * 8000);
-      }
-      setInterval(() => {
-        if (sparkleContainer.children.length < numberOfSparkles * 1.5) {
-          createSparkle();
-        }
-      }, 700);
-    }
+
+
     // Smooth page transitions
     function smoothNavigate(event, url) {
       event.preventDefault();
@@ -516,6 +574,7 @@
   <!-- Supabase Integration for Future Dynamic Content -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
+  <script src="website-assets.js"></script>
   <script>
     // Initialize Supabase for potential future dynamic service content
     document.addEventListener('DOMContentLoaded', function () {
@@ -527,64 +586,13 @@
         console.log('âš ï¸ Supabase initialization failed on services page');
       }
     });
-    // Load logo from Supabase with fallback to old location
-    function loadLogo() {
-      if (!initializeSupabase()) {
-        return;
-      }
-      const supabase = configSupabase;
-      // Try new location first, then fallback to old location
-      Promise.all([
-        supabase.storage.from(SUPABASE_CONFIG.bucket).list(`${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`),
-        supabase.storage.from(SUPABASE_CONFIG.bucket).list('logo') // Fallback to old location
-      ]).then(function ([newLogoResult, oldLogoResult]) {
-        let logoResult = newLogoResult;
-        let logoPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`;
-        // If new location fails or is empty, use old location
-        if (newLogoResult.error || !newLogoResult.data || newLogoResult.data.length === 0) {
-          console.log('ðŸ“ Logo not found in new location, trying old location...');
-          logoResult = oldLogoResult;
-          logoPath = 'logo';
-        }
-        if (logoResult.data && logoResult.data.length > 0) {
-          const logoFile = logoResult.data[0].name;
-          const logoUrl = supabase.storage
-            .from(SUPABASE_CONFIG.bucket)
-            .getPublicUrl(`${logoPath}/${logoFile}`);
-          if (logoUrl.data && logoUrl.data.publicUrl) {
-            const logoElement = document.getElementById('navLogo');
-            if (logoElement) {
-              logoElement.src = logoUrl.data.publicUrl;
-              console.log('âœ… Logo loaded from:', logoPath);
-            }
-          }
-        } else {
-          console.log('âš ï¸ No logo found in either location');
-        }
-      })
-        .catch(function (error) {
-          console.error('âŒ Error loading logo:', error);
-        });
-    }
+
   </script>
   <!-- Theme Toggle Function -->
   <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.contains('dark');
-      if (isDark) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      document.querySelectorAll('.icon-sun').forEach(el => el.classList.toggle('hidden'));
-      document.querySelectorAll('.icon-moon').forEach(el => el.classList.toggle('hidden'));
-    }
-    // Theme logic moved to head
+    // Theme toggle function is now handled by website-assets.js
   </script>
 </body>
 <script src="particles.js"></script>
-</html>
 
+</html>

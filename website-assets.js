@@ -67,25 +67,41 @@ async function loadWebsiteAssetsForSite() {
     }
 }
 
-// Update website logo
+// State for logo management
+let currentDarkLogo = 'extoll.png';
+const LIGHT_THEME_LOGO = 'extoll-light.png';
+
+// Update website logo (internal handler)
 function updateWebsiteLogo(logoUrl) {
-    // Update all logo elements on the page
-    const logoElements = document.querySelectorAll('.website-logo, [data-logo], .logo');
+    // Store the URL as the dark/default logo
+    currentDarkLogo = logoUrl;
+
+    // Apply the correct logo based on current theme
+    updateThemeLogo();
+
+    // Update favicon if logo is suitable (keep using the dynamic one for now)
+    updateFavicon(logoUrl);
+
+    console.log('✅ Website logo updated (stored as dark/default):', logoUrl);
+}
+
+// Apply logo based on current theme
+function updateThemeLogo() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const activeLogo = isDark ? currentDarkLogo : LIGHT_THEME_LOGO;
+
+    // Select all potential logo elements
+    const logoElements = document.querySelectorAll('.website-logo, [data-logo], .logo, .nav-logo, #navLogo, #footerLogo');
 
     logoElements.forEach(element => {
         if (element.tagName === 'IMG') {
-            element.src = logoUrl;
+            element.src = activeLogo;
             element.alt = 'Extoll.Co Logo';
         } else {
             // For non-img elements, set as background or create img
-            element.innerHTML = `<img src="${logoUrl}" alt="Extoll.Co Logo" class="h-full w-auto object-contain">`;
+            element.innerHTML = `<img src="${activeLogo}" alt="Extoll.Co Logo" class="h-full w-auto object-contain">`;
         }
     });
-
-    // Update favicon if logo is suitable
-    updateFavicon(logoUrl);
-
-    console.log('✅ Website logo updated:', logoUrl);
 }
 
 // Update website banner
@@ -143,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Theme Management
 const THEME_CONFIG = {
-    key: 'theme_preference',
+    key: 'theme',
     darkClass: 'dark',
     default: 'dark'
 };
@@ -163,6 +179,7 @@ function initTheme() {
     }
 
     updateThemeToggleIcons(shouldBeDark);
+    updateThemeLogo();
 }
 
 function toggleTheme() {
@@ -176,14 +193,15 @@ function toggleTheme() {
     } else {
         html.classList.add(THEME_CONFIG.darkClass);
         localStorage.setItem(THEME_CONFIG.key, 'dark');
+        location.reload(); // Reload to refresh assets if needed, or better:
         updateThemeToggleIcons(true);
     }
+    updateThemeLogo();
 }
 
 function updateThemeToggleIcons(isDark) {
     const toggles = document.querySelectorAll('.theme-toggle');
     toggles.forEach(toggle => {
-        // Simple icon swap logic - can be enhanced with animation
         const sunIcon = toggle.querySelector('.icon-sun');
         const moonIcon = toggle.querySelector('.icon-moon');
 
@@ -197,13 +215,28 @@ function updateThemeToggleIcons(isDark) {
             }
         }
     });
+
+    // Also support checking for ID based toggles if class based not found or specific overrides
+    const sunIcons = document.querySelectorAll('.icon-sun');
+    const moonIcons = document.querySelectorAll('.icon-moon');
+
+    if (toggles.length === 0 && sunIcons.length > 0) {
+        if (isDark) {
+            sunIcons.forEach(el => el.classList.remove('hidden'));
+            moonIcons.forEach(el => el.classList.add('hidden'));
+        } else {
+            sunIcons.forEach(el => el.classList.add('hidden'));
+            moonIcons.forEach(el => el.classList.remove('hidden'));
+        }
+    }
 }
 
 
-// Export functions for use in admin panel
+// Export functions for use in admin panel and global scope
 if (typeof window !== 'undefined') {
     window.updateWebsiteLogo = updateWebsiteLogo;
     window.updateWebsiteBanner = updateWebsiteBanner;
     window.loadWebsiteAssetsForSite = loadWebsiteAssetsForSite;
     window.toggleTheme = toggleTheme;
+    window.initTheme = initTheme;
 }

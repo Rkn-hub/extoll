@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
@@ -31,267 +32,384 @@
   </script>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="extoll.png">
-    <link rel="apple-touch-icon" href="extoll.png">
-    <!-- Resource hints for better performance -->
-    <link rel="dns-prefetch" href="//lnxvkbsbwymmzkyuixgd.supabase.co">
-    <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-    // Theme logic moved to head
+    <!DOCTYPE html>
+    <html class="dark" lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+        <meta name="description"
+            content="Extoll.co delivers intuitive UI/UX design services, creating engaging user interfaces and seamless experiences for web and mobile applications." />
+        <meta name="keywords"
+            content="ui design, ux design, user interface, user experience, web design, app design, prototyping, wireframing" />
+        <meta name="author" content="Extoll.Co" />
+        <title>UI/UX Design Services | Extoll</title>
+        <!-- Organization Schema -->
+        <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Extoll.co",
+    "url": "https://extoll.co.in",
+    "logo": "https://extoll.co.in/extoll.png",
+    "description": "Execution-first freelance collective specializing in Graphics Design, UI/UX Design, Product Design, 2D Animation, and Web Development.",
+    "sameAs": [
+      "https://instagram.com/extollco"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-9315158312",
+      "contactType": "customer service",
+      "availableLanguage": "English"
+    }
+  }
   </script>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
-        rel="stylesheet" />
-    <style>
-        /* Glassmorphism - Light Mode Default */
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.2);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        /* Glassmorphism - Dark Mode */
-        .dark .glassmorphism {
-            background: rgba(20, 29, 36, 0.4);
-            border: 1px solid rgba(45, 60, 71, 0.5);
-        }
-        @keyframes float {
-            0% {
-                transform: translate(0px, 0px) scale(1);
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="extoll.png">
+        <link rel="apple-touch-icon" href="extoll.png">
+        <!-- Resource hints for better performance -->
+        <link rel="dns-prefetch" href="//lnxvkbsbwymmzkyuixgd.supabase.co">
+        <link rel="preconnect" href="https://lnxvkbsbwymmzkyuixgd.supabase.co" crossorigin>
+        <link rel="preconnect" href="https://cdn.tailwindcss.com">
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <style>
+            /* Glassmorphism - Light Mode Default */
+            .glassmorphism {
+                background: rgba(255, 255, 255, 0.2);
+                -webkit-backdrop-filter: blur(12px);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
             }
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
+
+            /* Glassmorphism - Dark Mode */
+            .dark .glassmorphism {
+                background: rgba(20, 29, 36, 0.4);
+                border: 1px solid rgba(45, 60, 71, 0.5);
             }
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
+
+            @keyframes float {
+                0% {
+                    transform: translate(0px, 0px) scale(1);
+                }
+
+                33% {
+                    transform: translate(30px, -50px) scale(1.1);
+                }
+
+                66% {
+                    transform: translate(-20px, 20px) scale(0.9);
+                }
+
+                100% {
+                    transform: translate(0px, 0px) scale(1);
+                }
             }
-            100% {
-                transform: translate(0px, 0px) scale(1);
+
+            .animate-float {
+                animation: float 20s infinite ease-in-out;
             }
-        }
-        .animate-float {
-            animation: float 20s infinite ease-in-out;
-        }
-        .animate-float-delay {
-            animation: float 15s infinite ease-in-out reverse;
-        }
-        .neon-glow {
-            box-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff, 0 0 15px #00aaff;
-        }
-        .neon-glow-subtle {
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
-        }
-        .gradient-background {
-            background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
-        }
-        /* Glass card effects */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(209, 213, 219, 0.3);
-            transition: all 0.3s ease-in-out;
-            color: #1f2937;
-        }        /* Glass card effects - Dark Mode */
-        .dark .glass-card {
-            background: rgba(20, 29, 36, 0.4) !important;
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(112, 253, 255, 0.1) !important;
-            box-shadow: none;
-            color: white !important;
-        }
-        .glass-card:hover {
-            border-color: rgba(0, 168, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 168, 255, 0.15), 0 0 40px rgba(0, 168, 255, 0.1);
-            transform: translateY(-4px);
-        }
-        html {
-            scroll-behavior: smooth;
-            overscroll-behavior: none;
-        }
-        .section {
-            padding: 20px 0;
-        }
-        .nav-active {
-            color: white !important;
-            position: relative;
-        }
-        .nav-active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #00aaff;
-            border-radius: 1px;
-        }
-        .nav-link {
-            position: relative;
-            transition: all 0.2s ease;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #00aaff;
-            border-radius: 1px;
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        .nav-logo {
-            opacity: 1;
-            transition: opacity 0.2s ease;
-        }
-        /* Mobile styles */
-        .mobile-nav-link {
-            position: relative;
-        }
-        .mobile-nav-link.active {
-            color: white !important;
-            background: rgba(0, 170, 255, 0.1);
-        }
-        .mobile-nav-link.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 60%;
-            background: #00aaff;
-            border-radius: 2px;
-            box-shadow: 0 0 8px rgba(0, 170, 255, 0.6);
-        }
-        #mobileMenu {
-            transition: all 0.3s ease-in-out;
-            max-height: 0;
-            overflow: hidden;
-        }
-        #mobileMenu.show {
-            max-height: 400px;
-        }
-        /* Responsive text */
-        @media (max-width: 640px) {
-            html {
-                font-size: 16px;
+
+            .animate-float-delay {
+                animation: float 15s infinite ease-in-out reverse;
             }
-        }
-        @media (min-width: 641px) and (max-width: 1024px) {
-            html {
-                font-size: 17px;
+
+            .neon-glow {
+                box-shadow: 0 0 5px #00aaff, 0 0 10px #00aaff, 0 0 15px #00aaff;
             }
-        }
-        @media (min-width: 1025px) {
-            html {
-                font-size: 18px;
+
+            .neon-glow-subtle {
+                box-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
             }
-        }
-        @media (max-width: 1024px) {
-            .mobile-nav-link {
-                min-height: 48px;
-                display: flex;
-                align-items: center;
+
+            .gradient-background {
+                background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
             }
-            button {
-                min-height: 44px;
-            }
-            .section {
-                padding: 16px 0;
-            }
+
+            /* Glass card effects */
             .glass-card {
-                margin: 0 8px;
+                background: rgba(255, 255, 255, 0.7);
+                -webkit-backdrop-filter: blur(12px);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(209, 213, 219, 0.3);
+                transition: all 0.3s ease-in-out;
+                color: #1f2937;
             }
-            .project-grid {
-                gap: 16px;
+
+            /* Glass card effects - Dark Mode */
+            .dark .glass-card {
+                background: rgba(20, 29, 36, 0.4) !important;
+                -webkit-backdrop-filter: blur(12px);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(112, 253, 255, 0.1) !important;
+                box-shadow: none;
+                color: white !important;
             }
-        }
-        @media (min-width: 641px) and (max-width: 1024px) {
-            .section {
-                padding: 18px 0;
+
+            .glass-card:hover {
+                border-color: rgba(0, 168, 255, 0.5);
+                box-shadow: 0 0 20px rgba(0, 168, 255, 0.15), 0 0 40px rgba(0, 168, 255, 0.1);
+                transform: translateY(-4px);
             }
-        }
-        @media (min-width: 1025px) {
+
+            html {
+                scroll-behavior: smooth;
+                overscroll-behavior: none;
+            }
+
             .section {
                 padding: 20px 0;
             }
-            .nav-link:hover {
-                transform: translateY(-1px);
+
+            .nav-active {
+                color: white !important;
+                position: relative;
             }
-            .glass-card:hover {
-                transform: translateY(-6px);
+
+            .nav-active::after {
+                content: '';
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: #00aaff;
+                border-radius: 1px;
             }
-        }
-        /* Cursors */
-        button,
-        .cursor-pointer,
-        .portfolio-item,
-        .filter-chip,
-        .glass-card,
-        .cyber-container,
-        .nav-link,
-        .mobile-nav-link,
-        [onclick],
-        [data-service],
-        [data-filter],
-        [data-section],
-        a[href] {
-            cursor: pointer !important;
-        }
-        :root {
-      --colors-primary: #5C5C99;
-    }
-    .dark {
-      --colors-primary: #00aaff;
-    }
-  </style>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#00aaff",
-                        "background-light": "#f5f7f8",
-                        "background-dark": "#0A0A0D",
+
+            .nav-link {
+                position: relative;
+                transition: all 0.2s ease;
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: #00aaff;
+                border-radius: 1px;
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+            .nav-logo {
+                opacity: 1;
+                transition: opacity 0.2s ease;
+            }
+
+            /* Mobile styles */
+            .mobile-nav-link {
+                position: relative;
+            }
+
+            .mobile-nav-link.active {
+                color: white !important;
+                background: rgba(0, 170, 255, 0.1);
+            }
+
+            .mobile-nav-link.active::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 60%;
+                background: #00aaff;
+                border-radius: 2px;
+                box-shadow: 0 0 8px rgba(0, 170, 255, 0.6);
+            }
+
+            #mobileMenu {
+                transition: all 0.3s ease-in-out;
+                max-height: 0;
+                overflow: hidden;
+            }
+
+            #mobileMenu.show {
+                max-height: 400px;
+            }
+
+            /* Responsive text */
+            @media (max-width: 640px) {
+                html {
+                    font-size: 16px;
+                }
+            }
+
+            @media (min-width: 641px) and (max-width: 1024px) {
+                html {
+                    font-size: 17px;
+                }
+            }
+
+            @media (min-width: 1025px) {
+                html {
+                    font-size: 18px;
+                }
+            }
+
+            @media (max-width: 1024px) {
+                .mobile-nav-link {
+                    min-height: 48px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                button {
+                    min-height: 44px;
+                }
+
+                .section {
+                    padding: 16px 0;
+                }
+
+                .glass-card {
+                    margin: 0 8px;
+                }
+
+                .project-grid {
+                    gap: 16px;
+                }
+            }
+
+            @media (min-width: 641px) and (max-width: 1024px) {
+                .section {
+                    padding: 18px 0;
+                }
+            }
+
+            @media (min-width: 1025px) {
+                .section {
+                    padding: 20px 0;
+                }
+
+                .nav-link:hover {
+                    transform: translateY(-1px);
+                }
+
+                .glass-card:hover {
+                    transform: translateY(-6px);
+                }
+            }
+
+            /* Cursors */
+            button,
+            .cursor-pointer,
+            .portfolio-item,
+            .filter-chip,
+            .glass-card,
+            .cyber-container,
+            .nav-link,
+            .mobile-nav-link,
+            [onclick],
+            [data-service],
+            [data-filter],
+            [data-section],
+            a[href] {
+                cursor: pointer !important;
+            }
+
+            :root {
+                --colors-primary: #5C5C99;
+            }
+
+            .dark {
+                --colors-primary: #00aaff;
+            }
+
+            /* Force white text inside glass cards ONLY for Dark Mode */
+            .dark .glass-card .text-gray-600,
+            .dark .glass-card .text-gray-700,
+            .dark .glass-card .text-gray-800,
+            .dark .glass-card .text-gray-900,
+            .dark .glass-card .text-black,
+            .dark .glassmorphism .text-gray-600,
+            .dark .glassmorphism .text-gray-700,
+            .dark .glassmorphism .text-gray-800,
+            .dark .glassmorphism .text-gray-900,
+            .dark .glassmorphism .text-black {
+                color: white !important;
+            }
+
+            /* Ensure muted text is slightly transparent white instead of gray */
+            .glass-card .text-gray-500,
+            .glassmorphism .text-gray-500 {
+                color: rgba(255, 255, 255, 0.7) !important;
+            }
+
+            /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
+            /* Target elements inside bg-gray-100 or bg-white that are inside glass cards */
+            .glass-card .bg-gray-100 .text-gray-600,
+            .glass-card .bg-gray-100 .text-gray-700,
+            .glass-card .bg-gray-100 .text-gray-800,
+            .glass-card .bg-gray-100 .text-gray-900,
+            .glass-card .bg-gray-100 .text-black,
+            .glassmorphism .bg-gray-100 .text-gray-600,
+            .glassmorphism .bg-gray-100 .text-gray-700,
+            .glassmorphism .bg-gray-100 .text-gray-800,
+            .glassmorphism .bg-gray-100 .text-gray-900,
+            .glassmorphism .bg-gray-100 .text-black,
+            .glass-card .bg-white .text-gray-600,
+            .glassmorphism .bg-white .text-gray-900 {
+                color: #1f2937 !important;
+                /* Force Dark Gray for contrast on light background */
+            }
+
+            /* FIX: Protect Dark Mode text in those same inner cards */
+            /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+            .dark .glassmorphism .bg-gray-100 .text-gray-600,
+            .dark .glassmorphism .bg-gray-100 .text-gray-700,
+            .dark .glassmorphism .bg-gray-100 .text-gray-800,
+            .dark .glassmorphism .bg-gray-100 .text-gray-900,
+            .dark .glassmorphism .bg-gray-100 .text-black {
+                color: rgba(255, 255, 255, 0.9) !important;
+            }
+        </style>
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "primary": "#00aaff",
+                            "background-light": "#E6E6FF",
+                            "background-dark": "#0A0A0D",
+                        },
+                        fontFamily: {
+                            "display": ["Space Grotesk", "sans-serif"]
+                        },
+                        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                     },
-                    fontFamily: {
-                        "display": ["Space Grotesk", "sans-serif"]
-                    },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
                 },
-            },
-        }
-    </script>
-</head>
+            }
+        </script>
+    </head>
+
 <body
     class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 transition-colors duration-300">
     <!-- Header -->
     <header
-        class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md transition-colors duration-300">
+        class="fixed top-0 left-0 right-0 z-50 bg-[#292966]/90 dark:bg-background-dark/80 backdrop-blur-md transition-colors duration-300">
         <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
             <div class="flex items-center justify-between border-b border-white/10 px-6 py-3">
-                <a href="index.html"
-                    class="flex items-center gap-4 text-gray-900 dark:text-white hover:opacity-80 transition-opacity">
-                    <img src="extoll.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain">
+                <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity">
+                    <img src="extoll.png" alt="Extoll.Co Logo" class="h-8 w-8 object-contain" id="navLogo">
                     <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Extoll.Co</h2>
                 </a>
                 <nav class="hidden md:flex flex-1 justify-end gap-8 items-center">
-                    <a class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                    <a class="text-white/90 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
                         href="index.html">Home</a>
-                    <a class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                    <a class="text-white/90 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
                         href="portfolio.html">Portfolio</a>
-                    <a class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                    <a class="text-white/90 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
                         href="services.html">Services</a>
-                    <a class="text-gray-600 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                    <a class="text-white/90 dark:text-white/70 hover:text-primary transition-colors text-sm font-medium"
                         href="contact.html">Contact</a>
                     <!-- Theme Toggle -->
                 </nav>
@@ -314,14 +432,28 @@
                 </p>
                 <div class="mt-8">
                     <a href="contact.html"
-                        class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors inline-block">
+                        class="bg-[#5C5C99] dark:bg-[#00aaff] text-white px-8 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity inline-block">
                         See Our Portfolio
                     </a>
                 </div>
             </div>
         </div>
     </main>
+    <footer class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-white/10">
+        <div class="flex flex-col gap-6 text-center">
+            <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+                <a class="text-gray-600 dark:text-white/60 hover:text-primary dark:hover:text-white transition-colors text-sm font-normal leading-normal"
+                    href="index.html">Home</a>
+                <a class="text-gray-600 dark:text-white/60 hover:text-primary dark:hover:text-white transition-colors text-sm font-normal leading-normal"
+                    href="index.html#work">Portfolio</a>
+                <a class="text-gray-600 dark:text-white/60 hover:text-primary dark:hover:text-white transition-colors text-sm font-normal leading-normal"
+                    href="services.html">Services</a>
+            </div>
+            <p class="text-gray-500 dark:text-white/50 text-sm font-normal leading-normal">© 2024 Extoll.Co. All Rights
+                Reserved.</p>
+        </div>
+    </footer>
     <script src="website-assets.js"></script>
 </body>
-</html>
 
+</html>

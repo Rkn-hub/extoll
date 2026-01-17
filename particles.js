@@ -10,7 +10,7 @@
         maxSize: 6,             // Larger (was 4)
         minDuration: 8000,      // Faster (was 10000)
         maxDuration: 18000,     // Faster (was 20000)
-        color: 'rgba(92, 92, 153, 0.9)' // High intensity purple
+        color: 'rgba(0, 168, 255, 0.9)' // Electric Blue
     };
 
     // Inject CSS
