@@ -180,7 +180,7 @@ function createProjectCard(project) {
   card.setAttribute('data-project', project.key);
 
   const thumbnailHtml = project.thumbnail_url
-    ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">`
+    ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">`
     : createPlaceholderThumbnail(project);
 
   card.innerHTML = `

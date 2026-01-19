@@ -1,0 +1,365 @@
+/* =========================================================
+   EXTOLL - SHARED STYLES
+   Centralized stylesheet to eliminate duplication
+   ========================================================= */
+
+/* ========== CSS CUSTOM PROPERTIES ========== */
+:root {
+    --colors-primary: #5C5C99;
+    --colors-primary-rgb: 92, 92, 153;
+    --bg-light: #E6E6FF;
+    --bg-dark: #0A0A0D;
+    --navy: #292966;
+    --purple: #5C5C99;
+    --purple-light: #A3A3CC;
+    --purple-lighter: #CCCCFF;
+}
+
+.dark {
+    --colors-primary: #00aaff;
+    --colors-primary-rgb: 0, 170, 255;
+}
+
+/* ========== BASE STYLES ========== */
+html {
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes float {
+    0% {
+        transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0px, 0px) scale(1);
+    }
+}
+
+.animate-float {
+    animation: float 20s infinite ease-in-out;
+}
+
+.animate-float-delay {
+    animation: float 15s infinite ease-in-out reverse;
+}
+
+/* ========== GLASS CARD EFFECTS ========== */
+
+/* Light Mode Glass Cards */
+.glass-card,
+.glassmorphism {
+    background: rgba(41, 41, 102, 0.85);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(41, 41, 102, 0.2);
+    /* OPTIMIZED: Only transition specific properties */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    color: #ffffff !important;
+}
+
+/* Dark Mode Glass Cards */
+.dark .glass-card,
+.dark .glassmorphism {
+    background: rgba(20, 29, 36, 0.4) !important;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(112, 253, 255, 0.1) !important;
+    box-shadow: none;
+    color: white !important;
+}
+
+/* Glass Card Hover Effects */
+.glass-card:hover {
+    /* OPTIMIZED: Use will-change for better performance */
+    will-change: transform;
+    transform: translateY(-6px);
+}
+
+/* ========== TEXT COLOR FIXES ========== */
+
+/* Force white text inside glass cards for Light Mode */
+.glass-card .text-gray-600,
+.glass-card .text-gray-700,
+.glass-card .text-gray-800,
+.glass-card .text-gray-900,
+.glass-card .text-black,
+.glassmorphism .text-gray-600,
+.glassmorphism .text-gray-700,
+.glassmorphism .text-gray-800,
+.glassmorphism .text-gray-900,
+.glassmorphism .text-black {
+    color: white !important;
+}
+
+/* Muted text - slightly transparent white */
+.glass-card .text-gray-500,
+.glassmorphism .text-gray-500 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Dark text for light-colored inner cards */
+.glass-card .bg-gray-100 .text-gray-600,
+.glass-card .bg-gray-100 .text-gray-700,
+.glass-card .bg-gray-100 .text-gray-800,
+.glass-card .bg-gray-100 .text-gray-900,
+.glass-card .bg-gray-100 .text-black,
+.glassmorphism .bg-gray-100 .text-gray-600,
+.glassmorphism .bg-gray-100 .text-gray-700,
+.glassmorphism .bg-gray-100 .text-gray-800,
+.glassmorphism .bg-gray-100 .text-gray-900,
+.glassmorphism .bg-gray-100 .text-black,
+.glass-card .bg-white .text-gray-600,
+.glassmorphism .bg-white .text-gray-900 {
+    color: #1f2937 !important;
+}
+
+/* Dark mode text in inner cards */
+.dark .glassmorphism .bg-gray-100 .text-gray-600,
+.dark .glassmorphism .bg-gray-100 .text-gray-700,
+.dark .glassmorphism .bg-gray-100 .text-gray-800,
+.dark .glassmorphism .bg-gray-100 .text-gray-900,
+.dark .glassmorphism .bg-gray-100 .text-black {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ========== NAVIGATION STYLES ========== */
+
+.nav-logo {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.nav-link {
+    position: relative;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-1px);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--colors-primary);
+    border-radius: 1px;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--colors-primary);
+    border-radius: 1px;
+}
+
+/* ========== MOBILE NAVIGATION ========== */
+
+.mobile-nav-link {
+    position: relative;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-nav-link.active {
+    color: white !important;
+    background: rgba(var(--colors-primary-rgb), 0.1);
+}
+
+.mobile-nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: var(--colors-primary);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(var(--colors-primary-rgb), 0.6);
+}
+
+#mobileMenu {
+    transition: all 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobileMenu.show {
+    max-height: 400px;
+}
+
+/* ========== CURSOR STYLES ========== */
+
+button,
+.cursor-pointer,
+.portfolio-item,
+.filter-chip,
+.glass-card,
+.cyber-container,
+.nav-link,
+.mobile-nav-link,
+[onclick],
+[data-service],
+[data-filter],
+[data-section],
+a[href],
+.service-tile,
+.project-card,
+.contact-link {
+    cursor: pointer !important;
+}
+
+button:disabled,
+.cursor-pointer:disabled {
+    cursor: not-allowed !important;
+}
+
+/* ========== RESPONSIVE TYPOGRAPHY ========== */
+
+@media (max-width: 640px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    html {
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 1025px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+/* ========== MOBILE OPTIMIZATIONS ========== */
+
+@media (max-width: 1024px) {
+    .mobile-nav-link {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        min-height: 44px;
+    }
+
+    .section {
+        padding: 16px 0;
+    }
+
+    .glass-card {
+        margin: 0 8px;
+    }
+
+    .project-grid {
+        gap: 16px;
+    }
+}
+
+/* ========== TABLET OPTIMIZATIONS ========== */
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .section {
+        padding: 18px 0;
+    }
+}
+
+/* ========== DESKTOP OPTIMIZATIONS ========== */
+
+@media (min-width: 1025px) {
+    .section {
+        padding: 20px 0;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-1px);
+    }
+
+    .glass-card:hover {
+        transform: translateY(-6px);
+    }
+}
+
+/* ========== HIGH DPI DISPLAYS ========== */
+
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+    .nav-link::after,
+    .nav-active::after {
+        height: 2px;
+    }
+}
+
+/* ========== UTILITY CLASSES ========== */
+
+.neon-glow {
+    box-shadow: 0 0 5px var(--colors-primary), 0 0 10px var(--colors-primary), 0 0 15px var(--colors-primary);
+}
+
+.neon-glow-subtle {
+    box-shadow: 0 0 8px rgba(var(--colors-primary-rgb), 0.3);
+}
+
+.gradient-background {
+    background-image: radial-gradient(circle at 50% 30%, rgba(0, 170, 255, 0.1), transparent 40%);
+}
+
+.neon-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00A8FF, transparent);
+    box-shadow: 0 0 10px #00A8FF;
+}
+
+.glow-frame {
+    box-shadow: 0 0 20px 5px rgba(0, 168, 255, 0.3), 0 0 40px 10px rgba(112, 253, 255, 0.2);
+}
+
+/* ========== PAGE TRANSITION ========== */
+
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a0d 0%, #1a1a2e 100%);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease-in-out;
+}
+
+.page-transition.active {
+    opacity: 1;
+    visibility: visible;
+}

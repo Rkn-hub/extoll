@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Small delay to ensure other scripts are loaded
     setTimeout(() => {
         loadWebsiteAssetsForSite();
-    }, 500);
+    }, 100); // Reduced from 500ms for faster loading
 });
 
 // Theme Management
@@ -193,9 +193,9 @@ function toggleTheme() {
     } else {
         html.classList.add(THEME_CONFIG.darkClass);
         localStorage.setItem(THEME_CONFIG.key, 'dark');
-        location.reload(); // Reload to refresh assets if needed, or better:
         updateThemeToggleIcons(true);
     }
+    // Update logo immediately without reload
     updateThemeLogo();
 }
 
