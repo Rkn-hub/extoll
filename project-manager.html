@@ -547,9 +547,9 @@
         let currentProject = null;
         let projectFiles = [];
         let adminSupabase = null;
-        // Get project ID from URL
+        // Get project key from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const projectId = urlParams.get('id');
+        const projectKey = urlParams.get('key');
         // Notification function
         function showNotification(message, type) {
             const notification = document.getElementById('notification');
@@ -566,12 +566,12 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
             console.log('🚀 Project Manager initializing...');
-            if (!projectId) {
+            if (!projectKey) {
                 showProjectNotFound();
                 return;
             }
             // Check if this is a new project creation
-            if (projectId === 'new') {
+            if (projectKey === 'new') {
                 console.log('📂 Creating new project...');
                 setupNewProjectMode();
                 return;
@@ -584,7 +584,7 @@
                     console.log('✅ Supabase initialized');
                 }
             }
-            loadProject(projectId);
+            loadProject(projectKey);
             setupEventListeners();
         });
         function setupNewProjectMode() {
@@ -624,11 +624,11 @@
             document.getElementById('projectNotFound').classList.add('hidden');
             document.getElementById('projectManager').classList.remove('hidden');
         }
-        async function loadProject(projectId) {
+        async function loadProject(projectKey) {
             try {
                 // Load from localStorage first
                 const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-                currentProject = projects.find(p => p.id === projectId);
+                currentProject = projects.find(p => p.key === projectKey);
                 if (!currentProject) {
                     showProjectNotFound();
                     return;
@@ -821,12 +821,15 @@
             videoInput.addEventListener('change', handleVideoUpload);
             // Auto-generate project key from title
             document.getElementById('projectTitle').addEventListener('input', function (e) {
-                const key = e.target.value.toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-')
-                    .trim();
-                document.getElementById('projectKey').value = key;
+                // Only auto-generate key for new projects to prevent breaking references
+                if (!currentProject) {
+                    const key = e.target.value.toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .replace(/\s+/g, '-')
+                        .replace(/-+/g, '-')
+                        .trim();
+                    document.getElementById('projectKey').value = key;
+                }
                 // Update overview in real-time
                 if (currentProject) {
                     currentProject.title = e.target.value;

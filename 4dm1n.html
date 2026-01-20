@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="dark" lang="en">
 
 <head>
@@ -426,7 +426,7 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
                                 <textarea id="heroDescription" class="form-textarea" rows="3"
-                                    placeholder="Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create..."></textarea>
+                                    placeholder="Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -860,12 +860,28 @@
                 });
         }
         // Project functions
+        // Generate a random UUID for project ID
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Generate a short random suffix for project key uniqueness
+        function generateShortId() {
+            return Math.random().toString(36).substring(2, 8);
+        }
+
         function generateProjectKey(title) {
-            return title.toLowerCase()
+            const baseKey = title.toLowerCase()
                 .replace(/[^a-z0-9\s-]/g, '')
                 .replace(/\s+/g, '-')
                 .replace(/-+/g, '-')
                 .trim();
+            // Add short random suffix for uniqueness
+            return baseKey + '-' + generateShortId();
         }
         function handleThumbnailSelect(file) {
             selectedThumbnail = file;
@@ -875,7 +891,7 @@
                 reader.onload = function (e) {
                     preview.innerHTML = '<div style="display: inline-block; position: relative;">' +
                         '<img src="' + e.target.result + '" alt="Thumbnail preview" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">' +
-                        '<button onclick="removeThumbnail()" style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">Ã—</button>' +
+                        '<button onclick="removeThumbnail()" style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">×</button>' +
                         '</div>';
                 };
                 reader.readAsDataURL(file);
@@ -954,7 +970,7 @@
                         console.log('❌ Metadata bucket failed, storing in localStorage only:', result.error);
                         // Store in localStorage as fallback
                         const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-                        projectData.id = Date.now().toString();
+                        projectData.id = generateUUID();
                         projectData.created_at = new Date().toISOString();
                         existingProjects.push(projectData);
                         localStorage.setItem('projects', JSON.stringify(existingProjects));
@@ -964,7 +980,7 @@
                     console.error('❌ Error creating project:', error);
                     // Store in localStorage as fallback
                     const existingProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-                    projectData.id = Date.now().toString();
+                    projectData.id = generateUUID();
                     projectData.created_at = new Date().toISOString();
                     existingProjects.push(projectData);
                     localStorage.setItem('projects', JSON.stringify(existingProjects));
@@ -994,15 +1010,15 @@
         async function loadProjects() {
             try {
                 // Debug: Log what we're trying to load
-                console.log('🔄 Loading projects...');
-                // Try to load from Supabase database first
-                const result = await getProjects();
+                console.log('🔄 Loading projects from portfolio bucket...');
+                // Use getProjectsPublic for consistency with portfolio page
+                const result = await getProjectsPublic();
                 if (result.success && result.data.length > 0) {
                     projects = result.data;
-                    console.log('✅ Loaded projects:', projects.length);
+                    console.log('✅ Loaded projects from bucket:', projects.length);
                     console.log('📝 Project titles:', projects.map(p => p.title));
                 } else {
-                    console.log('📄 No projects found');
+                    console.log('📄 No projects found in bucket');
                     projects = [];
                 }
                 displayProjects();
@@ -1028,7 +1044,7 @@
                 return;
             }
             projectsList.innerHTML = filteredProjects.map(project => `
-        <div class="bg-gray-800/50 p-6 rounded-lg cursor-pointer hover:bg-gray-800/70 transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="openProjectManager('${project.id}')">
+        <div class="bg-gray-800/50 p-6 rounded-lg cursor-pointer hover:bg-gray-800/70 transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="openProjectManager('${project.key}')">
             <div class="flex items-start justify-between">
                 <div class="flex items-start gap-4 flex-1">
                     ${project.thumbnail_url ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-20 h-20 object-cover rounded-lg">` : ''}
@@ -1048,7 +1064,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-2 ml-4">
-                    <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm transition-colors" onclick="event.stopPropagation(); deleteProject('${project.id}')">Delete</button>
+                    <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm transition-colors" onclick="event.stopPropagation(); deleteProject('${project.key}')">Delete</button>
                 </div>
             </div>
         </div>
@@ -1154,12 +1170,12 @@
                 showNotification('Sync failed: ' + error.message, 'error');
             }
         }
-        function openProjectManager(id) {
+        function openProjectManager(key) {
             // Redirect to project manager in same tab
-            window.location.href = `project-manager.html?id=${id}`;
+            window.location.href = `project-manager.html?key=${key}`;
         }
-        function editProject(id) {
-            const project = projects.find(p => p.id === id);
+        function editProject(key) {
+            const project = projects.find(p => p.key === key);
             if (!project) return;
             // Fill form with project data
             document.getElementById('projectTitle').value = project.title;
@@ -1182,14 +1198,15 @@
             // Change form button to update
             const submitBtn = document.querySelector('#projectForm button[type="submit"]');
             submitBtn.textContent = 'Update Project';
+            const projectKey = project.key; // Store key for closure
             submitBtn.onclick = function (e) {
                 e.preventDefault();
-                updateProject(id);
+                updateProject(projectKey);
             };
             showNotification('Project loaded for editing', 'success');
         }
-        async function updateProject(id) {
-            const project = projects.find(p => p.id === id);
+        async function updateProject(key) {
+            const project = projects.find(p => p.key === key);
             if (!project) return;
             // Update project data
             project.title = document.getElementById('projectTitle').value;
@@ -1249,12 +1266,12 @@
             // Refresh projects list
             loadProjects();
         }
-        function duplicateProject(id) {
-            const project = projects.find(p => p.id === id);
+        function duplicateProject(key) {
+            const project = projects.find(p => p.key === key);
             if (!project) return;
             const newProject = {
                 ...project,
-                id: Date.now().toString(),
+                id: generateUUID(),
                 title: project.title + ' (Copy)',
                 key: project.key + '-copy',
                 created_at: new Date().toISOString()
@@ -1264,15 +1281,15 @@
             showNotification('Project duplicated successfully!', 'success');
             loadProjects();
         }
-        async function deleteProject(id) {
+        async function deleteProject(key) {
             if (!confirm('Are you sure you want to delete this project? This will also delete all associated files.')) return;
-            const projectIndex = projects.findIndex(p => p.id === id);
+            const projectIndex = projects.findIndex(p => p.key === key);
             if (projectIndex === -1) {
                 showNotification('Project not found', 'error');
                 return;
             }
             const project = projects[projectIndex];
-            console.log('🗑️ Deleting project:', project.title, '(ID:', id, ')');
+            console.log('Deleting project:', project.title, '(Key:', key, ')');
             try {
                 // Delete from metadata bucket using the config function
                 if (project.key) {
@@ -1884,38 +1901,7 @@
             // Load existing files from storage
             loadProjectFiles(project.key);
         }
-        function loadProjectFiles(projectKey) {
-            if (!adminSupabase) return;
-            adminSupabase.storage
-                .from(SUPABASE_CONFIG.bucket)
-                .list(projectKey, {
-                    limit: 1000,
-                    sortBy: { column: 'created_at', order: 'desc' }
-                })
-                .then(function (result) {
-                    if (result.error) {
-                        console.error('Error loading project files:', result.error);
-                        return;
-                    }
-                    galleryFiles = result.data.map(function (file) {
-                        const publicUrlResult = adminSupabase.storage
-                            .from(SUPABASE_CONFIG.bucket)
-                            .getPublicUrl(projectKey + '/' + file.name);
-                        return {
-                            name: file.name,
-                            path: projectKey + '/' + file.name,
-                            url: publicUrlResult.data.publicUrl,
-                            size: file.metadata?.size || 0,
-                            created_at: file.created_at,
-                            type: getFileType(file.name)
-                        };
-                    });
-                    displayGallery();
-                })
-                .catch(function (error) {
-                    console.error('Error loading project files:', error);
-                });
-        }
+        // Note: loadProjectFiles is defined earlier in the file with full filtering logic
         function getFileType(filename) {
             const ext = filename.split('.').pop().toLowerCase();
             const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
@@ -2095,7 +2081,7 @@
                         // Hero Section
                         document.getElementById('heroTitle').value = content.heroTitle || 'Crafting Digital Experiences That Stand Out';
                         document.getElementById('heroSubtitle').value = content.heroSubtitle || 'Where ideas meet execution.';
-                        document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+                        document.getElementById('heroDescription').value = content.heroDescription || 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
                         // About Section
                         document.getElementById('aboutTitle').value = content.aboutTitle || 'About Extoll';
                         document.getElementById('aboutTagline').value = content.aboutTagline || 'Execution-first freelance collective. Powered by Startup Ops.';
@@ -2126,7 +2112,7 @@
             // Set default values
             document.getElementById('heroTitle').value = 'Crafting Digital Experiences That Stand Out';
             document.getElementById('heroSubtitle').value = 'Where ideas meet execution.';
-            document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internetâ€”a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
+            document.getElementById('heroDescription').value = 'Extoll.Co is our space on the internet—a private hub where we showcase what we build, design, and create. No public posting, no external uploads. Just our team\'s best work. We started Extoll with one purpose: to make it easier for clients to discover our talent and reach out directly for projects.';
             document.getElementById('aboutTitle').value = 'About Extoll';
             document.getElementById('aboutTagline').value = 'Execution-first freelance collective. Powered by Startup Ops.';
             document.getElementById('aboutDescription').value = 'Extoll is a curated freelance collective built by creators and operators who believe that execution matters more than promises.';
@@ -3100,8 +3086,12 @@
             const thumbnailInput = document.getElementById('thumbnailInput');
             if (titleInput && keyInput) {
                 titleInput.addEventListener('input', function (e) {
-                    const key = generateProjectKey(e.target.value);
-                    keyInput.value = key;
+                    // Only auto-generate key for NEW projects, not when editing
+                    if (!currentEditingProject) {
+                        const key = generateProjectKey(e.target.value);
+                        keyInput.value = key;
+                    }
+                    // When editing, keep the existing key to prevent duplication
                 });
             }
             if (thumbnailArea && thumbnailInput) {

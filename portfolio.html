@@ -441,19 +441,12 @@
         console.log('📊 getProjectsPublic result:', result);
         if (result.success && result.data && result.data.length > 0) {
           allProjects = result.data;
-          console.log('âœ… Successfully loaded', allProjects.length, 'projects from public metadata bucket');
+          console.log('✅ Successfully loaded', allProjects.length, 'projects from portfolio bucket');
         } else {
-          // Fallback to direct bucket scanning
-          const fallbackResult = await loadProjectsFromPublicBucket();
-          if (fallbackResult.success && fallbackResult.data.length > 0) {
-            allProjects = fallbackResult.data;
-            console.log('âœ… Loaded', allProjects.length, 'projects from fallback method');
-          } else {
-            // Final fallback to localStorage
-            const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-            allProjects = localProjects;
-            console.log('ðŸ“¦ Loaded', allProjects.length, 'projects from localStorage');
-          }
+          // Fallback to localStorage
+          const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+          allProjects = localProjects;
+          console.log('📦 Loaded', allProjects.length, 'projects from localStorage');
         }
         // Update localStorage with fresh data
         if (allProjects.length > 0) {

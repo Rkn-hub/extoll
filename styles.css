@@ -66,6 +66,10 @@ html {
     /* OPTIMIZED: Only transition specific properties */
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
     color: #ffffff !important;
+    /* GPU layer promotion to prevent scroll flickering */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Dark Mode Glass Cards */
@@ -77,13 +81,16 @@ html {
     border: 1px solid rgba(112, 253, 255, 0.1) !important;
     box-shadow: none;
     color: white !important;
+    /* GPU layer promotion to prevent scroll flickering */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Glass Card Hover Effects */
 .glass-card:hover {
-    /* OPTIMIZED: Use will-change for better performance */
-    will-change: transform;
-    transform: translateY(-6px);
+    /* Combine with base translateZ(0) for proper lift effect */
+    transform: translateZ(0) translateY(-6px);
 }
 
 /* ========== TEXT COLOR FIXES ========== */
