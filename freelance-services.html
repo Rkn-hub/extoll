@@ -44,10 +44,12 @@
     <style>
         /* Glassmorphism - Light Mode Default */
         .glassmorphism {
-            background: rgba(255, 255, 255, 0.2);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            border-radius: 16px;
         }
 
         /* Glassmorphism - Dark Mode */
@@ -96,10 +98,12 @@
 
         /* Glass card effects */
         .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(209, 213, 219, 0.3);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            border-radius: 16px;
             transition: all 0.3s ease-in-out;
             color: #1f2937;
         }
@@ -126,7 +130,7 @@
         }
 
         .nav-active {
-            color: white !important;
+            color: #1a1a1a !important;
             position: relative;
         }
 
@@ -173,7 +177,7 @@
         }
 
         .mobile-nav-link.active {
-            color: white !important;
+            color: #1a1a1a !important;
             background: rgba(0, 170, 255, 0.1);
         }
 
@@ -291,13 +295,13 @@
         .dark .glassmorphism .text-gray-800,
         .dark .glassmorphism .text-gray-900,
         .dark .glassmorphism .text-black {
-            color: white !important;
+            color: #1a1a1a !important;
         }
 
         /* Ensure muted text is slightly transparent white instead of gray */
         .glass-card .text-gray-500,
         .glassmorphism .text-gray-500 {
-            color: rgba(255, 255, 255, 0.7) !important;
+            color: rgba(0, 0, 0, 0.6) !important;
         }
 
         /* FIX: Restore DARK text for content inside light-colored inner cards (like Team/How We Work) */
@@ -320,6 +324,17 @@
 
         /* FIX: Protect Dark Mode text in those same inner cards */
         /* In dark mode, bg-gray-100 usually becomes white/5 or transparent, so we need white text again */
+        
+        /* DARK MODE: Override glass card text to white */
+        .dark .glass-card .text-gray-500,
+        .dark .glass-card .text-gray-600,
+        .dark .glass-card .text-gray-700,
+        .dark .glassmorphism .text-gray-500,
+        .dark .glassmorphism .text-gray-600,
+        .dark .glassmorphism .text-gray-700 {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
         .dark .glassmorphism .bg-gray-100 .text-gray-600,
         .dark .glassmorphism .bg-gray-100 .text-gray-700,
         .dark .glassmorphism .bg-gray-100 .text-gray-800,
@@ -334,8 +349,8 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#00aaff",
-                        "background-light": "#E6E6FF",
+                        "primary": "var(--colors-primary)",
+                        "background-light": "#ffffff",
                         "background-dark": "#0A0A0D",
                     },
                     fontFamily: {
@@ -352,7 +367,7 @@
     class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 transition-colors duration-300">
     <!-- Header -->
     <header
-        class="fixed top-0 left-0 right-0 z-50 bg-[#292966]/90 dark:bg-background-dark/80 backdrop-blur-md transition-colors duration-300">
+        class="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 dark:bg-background-dark/80 backdrop-blur-xl saturate-150 transition-colors duration-300">
         <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
             <div class="flex items-center justify-between border-b border-white/10 px-6 py-3">
                 <a href="index.html" class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity">
@@ -388,7 +403,7 @@
                 </p>
                 <div class="mt-8">
                     <a href="contact.html"
-                        class="bg-[#5C5C99] dark:bg-[#00aaff] text-white px-8 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity inline-block">
+                        class="bg-gray-900 dark:bg-[#00aaff] text-white px-8 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity inline-block">
                         Hire Us Now
                     </a>
                 </div>

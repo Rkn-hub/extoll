@@ -5,14 +5,16 @@
 
 /* ========== CSS CUSTOM PROPERTIES ========== */
 :root {
-    --colors-primary: #5C5C99;
-    --colors-primary-rgb: 92, 92, 153;
-    --bg-light: #E6E6FF;
+    /* Light theme: Clean black accent on white */
+    --colors-primary: #1a1a1a;
+    --colors-primary-rgb: 26, 26, 26;
+    --bg-light: #ffffff;
     --bg-dark: #0A0A0D;
-    --navy: #292966;
-    --purple: #5C5C99;
-    --purple-light: #A3A3CC;
-    --purple-lighter: #CCCCFF;
+    /* Legacy purple values for compatibility */
+    --navy: #1a1a1a;
+    --purple: #333333;
+    --purple-light: #666666;
+    --purple-lighter: #999999;
 }
 
 .dark {
@@ -55,21 +57,37 @@ html {
 
 /* ========== GLASS CARD EFFECTS ========== */
 
-/* Light Mode Glass Cards */
+/* Light Mode Glass Cards - Glassmorphism effect */
 .glass-card,
 .glassmorphism {
-    background: rgba(41, 41, 102, 0.85);
-    -webkit-backdrop-filter: blur(24px) saturate(200%);
-    backdrop-filter: blur(24px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(41, 41, 102, 0.2);
-    /* OPTIMIZED: Only transition specific properties */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, border-color 0.3s ease-in-out;
-    color: #ffffff !important;
-    /* GPU layer promotion to prevent scroll flickering */
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 0.6) 100%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    transition:
+        transform 0.3s ease-out,
+        box-shadow 0.3s ease-out,
+        border-color 0.3s ease;
+    color: #1a1a1a !important;
+    /* GPU layer promotion */
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    border-radius: 16px;
+}
+
+/* Light mode glass card hover - subtle lift with enhanced glass effect */
+.glass-card:hover {
+    transform: translateZ(0) translateY(-4px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    border-color: rgba(255, 255, 255, 0.7);
 }
 
 /* Dark Mode Glass Cards */
@@ -95,7 +113,7 @@ html {
 
 /* ========== TEXT COLOR FIXES ========== */
 
-/* Force white text inside glass cards for Light Mode */
+/* Light mode glass cards: Use dark text on white background */
 .glass-card .text-gray-600,
 .glass-card .text-gray-700,
 .glass-card .text-gray-800,
@@ -106,13 +124,13 @@ html {
 .glassmorphism .text-gray-800,
 .glassmorphism .text-gray-900,
 .glassmorphism .text-black {
-    color: white !important;
+    color: #1a1a1a !important;
 }
 
-/* Muted text - slightly transparent white */
+/* Muted text - dark gray */
 .glass-card .text-gray-500,
 .glassmorphism .text-gray-500 {
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: rgba(0, 0, 0, 0.6) !important;
 }
 
 /* Dark text for light-colored inner cards */
@@ -137,6 +155,22 @@ html {
 .dark .glassmorphism .bg-gray-100 .text-gray-800,
 .dark .glassmorphism .bg-gray-100 .text-gray-900,
 .dark .glassmorphism .bg-gray-100 .text-black {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* DARK MODE: Override glass card text to white/light */
+.dark .glass-card .text-gray-500,
+.dark .glass-card .text-gray-600,
+.dark .glass-card .text-gray-700,
+.dark .glass-card .text-gray-800,
+.dark .glass-card .text-gray-900,
+.dark .glass-card .text-black,
+.dark .glassmorphism .text-gray-500,
+.dark .glassmorphism .text-gray-600,
+.dark .glassmorphism .text-gray-700,
+.dark .glassmorphism .text-gray-800,
+.dark .glassmorphism .text-gray-900,
+.dark .glassmorphism .text-black {
     color: rgba(255, 255, 255, 0.9) !important;
 }
 

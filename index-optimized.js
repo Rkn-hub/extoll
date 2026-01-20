@@ -189,9 +189,9 @@ function createProjectCard(project) {
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
     </div>
     <div class="p-5 flex flex-col gap-1">
-      <p class="text-white dark:text-white text-lg font-bold leading-tight">${project.title}</p>
-      <p class="text-white/80 dark:text-neutral-400 text-sm">${getCategoryDisplayName(project.category)} • ${project.count || 0} ${getFileTypeLabel(project.category)}</p>
-      <p class="text-white/70 dark:text-neutral-500 text-xs mt-2">${project.description}</p>
+      <p class="text-gray-900 dark:text-white text-lg font-bold leading-tight">${project.title}</p>
+      <p class="text-gray-600 dark:text-neutral-400 text-sm">${getCategoryDisplayName(project.category)} • ${project.count || 0} ${getFileTypeLabel(project.category)}</p>
+      <p class="text-gray-500 dark:text-neutral-500 text-xs mt-2">${project.description}</p>
     </div>
   `;
 
