@@ -68,7 +68,7 @@ async function loadWebsiteAssetsForSite() {
 }
 
 // State for logo management
-let currentDarkLogo = 'extoll.png';
+let currentDarkLogo = 'logo.png';
 const LIGHT_THEME_LOGO = 'extoll-light.png';
 
 // Update website logo (internal handler)

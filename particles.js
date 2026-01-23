@@ -5,9 +5,9 @@
 
 (function () {
     const CONFIG = {
-        count: 50,              // Significantly increased from 20 to 50
-        minSize: 3,             // Larger (was 2)
-        maxSize: 6,             // Larger (was 4)
+        count: 20,              // Reduced intensity
+        minSize: 2,             // Smaller particles
+        maxSize: 4,             // Smaller particles
         minDuration: 8000,      // Faster (was 10000)
         maxDuration: 18000,     // Faster (was 20000)
         color: 'rgba(0, 168, 255, 0.9)' // Electric Blue
@@ -39,7 +39,7 @@
         background: radial-gradient(circle, ${CONFIG.color} 0%, transparent 70%);
         opacity: 0;
         will-change: transform, opacity;
-        box-shadow: 0 0 8px ${CONFIG.color}; /* Strong glow (was 4px) */
+        box-shadow: 0 0 4px ${CONFIG.color}; /* Reduced glow */
       }
     `;
         const style = document.createElement('style');

@@ -2194,10 +2194,10 @@
                 addTeamMemberToDOM(member.name, member.role, index);
             });
         }
-        function addTeamMemberToDOM(name, role, index) {
+        function addTeamMemberToDOM(name, role, index, imageUrl) {
             const container = document.getElementById('teamMembersContainer');
             if (!container) {
-                console.error('âŒ Team members container not found');
+                console.error('❌ Team members container not found');
                 return;
             }
             const memberDiv = document.createElement('div');
@@ -2210,14 +2210,30 @@
                 Remove
             </button>
         </div>
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                <input type="text" id="teamMember${index}Name" class="form-input" placeholder="Team member name" value="${name || ''}">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr,150px] gap-6">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                    <input type="text" id="teamMember${index}Name" class="form-input" placeholder="Team member name" value="${name || ''}">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Role & Description</label>
+                    <textarea id="teamMember${index}Role" class="form-textarea" rows="3" placeholder="Describe their role and capabilities">${role || ''}</textarea>
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Role & Description</label>
-                <textarea id="teamMember${index}Role" class="form-textarea" rows="3" placeholder="Describe their role and capabilities">${role || ''}</textarea>
+            
+            <!-- Image Upload Section -->
+            <div class="flex flex-col items-center">
+                <label class="block text-sm font-medium text-gray-300 mb-2 w-full text-center">Profile Photo</label>
+                <div id="teamMember${index}Preview" class="w-full aspect-[4/5] bg-gray-900 rounded-lg border-2 border-dashed border-gray-700 flex items-center justify-center overflow-hidden mb-2 relative group">
+                    ${imageUrl ? `<img src="${imageUrl}" class="w-full h-full object-cover" />` : '<span class="text-gray-600 text-3xl font-bold opacity-30">IMG</span>'}
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <p class="text-white text-xs cursor-pointer">Change</p>
+                    </div>
+                    <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="handleTeamMemberImageUpload(this.files[0], ${index})">
+                </div>
+                <input type="hidden" id="teamMember${index}Image" value="${imageUrl || ''}">
+                <p id="teamMember${index}UploadStatus" class="text-xs text-gray-500 text-center">Click to upload</p>
             </div>
         </div>
     `;
@@ -2234,7 +2250,7 @@
             const currentMembers = container.querySelectorAll('[data-member-index]');
             const newIndex = currentMembers.length;
             // Add new team member to DOM
-            addTeamMemberToDOM('', '', newIndex);
+            addTeamMemberToDOM('', '', newIndex, '');
             showNotification('New team member added', 'success');
         }
         function removeTeamMember(index) {
@@ -2304,13 +2320,18 @@
                 memberElements.forEach(function (memberElement, index) {
                     const nameInput = memberElement.querySelector(`#teamMember${index}Name`);
                     const roleTextarea = memberElement.querySelector(`#teamMember${index}Role`);
+                    const imageInput = memberElement.querySelector(`#teamMember${index}Image`);
+
                     if (nameInput && roleTextarea) {
                         const name = nameInput.value.trim();
                         const role = roleTextarea.value.trim();
+                        const imageUrl = imageInput ? imageInput.value.trim() : '';
+
                         if (name || role) { // Only save if there's content
                             members.push({
                                 name: name,
-                                role: role
+                                role: role,
+                                imageUrl: imageUrl
                             });
                         }
                     }

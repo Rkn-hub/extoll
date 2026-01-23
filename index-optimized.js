@@ -430,6 +430,29 @@ function initMobileMenu() {
   });
 }
 
+/* ---------- SERVICE CARD NAVIGATION ---------- */
+const SERVICE_ROUTES = {
+  'graphics': 'graphic-design.html',
+  'ui': 'ui-ux-design.html',
+  'product': 'services.html', // Product design routes to main services
+  'video': 'video-editing.html',
+  '3d': '3d-modeling.html',
+  'animation': '2d-animation.html'
+};
+
+function initServiceCards() {
+  const serviceCards = document.querySelectorAll('[data-service]');
+  serviceCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      const service = card.getAttribute('data-service');
+      const route = SERVICE_ROUTES[service];
+      if (route) {
+        window.location.href = route;
+      }
+    });
+  });
+}
+
 /* ---------- ENTRY POINT ---------- */
 document.addEventListener("DOMContentLoaded", async () => {
   // Load all content in parallel
@@ -443,7 +466,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize interactions
   initNavigation();
   initMobileMenu();
-
+  initServiceCards();
 
   window.scrollTo(0, 0);
 });
