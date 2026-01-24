@@ -564,8 +564,39 @@
             }
         }
         // Initialize
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
             console.log('🚀 Project Manager initializing...');
+
+            // Initialize Supabase
+            if (typeof window.supabase !== 'undefined') {
+                const initResult = initializeSupabase();
+                if (initResult) {
+                    adminSupabase = configSupabase;
+                    console.log('✅ Supabase initialized');
+                }
+            }
+
+            // Check authentication state
+            if (adminSupabase) {
+                try {
+                    const { data: { user }, error } = await adminSupabase.auth.getUser();
+                    if (error || !user) {
+                        console.log('❌ Not authenticated, redirecting to login');
+                        window.location.href = '4dm1n.html';
+                        return;
+                    }
+                    console.log('✅ Authenticated as:', user.email);
+                } catch (e) {
+                    console.error('❌ Auth check failed:', e);
+                    window.location.href = '4dm1n.html';
+                    return;
+                }
+            } else {
+                console.warn('⚠️ Supabase not initialized, cannot check auth');
+                // Could redirect here too, but maybe local mode?
+                // For now, let's assume if Supabase fails, we might be in a weird state
+            }
+
             if (!projectKey) {
                 showProjectNotFound();
                 return;
@@ -576,14 +607,7 @@
                 setupNewProjectMode();
                 return;
             }
-            // Initialize Supabase
-            if (typeof window.supabase !== 'undefined') {
-                const initResult = initializeSupabase();
-                if (initResult) {
-                    adminSupabase = configSupabase;
-                    console.log('✅ Supabase initialized');
-                }
-            }
+
             loadProject(projectKey);
             setupEventListeners();
         });

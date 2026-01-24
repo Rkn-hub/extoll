@@ -3211,24 +3211,26 @@
             // Monitor authentication state changes
             if (adminSupabase) {
                 adminSupabase.auth.onAuthStateChange((event, session) => {
-                    console.log('ðŸ”„ Auth state changed:', event, session?.user?.email);
-                    if (event === 'SIGNED_OUT' || !session) {
-                        console.log('ðŸšª User signed out or session expired');
+                    console.log('🔄 Auth state changed:', event, session?.user?.email);
+
+                    // Only handle explicit sign out events after initial load
+                    if (event === 'SIGNED_OUT') {
+                        console.log('🚪 User signed out explicitly');
                         currentUser = null;
                         showLogin();
-                        showNotification('Session expired. Please login again.', 'warning');
+                        showNotification('Logged out successfully', 'success');
                     } else if (event === 'SIGNED_IN' && session?.user) {
-                        console.log('âœ… User signed in:', session.user.email);
+                        console.log('✅ User signed in:', session.user.email);
                         currentUser = {
                             email: session.user.email,
                             authenticated: true,
                             source: 'supabase'
                         };
-                        // Don't auto-show dashboard here as it might be called during manual login
+                        // We don't auto-show dashboard here to avoid conflicts with checkAuthenticationState
                     }
                 });
             }
-            console.log('âœ… Admin panel initialized successfully');
+            console.log('✅ Admin panel initialized successfully');
         });
         function testContactUpdate() {
             console.log('ðŸ“ž Testing contact update functionality...');
