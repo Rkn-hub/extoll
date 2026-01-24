@@ -142,6 +142,16 @@ CREATE POLICY "Allow anonymous contact submissions" ON contact_submissions
 CREATE POLICY "Authenticated users can read contact submissions" ON contact_submissions
     FOR SELECT USING (auth.role() = 'authenticated');
 
+-- Create policy to allow authenticated users to delete contact submissions (for admin)
+DROP POLICY IF EXISTS "Authenticated users can delete contact submissions" ON contact_submissions;
+CREATE POLICY "Authenticated users can delete contact submissions" ON contact_submissions
+    FOR DELETE USING (auth.role() = 'authenticated');
+
+-- Create policy to allow authenticated users to update contact submissions (for admin)
+DROP POLICY IF EXISTS "Authenticated users can update contact submissions" ON contact_submissions;
+CREATE POLICY "Authenticated users can update contact submissions" ON contact_submissions
+    FOR UPDATE USING (auth.role() = 'authenticated');
+
 -- Add trigger to update updated_at on contact_submissions table
 DROP TRIGGER IF EXISTS update_contact_submissions_updated_at ON contact_submissions;
 CREATE TRIGGER update_contact_submissions_updated_at 
