@@ -319,10 +319,11 @@
     // Submit to Supabase using centralized config
     async function submitToSupabase(formData) {
       if (!initializeSupabase()) {
-        console.error('Failed to initialize Supabase');
+        console.error('❌ Failed to initialize Supabase');
         return { success: false, error: 'Supabase initialization failed' };
       }
       try {
+        console.log('📤 Submitting to Supabase...', formData);
         const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/contact_submissions`, {
           method: 'POST',
           headers: {
@@ -339,12 +340,18 @@
             source: 'contact_page'
           })
         });
+
+        const responseText = await response.text();
+        console.log('📥 Supabase response status:', response.status);
+        console.log('📥 Supabase response body:', responseText);
+
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
+          throw new Error(`HTTP ${response.status}: ${responseText}`);
         }
+        console.log('✅ Supabase submission successful!');
         return { success: true };
       } catch (error) {
-        console.error('Supabase submission error:', error);
+        console.error('❌ Supabase submission error:', error);
         return { success: false, error: error.message };
       }
     }

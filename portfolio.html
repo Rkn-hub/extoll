@@ -410,9 +410,9 @@
       return `
         <div class="group flex flex-col gap-3 rounded-xl glass-card p-3 cursor-pointer" data-category="${project.category || 'graphics'}" data-project="${project.key}">
           ${thumbnailHtml}
-          <div class="flex justify-between items-start px-1 pb-1">
-            <div>
-              <p class="text-lg font-bold leading-tight group-hover:text-primary transition-colors">${project.title}</p>
+          <div class="flex justify-between items-start px-1 pb-1 overflow-hidden">
+            <div class="min-w-0 flex-1">
+              <p class="text-lg font-bold leading-tight group-hover:text-primary transition-colors truncate" title="${project.title}">${project.title}</p>
               <p class="text-slate-500 dark:text-[#9cabba] text-sm font-normal mt-1">${categoryDisplay}</p>
             </div>
           </div>
