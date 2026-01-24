@@ -643,23 +643,11 @@
                 }
             } catch (supabaseError) {
                 console.log('⚠️ Supabase authentication failed:', supabaseError.message);
-                // Fallback to config credentials if Supabase auth fails
-                if ((username === 'admin' || username === SUPABASE_CONFIG.adminEmail) &&
-                    (password === 'extoll2024' || password === SUPABASE_CONFIG.adminPassword)) {
-                    console.log('✅ Login successful via config credentials');
-                    currentUser = { email: username, id: 'admin', role: 'admin' };
-                    showDashboard();
-                    showNotification('Login successful!', 'success');
-                    loadProjects();
-                    // Try to authenticate with Supabase for metadata access
-                    trySupabaseAuth();
-                    return;
-                }
-                // Show appropriate error message
+                // Show appropriate error message - NO FALLBACK, only Supabase auth allowed
                 if (supabaseError.message.includes('Invalid login credentials')) {
-                    showNotification('Invalid credentials. Add users in Supabase Authentication → Users', 'error');
+                    showNotification('Invalid email or password', 'error');
                 } else if (supabaseError.message.includes('Email not confirmed')) {
-                    showNotification('Email not confirmed. Check user settings in Supabase Dashboard', 'error');
+                    showNotification('Email not confirmed. Check your inbox or Supabase settings', 'error');
                 } else {
                     showNotification('Login failed: ' + supabaseError.message, 'error');
                 }
