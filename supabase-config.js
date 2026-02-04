@@ -5,9 +5,11 @@ const SUPABASE_CONFIG = {
     url: 'https://lvtkoryorwzknxzfpyzz.supabase.co', // Your Supabase URL
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2dGtvcnlvcnd6a254emZweXp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4MTAyODEsImV4cCI6MjA4MzM4NjI4MX0.eMZNHWpzSU-fSUFohCJLYuTzbqv9Yu3fY_BOLqa5ixs', // Your Supabase anon key
 
-    // Admin credentials for authentication
-    adminEmail: 'rkachal2k4@gmail.com', // Your admin email
-    adminPassword: 'Ritesh12@', // Your admin password
+    // Admin credentials - DO NOT hardcode here!
+    // These should be entered via the admin login UI
+    // The admin panel uses Supabase Auth for secure authentication
+    adminEmail: null, // Enter via login form
+    adminPassword: null, // Enter via login form
 
     // Single bucket configuration with structured project folders
     bucket: 'extoll-portfolio', // Main bucket name (public)
@@ -60,9 +62,14 @@ function initializeSupabase() {
 }
 
 // Authentication functions with enhanced error handling
-async function signInAdmin() {
+async function signInAdmin(email, password) {
     try {
-        console.log('🔐 Attempting to sign in with:', SUPABASE_CONFIG.adminEmail);
+        // Validate credentials are provided
+        if (!email || !password) {
+            throw new Error('Email and password are required');
+        }
+
+        console.log('🔐 Attempting to sign in with:', email);
 
         // Ensure Supabase is initialized first
         if (!configSupabase) {
@@ -77,8 +84,8 @@ async function signInAdmin() {
         }
 
         const { data, error } = await configSupabase.auth.signInWithPassword({
-            email: SUPABASE_CONFIG.adminEmail,
-            password: SUPABASE_CONFIG.adminPassword
+            email: email,
+            password: password
         });
 
         if (error) {
@@ -678,6 +685,155 @@ async function getProjectsPublic() {
     }
 }
 
+// ========================================
+// OPTIMIZED MANIFEST-BASED LOADING
+// ========================================
+// Load all projects from a single manifest file for maximum speed
+
+const PROJECTS_CACHE = {
+    data: null,
+    timestamp: null,
+    maxAge: 5 * 60 * 1000 // 5 minutes cache
+};
+
+// Ultra-fast project loading using manifest (single API call)
+async function getProjectsFast() {
+    try {
+        // Check memory cache first
+        if (PROJECTS_CACHE.data && PROJECTS_CACHE.timestamp) {
+            const age = Date.now() - PROJECTS_CACHE.timestamp;
+            if (age < PROJECTS_CACHE.maxAge) {
+                console.log('⚡ Projects loaded from memory cache');
+                return { success: true, data: PROJECTS_CACHE.data, fromCache: true };
+            }
+        }
+
+        // Check localStorage cache
+        const cachedData = localStorage.getItem('projects_cache');
+        if (cachedData) {
+            try {
+                const cached = JSON.parse(cachedData);
+                if (cached.timestamp && (Date.now() - cached.timestamp) < PROJECTS_CACHE.maxAge) {
+                    PROJECTS_CACHE.data = cached.data;
+                    PROJECTS_CACHE.timestamp = cached.timestamp;
+                    console.log('⚡ Projects loaded from localStorage cache');
+                    return { success: true, data: cached.data, fromCache: true };
+                }
+            } catch (e) { }
+        }
+
+        if (!configSupabase) {
+            if (!initializeSupabase()) {
+                throw new Error('Failed to initialize Supabase client');
+            }
+        }
+
+        console.log('🚀 Loading projects via manifest...');
+
+        // Try manifest first (single API call)
+        try {
+            const { data: manifestData, error: manifestError } = await configSupabase.storage
+                .from(SUPABASE_CONFIG.bucket)
+                .download('projects-manifest.json');
+
+            if (!manifestError && manifestData) {
+                const manifestText = await manifestData.text();
+                const manifest = JSON.parse(manifestText);
+
+                if (manifest.projects && manifest.projects.length > 0) {
+                    // Update cache
+                    PROJECTS_CACHE.data = manifest.projects;
+                    PROJECTS_CACHE.timestamp = Date.now();
+                    localStorage.setItem('projects_cache', JSON.stringify({
+                        data: manifest.projects,
+                        timestamp: Date.now()
+                    }));
+
+                    console.log(`⚡ Loaded ${manifest.projects.length} projects from manifest`);
+                    return { success: true, data: manifest.projects };
+                }
+            }
+        } catch (manifestErr) {
+            console.log('ℹ️ No manifest found, falling back to folder scan');
+        }
+
+        // Fallback to N+1 loading (slower)
+        const result = await getProjectsPublic();
+
+        if (result.success && result.data) {
+            // Update cache
+            PROJECTS_CACHE.data = result.data;
+            PROJECTS_CACHE.timestamp = Date.now();
+            localStorage.setItem('projects_cache', JSON.stringify({
+                data: result.data,
+                timestamp: Date.now()
+            }));
+        }
+
+        return result;
+
+    } catch (error) {
+        console.error('❌ Fast project loading failed:', error.message);
+
+        // Try localStorage fallback
+        const localProjects = localStorage.getItem('projects');
+        if (localProjects) {
+            const projects = JSON.parse(localProjects);
+            return { success: true, data: projects, fromFallback: true };
+        }
+
+        return { success: false, error: error.message };
+    }
+}
+
+// Generate manifest file for admin use (call after project changes)
+async function generateProjectsManifest() {
+    try {
+        if (!configSupabase) {
+            if (!initializeSupabase()) {
+                throw new Error('Failed to initialize Supabase client');
+            }
+        }
+
+        console.log('📝 Generating projects manifest...');
+
+        // Get all projects using the existing function
+        const result = await getProjectsPublic();
+
+        if (!result.success || !result.data) {
+            throw new Error('Failed to fetch projects for manifest');
+        }
+
+        const manifest = {
+            generated: new Date().toISOString(),
+            count: result.data.length,
+            projects: result.data
+        };
+
+        // Upload manifest
+        const { error: uploadError } = await configSupabase.storage
+            .from(SUPABASE_CONFIG.bucket)
+            .upload('projects-manifest.json', JSON.stringify(manifest, null, 2), {
+                contentType: 'application/json',
+                upsert: true
+            });
+
+        if (uploadError) throw uploadError;
+
+        // Clear caches so next load uses new manifest
+        PROJECTS_CACHE.data = null;
+        PROJECTS_CACHE.timestamp = null;
+        localStorage.removeItem('projects_cache');
+
+        console.log(`✅ Manifest generated with ${result.data.length} projects`);
+        return { success: true, count: result.data.length };
+
+    } catch (error) {
+        console.error('❌ Manifest generation failed:', error.message);
+        return { success: false, error: error.message };
+    }
+}
+
 // Fast public content loading (no auth required) - Updated for single bucket
 async function getWebsiteContentPublic() {
     try {
@@ -875,6 +1031,10 @@ if (typeof window !== 'undefined') {
     window.getProjectsPublic = getProjectsPublic;
     window.getWebsiteContentPublic = getWebsiteContentPublic;
     window.getTeamInfoPublic = getTeamInfoPublic;
+
+    // Fast/optimized loading functions
+    window.getProjectsFast = getProjectsFast;
+    window.generateProjectsManifest = generateProjectsManifest;
 
     // Utility functions
     window.syncPortfolioToDatabase = syncPortfolioToDatabase;

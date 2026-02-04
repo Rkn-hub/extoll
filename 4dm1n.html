@@ -653,47 +653,8 @@
                 }
             }
         }
-        // Remove the separate tryDirectSupabaseAuth function as it's now integrated above
-        // Try Supabase authentication for metadata bucket access
-        async function trySupabaseAuth() {
-            try {
-                console.log('🔎 Attempting Supabase authentication for metadata access...');
-                // Ensure we're using the same client as the config functions
-                if (!configSupabase) {
-                    console.log('⚙️ Initializing shared Supabase client...');
-                    const initResult = initializeSupabase();
-                    if (!initResult) {
-                        throw new Error('Failed to initialize Supabase client');
-                    }
-                    adminSupabase = configSupabase; // Sync the clients
-                }
-                // Use the signInAdmin function from config
-                const authResult = await signInAdmin();
-                if (authResult.success) {
-                    console.log('✅ Supabase authentication successful - metadata bucket access enabled');
-                    // Test portfolio bucket access
-                    const bucketTest = await testPortfolioBucketAccess();
-                    if (bucketTest.success) {
-                        showNotification('Metadata bucket access enabled', 'success');
-                    } else {
-                        showNotification('Authentication successful but bucket access failed', 'warning');
-                        console.error('🚫 Bucket access issue:', bucketTest.error);
-                    }
-                } else {
-                    console.log('❌ Supabase authentication failed:', authResult.error);
-                    showNotification('Authentication failed - using local storage only', 'warning');
-                    console.log('📂 Note: Projects will be stored locally only');
-                    // Show specific error guidance
-                    if (authResult.error.includes('Invalid login credentials')) {
-                        console.error('💡 Create admin user: Supabase Dashboard → Authentication → Users → Add user');
-                        console.error('   Email: admin@extoll.co, Password: extoll2024');
-                    }
-                }
-            } catch (error) {
-                console.error('❌ Supabase auth error:', error);
-                showNotification('Authentication error - using local storage only', 'warning');
-            }
-        }
+        // Note: trySupabaseAuth removed - authentication is now handled directly in handleLogin
+        // using adminSupabase.auth.signInWithPassword()
         // Show dashboard
         function showDashboard() {
             console.log('🎯 Showing dashboard...');

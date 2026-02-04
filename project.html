@@ -9,9 +9,12 @@
     <link rel="apple-touch-icon" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://lvtkoryorwzknxzfpyzz.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://lvtkoryorwzknxzfpyzz.supabase.co/storage/v1" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         (function () {
@@ -183,7 +186,7 @@
         <footer class="border-t border-gray-200 dark:border-[#27343a] bg-gray-50 dark:bg-[#0b1419] py-8">
             <div
                 class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-slate-400 text-sm">© 2024 Extoll.Co. All rights reserved.</p>
+                <p class="text-slate-400 text-sm">© 2026 Extoll.Co. All rights reserved.</p>
                 <div class="flex gap-6">
                     <a class="text-slate-400 hover:text-primary transition-colors" href="https://instagram.com/extollco"
                         target="_blank">
@@ -338,7 +341,15 @@
                         if (file.type === 'image') {
                             return `
                 <div class="glass-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer transition-all duration-300" onclick="openLightbox(${index})">
-                  <img src="${file.url}" alt="Project Image" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 animate-pulse"></div>
+                  <img 
+                    src="${file.url}" 
+                    alt="Project Image" 
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-0" 
+                    loading="lazy"
+                    decoding="async"
+                    onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"
+                  >
                   <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
                   </div>

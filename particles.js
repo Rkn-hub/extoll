@@ -1,15 +1,19 @@
 /**
  * Firefly Particle Effect
  * Creates a subtle, smooth background animation of glowing dots.
+ * Optimized for performance - delayed init and reduced count on mobile.
  */
 
 (function () {
+    // Detect if mobile for reduced particle count
+    const isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
+
     const CONFIG = {
-        count: 20,              // Reduced intensity
-        minSize: 2,             // Smaller particles
-        maxSize: 4,             // Smaller particles
-        minDuration: 8000,      // Faster (was 10000)
-        maxDuration: 18000,     // Faster (was 20000)
+        count: isMobile ? 4 : 8,    // Fewer particles on mobile
+        minSize: 2,                  // Smaller particles
+        maxSize: 4,                  // Smaller particles
+        minDuration: 12000,          // Slower for smoother effect
+        maxDuration: 22000,          // Slower
         color: 'rgba(0, 168, 255, 0.9)' // Electric Blue
     };
 

@@ -41,18 +41,15 @@ async function loadWebsiteContentOnce() {
     // Try new path first (website-config/website-content.json)
     let contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
 
-    // Add cache-busting parameter to force fresh load
-    const cacheBuster = `?t=${Date.now()}`;
-
     let { data, error } = await configSupabase.storage
       .from(SUPABASE_CONFIG.bucket)
-      .download(contentPath + cacheBuster);
+      .download(contentPath);
 
     // Fallback to old path (website-content.json) for backward compatibility
     if (error || !data) {
       const legacyResult = await configSupabase.storage
         .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json' + cacheBuster);
+        .download('website-content.json');
 
       data = legacyResult.data;
       error = legacyResult.error;
@@ -118,18 +115,31 @@ async function loadFeaturedProjects() {
   if (!grid) return;
 
   try {
-    // Check cache first
-    if (CACHE.projects) {
+    // Check cache first - show cached content immediately
+    if (CACHE.projects && CACHE.projects.length > 0) {
       renderProjects(CACHE.projects.slice(0, 6));
       return;
     }
 
-    // Show loading state
+    // Check localStorage for instant display
+    const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
+    if (localProjects.length > 0) {
+      CACHE.projects = localProjects;
+      renderProjects(localProjects.slice(0, 6));
+      // Still fetch fresh data in background
+      refreshProjectsInBackground();
+      return;
+    }
+
+    // Show loading state only if no cached data
     grid.innerHTML = '<div class="col-span-full text-center py-20"><div class="text-4xl mb-4">⏳</div><p class="text-gray-400">Loading featured projects...</p></div>';
 
-    // Try Supabase first
+    // Try fast manifest-based loading first
     if (initializeSupabase()) {
-      const result = await getProjectsPublic();
+      const result = typeof getProjectsFast === 'function'
+        ? await getProjectsFast()
+        : await getProjectsPublic();
+
       if (result.success && result.data?.length > 0) {
         CACHE.projects = result.data;
         localStorage.setItem('projects', JSON.stringify(result.data));
@@ -138,20 +148,31 @@ async function loadFeaturedProjects() {
       }
     }
 
-    // Fallback to localStorage
-    const localProjects = JSON.parse(localStorage.getItem('projects') || '[]');
-    if (localProjects.length > 0) {
-      CACHE.projects = localProjects;
-      renderProjects(localProjects.slice(0, 6));
-      return;
-    }
-
     // Show empty state
     showEmptyPortfolio();
 
   } catch (error) {
     console.warn('Portfolio loading failed:', error);
     showEmptyPortfolio();
+  }
+}
+
+// Background refresh for stale-while-revalidate pattern
+async function refreshProjectsInBackground() {
+  try {
+    if (!initializeSupabase()) return;
+
+    const result = typeof getProjectsFast === 'function'
+      ? await getProjectsFast()
+      : await getProjectsPublic();
+
+    if (result.success && result.data?.length > 0 && !result.fromCache) {
+      CACHE.projects = result.data;
+      localStorage.setItem('projects', JSON.stringify(result.data));
+      console.log('⚡ Projects refreshed in background');
+    }
+  } catch (e) {
+    // Silent fail for background refresh
   }
 }
 
@@ -179,8 +200,12 @@ function createProjectCard(project) {
   card.setAttribute('data-category', project.category);
   card.setAttribute('data-project', project.key);
 
+  const optimizedUrl = (typeof getOptimizedImageUrl === 'function' && project.thumbnail_url)
+    ? getOptimizedImageUrl(project.thumbnail_url, { width: 600, quality: 80, format: 'webp' })
+    : project.thumbnail_url;
+
   const thumbnailHtml = project.thumbnail_url
-    ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">`
+    ? `<img src="${optimizedUrl}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">`
     : createPlaceholderThumbnail(project);
 
   card.innerHTML = `

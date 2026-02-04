@@ -24,8 +24,14 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <!-- Resource hints -->
+  <link rel="dns-prefetch" href="//lvtkoryorwzknxzfpyzz.supabase.co">
+  <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="//unpkg.com">
+  <link rel="preconnect" href="https://lvtkoryorwzknxzfpyzz.supabase.co" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+    as="style">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <!-- Theme Initialization -->
   <script>
@@ -297,16 +303,16 @@
         </div>
       </div>
       <div class="mt-8 text-center md:text-left pt-8 border-t border-gray-200 dark:border-white/5">
-        <p class="text-slate-400 dark:text-slate-500 text-sm">© 2024 Extoll.Co. All rights reserved.</p>
+        <p class="text-slate-400 dark:text-slate-500 text-sm">© 2026 Extoll.Co. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="website-assets.js"></script>
-  <script src="particles.js"></script>
+  <!-- Scripts - defer for non-blocking load -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="website-assets.js" defer></script>
+  <script src="particles.js" defer></script>
   <script>
     // Service tiles - store filter for portfolio page
     document.addEventListener('DOMContentLoaded', function () {

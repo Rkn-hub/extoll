@@ -10,9 +10,15 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <!-- Preconnect -->
+  <!-- Resource hints -->
+  <link rel="dns-prefetch" href="//lvtkoryorwzknxzfpyzz.supabase.co">
+  <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="//unpkg.com">
+  <link rel="preconnect" href="https://lvtkoryorwzknxzfpyzz.supabase.co" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+    as="style">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <!-- Theme Initialization -->
   <script>
@@ -77,29 +83,436 @@
       background: #3e4854;
     }
 
-    /* Glass cards */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+    /* Note: .glass-card styles are loaded from styles.css */
+
+    /* ========== PRELOADER STYLES ========== */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #101922;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
 
-    .dark .glass-card {
-      background: rgba(28, 38, 48, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    #preloader.loaded {
+      opacity: 0;
+      visibility: hidden;
     }
 
-    .glass-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(0, 170, 255, 0.5);
-      box-shadow: 0 0 30px rgba(0, 170, 255, 0.15);
+    #preloader .loading-text {
+      color: #9cabba;
+      font-size: 1rem;
+      margin-top: 2rem;
+      font-weight: 500;
+    }
+
+    .wheel-and-hamster {
+      --dur: 1s;
+      position: relative;
+      width: 12em;
+      height: 12em;
+      font-size: 14px;
+    }
+
+    .wheel,
+    .hamster,
+    .hamster div,
+    .spoke {
+      position: absolute;
+    }
+
+    .wheel,
+    .spoke {
+      border-radius: 50%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .wheel {
+      background: radial-gradient(100% 100% at center, hsla(0, 0%, 60%, 0) 47.8%, hsl(0, 0%, 60%) 48%);
+      z-index: 2;
+    }
+
+    .hamster {
+      animation: hamster var(--dur) ease-in-out infinite;
+      top: 50%;
+      left: calc(50% - 3.5em);
+      width: 7em;
+      height: 3.75em;
+      transform: rotate(4deg) translate(-0.8em, 1.85em);
+      transform-origin: 50% 0;
+      z-index: 1;
+    }
+
+    .hamster__head {
+      animation: hamsterHead var(--dur) ease-in-out infinite;
+      background: hsl(30, 90%, 55%);
+      border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
+      box-shadow: 0 -0.25em 0 hsl(30, 90%, 80%) inset, 0.75em -1.55em 0 hsl(30, 90%, 90%) inset;
+      top: 0;
+      left: -2em;
+      width: 2.75em;
+      height: 2.5em;
+      transform-origin: 100% 50%;
+    }
+
+    .hamster__ear {
+      animation: hamsterEar var(--dur) ease-in-out infinite;
+      background: hsl(0, 90%, 85%);
+      border-radius: 50%;
+      box-shadow: -0.25em 0 hsl(30, 90%, 55%) inset;
+      top: -0.25em;
+      right: -0.25em;
+      width: 0.75em;
+      height: 0.75em;
+      transform-origin: 50% 75%;
+    }
+
+    .hamster__eye {
+      animation: hamsterEye var(--dur) linear infinite;
+      background-color: hsl(0, 0%, 0%);
+      border-radius: 50%;
+      top: 0.375em;
+      left: 1.25em;
+      width: 0.5em;
+      height: 0.5em;
+    }
+
+    .hamster__nose {
+      background: hsl(0, 90%, 75%);
+      border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
+      top: 0.75em;
+      left: 0;
+      width: 0.2em;
+      height: 0.25em;
+    }
+
+    .hamster__body {
+      animation: hamsterBody var(--dur) ease-in-out infinite;
+      background: hsl(30, 90%, 90%);
+      border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
+      box-shadow: 0.1em 0.75em 0 hsl(30, 90%, 55%) inset, 0.15em -0.5em 0 hsl(30, 90%, 80%) inset;
+      top: 0.25em;
+      left: 2em;
+      width: 4.5em;
+      height: 3em;
+      transform-origin: 17% 50%;
+      transform-style: preserve-3d;
+    }
+
+    .hamster__limb--fr,
+    .hamster__limb--fl {
+      clip-path: polygon(0 0, 100% 0, 70% 80%, 60% 100%, 0% 100%, 40% 80%);
+      top: 2em;
+      left: 0.5em;
+      width: 1em;
+      height: 1.5em;
+      transform-origin: 50% 0;
+    }
+
+    .hamster__limb--fr {
+      animation: hamsterFRLimb var(--dur) linear infinite;
+      background: linear-gradient(hsl(30, 90%, 80%) 80%, hsl(0, 90%, 75%) 80%);
+      transform: rotate(15deg) translateZ(-1px);
+    }
+
+    .hamster__limb--fl {
+      animation: hamsterFLLimb var(--dur) linear infinite;
+      background: linear-gradient(hsl(30, 90%, 90%) 80%, hsl(0, 90%, 85%) 80%);
+      transform: rotate(15deg);
+    }
+
+    .hamster__limb--br,
+    .hamster__limb--bl {
+      border-radius: 0.75em 0.75em 0 0;
+      clip-path: polygon(0 0, 100% 0, 100% 30%, 70% 90%, 70% 100%, 30% 100%, 40% 90%, 0% 30%);
+      top: 1em;
+      left: 2.8em;
+      width: 1.5em;
+      height: 2.5em;
+      transform-origin: 50% 30%;
+    }
+
+    .hamster__limb--br {
+      animation: hamsterBRLimb var(--dur) linear infinite;
+      background: linear-gradient(hsl(30, 90%, 80%) 90%, hsl(0, 90%, 75%) 90%);
+      transform: rotate(-25deg) translateZ(-1px);
+    }
+
+    .hamster__limb--bl {
+      animation: hamsterBLLimb var(--dur) linear infinite;
+      background: linear-gradient(hsl(30, 90%, 90%) 90%, hsl(0, 90%, 85%) 90%);
+      transform: rotate(-25deg);
+    }
+
+    .hamster__tail {
+      animation: hamsterTail var(--dur) linear infinite;
+      background: hsl(0, 90%, 85%);
+      border-radius: 0.25em 50% 50% 0.25em;
+      box-shadow: 0 -0.2em 0 hsl(0, 90%, 75%) inset;
+      top: 1.5em;
+      right: -0.5em;
+      width: 1em;
+      height: 0.5em;
+      transform: rotate(30deg) translateZ(-1px);
+      transform-origin: 0.25em 0.25em;
+    }
+
+    .spoke {
+      animation: spoke var(--dur) linear infinite;
+      background: radial-gradient(100% 100% at center, hsl(0, 0%, 60%) 4.8%, hsla(0, 0%, 60%, 0) 5%),
+        linear-gradient(hsla(0, 0%, 55%, 0) 46.9%, hsl(0, 0%, 65%) 47% 52.9%, hsla(0, 0%, 65%, 0) 53%) 50% 50% / 99% 99% no-repeat;
+    }
+
+    @keyframes hamster {
+
+      from,
+      to {
+        transform: rotate(4deg) translate(-0.8em, 1.85em);
+      }
+
+      50% {
+        transform: rotate(0) translate(-0.8em, 1.85em);
+      }
+    }
+
+    @keyframes hamsterHead {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(0);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(8deg);
+      }
+    }
+
+    @keyframes hamsterEye {
+
+      from,
+      90%,
+      to {
+        transform: scaleY(1);
+      }
+
+      95% {
+        transform: scaleY(0);
+      }
+    }
+
+    @keyframes hamsterEar {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(0);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(12deg);
+      }
+    }
+
+    @keyframes hamsterBody {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(0);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(-2deg);
+      }
+    }
+
+    @keyframes hamsterFRLimb {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(50deg) translateZ(-1px);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(-30deg) translateZ(-1px);
+      }
+    }
+
+    @keyframes hamsterFLLimb {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(-30deg);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(50deg);
+      }
+    }
+
+    @keyframes hamsterBRLimb {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(-60deg) translateZ(-1px);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(20deg) translateZ(-1px);
+      }
+    }
+
+    @keyframes hamsterBLLimb {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(20deg);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(-60deg);
+      }
+    }
+
+    @keyframes hamsterTail {
+
+      from,
+      25%,
+      50%,
+      75%,
+      to {
+        transform: rotate(30deg) translateZ(-1px);
+      }
+
+      12.5%,
+      37.5%,
+      62.5%,
+      87.5% {
+        transform: rotate(10deg) translateZ(-1px);
+      }
+    }
+
+    @keyframes spoke {
+      from {
+        transform: rotate(0);
+      }
+
+      to {
+        transform: rotate(-1turn);
+      }
     }
   </style>
 </head>
 
 <body
   class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white overflow-x-hidden min-h-screen flex flex-col">
+  <!-- Preloader with Hamster Animation -->
+  <div id="preloader" aria-label="Loading portfolio" role="status">
+    <div aria-label="Hamster running in a wheel" role="img" class="wheel-and-hamster">
+      <div class="wheel"></div>
+      <div class="hamster">
+        <div class="hamster__body">
+          <div class="hamster__head">
+            <div class="hamster__ear"></div>
+            <div class="hamster__eye"></div>
+            <div class="hamster__nose"></div>
+          </div>
+          <div class="hamster__limb hamster__limb--fr"></div>
+          <div class="hamster__limb hamster__limb--fl"></div>
+          <div class="hamster__limb hamster__limb--br"></div>
+          <div class="hamster__limb hamster__limb--bl"></div>
+          <div class="hamster__tail"></div>
+        </div>
+      </div>
+      <div class="spoke"></div>
+    </div>
+    <p class="loading-text">Loading portfolio...</p>
+  </div>
+
+  <!-- Preloader Script -->
+  <script>
+      (function () {
+        const preloader = document.getElementById('preloader');
+        if (!preloader) return;
+
+        let isHidden = false;
+        const minDisplayTime = 1000;
+        const maxWaitTime = 6000;
+        const startTime = Date.now();
+
+        function hidePreloader() {
+          if (isHidden) return;
+          isHidden = true;
+
+          const elapsed = Date.now() - startTime;
+          const delay = Math.max(0, minDisplayTime - elapsed);
+
+          setTimeout(function () {
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+            setTimeout(function () {
+              if (preloader.parentNode) {
+                preloader.parentNode.removeChild(preloader);
+              }
+            }, 500);
+          }, delay);
+        }
+
+        window.addEventListener('load', hidePreloader);
+        setTimeout(hidePreloader, maxWaitTime);
+      })();
+  </script>
+
   <!-- Global Header -->
   <script src="global-header.js"></script>
 
@@ -183,7 +596,7 @@
   <footer class="border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-[#0b1419] mt-auto">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-        <p class="text-slate-400 dark:text-slate-500 text-sm">© 2024 Extoll.Co. All rights reserved.</p>
+        <p class="text-slate-400 dark:text-slate-500 text-sm">© 2026 Extoll.Co. All rights reserved.</p>
         <div class="flex gap-6">
           <a class="text-slate-400 hover:text-primary transition-colors" href="https://instagram.com/extollco"
             target="_blank">
@@ -197,10 +610,10 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="website-assets.js"></script>
+  <!-- Scripts - defer for non-blocking load -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="website-assets.js" defer></script>
   <script>
     // Portfolio page specific functionality
     let currentPage = 1;
@@ -219,6 +632,25 @@
     // Load all projects from Supabase
     async function loadAllProjects() {
       console.log('🔄 Loading all projects for portfolio page...');
+
+      // Check localStorage cache first for instant display
+      const cachedProjects = localStorage.getItem('projects');
+      if (cachedProjects) {
+        try {
+          const projects = JSON.parse(cachedProjects);
+          if (projects.length > 0) {
+            allProjects = projects;
+            filteredProjects = [...allProjects];
+            displayProjects();
+            setupFilters();
+            console.log('⚡ Displayed cached projects, refreshing in background...');
+            // Refresh in background
+            refreshProjectsBackground();
+            return;
+          }
+        } catch (e) { }
+      }
+
       showLoadingState();
 
       if (!initializeSupabase()) {
@@ -228,8 +660,11 @@
       }
 
       try {
-        const result = await getProjectsPublic();
-        console.log('📊 getProjectsPublic result:', result);
+        // Use fast manifest-based loading
+        const result = typeof getProjectsFast === 'function'
+          ? await getProjectsFast()
+          : await getProjectsPublic();
+        console.log('📊 getProjects result:', result);
 
         if (result.success && result.data && result.data.length > 0) {
           allProjects = result.data;
@@ -251,6 +686,27 @@
         console.error('❌ Error loading projects:', error);
         loadFromLocalStorage();
       }
+    }
+
+    // Background refresh for stale-while-revalidate
+    async function refreshProjectsBackground() {
+      try {
+        if (!initializeSupabase()) return;
+
+        const result = typeof getProjectsFast === 'function'
+          ? await getProjectsFast()
+          : await getProjectsPublic();
+
+        if (result.success && result.data?.length > 0 && !result.fromCache) {
+          allProjects = result.data;
+          filteredProjects = currentFilter === 'all'
+            ? [...allProjects]
+            : allProjects.filter(p => p.category?.toLowerCase() === currentFilter.toLowerCase());
+          localStorage.setItem('projects', JSON.stringify(allProjects));
+          displayProjects();
+          console.log('⚡ Projects refreshed in background');
+        }
+      } catch (e) { }
     }
 
     // Load from localStorage fallback
@@ -382,14 +838,29 @@
       }
     }
 
-    // Create project card HTML
+    // Create project card HTML with progressive image loading
     function createProjectCard(project) {
       let thumbnailHtml;
 
       if (project.thumbnail_url) {
+        // Use optimized image if available
+        const optimizedUrl = (typeof getOptimizedImageUrl === 'function')
+          ? getOptimizedImageUrl(project.thumbnail_url, { width: 600, quality: 80, format: 'webp' })
+          : project.thumbnail_url;
+
+        // Progressive image loading with blur-up effect
         thumbnailHtml = `
-          <div class="w-full aspect-[4/3] relative overflow-hidden">
-            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style="background-image: url('${project.thumbnail_url}');"></div>
+          <div class="w-full aspect-[4/3] relative overflow-hidden bg-gray-200 dark:bg-[#1c2630]">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 animate-pulse"></div>
+            <img 
+              src="${optimizedUrl}" 
+              alt="${project.title}" 
+              class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 opacity-0"
+              loading="lazy"
+              decoding="async"
+              onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"
+              onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center\\'><span class=\\'text-5xl font-black text-primary/50\\'>${project.title ? project.title.charAt(0).toUpperCase() : 'P'}</span></div>'"
+            >
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
               <span class="material-symbols-outlined text-white bg-black/30 backdrop-blur-md rounded-full p-2">arrow_outward</span>
@@ -448,7 +919,7 @@
       });
     }
   </script>
-  <script src="particles.js"></script>
+  <script src="particles.js" defer></script>
 </body>
 
 </html>
