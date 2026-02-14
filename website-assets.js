@@ -148,13 +148,10 @@ function updateFavicon(logoUrl) {
 
 // Initialize website assets when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Theme
-    initTheme();
-
-    // Small delay to ensure other scripts are loaded
-    setTimeout(() => {
-        loadWebsiteAssetsForSite();
-    }, 100); // Reduced from 500ms for faster loading
+    // Theme is already initialized by inline <head> script - don't re-run initTheme()
+    // Just update the theme-specific logo and load assets
+    updateThemeLogo();
+    loadWebsiteAssetsForSite();
 });
 
 // Theme Management

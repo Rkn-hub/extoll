@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="dark" lang="en">
 
 <head>
@@ -15,30 +15,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind CSS (pre-built) -->`n  <link rel="stylesheet" href="tailwind-output.css">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme');
             const shouldBeDark = savedTheme === 'dark' || (!savedTheme && true);
             if (shouldBeDark) { document.documentElement.classList.add('dark'); }
         })();
-    </script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "var(--colors-primary)",
-                        "background-light": "#f5f7f8",
-                        "background-dark": "#101922",
-                    },
-                    fontFamily: {
-                        "display": ["Space Grotesk", "sans-serif"]
-                    },
-                },
-            },
-        }
     </script>
     <style>
         :root {

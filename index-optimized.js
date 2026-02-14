@@ -33,8 +33,9 @@ const CACHE = {
 /* ---------- CMS CONTENT (SAFE, ONCE) ---------- */
 async function loadWebsiteContentOnce() {
   try {
-    if (!initializeSupabase()) {
-      console.warn('⚠️ Supabase not initialized, skipping CMS content load');
+    // Guard: initializeSupabase comes from supabase-config.js which depends on Supabase CDN
+    if (typeof initializeSupabase !== 'function' || !initializeSupabase()) {
+      console.warn('⚠️ Supabase not available, skipping CMS content load');
       return;
     }
 
@@ -135,7 +136,7 @@ async function loadFeaturedProjects() {
     grid.innerHTML = '<div class="col-span-full text-center py-20"><div class="text-4xl mb-4">⏳</div><p class="text-gray-400">Loading featured projects...</p></div>';
 
     // Try fast manifest-based loading first
-    if (initializeSupabase()) {
+    if (typeof initializeSupabase === 'function' && initializeSupabase()) {
       const result = typeof getProjectsFast === 'function'
         ? await getProjectsFast()
         : await getProjectsPublic();
@@ -160,7 +161,7 @@ async function loadFeaturedProjects() {
 // Background refresh for stale-while-revalidate pattern
 async function refreshProjectsInBackground() {
   try {
-    if (!initializeSupabase()) return;
+    if (typeof initializeSupabase !== 'function' || !initializeSupabase()) return;
 
     const result = typeof getProjectsFast === 'function'
       ? await getProjectsFast()
@@ -200,12 +201,8 @@ function createProjectCard(project) {
   card.setAttribute('data-category', project.category);
   card.setAttribute('data-project', project.key);
 
-  const optimizedUrl = (typeof getOptimizedImageUrl === 'function' && project.thumbnail_url)
-    ? getOptimizedImageUrl(project.thumbnail_url, { width: 600, quality: 80, format: 'webp' })
-    : project.thumbnail_url;
-
   const thumbnailHtml = project.thumbnail_url
-    ? `<img src="${optimizedUrl}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">`
+    ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">`
     : createPlaceholderThumbnail(project);
 
   card.innerHTML = `
@@ -287,7 +284,7 @@ async function loadLogo() {
       return;
     }
 
-    if (!initializeSupabase()) {
+    if (typeof initializeSupabase !== 'function' || !initializeSupabase()) {
       updateLogo(getFallbackLogo());
       return;
     }
@@ -355,7 +352,7 @@ async function loadBanner() {
       return;
     }
 
-    if (!initializeSupabase()) {
+    if (typeof initializeSupabase !== 'function' || !initializeSupabase()) {
       updateBanner(getFallbackBanner());
       return;
     }
@@ -479,22 +476,20 @@ function initServiceCards() {
 }
 
 /* ---------- ENTRY POINT ---------- */
-document.addEventListener("DOMContentLoaded", async () => {
-  // Load all content in parallel
-  await Promise.all([
-    loadWebsiteContentOnce(),
-    loadFeaturedProjects(),
-    loadLogo(),
-    loadBanner()
-  ]);
-
-  // Initialize interactions
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize interactions IMMEDIATELY - never block on data loading
   initNavigation();
   initMobileMenu();
   initServiceCards();
+
+  // Load data in background - don't block page interactivity
+  // Each loader has its own try/catch so one failure doesn't affect others
+  loadWebsiteContentOnce().catch(e => console.warn('CMS content load failed:', e));
+  loadFeaturedProjects().catch(e => console.warn('Featured projects load failed:', e));
+  loadLogo().catch(e => console.warn('Logo load failed:', e));
+  loadBanner().catch(e => console.warn('Banner load failed:', e));
 
   window.scrollTo(0, 0);
 });
 
 /* ---------- CLEANUP ---------- */
-

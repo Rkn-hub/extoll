@@ -1,0 +1,29 @@
+{
+  "name": "extoll",
+  "version": "1.0.0",
+  "description": "A modern, responsive portfolio website for Extoll.Co - an execution-first freelance collective specializing in Graphics Design, UI/UX Design, Product Design, 2D Animation, and Web Development.",
+  "main": "global-header.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i tailwind-input.css -o tailwind-output.css --minify",
+    "dev:css": "npx @tailwindcss/cli -i tailwind-input.css -o tailwind-output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rkn-hub/extoll.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Rkn-hub/extoll/issues"
+  },
+  "homepage": "https://github.com/Rkn-hub/extoll#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "tailwindcss": "^4.1.18"
+  }
+}

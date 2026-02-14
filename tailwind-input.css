@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/container-queries";
+
+/* Use class-based dark mode (.dark on <html>) instead of media query */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-primary: var(--colors-primary);
+    --color-background-light: #f5f7f8;
+    --color-background-dark: #101922;
+    --font-display: "Space Grotesk", sans-serif;
+}

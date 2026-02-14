@@ -148,18 +148,23 @@
     });
   }
 
-  // Global theme toggle function
-  window.toggleTheme = function () {
-    const isDark = document.documentElement.classList.contains('dark');
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    }
-    updateThemeIcons();
-  };
+  // Global theme toggle function (fallback if website-assets.js hasn't loaded yet)
+  // website-assets.js provides a more complete version that also updates logos
+  if (!window.toggleTheme) {
+    window.toggleTheme = function () {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcons();
+      // If updateThemeLogo exists (from website-assets.js), call it
+      if (typeof updateThemeLogo === 'function') updateThemeLogo();
+    };
+  }
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
