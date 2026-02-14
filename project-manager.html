@@ -10,7 +10,8 @@
     <link rel="apple-touch-icon" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
-    <!-- Tailwind CSS (pre-built) -->`n  <link rel="stylesheet" href="tailwind-output.css">
+    <!-- Tailwind CSS (pre-built) -->`n
+    <link rel="stylesheet" href="tailwind-output.css">
     <!-- Theme Initialization -->
     <script>
         (function () {
@@ -454,7 +455,7 @@
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                         <p class="mt-2 text-gray-400">Click to upload or drag & drop</p>
-                                        <p class="text-xs text-gray-500">JPG, PNG, WebP (Max 5MB)</p>
+                                        <p class="text-xs text-gray-500">JPG, PNG, WebP — auto-compressed</p>
                                     </div>
                                     <input type="file" id="thumbnailInput" class="hidden" accept="image/*">
                                 </div>
@@ -488,7 +489,7 @@
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                         <p class="mt-2 text-sm text-gray-400">Upload Images</p>
-                                        <p class="text-xs text-gray-500">Multiple files supported</p>
+                                        <p class="text-xs text-gray-500">Auto-compressed to WebP</p>
                                     </div>
                                     <input type="file" id="imageInput" class="hidden" accept="image/*" multiple>
                                 </div>
@@ -932,7 +933,10 @@
                 }
             }
             console.log('📷 Uploading thumbnail:', file.name);
-            uploadFile(file, 'thumb-' + Date.now() + '.' + file.name.split('.').pop(), true);
+            showNotification('Compressing thumbnail...', 'warning');
+            const compressed = await compressImage(file, 800, 0.85);
+            const ext = compressed.type === 'image/webp' ? 'webp' : compressed.type === 'image/jpeg' ? 'jpg' : file.name.split('.').pop();
+            uploadFile(compressed, 'thumb-' + Date.now() + '.' + ext, true);
         }
         async function handleImageUpload(e) {
             const files = Array.from(e.target.files);
@@ -955,10 +959,14 @@
                 }
             }
             console.log('📷 Uploading', files.length, 'images');
-            files.forEach((file, index) => {
-                const fileName = 'img-' + Date.now() + '-' + index + '.' + file.name.split('.').pop();
-                uploadFile(file, fileName);
-            });
+            for (let index = 0; index < files.length; index++) {
+                const file = files[index];
+                showNotification(`Compressing image ${index + 1}/${files.length}...`, 'warning');
+                const compressed = await compressImage(file, 1920, 0.85);
+                const ext = compressed.type === 'image/webp' ? 'webp' : compressed.type === 'image/jpeg' ? 'jpg' : file.name.split('.').pop();
+                const fileName = 'img-' + Date.now() + '-' + index + '.' + ext;
+                uploadFile(compressed, fileName);
+            }
         }
         async function handleVideoUpload(e) {
             const files = Array.from(e.target.files);
@@ -986,6 +994,60 @@
                 uploadFile(file, fileName);
             });
         }
+        // ── Image Compression (client-side, no libraries) ──
+        async function compressImage(file, maxWidth = 1920, quality = 0.85) {
+            // Skip if already small enough
+            if (file.size < 200 * 1024) {
+                console.log(`⚡ Skipping compression for ${file.name} (${(file.size / 1024).toFixed(0)}KB — already small)`);
+                return file;
+            }
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.onload = function () {
+                        // Calculate new dimensions
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = Math.round(height * (maxWidth / width));
+                            width = maxWidth;
+                        }
+                        // Draw to canvas
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        // Try WebP first, fallback to JPEG
+                        canvas.toBlob(function (blob) {
+                            if (!blob) {
+                                // WebP not supported, try JPEG
+                                canvas.toBlob(function (jpegBlob) {
+                                    if (!jpegBlob) { resolve(file); return; }
+                                    const originalKB = (file.size / 1024).toFixed(1);
+                                    const compressedKB = (jpegBlob.size / 1024).toFixed(1);
+                                    console.log(`📦 Compressed: ${originalKB}KB → ${compressedKB}KB (JPEG)`);
+                                    showNotification(`Compressed: ${originalKB}KB → ${compressedKB}KB`, 'success');
+                                    resolve(new File([jpegBlob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+                                }, 'image/jpeg', quality);
+                                return;
+                            }
+                            const originalKB = (file.size / 1024).toFixed(1);
+                            const compressedKB = (blob.size / 1024).toFixed(1);
+                            console.log(`📦 Compressed: ${originalKB}KB → ${compressedKB}KB (WebP)`);
+                            showNotification(`Compressed: ${originalKB}KB → ${compressedKB}KB`, 'success');
+                            resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' }));
+                        }, 'image/webp', quality);
+                    };
+                    img.onerror = () => resolve(file); // On error, use original
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => resolve(file);
+                reader.readAsDataURL(file);
+            });
+        }
+
         async function uploadFile(file, fileName, isThumbnail = false) {
             if (!adminSupabase || !currentProject || !currentProject.key) {
                 showNotification('Please save the project first before uploading files', 'error');
