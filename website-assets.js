@@ -16,36 +16,11 @@ const WEBSITE_ASSETS_CONFIG = {
     }
 };
 
-// Load website assets on page load
+// Load website assets on page load — uses local files, no API calls needed
 async function loadWebsiteAssetsForSite() {
     try {
-        // Try to load from Supabase first
-        if (typeof getWebsiteAssets === 'function') {
-            const result = await getWebsiteAssets();
-
-            if (result.success) {
-                const assets = result.data;
-
-                // Update logo
-                if (assets.logo && assets.logo.length > 0) {
-                    const logoUrl = assets.logo[0].url; // Most recent
-                    updateWebsiteLogo(logoUrl);
-                    localStorage.setItem(WEBSITE_ASSETS_CONFIG.storageKeys.logo, logoUrl);
-                }
-
-                // Update banner
-                if (assets.banner && assets.banner.length > 0) {
-                    const bannerUrl = assets.banner[0].url; // Most recent
-                    updateWebsiteBanner(bannerUrl);
-                    localStorage.setItem(WEBSITE_ASSETS_CONFIG.storageKeys.banner, bannerUrl);
-                }
-
-                console.log('✅ Website assets loaded from Supabase');
-                return;
-            }
-        }
-
-        // Fallback to localStorage
+        // Logo and banner are local files (extoll.webp, extoll-light.webp)
+        // No need for Supabase API calls — just apply localStorage overrides if they exist
         const logoUrl = localStorage.getItem(WEBSITE_ASSETS_CONFIG.storageKeys.logo);
         const bannerUrl = localStorage.getItem(WEBSITE_ASSETS_CONFIG.storageKeys.banner);
 
@@ -57,19 +32,16 @@ async function loadWebsiteAssetsForSite() {
             updateWebsiteBanner(bannerUrl);
         }
 
-        console.log('✅ Website assets loaded from localStorage');
+        console.log('✅ Website assets loaded (local)');
 
     } catch (error) {
         console.error('❌ Failed to load website assets:', error);
-        // Use defaults if everything fails
-        updateWebsiteLogo(WEBSITE_ASSETS_CONFIG.defaults.logo);
-        updateWebsiteBanner(WEBSITE_ASSETS_CONFIG.defaults.banner);
     }
 }
 
 // State for logo management
-let currentDarkLogo = 'logo.png';
-const LIGHT_THEME_LOGO = 'extoll-light.png';
+let currentDarkLogo = 'extoll.webp';
+const LIGHT_THEME_LOGO = 'extoll-light.webp';
 
 // Update website logo (internal handler)
 function updateWebsiteLogo(logoUrl) {

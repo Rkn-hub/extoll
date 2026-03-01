@@ -270,6 +270,9 @@ async function createProject(projectData) {
             console.warn('⚠️ Project metadata save failed:', metadataError.message);
         }
 
+        // Regenerate manifest after project creation
+        await generateProjectsManifest();
+
         console.log('✅ Project created successfully:', projectWithMeta);
         return { success: true, data: projectWithMeta };
     } catch (error) {
@@ -478,6 +481,9 @@ async function deleteProjectMetadata(projectKey) {
             console.log('✅ Project metadata deleted from portfolio bucket:', projectKey);
         }
 
+        // Regenerate manifest after project deletion
+        await generateProjectsManifest();
+
         return { success: true, data };
     } catch (error) {
         console.error('❌ Delete project metadata failed:', error.message);
@@ -544,6 +550,9 @@ async function updateProject(projectKey, projectData) {
         } catch (metadataError) {
             console.warn('⚠️ Portfolio bucket metadata update failed:', metadataError.message);
         }
+
+        // Regenerate manifest after project update
+        await generateProjectsManifest();
 
         console.log('✅ Project updated successfully:', projectWithMeta);
         return { success: true, data: projectWithMeta };
@@ -696,10 +705,10 @@ const PROJECTS_CACHE = {
     maxAge: 5 * 60 * 1000 // 5 minutes cache
 };
 
-// Ultra-fast project loading using manifest (single API call)
+// Ultra-fast project loading — single DB query (replaces manifest + N+1 fallback)
 async function getProjectsFast() {
     try {
-        // Check memory cache first
+        // 1. Check memory cache first (instant)
         if (PROJECTS_CACHE.data && PROJECTS_CACHE.timestamp) {
             const age = Date.now() - PROJECTS_CACHE.timestamp;
             if (age < PROJECTS_CACHE.maxAge) {
@@ -708,11 +717,25 @@ async function getProjectsFast() {
             }
         }
 
-        // Check localStorage cache
-        const cachedData = localStorage.getItem('projects_cache');
-        if (cachedData) {
+        // 2. Check sessionStorage cache (survives page navigation, clears on tab close)
+        const sessionCached = sessionStorage.getItem('projects_fast_cache');
+        if (sessionCached) {
             try {
-                const cached = JSON.parse(cachedData);
+                const cached = JSON.parse(sessionCached);
+                if (cached.timestamp && (Date.now() - cached.timestamp) < PROJECTS_CACHE.maxAge) {
+                    PROJECTS_CACHE.data = cached.data;
+                    PROJECTS_CACHE.timestamp = cached.timestamp;
+                    console.log('⚡ Projects loaded from sessionStorage cache');
+                    return { success: true, data: cached.data, fromCache: true };
+                }
+            } catch (e) { }
+        }
+
+        // 3. Check localStorage cache (for instant display while we fetch fresh data)
+        const localCached = localStorage.getItem('projects_cache');
+        if (localCached) {
+            try {
+                const cached = JSON.parse(localCached);
                 if (cached.timestamp && (Date.now() - cached.timestamp) < PROJECTS_CACHE.maxAge) {
                     PROJECTS_CACHE.data = cached.data;
                     PROJECTS_CACHE.timestamp = cached.timestamp;
@@ -728,49 +751,40 @@ async function getProjectsFast() {
             }
         }
 
-        console.log('🚀 Loading projects via manifest...');
+        console.log('🚀 Loading projects via single DB query...');
 
-        // Try manifest first (single API call)
-        try {
-            const { data: manifestData, error: manifestError } = await configSupabase.storage
-                .from(SUPABASE_CONFIG.bucket)
-                .download('projects-manifest.json');
+        // 4. Single fast database query — replaces manifest download + N+1 folder scan
+        const { data: dbProjects, error: dbError } = await configSupabase
+            .from('projects')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-            if (!manifestError && manifestData) {
-                const manifestText = await manifestData.text();
-                const manifest = JSON.parse(manifestText);
-
-                if (manifest.projects && manifest.projects.length > 0) {
-                    // Update cache
-                    PROJECTS_CACHE.data = manifest.projects;
-                    PROJECTS_CACHE.timestamp = Date.now();
-                    localStorage.setItem('projects_cache', JSON.stringify({
-                        data: manifest.projects,
-                        timestamp: Date.now()
-                    }));
-
-                    console.log(`⚡ Loaded ${manifest.projects.length} projects from manifest`);
-                    return { success: true, data: manifest.projects };
-                }
-            }
-        } catch (manifestErr) {
-            console.log('ℹ️ No manifest found, falling back to folder scan');
-        }
-
-        // Fallback to N+1 loading (slower)
-        const result = await getProjectsPublic();
-
-        if (result.success && result.data) {
-            // Update cache
-            PROJECTS_CACHE.data = result.data;
+        if (!dbError && dbProjects && dbProjects.length > 0) {
+            // Update all caches
+            PROJECTS_CACHE.data = dbProjects;
             PROJECTS_CACHE.timestamp = Date.now();
-            localStorage.setItem('projects_cache', JSON.stringify({
-                data: result.data,
+            const cachePayload = JSON.stringify({
+                data: dbProjects,
                 timestamp: Date.now()
-            }));
+            });
+            sessionStorage.setItem('projects_fast_cache', cachePayload);
+            localStorage.setItem('projects_cache', cachePayload);
+
+            console.log(`⚡ Loaded ${dbProjects.length} projects from database`);
+            return { success: true, data: dbProjects };
         }
 
-        return result;
+        // 5. Final fallback to localStorage (offline/error scenario)
+        const localProjects = localStorage.getItem('projects');
+        if (localProjects) {
+            const projects = JSON.parse(localProjects);
+            if (projects.length > 0) {
+                return { success: true, data: projects, fromFallback: true };
+            }
+        }
+
+        console.log('📭 No projects found');
+        return { success: true, data: [] };
 
     } catch (error) {
         console.error('❌ Fast project loading failed:', error.message);
@@ -1003,6 +1017,9 @@ async function syncPortfolioToDatabase() {
             .from('projects')
             .select('*')
             .order('created_at', { ascending: false });
+
+        // Regenerate manifest after bulk sync
+        await generateProjectsManifest();
 
         return { success: true, data: allProjects || [] };
 

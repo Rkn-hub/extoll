@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="dark" lang="en">
 
 <head>
@@ -17,8 +17,8 @@
   <meta name="description"
     content="Explore our complete portfolio of creative design work including graphics design, UI/UX, product design, animations, and video editing projects.">
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.webp">
+  <link rel="apple-touch-icon" href="favicon.webp">
   <!-- Resource hints -->
   <link rel="dns-prefetch" href="//lvtkoryorwzknxzfpyzz.supabase.co">
   <link rel="dns-prefetch" href="//unpkg.com">
@@ -184,7 +184,8 @@
   </footer>
 
   <!-- Scripts - defer for non-blocking load -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer
+    crossorigin></script>
   <script src="supabase-config.js" defer></script>
   <script src="website-assets.js" defer></script>
   <script>
@@ -337,7 +338,7 @@
 
       const projectsToShow = filteredProjects.slice(0, currentPage * projectsPerPage);
 
-      portfolioGrid.innerHTML = projectsToShow.map(project => createProjectCard(project)).join('');
+      portfolioGrid.innerHTML = projectsToShow.map((project, index) => createProjectCard(project, index)).join('');
 
       if (projectsToShow.length < filteredProjects.length) {
         loadMoreBtn.classList.remove('hidden');
@@ -412,8 +413,12 @@
     }
 
     // Create project card HTML with progressive image loading
-    function createProjectCard(project) {
+    function createProjectCard(project, index = 0) {
       let thumbnailHtml;
+
+      const isPriority = index < 6;
+      const loadingAttr = isPriority ? 'eager' : 'lazy';
+      const fetchPriority = isPriority ? 'high' : 'auto';
 
       if (project.thumbnail_url) {
         // Progressive image loading with blur-up effect
@@ -424,8 +429,9 @@
               src="${project.thumbnail_url}" 
               alt="${project.title}" 
               class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 opacity-0"
-              loading="lazy"
-              decoding="async"
+              loading="${loadingAttr}"
+              fetchpriority="${fetchPriority}"
+              decoding="${isPriority ? 'sync' : 'async'}"
               onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"
               onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center\\'><span class=\\'text-5xl font-black text-primary/50\\'>${project.title ? project.title.charAt(0).toUpperCase() : 'P'}</span></div>'"
             >

@@ -14,8 +14,8 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Project Details - Extoll.Co</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.webp">
+    <link rel="apple-touch-icon" href="favicon.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://lvtkoryorwzknxzfpyzz.supabase.co" crossorigin>
@@ -194,7 +194,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin></script>
     <script src="supabase-config.js"></script>
     <script src="website-assets.js"></script>
     <script>
@@ -296,22 +296,39 @@
       `;
 
             try {
-                const { data: files, error } = await configSupabase.storage
-                    .from(SUPABASE_CONFIG.bucket)
-                    .list(projectKey, { limit: 1000, sortBy: { column: 'created_at', order: 'desc' } });
+                // Check sessionStorage first for instant load
+                const cacheKey = `project_files_${projectKey}`;
+                const cachedFiles = sessionStorage.getItem(cacheKey);
 
-                if (error || !files || files.length === 0) {
-                    showNoFilesMessage();
-                    return;
+                let filteredFiles = [];
+
+                if (cachedFiles) {
+                    filteredFiles = JSON.parse(cachedFiles);
+                } else {
+                    const { data: files, error } = await configSupabase.storage
+                        .from(SUPABASE_CONFIG.bucket)
+                        .list(projectKey, { limit: 1000, sortBy: { column: 'created_at', order: 'desc' } });
+
+                    if (error || !files || files.length === 0) {
+                        showNoFilesMessage();
+                        return;
+                    }
+
+                    filteredFiles = files.filter(file => {
+                        const fileName = file.name.toLowerCase();
+                        return !fileName.startsWith('logo') &&
+                            !fileName.startsWith('banner') &&
+                            !fileName.startsWith('thumb-') &&
+                            !fileName.endsWith('.json');
+                    });
+
+                    // Cache the file list so subsequent visits to the same project are instant
+                    try {
+                        sessionStorage.setItem(cacheKey, JSON.stringify(filteredFiles));
+                    } catch (e) {
+                        console.warn('Could not cache file list', e);
+                    }
                 }
-
-                const filteredFiles = files.filter(file => {
-                    const fileName = file.name.toLowerCase();
-                    return !fileName.startsWith('logo') &&
-                        !fileName.startsWith('banner') &&
-                        !fileName.startsWith('thumb-') &&
-                        !fileName.endsWith('.json');
-                });
 
                 const projectFiles = filteredFiles.map(file => {
                     const filePath = `${projectKey}/${file.name}`;
@@ -331,6 +348,11 @@
 
                 if (projectFiles.length > 0) {
                     galleryGrid.innerHTML = projectFiles.map((file, index) => {
+                        // Priority loading for first 4 images to make above-the-fold content pop immediately
+                        const isPriority = index < 4;
+                        const loadingAttr = isPriority ? 'eager' : 'lazy';
+                        const fetchPriority = isPriority ? 'high' : 'auto';
+
                         if (file.type === 'image') {
                             return `
                 <div class="glass-card rounded-xl overflow-hidden aspect-square relative group cursor-pointer transition-all duration-300" onclick="openLightbox(${index})">
@@ -339,9 +361,11 @@
                     src="${file.url}" 
                     alt="Project Image" 
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-0" 
-                    loading="lazy"
-                    decoding="async"
+                    loading="${loadingAttr}"
+                    fetchpriority="${fetchPriority}"
+                    decoding="${isPriority ? 'sync' : 'async'}"
                     onload="this.style.opacity='1'; this.previousElementSibling.style.display='none'"
+                    onerror="this.previousElementSibling.classList.remove('animate-pulse'); this.previousElementSibling.innerHTML='<div class=\\'w-full h-full flex items-center justify-center\\'><span class=\\'material-symbols-outlined text-4xl text-red-500/50\\'>broken_image</span></div>'"
                   >
                   <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <span class="material-symbols-outlined text-white text-3xl">zoom_in</span>

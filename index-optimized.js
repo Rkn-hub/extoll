@@ -30,83 +30,75 @@ const CACHE = {
   websiteContent: null
 };
 
-/* ---------- CMS CONTENT (SAFE, ONCE) ---------- */
+/* ---------- CMS CONTENT (SAFE, ONCE PER SESSION) ---------- */
 async function loadWebsiteContentOnce() {
   try {
+    // Check sessionStorage cache first — avoids API call on every page navigation
+    const sessionCached = sessionStorage.getItem('extoll_cms_content');
+    if (sessionCached) {
+      try {
+        const content = JSON.parse(sessionCached);
+        CACHE.websiteContent = content;
+        applyCMSContent(content);
+        console.log('⚡ CMS content loaded from session cache');
+        return;
+      } catch (e) { }
+    }
+
     // Guard: initializeSupabase comes from supabase-config.js which depends on Supabase CDN
     if (typeof initializeSupabase !== 'function' || !initializeSupabase()) {
       console.warn('⚠️ Supabase not available, skipping CMS content load');
       return;
     }
 
-    // Try new path first (website-config/website-content.json)
-    let contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
+    // Single API call to fetch CMS content
+    const contentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
 
-    let { data, error } = await configSupabase.storage
+    const { data, error } = await configSupabase.storage
       .from(SUPABASE_CONFIG.bucket)
       .download(contentPath);
 
-    // Fallback to old path (website-content.json) for backward compatibility
     if (error || !data) {
-      const legacyResult = await configSupabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .download('website-content.json');
-
-      data = legacyResult.data;
-      error = legacyResult.error;
-    }
-
-    if (error) {
-      console.error('❌ Error downloading CMS content:', error);
-      return;
-    }
-
-    if (!data) {
-      console.warn('⚠️ No CMS content data received');
+      console.warn('⚠️ CMS content not available:', error?.message);
       return;
     }
 
     const content = JSON.parse(await data.text());
     CACHE.websiteContent = content;
 
-    /* Hero */
-    const heroTitle = DOM.heroTitle();
-    const heroSubtitle = DOM.heroSubtitle();
-    const heroDescription = DOM.heroDescription();
+    // Cache in sessionStorage for the rest of this browsing session
+    sessionStorage.setItem('extoll_cms_content', JSON.stringify(content));
 
-    if (content.heroTitle && heroTitle) {
-      heroTitle.textContent = content.heroTitle;
-    } else {
-      console.warn('⚠️ Could not update hero title. Content:', content.heroTitle, 'Element:', heroTitle);
-    }
+    applyCMSContent(content);
 
-    if (content.heroSubtitle && heroSubtitle) {
-      heroSubtitle.textContent = content.heroSubtitle;
-    } else {
-      console.warn('⚠️ Could not update hero subtitle. Content:', content.heroSubtitle, 'Element:', heroSubtitle);
-    }
-
-    if (content.heroDescription && heroDescription) {
-      heroDescription.textContent = content.heroDescription;
-    } else {
-      console.warn('⚠️ Could not update hero description. Content:', content.heroDescription, 'Element:', heroDescription);
-    }
-
-    /* Contact */
-    if (content.contactPhone && DOM.phoneText()) {
-      DOM.phoneText().textContent = content.contactPhone;
-      DOM.phoneLink().href = "tel:" + content.contactPhone.replace(/[^\d+]/g, "");
-    }
-    if (content.contactEmail && DOM.emailText()) {
-      DOM.emailText().textContent = content.contactEmail;
-      DOM.emailLink().href = "mailto:" + content.contactEmail;
-    }
-    if (content.whatsappNumber && DOM.whatsappText()) {
-      DOM.whatsappText().textContent = content.whatsappNumber;
-      DOM.whatsappLink().href = "https://wa.me/" + content.whatsappNumber.replace(/[^\d]/g, "");
-    }
   } catch (error) {
     console.error('❌ Failed to load website content:', error);
+  }
+}
+
+// Apply CMS content to DOM elements
+function applyCMSContent(content) {
+  /* Hero */
+  const heroTitle = DOM.heroTitle();
+  const heroSubtitle = DOM.heroSubtitle();
+  const heroDescription = DOM.heroDescription();
+
+  if (content.heroTitle && heroTitle) heroTitle.textContent = content.heroTitle;
+  if (content.heroSubtitle && heroSubtitle) heroSubtitle.textContent = content.heroSubtitle;
+  if (content.heroDescription && heroDescription) heroDescription.textContent = content.heroDescription;
+
+  /* Contact */
+  if (content.contactPhone && DOM.phoneText()) {
+    DOM.phoneText().textContent = content.contactPhone;
+    DOM.phoneLink().href = "tel:" + content.contactPhone.replace(/[^\d+]/g, "");
+  }
+  if (content.contactEmail && DOM.emailText()) {
+    DOM.emailText().textContent = content.contactEmail;
+    DOM.emailLink().href = "mailto:" + content.contactEmail;
+  }
+  if (content.whatsappNumber && DOM.whatsappText()) {
+    DOM.whatsappText().textContent = content.whatsappNumber;
+    DOM.whatsappLink().href = "https://wa.me/" + content.whatsappNumber.replace(/[^\d]/g, "");
   }
 }
 
@@ -183,8 +175,8 @@ function renderProjects(projects) {
 
   const fragment = document.createDocumentFragment();
 
-  projects.forEach(project => {
-    const card = createProjectCard(project);
+  projects.forEach((project, index) => {
+    const card = createProjectCard(project, index);
     fragment.appendChild(card);
   });
 
@@ -195,14 +187,18 @@ function renderProjects(projects) {
   grid.addEventListener('click', handleProjectClick);
 }
 
-function createProjectCard(project) {
+function createProjectCard(project, index = 0) {
   const card = document.createElement('div');
   card.className = 'glass-card flex flex-col gap-3 rounded-xl overflow-hidden group portfolio-item cursor-pointer';
   card.setAttribute('data-category', project.category);
   card.setAttribute('data-project', project.key);
 
+  const isPriority = index < 6;
+  const loadingAttr = isPriority ? 'eager' : 'lazy';
+  const fetchPriority = isPriority ? 'high' : 'auto';
+
   const thumbnailHtml = project.thumbnail_url
-    ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async">`
+    ? `<img src="${project.thumbnail_url}" alt="${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="${loadingAttr}" fetchpriority="${fetchPriority}" decoding="${isPriority ? 'sync' : 'async'}">`
     : createPlaceholderThumbnail(project);
 
   card.innerHTML = `
@@ -275,143 +271,12 @@ function showEmptyPortfolio() {
   `;
 }
 
-/* ---------- LOGO LOADING ---------- */
-async function loadLogo() {
-  try {
-    // Check cache first
-    if (CACHE.logoUrl) {
-      updateLogo(CACHE.logoUrl);
-      return;
-    }
+/* ---------- LOGO LOADING (REMOVED) ---------- */
+// Logo is now loaded locally via website-assets.js
+// using the dynamic dark/light theme switching.
 
-    if (typeof initializeSupabase !== 'function' || !initializeSupabase()) {
-      updateLogo(getFallbackLogo());
-      return;
-    }
-
-    // Try new location first
-    const newPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.logo}`;
-    let logoUrl = await tryLoadLogoFromPath(newPath);
-
-    // Fallback to old location
-    if (!logoUrl) {
-      logoUrl = await tryLoadLogoFromPath('logo');
-    }
-
-    // Use fallback if all fails
-    if (!logoUrl) {
-      logoUrl = getFallbackLogo();
-    }
-
-    CACHE.logoUrl = logoUrl;
-    updateLogo(logoUrl);
-
-  } catch (error) {
-    console.warn('Logo loading failed:', error);
-    updateLogo(getFallbackLogo());
-  }
-}
-
-async function tryLoadLogoFromPath(path) {
-  try {
-    const { data: files } = await configSupabase.storage
-      .from(SUPABASE_CONFIG.bucket)
-      .list(path);
-
-    if (files && files.length > 0) {
-      const logoFile = files[0].name;
-      const { data: urlData } = configSupabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .getPublicUrl(`${path}/${logoFile}`);
-
-      return urlData.publicUrl;
-    }
-  } catch (error) {
-    console.warn(`Failed to load logo from ${path}:`, error);
-  }
-  return null;
-}
-
-function getFallbackLogo() {
-  return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwZWE1ZTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkV4dG9sbDwvdGV4dD4KPHN2Zz4=";
-}
-
-function updateLogo(logoUrl) {
-  const logoElement = DOM.logoElement();
-  if (logoElement && logoUrl) {
-    logoElement.src = logoUrl;
-  }
-}
-
-/* ---------- BANNER LOADING ---------- */
-async function loadBanner() {
-  try {
-    // Check cache first
-    if (CACHE.bannerUrl) {
-      updateBanner(CACHE.bannerUrl);
-      return;
-    }
-
-    if (typeof initializeSupabase !== 'function' || !initializeSupabase()) {
-      updateBanner(getFallbackBanner());
-      return;
-    }
-
-    // Try new location first
-    const newPath = `${SUPABASE_CONFIG.websiteAssets.folder}/${SUPABASE_CONFIG.websiteAssets.subfolders.banner}`;
-    let bannerUrl = await tryLoadBannerFromPath(newPath);
-
-    // Fallback to old location
-    if (!bannerUrl) {
-      bannerUrl = await tryLoadBannerFromPath('banner');
-    }
-
-    // Use fallback if all fails
-    if (!bannerUrl) {
-      bannerUrl = getFallbackBanner();
-    }
-
-    CACHE.bannerUrl = bannerUrl;
-    updateBanner(bannerUrl);
-
-  } catch (error) {
-    console.warn('❌ Banner loading failed:', error);
-    updateBanner(getFallbackBanner());
-  }
-}
-
-async function tryLoadBannerFromPath(path) {
-  try {
-    const { data: files } = await configSupabase.storage
-      .from(SUPABASE_CONFIG.bucket)
-      .list(path);
-
-    if (files && files.length > 0) {
-      const bannerFile = files[0].name;
-      const { data: urlData } = configSupabase.storage
-        .from(SUPABASE_CONFIG.bucket)
-        .getPublicUrl(`${path}/${bannerFile}`);
-
-      return urlData.publicUrl;
-    }
-  } catch (error) {
-    console.warn(`Failed to load banner from ${path}:`, error);
-  }
-  return null;
-}
-
-function getFallbackBanner() {
-  return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZGVmcz4KPGXYZ2lhbCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMEEwQTBEO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzFhMWEyZTtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTYyMTNlO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+Cjx0ZXh0IHg9Ijk2MCIgeT0iNTQwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZTVlN2ViIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Zb3VyIEJhbm5lciBIZXJlPC90ZXh0Pgo8L3N2Zz4=";
-}
-
-function updateBanner(bannerUrl) {
-  const bannerElement = DOM.bannerElement();
-  if (bannerElement && bannerUrl) {
-    bannerElement.src = bannerUrl;
-  } else {
-    console.warn('❌ Banner element not found or no URL provided');
-  }
-}
+/* ---------- BANNER LOADING (REMOVED) ---------- */
+// Banner is now loaded locally via website-assets.js
 
 
 
@@ -486,8 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Each loader has its own try/catch so one failure doesn't affect others
   loadWebsiteContentOnce().catch(e => console.warn('CMS content load failed:', e));
   loadFeaturedProjects().catch(e => console.warn('Featured projects load failed:', e));
-  loadLogo().catch(e => console.warn('Logo load failed:', e));
-  loadBanner().catch(e => console.warn('Banner load failed:', e));
 
   window.scrollTo(0, 0);
 });

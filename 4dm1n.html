@@ -6,8 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes"
         name="viewport" />
     <title>Dashboard</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.webp">
+    <link rel="apple-touch-icon" href="favicon.webp">
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <meta name="referrer" content="no-referrer">
     <!-- Security Headers -->
@@ -33,7 +33,8 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
         rel="stylesheet" />
-    <!-- Tailwind CSS (pre-built) -->`n  <link rel="stylesheet" href="tailwind-output.css">
+    <!-- Tailwind CSS (pre-built) -->`n
+    <link rel="stylesheet" href="tailwind-output.css">
     <!-- Theme Initialization -->
     <script>
         (function () {
@@ -568,7 +569,7 @@
     <div id="notification" class="notification">
         <span id="notificationText"></span>
     </div>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" crossorigin></script>
     <script src="supabase-config.js"></script>
     <script>
         // Configuration is now loaded from supabase-config.js
@@ -979,15 +980,15 @@
         async function loadProjects() {
             try {
                 // Debug: Log what we're trying to load
-                console.log('🔄 Loading projects from portfolio bucket...');
-                // Use getProjectsPublic for consistency with portfolio page
-                const result = await getProjectsPublic();
-                if (result.success && result.data.length > 0) {
+                console.log('🔄 Loading projects from database...');
+                // Use getProjects to fetch from the main database table instead of public bucket scanning
+                const result = typeof getProjects === 'function' ? await getProjects() : await getProjectsPublic();
+                if (result.success && result.data && result.data.length > 0) {
                     projects = result.data;
-                    console.log('✅ Loaded projects from bucket:', projects.length);
+                    console.log('✅ Loaded projects from database:', projects.length);
                     console.log('📝 Project titles:', projects.map(p => p.title));
                 } else {
-                    console.log('📄 No projects found in bucket');
+                    console.log('📄 No projects found in database');
                     projects = [];
                 }
                 displayProjects();
@@ -3504,21 +3505,21 @@ Instructions:
             }
         }
     </script>
+    <script>
+        // Update admin panel to use new file paths
+        function updateAdminPanelPaths() {
+            // Replace all instances of old paths with new ones
+            const oldWebsiteContentPath = 'website-content.json';
+            const newWebsiteContentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
+            const oldTeamInfoPath = 'team-info.json';
+            const newTeamInfoPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`;
+            console.log('âœ… Admin panel updated to use new file paths');
+            console.log('ðŸ“ Website content:', newWebsiteContentPath);
+            console.log('ðŸ‘¥ Team info:', newTeamInfoPath);
+        }
+        // Call on page load
+        document.addEventListener('DOMContentLoaded', updateAdminPanelPaths);
+    </script>
 </body>
 
 </html>
-<script>
-    // Update admin panel to use new file paths
-    function updateAdminPanelPaths() {
-        // Replace all instances of old paths with new ones
-        const oldWebsiteContentPath = 'website-content.json';
-        const newWebsiteContentPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.content}`;
-        const oldTeamInfoPath = 'team-info.json';
-        const newTeamInfoPath = `${SUPABASE_CONFIG.globalSettings.folder}/${SUPABASE_CONFIG.globalSettings.files.team}`;
-        console.log('âœ… Admin panel updated to use new file paths');
-        console.log('ðŸ“ Website content:', newWebsiteContentPath);
-        console.log('ðŸ‘¥ Team info:', newTeamInfoPath);
-    }
-    // Call on page load
-    document.addEventListener('DOMContentLoaded', updateAdminPanelPaths);
-</script>
